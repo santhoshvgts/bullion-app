@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "728159990668",
+    "project_id": "bullion-dev-b4ce4",
+    "storage_bucket": "bullion-dev-b4ce4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728159990668:android:1268750594c7ad92f39ca9",
+        "android_client_info": {
+          "package_name": "com.bullion.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrZBHYwe_aQwuGXwlPLh0Z6pfECTkH8pM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

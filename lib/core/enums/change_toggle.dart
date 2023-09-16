@@ -1,0 +1,1 @@
+enum ChangeToggle { DOLLAR, PERCENTAGE }

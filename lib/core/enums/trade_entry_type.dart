@@ -1,0 +1,1 @@
+enum TradeEntryType { AMOUNT, QUANTITY, PERCENTAGE }

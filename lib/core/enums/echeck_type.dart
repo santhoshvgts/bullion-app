@@ -1,0 +1,2 @@
+
+enum eCheckType { Plaid, Manual }
