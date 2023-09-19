@@ -1,4 +1,3 @@
-
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/core/models/auth/forgot_password.dart';
 import 'package:bullion/core/models/auth/user.dart';

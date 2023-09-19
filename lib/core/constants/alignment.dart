@@ -79,34 +79,15 @@ class UIAlignment {
 
   static TextStyle titleTextStyle(int gridColumn) {
     if (gridColumn == 1) {
-      return const TextStyle(
-          fontSize: AppFontSize.dp16,
-          fontWeight: FontWeight.w600,
-          color: AppColor.primaryDark,
-          letterSpacing: 0.15,
-          height: 1.5);
+      return const TextStyle(fontSize: AppFontSize.dp16, fontWeight: FontWeight.w600, color: AppColor.primaryDark, letterSpacing: 0.15, height: 1.5);
     }
-    return const TextStyle(
-        fontSize: AppFontSize.dp14,
-        fontWeight: FontWeight.w600,
-        color: AppColor.primaryDark,
-        letterSpacing: 0.15,
-        height: 1.5);
+    return const TextStyle(fontSize: AppFontSize.dp14, fontWeight: FontWeight.w600, color: AppColor.primaryDark, letterSpacing: 0.15, height: 1.5);
   }
 
   static TextStyle badgeTextStyle(int gridColumn) {
     if (gridColumn == 1) {
-      return const TextStyle(
-          fontSize: AppFontSize.dp14,
-          fontWeight: FontWeight.normal,
-          color: AppColor.header,
-          height: 1.5);
+      return const TextStyle(fontSize: AppFontSize.dp14, fontWeight: FontWeight.normal, color: AppColor.header, height: 1.5);
     }
-    return const TextStyle(
-        fontSize: AppFontSize.dp12,
-        fontWeight: FontWeight.normal,
-        color: AppColor.header,
-        letterSpacing: 0.15,
-        height: 1.5);
+    return const TextStyle(fontSize: AppFontSize.dp12, fontWeight: FontWeight.normal, color: AppColor.header, letterSpacing: 0.15, height: 1.5);
   }
 }

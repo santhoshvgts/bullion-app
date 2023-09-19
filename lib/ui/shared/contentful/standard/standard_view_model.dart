@@ -1,4 +1,3 @@
-
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/core/models/module/item_display_settings.dart';
@@ -6,14 +5,13 @@ import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/standard_item.dart';
 
 class StandardViewModel extends VGTSBaseViewModel {
-
   late ModuleSettings settings;
 
   List<StandardItem>? _items;
 
-  int get moreCategoriesLength => itemDisplaySettings.collpasable && _items!.length > 8  ? _items!.length - 8 : 0;
+  int get moreCategoriesLength => itemDisplaySettings.collpasable && _items!.length > 8 ? _items!.length - 8 : 0;
 
-  bool isCollPaSable= false;
+  bool isCollPaSable = false;
 
   ItemDisplaySettings get itemDisplaySettings => settings.displaySettings!.itemDisplaySettings;
 
@@ -25,13 +23,12 @@ class StandardViewModel extends VGTSBaseViewModel {
   // Vertical Space: Top & Bottom Space
   double get runSpacing => itemDisplaySettings.fullBleed ? 0 : 10; //itemDisplaySettings.cardPadding;
 
-  double itemWidth(BuildContext context){
-
+  double itemWidth(BuildContext context) {
     // Get Screen Width and Round the Value to double
     double screenWidth = MediaQuery.of(context).size.width.floorToDouble();
 
     double totalSpacing = 0;
-    if (!itemDisplaySettings.fullBleed){
+    if (!itemDisplaySettings.fullBleed) {
       totalSpacing = spacing * (itemDisplaySettings.gridCols - 1);
       double wrap = spacing * 2;
       totalSpacing = totalSpacing + wrap;
@@ -51,20 +48,18 @@ class StandardViewModel extends VGTSBaseViewModel {
   }
 
   @required
-  init(ModuleSettings settings){
+  init(ModuleSettings settings) {
     this.settings = settings;
     this._items = settings.items!.map((e) => StandardItem.fromJson(e)).toList();
     notifyListeners();
   }
 
   onChange() {
-    isCollPaSable= ! isCollPaSable;
+    isCollPaSable = !isCollPaSable;
     notifyListeners();
   }
 
   onItemTap(String? url) {
     navigationService!.pushNamed(url, rootNavigator: true);
   }
-
-
 }

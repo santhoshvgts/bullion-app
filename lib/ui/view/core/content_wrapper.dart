@@ -16,17 +16,14 @@ import 'package:bullion/core/res/styles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
-
 class ContentWrapperController {
-
   Function(String)? onMetalChange;
-  dispose(){
+  dispose() {
     onMetalChange = null;
   }
 }
 
 class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
-
   final String? path;
   final ContentWrapperController? controller;
   final PageSettings? initialValue;
@@ -35,7 +32,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
   final Function(bool onload)? onLoading;
   final String? metalName;
 
-  ContentWrapper(this.path, {this.controller, this.initialValue, this.onPageFetched,this.enableController = true,this.onLoading,this.metalName});
+  ContentWrapper(this.path, {this.controller, this.initialValue, this.onPageFetched, this.enableController = true, this.onLoading, this.metalName});
 
   @override
   bool get reactive => true;
@@ -43,13 +40,13 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
   @override
   void onViewModelReady(ContentViewModel viewModel) {
     super.onViewModelReady(viewModel);
-    if (controller != null){
+    if (controller != null) {
       controller!.onMetalChange = viewModel.onMetalChange;
     }
   }
 
   @override
-  ContentViewModel viewModelBuilder(BuildContext context) => ContentViewModel(path!, onPageFetched, initialValue,onLoading);
+  ContentViewModel viewModelBuilder(BuildContext context) => ContentViewModel(path!, onPageFetched, initialValue, onLoading);
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, ContentViewModel viewModel, Widget? child) {
@@ -61,65 +58,61 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
           child: RefreshIndicator(
             onRefresh: () async {
               PageSettings? pageSettings = await viewModel.fetchContent(path!, refresh: true);
-              return ;
+              return;
             },
             child: Container(
               color: AppColor.secondaryBackground,
               child: Stack(
                 children: [
-
                   Container(
                     height: MediaQuery.of(context).size.height,
                     child: SingleChildScrollView(
                       controller: enableController! ? viewModel.scrollController : null,
-                      child: Column(
-                          children: [
+                      child: Column(children: [
+                        if (viewModel.modules!.isEmpty)
+                          const CircularProgressIndicator()
+                        // LoadingData()
+                        else
+                          ...viewModel.modules!.map((module) {
+                            switch (module!.moduleType) {
+                              case ModuleType.dynamic:
+                                return DynamicModule(
+                                  module,
+                                  viewModel.pageSetting,
+                                  metalName: metalName,
+                                );
 
-                            if (viewModel.modules!.isEmpty)
-                              const CircularProgressIndicator()
-                            // LoadingData()
-                            else
-                              ...viewModel.modules!.map((module){
-                                switch(module!.moduleType){
+                              case ModuleType.standard:
+                                return StandardModule(module);
 
-                                  case ModuleType.dynamic:
-                                    return DynamicModule(module, viewModel.pageSetting,metalName: metalName,);
-
-                                  case ModuleType.standard:
-                                    return StandardModule(module);
-
-                                  case ModuleType.product:
-                                  case ModuleType.productList:
-                                    return ProductModule(module,
-                                        controller: viewModel.productModuleController,
-                                        sortFilterWidget: SortFilterWidget(
-                                          key: viewModel.sortFilterWidgetKey,
-                                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                                        ),
-                                        isLoadingFilter: viewModel.isBusy
-                                    );
-
-                                case ModuleType.banner:
-                                  return BannerModule(module);
-
-                                  default:
-                                    return Container();
-                                }
-                              }).toList(),
-
-                            if (viewModel.paginationLoading)
-                              Container(
-                                  margin: const EdgeInsets.all(15),
-                                  child: const SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                              case ModuleType.product:
+                              case ModuleType.productList:
+                                return ProductModule(module,
+                                    controller: viewModel.productModuleController,
+                                    sortFilterWidget: SortFilterWidget(
+                                      key: viewModel.sortFilterWidgetKey,
+                                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                                     ),
-                                  )
-                              )
-                          ]
-                      ),
+                                    isLoadingFilter: viewModel.isBusy);
+
+                              case ModuleType.banner:
+                                return BannerModule(module);
+
+                              default:
+                                return Container();
+                            }
+                          }).toList(),
+                        if (viewModel.paginationLoading)
+                          Container(
+                              margin: const EdgeInsets.all(15),
+                              child: const SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                                ),
+                              ))
+                      ]),
                     ),
                   ),
 
@@ -130,8 +123,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                         right: 0,
                         child: SortFilterWidget(
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        )
-                    ),
+                        )),
 
                   // if(viewModel.productListingModule != null)
                   //   SortFilterSection(
@@ -150,11 +142,9 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
       ),
     );
   }
-
 }
 
 class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
-
   EdgeInsets? padding;
 
   SortFilterWidget({Key? key, this.padding}) : super(key: key);
@@ -163,45 +153,37 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
   Widget build(BuildContext context, ContentViewModel viewModel) {
     return Container(
       padding: padding,
-      decoration: BoxDecoration(
-        color: AppColor.white,
-        boxShadow: viewModel.showSortAppBarSection ? AppStyle.cardShadow : null
-      ),
+      decoration: BoxDecoration(color: AppColor.white, boxShadow: viewModel.showSortAppBarSection ? AppStyle.cardShadow : null),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-
           if (viewModel.productListingModuleTitle != null)
             AutoSizeText(viewModel.productListingModuleTitle!,
-                textScaleFactor: 1,
-                textAlign: UIAlignment.textAlign(viewModel.productListingModule!.displaySettings!.titleAlignment),
-                style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title)
-            ),
-
+                textScaleFactor: 1, textAlign: UIAlignment.textAlign(viewModel.productListingModule!.displaySettings!.titleAlignment), style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-
               InkWell(
-                onTap: ()=> viewModel.onSortPressed(),
+                onTap: () => viewModel.onSortPressed(),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
-                      const Icon(Icons.sort,),
-
+                      const Icon(
+                        Icons.sort,
+                      ),
                       HorizontalSpacing.d10px(),
-
-                      Text("Sort", textScaleFactor: 1, style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title),)
-
+                      Text(
+                        "Sort",
+                        textScaleFactor: 1,
+                        style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title),
+                      )
                     ],
                   ),
                 ),
               ),
-
               InkWell(
                 onTap: () => viewModel.onFilterPressed(),
                 child: Container(
@@ -211,43 +193,36 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       Stack(
                         children: [
-
-                          const Icon(Icons.filter_list_alt,),
-
+                          const Icon(
+                            Icons.filter_list_alt,
+                          ),
                           if (viewModel.productModel.selectedFacetsCount! > 0)
                             Positioned(
                               right: 0,
                               child: Container(
-                                decoration: const BoxDecoration(
-                                  color: AppColor.primary,
-                                  shape: BoxShape.circle
-                                ),
+                                decoration: const BoxDecoration(color: AppColor.primary, shape: BoxShape.circle),
                                 width: 10,
                                 height: 10,
                               ),
                             )
-
                         ],
                       ),
-
                       HorizontalSpacing.d10px(),
-
-                      Text("Filter" + (viewModel.productModel.selectedFacetsCount! > 0 ? " (${viewModel.productModel.selectedFacetsCount})" : ""), textScaleFactor: 1, style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title),)
-
+                      Text(
+                        "Filter" + (viewModel.productModel.selectedFacetsCount! > 0 ? " (${viewModel.productModel.selectedFacetsCount})" : ""),
+                        textScaleFactor: 1,
+                        style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title),
+                      )
                     ],
                   ),
                 ),
               )
-
             ],
           ),
-
         ],
       ),
     );
   }
-
 }

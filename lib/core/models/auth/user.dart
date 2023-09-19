@@ -20,12 +20,7 @@ class User extends BaseModel {
 
   String get fullName => "${firstName ?? '' + lastName!}";
 
-  User(
-      {this.userId,
-      this.firstName,
-      this.lastName,
-      this.email,
-      this.postedDate});
+  User({this.userId, this.firstName, this.lastName, this.email, this.postedDate});
 
   User.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -40,8 +35,8 @@ class User extends BaseModel {
     isBullionCardMember = json['is_bullion_card_member'] ?? false;
     isGuestAccount = json['is_guest_account'] is String ? json['is_guest_account'] == "true" : json['is_guest_account'];
 
-    welcomeMessage =  json['welcome_message'];
-    clubStatus =  json['club_status'];
+    welcomeMessage = json['welcome_message'];
+    clubStatus = json['club_status'];
     clubImage = json['club_image'];
     showAssets = json['show_assets'];
     orderCount = json['order_count'];

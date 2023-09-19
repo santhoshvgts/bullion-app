@@ -9,19 +9,12 @@ class ShimmerEffect extends StatefulWidget {
   final Color color;
   final BoxShape shape;
 
-  ShimmerEffect(
-      {Key? key,
-      this.height = 70,
-      this.width = double.infinity,
-      this.borderRadius = BorderRadius.zero,
-      this.margin = EdgeInsets.zero,this.color= AppColor.white,this.shape=BoxShape.rectangle})
-      : super(key: key);
+  ShimmerEffect({Key? key, this.height = 70, this.width = double.infinity, this.borderRadius = BorderRadius.zero, this.margin = EdgeInsets.zero, this.color = AppColor.white, this.shape = BoxShape.rectangle}) : super(key: key);
 
   createState() => ShimmerEffectState();
 }
 
-class ShimmerEffectState extends State<ShimmerEffect>
-    with SingleTickerProviderStateMixin {
+class ShimmerEffectState extends State<ShimmerEffect> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   late Animation gradientPosition;
@@ -53,22 +46,15 @@ class ShimmerEffectState extends State<ShimmerEffect>
   Widget build(BuildContext context) {
     return Container(
       margin: widget.margin,
-      decoration: BoxDecoration(
-        color: widget.color,
-        borderRadius: widget.shape == BoxShape.circle ? null : widget.borderRadius,
-        shape:widget.shape
-      ),
+      decoration: BoxDecoration(color: widget.color, borderRadius: widget.shape == BoxShape.circle ? null : widget.borderRadius, shape: widget.shape),
       child: Container(
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
-          borderRadius:  widget.shape == BoxShape.circle ? null : widget.borderRadius,
-            shape:widget.shape,
-            gradient: LinearGradient(
-                begin: Alignment(gradientPosition.value, 0),
-                end: Alignment(-1, 0),
-                colors: [Colors.white12, Color(0xfff4f4f4), Colors.white12])),
-       // child: Text(widget.width.toString()),
+            borderRadius: widget.shape == BoxShape.circle ? null : widget.borderRadius,
+            shape: widget.shape,
+            gradient: LinearGradient(begin: Alignment(gradientPosition.value, 0), end: Alignment(-1, 0), colors: [Colors.white12, Color(0xfff4f4f4), Colors.white12])),
+        // child: Text(widget.width.toString()),
       ),
     );
   }

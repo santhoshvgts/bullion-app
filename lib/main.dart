@@ -4,7 +4,6 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'services/shared/dialog_service.dart';
@@ -16,24 +15,26 @@ import 'locator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-    setupLocator();
+      setupLocator();
 
-    await Firebase.initializeApp();
-    configureLogger();
+      await Firebase.initializeApp();
+      configureLogger();
 
-    await locator<DeviceService>().initPlatformPackageInfo();
+      await locator<DeviceService>().initPlatformPackageInfo();
 
-    FlutterError.onError = (FlutterErrorDetails details) {
-      Logger.e(details.toString(), s: StackTrace.current);
-    };
+      FlutterError.onError = (FlutterErrorDetails details) {
+        Logger.e(details.toString(), s: StackTrace.current);
+      };
 
-    runApp(const MyApp());
-  }, (error, stack) {
-    Logger.e("Zoned Error", e: error, s: stack);
-  },
+      runApp(const MyApp());
+    },
+    (error, stack) {
+      Logger.e("Zoned Error", e: error, s: stack);
+    },
   );
 }
 

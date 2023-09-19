@@ -8,20 +8,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends VGTSBuilderWidget<IntroViewModel> {
-
   @override
   Widget viewBuilder(BuildContext context, locale, IntroViewModel viewModel, Widget? child) {
     return Scaffold(
       bottomNavigationBar: Wrap(
         children: [
-
           Container(
             padding: const EdgeInsets.all(15),
             child: Button("Login", width: double.infinity, valueKey: const ValueKey("btnLogin"), onPressed: () {
               locator<NavigationService>().popAllAndPushNamed(Routes.login);
             }),
           )
-
         ],
       ),
     );
@@ -31,5 +28,4 @@ class IntroPage extends VGTSBuilderWidget<IntroViewModel> {
   IntroViewModel viewModelBuilder(BuildContext context) {
     return IntroViewModel();
   }
-
 }

@@ -12,13 +12,7 @@ class HeaderCard extends StatelessWidget {
   final EdgeInsets margin;
   final EdgeInsets? padding;
 
-  HeaderCard(this.title,
-      {this.arrowPressed,
-      this.backgroundColor = AppColor.white,
-      this.child,
-      this.trailing,
-      this.padding,
-      this.margin = EdgeInsets.zero});
+  HeaderCard(this.title, {this.arrowPressed, this.backgroundColor = AppColor.white, this.child, this.trailing, this.padding, this.margin = EdgeInsets.zero});
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +22,11 @@ class HeaderCard extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            padding: padding != null ? padding : child == null
-                ? EdgeInsets.all(15)
-                : EdgeInsets.only(left: 20, top: 20, right: 20),
+            padding: padding != null
+                ? padding
+                : child == null
+                    ? EdgeInsets.all(15)
+                    : EdgeInsets.only(left: 20, top: 20, right: 20),
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -39,9 +35,7 @@ class HeaderCard extends StatelessWidget {
                   textScaleFactor: 1,
                   style: AppTextStyle.header,
                 )),
-
                 trailing == null ? Container() : trailing!,
-
                 arrowPressed == null
                     ? Container()
                     : IconButton(

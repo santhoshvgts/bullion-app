@@ -1,4 +1,3 @@
-
 import 'package:bullion/core/models/base_model.dart';
 
 class ForgotPasswordResult extends BaseModel {

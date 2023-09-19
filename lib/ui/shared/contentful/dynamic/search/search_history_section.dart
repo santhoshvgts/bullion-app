@@ -11,7 +11,6 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 
 class SearchHistorySection extends StatelessWidget {
-
   final ModuleSettings? settings;
 
   SearchHistorySection(this.settings);
@@ -19,25 +18,21 @@ class SearchHistorySection extends StatelessWidget {
   List<SearchItem> get list => settings!.dynamicItemData!.map((e) => SearchItem.fromJson(e)).toList();
 
   @override
-  Widget build(BuildContext context,) {
-
+  Widget build(
+    BuildContext context,
+  ) {
     return Container(
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.all(15),
-      margin: EdgeInsets.only(top: 10,),
+      margin: EdgeInsets.only(
+        top: 10,
+      ),
       color: AppColor.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          Text(settings!.title ?? "Recent Searches",
-              textScaleFactor: 1,
-              textAlign:TextAlign.start,
-              style: AppTextStyle.title
-          ),
-
+          Text(settings!.title ?? "Recent Searches", textScaleFactor: 1, textAlign: TextAlign.start, style: AppTextStyle.title),
           VerticalSpacing.d10px(),
-
           Column(
             children: list.map((item) {
               return _ItemCard(item);
@@ -47,7 +42,6 @@ class SearchHistorySection extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class _ItemCard extends StatelessWidget {
@@ -58,7 +52,9 @@ class _ItemCard extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context,) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -72,8 +68,7 @@ class _ItemCard extends StatelessWidget {
               },
               child: Text(
                 _item.name!,
-                style: AppTextStyle.body.copyWith(
-                    fontSize: 16, fontWeight: FontWeight.normal),
+                style: AppTextStyle.body.copyWith(fontSize: 16, fontWeight: FontWeight.normal),
                 textScaleFactor: 1,
               )),
         ),

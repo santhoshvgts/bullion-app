@@ -18,12 +18,14 @@ class EmptyWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            image == null ? Container() : new Image.asset(
-              image!,
-              width: 100,
-              height: 100,
-            ),
-            image == null ? Container() :new Padding(padding: EdgeInsets.only(top: 30)),
+            image == null
+                ? Container()
+                : new Image.asset(
+                    image!,
+                    width: 100,
+                    height: 100,
+                  ),
+            image == null ? Container() : new Padding(padding: EdgeInsets.only(top: 30)),
             Text(
               message,
               textScaleFactor: 1,

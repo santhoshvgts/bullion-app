@@ -1,4 +1,3 @@
-
 import 'package:linkify/linkify.dart';
 
 final _phoneNumberRegex = RegExp(r'^(.*?)([0-9]+)', dotAll: true, caseSensitive: false);
@@ -22,8 +21,8 @@ class PhoneNumberLinkifier extends Linkifier {
             list.add(TextElement(match.group(1)!));
           }
 
-          if(match.group(2) != null && match.group(2)!.isNotEmpty) {
-            if(match.group(2)!.length == 10) {
+          if (match.group(2) != null && match.group(2)!.isNotEmpty) {
+            if (match.group(2)!.length == 10) {
               list.add(PhoneNumberElement(match.group(2)));
             } else {
               list.add(TextElement(match.group(2)!));
@@ -57,14 +56,9 @@ class PhoneNumberElement extends LinkableElement {
   bool operator ==(other) => equals(other);
 
   @override
-  bool equals(other) =>
-      other is PhoneNumberElement &&
-          super.equals(other) &&
-          other.phoneNumber == phoneNumber;
+  bool equals(other) => other is PhoneNumberElement && super.equals(other) && other.phoneNumber == phoneNumber;
 
   @override
   // TODO: implement hashCode
   int get hashCode => super.hashCode;
-
-
 }

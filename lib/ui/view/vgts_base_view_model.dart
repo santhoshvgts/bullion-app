@@ -1,4 +1,3 @@
-
 import 'package:bullion/core/models/api/api_error_response.dart';
 import 'package:bullion/core/models/base_model.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
@@ -16,7 +15,9 @@ class VGTSBaseViewModel extends BaseViewModel {
   final PreferenceService preferenceService = locator<PreferenceService>();
   final NavigationService navigationService = locator<NavigationService>();
 
-  VGTSBaseViewModel() {onInit();}
+  VGTSBaseViewModel() {
+    onInit();
+  }
 
   @protected
   @mustCallSuper

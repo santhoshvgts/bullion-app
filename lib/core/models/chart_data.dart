@@ -2,7 +2,6 @@ class ChartData {
   late DateTime time;
   double? price;
 
-
   ChartData({required this.time, this.price});
 
   ChartData.fromJson(Map<String, dynamic> json) {
