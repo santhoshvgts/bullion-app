@@ -22,15 +22,11 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
 
   @override
   void onViewModelReady(ForgotPasswordViewModel viewModel) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: AppColor.white,
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: AppColor.white, statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.dark));
 
     viewModel.init(fromMain);
     super.onViewModelReady(viewModel);
   }
-
 
   @override
   ForgotPasswordViewModel viewModelBuilder(BuildContext context) => ForgotPasswordViewModel();
@@ -59,31 +55,23 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
                   height: 40.0,
                 ),
               ),
-
               const Padding(padding: EdgeInsets.only(top: 35)),
-
               const Text(
                 "Forgot Password",
                 textScaleFactor: 1,
                 style: AppTextStyle.header,
               ),
-
               const Padding(padding: EdgeInsets.only(top: 10)),
-
               Linkify(
                 onOpen: (link) async {
                   launchUrl(link.url);
                 },
-                linkifiers: const [
-                  PhoneNumberLinkifier(),
-                  EmailLinkifier(),
-                  UrlLinkifier()
-                ],
-                text: "Enter the email address associated with your account and we'll email you a secure link to reset your password. If you do not receive an email, please try resubmitting your request or contacting customer service at service@APMEX.com for assistance.",
+                linkifiers: const [PhoneNumberLinkifier(), EmailLinkifier(), UrlLinkifier()],
+                text:
+                    "Enter the email address associated with your account and we'll email you a secure link to reset your password. If you do not receive an email, please try resubmitting your request or contacting customer service at service@APMEX.com for assistance.",
                 style: AppTextStyle.body,
                 linkStyle: AppTextStyle.body.copyWith(color: Colors.blue),
               ),
-
               EditTextField(
                 "Email Address",
                 viewModel.emailController,
@@ -91,13 +79,9 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
                 onSubmitted: (value) {
                   FocusScope.of(context).requestFocus(new FocusNode());
                 },
-                onChanged: (value) {
-
-                },
+                onChanged: (value) {},
               ),
-
               const Padding(padding: EdgeInsets.only(top: 20)),
-
               Button(
                 "Submit",
                 valueKey: const Key("btnSubmit"),
@@ -105,7 +89,6 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
                 disabled: viewModel.emailController.text.isEmpty,
                 onPressed: () => viewModel.submit(),
               ),
-
             ],
           ),
         ),

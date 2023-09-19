@@ -25,32 +25,33 @@ class SpotPrice {
   List<ChartData>? chartData;
 
   bool get canChangeWatchList {
-    return [1,2,3,4].contains(metalId) == false && metalName != "Portfolio";
+    return [1, 2, 3, 4].contains(metalId) == false && metalName != "Portfolio";
   }
 
   Color get color => AppColor.secondaryMetalColor(metalName ?? '');
   Color get areaColor => AppColor.metalColor(metalName ?? '').withOpacity(0.2);
 
-  SpotPrice(
-      {this.metalName,this.title,
-      this.bid,
-      this.ask,
-      this.change,
-      this.changePct,
-      this.last,
-      this.metalId,
-      this.orderBy,
-      this.formattedBid,
-      this.formattedAsk,
-      this.formattedChange,
-      this.lastUpdated,
-      this.formattedLastUpdated,
-      this.formattedPerGramAsk,
-      this.formattedPerGramChange,
-      this.formattedPerKiloAsk,
-      this.formattedPerKiloChange,
-      this.chartData,
-    });
+  SpotPrice({
+    this.metalName,
+    this.title,
+    this.bid,
+    this.ask,
+    this.change,
+    this.changePct,
+    this.last,
+    this.metalId,
+    this.orderBy,
+    this.formattedBid,
+    this.formattedAsk,
+    this.formattedChange,
+    this.lastUpdated,
+    this.formattedLastUpdated,
+    this.formattedPerGramAsk,
+    this.formattedPerGramChange,
+    this.formattedPerKiloAsk,
+    this.formattedPerKiloChange,
+    this.chartData,
+  });
 
   SpotPrice.fromJson(Map<String, dynamic> json) {
     metalName = json['metal_name'];
@@ -108,12 +109,7 @@ class SpotPrice {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SpotPrice &&
-          runtimeType == other.runtimeType &&
-          metalName == other.metalName &&
-          metalId == other.metalId;
+  bool operator ==(Object other) => identical(this, other) || other is SpotPrice && runtimeType == other.runtimeType && metalName == other.metalName && metalId == other.metalId;
 
   @override
   int get hashCode => metalName.hashCode ^ metalId.hashCode;

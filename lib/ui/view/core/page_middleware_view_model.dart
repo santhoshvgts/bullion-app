@@ -1,4 +1,3 @@
-
 import 'package:bullion/core/models/module/redirection.dart';
 import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
@@ -10,7 +9,6 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 
 class PageMiddlewareViewModel extends VGTSBaseViewModel {
-
   String? url;
   dynamic argument;
 
@@ -23,7 +21,7 @@ class PageMiddlewareViewModel extends VGTSBaseViewModel {
     redirection = await request<Redirection>(PageRequest.getRoute(url: url));
 
     if (redirection?.requiredLogin == true) {
-      navigationService.pushReplacementNamed(Routes.login, arguments:  { 'fromMain': false, 'redirectRoute': url });
+      navigationService.pushReplacementNamed(Routes.login, arguments: {'fromMain': false, 'redirectRoute': url});
       return;
     }
 
@@ -42,5 +40,4 @@ class PageMiddlewareViewModel extends VGTSBaseViewModel {
     }
     return super.onInit();
   }
-
 }

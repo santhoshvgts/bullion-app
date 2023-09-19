@@ -56,14 +56,12 @@ class AppColor {
   static const Color outline = Color(0xFFE0E0E0);
   static const Color outlineBorder = Color(0xFFC1C2B8);
 
-
   static const Color bullion = Color(0xff001A29);
   static const Color bullionBg = Color(0xffFFFDF2);
   static const Color bullionProgress = Color(0xffBF9A78);
   static const Color bullionProgressBg = Color(0xffADAAA7);
 
   static Color metalColor(String metalName) {
-
     switch (metalName.toLowerCase()) {
       case "gold":
         return AppColor.gold;
@@ -79,7 +77,6 @@ class AppColor {
   }
 
   static Color secondaryMetalColor(String metalName) {
-
     switch (metalName.toLowerCase()) {
       case "gold":
         return AppColor.secondaryGold;
@@ -123,5 +120,4 @@ class AppColor {
         return const Color(0xffFDF1D0);
     }
   }
-
 }

@@ -19,7 +19,6 @@ import '../../../services/shared/eventbus_service.dart';
 import '../../../../services/shared/preference_service.dart';
 
 class ContentViewModel extends VGTSBaseViewModel {
-
   GlobalKey sortFilterWidgetKey = GlobalKey();
   bool showSortAppBarSection = false;
 
@@ -45,7 +44,6 @@ class ContentViewModel extends VGTSBaseViewModel {
 
   List<ModuleSettings?>? get modules => _pageSetting == null || sortFilterLoading ? [] : _pageSetting!.moduleSetting;
 
-
   bool get sortFilterLoading => _sortFilterLoading;
 
   set sortFilterLoading(bool value) {
@@ -62,25 +60,25 @@ class ContentViewModel extends VGTSBaseViewModel {
 
   String _path = '';
 
-  ContentViewModel(String path, Function(PageSettings?)? onPageFetched, PageSettings? initialValue,Function(bool name)? onLoading) {
-    locator<EventBusService>().eventBus.registerTo<RefreshDataEvent>().listen((event) async{
-      if(event.name == RefreshType.homeRefresh) {
-        fetchContent(_path,refresh: true);
+  ContentViewModel(String path, Function(PageSettings?)? onPageFetched, PageSettings? initialValue, Function(bool name)? onLoading) {
+    locator<EventBusService>().eventBus.registerTo<RefreshDataEvent>().listen((event) async {
+      if (event.name == RefreshType.homeRefresh) {
+        fetchContent(_path, refresh: true);
       }
     });
 
-    init(path,onPageFetched,initialValue,onLoading);
+    init(path, onPageFetched, initialValue, onLoading);
 
     notifyListeners();
   }
 
-  init(String path, Function(PageSettings?)? onPageFetched, PageSettings? initialValue,Function(bool name)? onLoading) async {
+  init(String path, Function(PageSettings?)? onPageFetched, PageSettings? initialValue, Function(bool name)? onLoading) async {
     scrollController.addListener(paginationFunction);
 
     _path = path;
 
     if (onPageFetched == null) {
-      this.onPageFetched = (s){
+      this.onPageFetched = (s) {
         print("EMPTY PAGE FETCHED");
       };
     } else {
@@ -88,7 +86,7 @@ class ContentViewModel extends VGTSBaseViewModel {
     }
 
     if (onLoading == null) {
-      this.onLoading = (s){
+      this.onLoading = (s) {
         print("onChange");
       };
     } else {
@@ -107,27 +105,27 @@ class ContentViewModel extends VGTSBaseViewModel {
     this.onLoading(false);
   }
 
-  Future<PageSettings?> fetchContent(String path, { bool refresh = false }) async {
-      setBusy(true);
-      notifyListeners();
+  Future<PageSettings?> fetchContent(String path, {bool refresh = false}) async {
+    setBusy(true);
+    notifyListeners();
 
-      PageSettings? _pageSettingData = await request<PageSettings>(PageRequest.fetch(path: path));
-      notifyListeners();
+    PageSettings? _pageSettingData = await request<PageSettings>(PageRequest.fetch(path: path));
+    notifyListeners();
 
-      onPageFetched(_pageSettingData);
+    onPageFetched(_pageSettingData);
 
-      if (refresh) {
-        _pageSetting = null;
-        await Future.delayed(const Duration(milliseconds: 100));
-      }
+    if (refresh) {
+      _pageSetting = null;
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
 
-      _pageSetting = _pageSettingData;
-      productListingModule = modules!.singleWhere((element) => element!.moduleType == ModuleType.productList, orElse: () => null);
+    _pageSetting = _pageSettingData;
+    productListingModule = modules!.singleWhere((element) => element!.moduleType == ModuleType.productList, orElse: () => null);
 
-      setBusy(false);
-      notifyListeners();
+    setBusy(false);
+    notifyListeners();
 
-      return _pageSetting;
+    return _pageSetting;
   }
 
   onSearchClick() {
@@ -135,7 +133,6 @@ class ContentViewModel extends VGTSBaseViewModel {
   }
 
   Future<ProductModel?> paginationFunction() async {
-
     listenAndToggleSortSection();
 
     // Checking the scroll reached the end
@@ -151,7 +148,7 @@ class ContentViewModel extends VGTSBaseViewModel {
 
       ProductModel data = ProductModel.fromJson(productListingModule!.productModel);
 
-      if (!data.hasNextPage!){
+      if (!data.hasNextPage!) {
         return null;
       }
 
@@ -203,13 +200,13 @@ class ContentViewModel extends VGTSBaseViewModel {
     _pageSetting?.moduleSetting?.removeAt(index);
     _pageSetting?.moduleSetting?.insert(index, moduleSettings);
 
-     // print("PRODUCT LENGTH ${moduleSettings.totalCount}");
+    // print("PRODUCT LENGTH ${moduleSettings.totalCount}");
     productListingModule = moduleSettings;
     productModuleController.onDataChange!(moduleSettings);
     notifyListeners();
   }
 
-  onMetalChange(String targetUrl) async{
+  onMetalChange(String targetUrl) async {
     onLoading(true);
     _pageSetting = null;
     await fetchContent(targetUrl);
@@ -284,9 +281,8 @@ class ContentViewModel extends VGTSBaseViewModel {
   }
 
   listenAndToggleSortSection() {
-
     if (productListingModule == null) {
-     return;
+      return;
     }
 
     RenderBox? box = sortFilterWidgetKey.currentContext?.findRenderObject() as RenderBox?;
@@ -302,7 +298,5 @@ class ContentViewModel extends VGTSBaseViewModel {
         notifyListeners();
       }
     }
-
   }
-
 }

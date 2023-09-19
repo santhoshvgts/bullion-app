@@ -11,7 +11,6 @@ import 'package:bullion/locator.dart';
 import 'package:stacked/stacked.dart';
 
 class ProductViewModel extends BaseViewModel {
-
   final NavigationService? navigationService = locator<NavigationService>();
 
   ModuleSettings? settings;
@@ -26,34 +25,32 @@ class ProductViewModel extends BaseViewModel {
 
   ItemDisplaySettings get itemDisplaySettings => settings!.displaySettings!.itemDisplaySettings;
 
-  List<ProductOverview>? get items =>  _items;
-
+  List<ProductOverview>? get items => _items;
 
   double get spacing => 10; //itemDisplaySettings.cardPadding;
   double get runSpacing => 10; //itemDisplaySettings.cardPadding;
 
-  double itemWidth(BuildContext context){
-
+  double itemWidth(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width.floorToDouble();
 
     double totalSpacing = spacing * (itemDisplaySettings.gridCols - 1);
     double wrapSpacing = 20;
 
-    double _itemWidth = (screenWidth - (itemDisplaySettings.fullBleed ? 0 : (totalSpacing + wrapSpacing)))/ itemDisplaySettings.gridCols;
+    double _itemWidth = (screenWidth - (itemDisplaySettings.fullBleed ? 0 : (totalSpacing + wrapSpacing))) / itemDisplaySettings.gridCols;
     double bleedSpacing = itemDisplaySettings.fullBleed ? 0 : (_itemWidth / 100) * 6;
 
     _itemWidth = itemDisplaySettings.wrapItems ? _itemWidth : _itemWidth - bleedSpacing;
     return _itemWidth;
   }
 
-  onItemTap(ProductOverview item){
+  onItemTap(ProductOverview item) {
     notifyListeners();
-    navigationService!.pushNamed(item.targetUrl, arguments: ProductDetails(overview:item));
+    navigationService!.pushNamed(item.targetUrl, arguments: ProductDetails(overview: item));
   }
 
-  init(ModuleSettings? settings){
+  init(ModuleSettings? settings) {
     this.settings = settings;
-    if(settings?.moduleType == ModuleType.productList) {
+    if (settings?.moduleType == ModuleType.productList) {
       this._productListModule = ProductModel.fromJson(settings?.productModel);
       this._items = _productListModule!.products;
     } else {

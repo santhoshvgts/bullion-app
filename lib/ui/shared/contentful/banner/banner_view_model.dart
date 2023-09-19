@@ -1,4 +1,3 @@
-
 import 'package:bullion/core/models/module/banner_module.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
@@ -9,7 +8,6 @@ import '../../../../locator.dart';
 import '../../../../router.dart';
 
 class BannerViewModel extends BaseViewModel {
-
   ModuleSettings? settings;
   List<BannerItem>? _items;
 
@@ -31,7 +29,7 @@ class BannerViewModel extends BaseViewModel {
   }
 
   @required
-  init(ModuleSettings settings){
+  init(ModuleSettings settings) {
     this.settings = settings;
     this._items = settings.items!.map((e) => BannerItem.fromJson(e)).toList();
 
@@ -39,8 +37,9 @@ class BannerViewModel extends BaseViewModel {
   }
 
   onTap(String? targetUrl) {
-      notifyListeners();
-      locator<NavigationService>().pushNamed(targetUrl,);
+    notifyListeners();
+    locator<NavigationService>().pushNamed(
+      targetUrl,
+    );
   }
-
 }

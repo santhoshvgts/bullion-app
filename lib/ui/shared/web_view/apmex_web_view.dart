@@ -1,4 +1,3 @@
-
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
@@ -13,12 +12,15 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class ApmexWebView {
   static open(String? url, {String? title = "BULLION"}) {
-    locator<NavigationService>().push(MaterialPageRoute(builder: (context) => ApmexWebViewPage(url, title: title,)));
+    locator<NavigationService>().push(MaterialPageRoute(
+        builder: (context) => ApmexWebViewPage(
+              url,
+              title: title,
+            )));
   }
 }
 
 class ApmexWebViewPage extends StatefulWidget {
-
   final String? url;
   final String? title;
 
@@ -29,7 +31,6 @@ class ApmexWebViewPage extends StatefulWidget {
 }
 
 class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
-
   bool isLoading = true;
   Map<String, String?>? headers;
 
@@ -96,7 +97,9 @@ class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
 
             if (whitelist != null) {
               Uri uri = Uri.parse(navigationDelegate.url);
-              locator<NavigationService>().pushNamed(uri.path + (uri.hasQuery ? "?${uri.query}" : ""),);
+              locator<NavigationService>().pushNamed(
+                uri.path + (uri.hasQuery ? "?${uri.query}" : ""),
+              );
             } else {
               launchUrl(navigationDelegate.url);
             }
@@ -107,9 +110,7 @@ class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
       )
       ..loadRequest(Uri.parse(widget.url!));
 
-    setState(() {
-    });
-
+    setState(() {});
   }
 
   @override
@@ -119,33 +120,36 @@ class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title ?? '', textScaleFactor: 1, style: AppTextStyle.appBarTitle,),
-      ),
-      body: Column(
-        children: [
-
-          progress < 100 ? LinearProgressIndicator(
-            value: progress / 100,
-            valueColor: const AlwaysStoppedAnimation(AppColor.primary),
-          ) : Container(),
-
-
-            Flexible(
-              child: headers == null ? const Center(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation(AppColor.primary),
+        appBar: AppBar(
+          title: Text(
+            widget.title ?? '',
+            textScaleFactor: 1,
+            style: AppTextStyle.appBarTitle,
+          ),
+        ),
+        body: Column(
+          children: [
+            progress < 100
+                ? LinearProgressIndicator(
+                    value: progress / 100,
+                    valueColor: const AlwaysStoppedAnimation(AppColor.primary),
                   )
-              ) :  Opacity(
-                  opacity: opacity,
-                child: WebViewWidget(controller: controller,),
-              )
-            ),
-        ],
-      )
-    );
+                : Container(),
+            Flexible(
+                child: headers == null
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                      ))
+                    : Opacity(
+                        opacity: opacity,
+                        child: WebViewWidget(
+                          controller: controller,
+                        ),
+                      )),
+          ],
+        ));
   }
 }

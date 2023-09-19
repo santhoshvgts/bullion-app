@@ -6,12 +6,11 @@ import 'package:bullion/core/models/module/page_settings.dart';
 import 'market_news/market_news_list.dart';
 
 class DynamicModule extends StatelessWidget {
-
   final ModuleSettings? _setting;
   final PageSettings? _pageSettings;
   final String? metalName;
 
-  DynamicModule(this._setting,this._pageSettings,{this.metalName});
+  DynamicModule(this._setting, this._pageSettings, {this.metalName});
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +18,14 @@ class DynamicModule extends StatelessWidget {
       _setting,
       hideHeadSection: false,
       children: [
-        DynamicItem(setting: _setting,pageSettings: _pageSettings,metalName: metalName,)
+        DynamicItem(
+          setting: _setting,
+          pageSettings: _pageSettings,
+          metalName: metalName,
+        )
       ],
     );
   }
-
 }
 
 class DynamicItem extends StatelessWidget {
@@ -32,11 +34,11 @@ class DynamicItem extends StatelessWidget {
   final PageSettings? pageSettings;
   final String? metalName;
 
-  DynamicItem({required this.setting, this.pageSettings,this.metalName});
+  DynamicItem({required this.setting, this.pageSettings, this.metalName});
 
   @override
   Widget build(BuildContext context) {
-    switch(setting!.itemSource){
+    switch (setting!.itemSource) {
       //
       // case DynamicType.spotPriceStrip:
       //   return SpotPriceStripList(itemData:setting!.dynamicItemData,);

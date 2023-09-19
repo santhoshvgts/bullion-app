@@ -10,7 +10,6 @@ import 'package:kochava_tracker/kochava_tracker.dart';
 import '../authentication_service.dart';
 
 class AnalyticsService {
-
   final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance);
 
@@ -21,7 +20,7 @@ class AnalyticsService {
 
   Future<void> loglogin() async {
     analytics.logLogin();
-    KochavaTracker.instance.sendEventWithString("Sign In",locator<AuthenticationService>().getUser?.userId.toString() ?? '');
+    KochavaTracker.instance.sendEventWithString("Sign In", locator<AuthenticationService>().getUser?.userId.toString() ?? '');
   }
 
   Future<void> logSignUp() async {
@@ -95,7 +94,7 @@ class AnalyticsService {
   //   }
   // }
 
-  Future<void> logShare({ required String itemId, required String contentType, String method = "mobile" }) async {
+  Future<void> logShare({required String itemId, required String contentType, String method = "mobile"}) async {
     analytics.logShare(itemId: itemId, contentType: contentType, method: method);
     debugPrint('Analytics: Share - ${contentType.toString()}');
   }
@@ -107,25 +106,21 @@ class AnalyticsService {
     await analytics.setCurrentScreen(screenName: screenName);
   }
 
-  Future<void> logScreenView(String? screenName,{String? className=""}) async {
-    if(className==""){
-      if(screenName!.contains("product")){
-        className ="product";
-      }
-      else if(screenName.contains("category")){
-        className ="category";
-      }
-      else if(screenName.contains("search")){
-        className ="search";
-      }
-      else if(screenName.contains("account")){
-        className ="account";
-      }
-      else{
+  Future<void> logScreenView(String? screenName, {String? className = ""}) async {
+    if (className == "") {
+      if (screenName!.contains("product")) {
+        className = "product";
+      } else if (screenName.contains("category")) {
+        className = "category";
+      } else if (screenName.contains("search")) {
+        className = "search";
+      } else if (screenName.contains("account")) {
+        className = "account";
+      } else {
         className = screenName;
       }
     }
-    logEvent('screen_view',{'screen_name': screenName,'screen_class': className});
+    logEvent('screen_view', {'screen_name': screenName, 'screen_class': className});
     //TODO - RISKIFIED
     // unawaited(Riskified.logRequest("${locator<AppConfigService>().config!.baseApiUrl}$screenName"));
   }
@@ -135,15 +130,7 @@ class AnalyticsService {
     debugPrint('Analytics: $name - ${parameters.toString()}');
   }
 
-  Future<void> logAddToCart(
-      {required String itemId,
-      required String itemName,
-      required String itemCategory,
-      required int quantity,
-      double? price,
-      double? value,
-      String? currency}) async {
-
+  Future<void> logAddToCart({required String itemId, required String itemName, required String itemCategory, required int quantity, double? price, double? value, String? currency}) async {
     var eventMapObject = {
       "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
       "name": itemName,
@@ -152,7 +139,7 @@ class AnalyticsService {
       "referral_form": "",
     };
 
-    await analytics.logAddToCart(items: [AnalyticsEventItem(itemId: itemId, itemName: itemName, itemCategory: itemCategory, quantity: quantity, price: price)],value: value,currency: currency);
+    await analytics.logAddToCart(items: [AnalyticsEventItem(itemId: itemId, itemName: itemName, itemCategory: itemCategory, quantity: quantity, price: price)], value: value, currency: currency);
     KochavaTracker.instance.sendEventWithDictionary("Add to Cart", eventMapObject);
     debugPrint('Analytics: Add To Cart');
   }

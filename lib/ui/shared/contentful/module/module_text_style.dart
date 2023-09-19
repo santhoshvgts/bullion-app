@@ -1,14 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 class ModuleTextStyle {
-
-  static TextStyle _titleStyle = TextStyle(fontWeight: FontWeight.w600,color: Color(0xff202020));
-  static TextStyle _subtitleStyle = TextStyle(fontWeight: FontWeight.normal,  color: Color(0xff202020));
+  static TextStyle _titleStyle = TextStyle(fontWeight: FontWeight.w600, color: Color(0xff202020));
+  static TextStyle _subtitleStyle = TextStyle(fontWeight: FontWeight.normal, color: Color(0xff202020));
   static TextStyle _contentStyle = TextStyle(fontWeight: FontWeight.normal, color: Color(0xff202020));
 
-  static TextStyle title(String type, {Color color = const Color(0xff202020)}){
-    switch(type){
+  static TextStyle title(String type, {Color color = const Color(0xff202020)}) {
+    switch (type) {
       case "mini":
         return _titleStyle.copyWith(fontSize: 12, color: color);
       case "small":
@@ -20,8 +18,8 @@ class ModuleTextStyle {
     }
   }
 
-  static TextStyle subtitle(String type, {Color color = const Color(0xff202020)}){
-    switch(type){
+  static TextStyle subtitle(String type, {Color color = const Color(0xff202020)}) {
+    switch (type) {
       case "mini":
         return _subtitleStyle.copyWith(fontSize: 12, color: color);
       case "small":
@@ -33,8 +31,8 @@ class ModuleTextStyle {
     }
   }
 
-  static TextStyle content(String type, {Color color = const Color(0xff202020)}){
-    switch(type){
+  static TextStyle content(String type, {Color color = const Color(0xff202020)}) {
+    switch (type) {
       case "mini":
         return _contentStyle.copyWith(fontSize: 12, color: color);
       case "small":
@@ -45,5 +43,4 @@ class ModuleTextStyle {
         return _contentStyle.copyWith(fontSize: 15, color: color);
     }
   }
-
 }

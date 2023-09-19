@@ -34,14 +34,12 @@ class NetworkImageLoader extends StatelessWidget {
                   width: 100,
                   child: Center(
                       child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      )
-                  ),
+                    strokeWidth: 2,
+                  )),
                 ),
-              )
-          ),
+              )),
           errorWidget: (context, url, error) => Container(
-            padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Image.asset(
                 Images.appLogo,
                 height: height,

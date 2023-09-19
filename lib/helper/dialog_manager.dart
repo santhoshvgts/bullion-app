@@ -31,12 +31,11 @@ class _DialogManagerState extends State<DialogManager> {
     debugPrint("Dialog Manager being built");
 
     return widget.child!;
-
   }
 
   _showInfoDialog(AlertRequest request) {
     showDialog(
-      useRootNavigator: true,
+        useRootNavigator: true,
         context: context,
         builder: (context) {
           return WillPopScope(
@@ -81,11 +80,9 @@ class _DialogManagerState extends State<DialogManager> {
               title: Text(
                 request.title!,
                 textScaleFactor: 1,
-                style:
-                    AppTextStyle.appBarTitle.copyWith(color: AppColor.primary),
+                style: AppTextStyle.appBarTitle.copyWith(color: AppColor.primary),
               ),
-              content: Text(request.description!,
-                  textScaleFactor: 1, style: AppTextStyle.text),
+              content: Text(request.description!, textScaleFactor: 1, style: AppTextStyle.text),
               actions: <Widget>[
                 TextButton(
                   child: Text(
@@ -114,158 +111,142 @@ class _DialogManagerState extends State<DialogManager> {
   }
 
   void _bottomSheet(AlertRequest request) {
-
-     showModalBottomSheet(
-         context: context,
-         isScrollControlled: true,
-         enableDrag: request.enableDrag!,
-         isDismissible: request.isDismissible!,
-         backgroundColor: Colors.transparent,
-         builder: (context) => Container(
-           padding: MediaQuery.of(context).viewInsets,
-           margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.bottom > 0 ? MediaQuery.of(context).viewPadding.bottom : 25),
-           decoration: BoxDecoration(
-             color: AppColor.white,
-             borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight:  Radius.circular(15)),
-           ),
-           child: Wrap(
-             children: [
-
-               if (request.showActionBar!)
-                 Padding(
-                   padding: const EdgeInsets.only(left: 15, right: 5, top: 5),
-                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                     children: [
-
-                       if (request.iconWidget != null)
-                         Padding(
-                           padding: EdgeInsets.only(right: 10),
-                           child: request.iconWidget,
-                         ),
-
-                       Expanded(
-                           child: request.title == null ? Container() :
-                           Container(
-                             alignment: request.headerAlignment,
-                             padding: EdgeInsets.only(top: 10, bottom: 10),
-                             child: Text(request.title!, textScaleFactor: 1, style: AppTextStyle.title.copyWith(fontSize: 17,),textAlign: TextAlign.center,),
-                           )
-                       ),
-
-                       if(request.showCloseIcon!)   IconButton(
-                         onPressed: () {
-                           _dialogService!.dialogComplete(AlertResponse(status: null));
-                         },
-                         icon: Container(
-                           decoration: BoxDecoration(
-                               shape: BoxShape.circle,
-                               color: AppColor.secondaryBackground,
-                               boxShadow: AppStyle.mildCardShadow
-                           ),
-                           padding: EdgeInsets.all(5),
-                           child: Icon(
-                             Icons.close, size: 20,
-                             color: AppColor.title,
-                           ),
-                         ),
-                       ),
-
-                     ],
-                   ),
-                 ),
-
-               if(request.showDivider!)
-               if (request.showActionBar!)
-               if (request.title != null)
-                   AppStyle.customDivider,
-
-               SingleChildScrollView(
-                 child: Wrap(
-                   children: [
-                     request.contentWidget!,
-                   ],
-                 )
-               ),
-
-             ],
-           ),
-         )
-     );
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        enableDrag: request.enableDrag!,
+        isDismissible: request.isDismissible!,
+        backgroundColor: Colors.transparent,
+        builder: (context) => Container(
+              padding: MediaQuery.of(context).viewInsets,
+              margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.bottom > 0 ? MediaQuery.of(context).viewPadding.bottom : 25),
+              decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+              ),
+              child: Wrap(
+                children: [
+                  if (request.showActionBar!)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 5, top: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (request.iconWidget != null)
+                            Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: request.iconWidget,
+                            ),
+                          Expanded(
+                              child: request.title == null
+                                  ? Container()
+                                  : Container(
+                                      alignment: request.headerAlignment,
+                                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                                      child: Text(
+                                        request.title!,
+                                        textScaleFactor: 1,
+                                        style: AppTextStyle.title.copyWith(
+                                          fontSize: 17,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )),
+                          if (request.showCloseIcon!)
+                            IconButton(
+                              onPressed: () {
+                                _dialogService!.dialogComplete(AlertResponse(status: null));
+                              },
+                              icon: Container(
+                                decoration: BoxDecoration(shape: BoxShape.circle, color: AppColor.secondaryBackground, boxShadow: AppStyle.mildCardShadow),
+                                padding: EdgeInsets.all(5),
+                                child: Icon(
+                                  Icons.close,
+                                  size: 20,
+                                  color: AppColor.title,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  if (request.showDivider!)
+                    if (request.showActionBar!)
+                      if (request.title != null) AppStyle.customDivider,
+                  SingleChildScrollView(
+                      child: Wrap(
+                    children: [
+                      request.contentWidget!,
+                    ],
+                  )),
+                ],
+              ),
+            ));
 
     // showModalBottomSheet(
-     //      context: context,
-     //      dismissOnTap: false,
-     //      resizeToAvoidBottomPadding: true,
-     //      statusBarHeight: MediaQuery.of(context).padding.top ,
-     //      builder: (context) =>
-     //  );
-    }
-
+    //      context: context,
+    //      dismissOnTap: false,
+    //      resizeToAvoidBottomPadding: true,
+    //      statusBarHeight: MediaQuery.of(context).padding.top ,
+    //      builder: (context) =>
+    //  );
+  }
 
   void _showDisplayMessageDialog(AlertRequest request) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return WillPopScope(
-          onWillPop: () async {
-            _dialogService!.dialogComplete(AlertResponse(status: false));
-            return false;
-          },
-          child: Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Wrap(
-              children: [
-
-                if (request.showActionBar!)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 5, top: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-
-                        if (request.iconWidget != null)
-                          Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: request.iconWidget,
-                          ),
-
-                        Expanded(
-                            child: request.title == null ? Container() : Text(request.title!, textScaleFactor: 1,
-                              style: AppTextStyle.title.copyWith(fontSize: 17,),
-                            )
-                        ),
-
-                      IconButton(
-                          onPressed: () {
-                            _dialogService!.dialogComplete(AlertResponse());
-                          },
-                          icon: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColor.secondaryBackground,
-                                boxShadow: AppStyle.mildCardShadow
+        context: context,
+        builder: (context) {
+          return WillPopScope(
+            onWillPop: () async {
+              _dialogService!.dialogComplete(AlertResponse(status: false));
+              return false;
+            },
+            child: Dialog(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                child: Wrap(
+                  children: [
+                    if (request.showActionBar!)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 5, top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (request.iconWidget != null)
+                              Padding(
+                                padding: EdgeInsets.only(right: 10),
+                                child: request.iconWidget,
+                              ),
+                            Expanded(
+                                child: request.title == null
+                                    ? Container()
+                                    : Text(
+                                        request.title!,
+                                        textScaleFactor: 1,
+                                        style: AppTextStyle.title.copyWith(
+                                          fontSize: 17,
+                                        ),
+                                      )),
+                            IconButton(
+                              onPressed: () {
+                                _dialogService!.dialogComplete(AlertResponse());
+                              },
+                              icon: Container(
+                                decoration: BoxDecoration(shape: BoxShape.circle, color: AppColor.secondaryBackground, boxShadow: AppStyle.mildCardShadow),
+                                padding: EdgeInsets.all(5),
+                                child: Icon(
+                                  Icons.close,
+                                  size: 20,
+                                  color: AppColor.title,
+                                ),
+                              ),
                             ),
-                            padding: EdgeInsets.all(5),
-                            child: Icon(
-                              Icons.close, size: 20,
-                              color: AppColor.title,
-                            ),
-                          ),
+                          ],
                         ),
-
-                      ],
-                    ),
-                  ),
-
-                request.contentWidget!
-
-              ],
-            )
-          ),
-        );
-      }
-    );
-
+                      ),
+                    request.contentWidget!
+                  ],
+                )),
+          );
+        });
   }
 }

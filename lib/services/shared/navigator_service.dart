@@ -27,7 +27,7 @@ class NavigationService {
 
     if (uri.pathSegments.length > 0) {
       if (Uri.parse(routeName).pathSegments.first == "pages") {
-        switch(Uri.parse(routeName).pathSegments.last) {
+        switch (Uri.parse(routeName).pathSegments.last) {
           case "home":
             changeTab(0);
             popUntil(Routes.dashboard);
@@ -63,12 +63,7 @@ class NavigationService {
     );
   }
 
-  Future<dynamic> pushNamedAndRemoveUntil(
-      String routeName, {
-        Object? arguments,
-        required String removeUntil
-      }) {
-
+  Future<dynamic> pushNamedAndRemoveUntil(String routeName, {Object? arguments, required String removeUntil}) {
     return navigatorKey.currentState!.pushNamedAndRemoveUntil(
       routeName,
       ModalRoute.withName(removeUntil),
@@ -76,14 +71,13 @@ class NavigationService {
     );
   }
 
-
   Future<dynamic> popAllAndPushNamed(
-      String routeName, {
-        Object? arguments,
-      }) {
+    String routeName, {
+    Object? arguments,
+  }) {
     return navigatorKey.currentState!.pushNamedAndRemoveUntil(
       routeName,
-          (_) => false,
+      (_) => false,
       arguments: arguments,
     );
   }
@@ -92,7 +86,7 @@ class NavigationService {
     navigatorKey.currentState!.popUntil(ModalRoute.withName(routeName));
   }
 
-  Future<dynamic> pushAndPopUntil(String routeName, { Object? arguments, required String removeRouteName }) {
+  Future<dynamic> pushAndPopUntil(String routeName, {Object? arguments, required String removeRouteName}) {
     return navigatorKey.currentState!.pushNamedAndRemoveUntil(routeName, ModalRoute.withName(removeRouteName), arguments: arguments);
   }
 

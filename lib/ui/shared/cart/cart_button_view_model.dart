@@ -1,5 +1,3 @@
-
-
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
@@ -7,9 +5,7 @@ import 'package:bullion/locator.dart';
 // import 'package:bullion/services/cart_service.dart';
 
 class CartButtonViewModel extends VGTSBaseViewModel {
-
   PageSettings? cart;
-
 
   // final CartService? _cartService = locator<CartService>();
 
@@ -24,5 +20,4 @@ class CartButtonViewModel extends VGTSBaseViewModel {
     //   notifyListeners();
     // });
   }
-
 }

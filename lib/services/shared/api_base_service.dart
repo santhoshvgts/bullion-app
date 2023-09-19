@@ -30,7 +30,6 @@ import 'dialog_service.dart';
 import 'preference_service.dart';
 
 class ApiBaseService extends ApiBaseHelper {
-
   final PreferenceService _preferenceService = locator<PreferenceService>();
   final AppConfigService _appConfigService = locator<AppConfigService>();
   final DeviceService _deviceService = locator<DeviceService>();
@@ -116,7 +115,6 @@ class ApiBaseService extends ApiBaseHelper {
       // Stream Response using HTTP
       // Send body if it is a Multipart Request, else send Request Message
       response = await HTTP.Response.fromStream(await client.send(body is HTTP.MultipartRequest ? body : requestMessage));
-
     } on HttpException catch (e) {
       Logger.d("ERROR EXCEPTION $e");
       var error = ApiException(handleConnectionError());
@@ -148,22 +146,21 @@ class ApiBaseService extends ApiBaseHelper {
       headerParams["Content-Type"] = "multipart/form-data";
     }
 
-
-    headerParams["User-Agent"] =  _deviceService.getUserAgent()!;
-    headerParams['OG-Device-Id'] =  await _deviceService.getDeviceId() ?? '';
-    headerParams['Session-Id'] =  _deviceService.getRiskifiedSessionId()!;
+    headerParams["User-Agent"] = _deviceService.getUserAgent()!;
+    headerParams['OG-Device-Id'] = await _deviceService.getDeviceId() ?? '';
+    headerParams['Session-Id'] = _deviceService.getRiskifiedSessionId()!;
     headerParams['App-Version'] = (await PackageInfo.fromPlatform()).version;
     headerParams['OG-User'] = await _getUserInfo();
 
-    if(_preferenceService.getCartId() != null) {
-      headerParams['ap-s'] =  _preferenceService.getCartId()!;
+    if (_preferenceService.getCartId() != null) {
+      headerParams['ap-s'] = _preferenceService.getCartId()!;
     }
 
     if (authenticated && locator<AuthenticationService>().isAuthenticated == true) {
       headerParams['Authorization'] = 'Bearer ${await _getBearerToken()}';
     }
 
-    if(path.contains("login")){
+    if (path.contains("login")) {
       headerParams.addAll(await _deviceService.getDeviceInfoHeaders() ?? {});
     }
 
@@ -176,12 +173,11 @@ class ApiBaseService extends ApiBaseHelper {
       headers['Authorization'] = 'Bearer ${await _getBearerToken()}';
     }
 
-    headers["User-Agent"] =  _deviceService.getUserAgent();
-    headers['OG-Device-Id'] =  await _deviceService.getDeviceId();
-    headers['Session-Id'] =  _deviceService.getRiskifiedSessionId();
+    headers["User-Agent"] = _deviceService.getUserAgent();
+    headers['OG-Device-Id'] = await _deviceService.getDeviceId();
+    headers['Session-Id'] = _deviceService.getRiskifiedSessionId();
     headers['App-Version'] = (await PackageInfo.fromPlatform()).version;
     headers['OG-User'] = await _getUserInfo();
-
 
     return headers;
   }
@@ -194,10 +190,9 @@ class ApiBaseService extends ApiBaseHelper {
     headerParams['Accept'] = "application/json";
     headerParams["Content-Type"] = "application/json";
     try {
-
       headerParams["User-Agent"] = _deviceService.getUserAgent()!;
       headerParams['OG-Device-Id'] = await _deviceService.getDeviceId() ?? '';
-      headerParams['Session-Id'] =  _deviceService.getRiskifiedSessionId()!;
+      headerParams['Session-Id'] = _deviceService.getRiskifiedSessionId()!;
       headerParams['App-Version'] = (await PackageInfo.fromPlatform()).version;
 
       headerParams['Authorization'] = 'Bearer ${await _getBearerToken()}';
@@ -250,7 +245,7 @@ class ApiBaseService extends ApiBaseHelper {
         }
       }
 
-      if(response != null) {
+      if (response != null) {
         if (response.statusCode == 200) {
           var tokenResponse = Token.fromJson(json.decode(response.body));
           await _tokenService.setTokens(tokenResponse.authToken, tokenResponse.refreshToken);
@@ -284,17 +279,14 @@ class ApiBaseService extends ApiBaseHelper {
       }
       Logger.d("response printing from hagle responce $response");
       return response;
-
     } else if (response.statusCode == 401) {
       locator<ToastService>().showText(text: "Your session has expired. Please login again");
       Logger.e("Response Status Code: 401", s: StackTrace.current);
       _preferenceService.clearData();
       locator<AuthenticationService>().logout("");
-
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       var error = await handleApiError(response, false);
       throw ErrorResponseException(error: error);
-
     } else if (response.statusCode >= 500) {
       Logger.e("response printing from hagle responce $response   500", s: StackTrace.current);
     }
@@ -313,7 +305,7 @@ class ApiBaseService extends ApiBaseHelper {
   }
 
   Future<String> _getUserInfo() async {
-    if(_user != null){
+    if (_user != null) {
       return "${_user!.userId}-${_user!.email}";
     }
     return "None";

@@ -33,14 +33,7 @@ class Predictions {
   List<Terms>? terms;
   List<String>? types;
 
-  Predictions(
-      {this.description,
-        this.matchedSubstrings,
-        this.placeId,
-        this.reference,
-        this.structuredFormatting,
-        this.terms,
-        this.types});
+  Predictions({this.description, this.matchedSubstrings, this.placeId, this.reference, this.structuredFormatting, this.terms, this.types});
 
   Predictions.fromJson(Map<String, dynamic> json) {
     description = json['description'];
@@ -52,9 +45,7 @@ class Predictions {
     }
     placeId = json['place_id'];
     reference = json['reference'];
-    structuredFormatting = json['structured_formatting'] != null
-        ? new StructuredFormatting.fromJson(json['structured_formatting'])
-        : null;
+    structuredFormatting = json['structured_formatting'] != null ? new StructuredFormatting.fromJson(json['structured_formatting']) : null;
     if (json['terms'] != null) {
       terms = <Terms>[];
       json['terms'].forEach((v) {
@@ -68,8 +59,7 @@ class Predictions {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['description'] = this.description;
     if (this.matchedSubstrings != null) {
-      data['matched_substrings'] =
-          this.matchedSubstrings!.map((v) => v.toJson()).toList();
+      data['matched_substrings'] = this.matchedSubstrings!.map((v) => v.toJson()).toList();
     }
     data['place_id'] = this.placeId;
     data['reference'] = this.reference;
@@ -107,8 +97,7 @@ class StructuredFormatting {
   String? mainText;
   String? secondaryText;
 
-  StructuredFormatting(
-      {this.mainText, this.secondaryText});
+  StructuredFormatting({this.mainText, this.secondaryText});
 
   StructuredFormatting.fromJson(Map<String, dynamic> json) {
     mainText = json['main_text'];

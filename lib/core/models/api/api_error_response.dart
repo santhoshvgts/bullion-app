@@ -40,8 +40,8 @@ class ErrorResponse {
 }
 
 class _ErrorModel {
-   String? message;
-   Map<String, List<String>>? errors;
+  String? message;
+  Map<String, List<String>>? errors;
   _ErrorModel.fromJson(Map<String, dynamic> json) {
     errors = new Map<String, List<String>>();
     message = json['message'];

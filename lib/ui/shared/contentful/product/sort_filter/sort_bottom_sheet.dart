@@ -12,9 +12,7 @@ import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
-
 class SortBottomSheet extends VGTSBuilderWidget<SortViewModel> {
-
   List<SelectedItemList>? sortOptionList;
   SortBottomSheet(this.sortOptionList);
 
@@ -25,39 +23,45 @@ class SortBottomSheet extends VGTSBuilderWidget<SortViewModel> {
   Widget viewBuilder(BuildContext context, AppLocalizations locale, SortViewModel viewModel, Widget? child) {
     return Container(
       height: MediaQuery.of(context).size.height / 2.2,
-      child:  Stack(
+      child: Stack(
         children: [
-
           Column(
             children: [
-
               Expanded(
                 child: Container(
                   color: AppColor.white,
                   child: SafeArea(
                     child: SingleChildScrollView(
                       child: Column(
-                        children: sortOptionList!.asMap().map((index, item){
-                          return MapEntry(index,
-                              InkWell(
-                                onTap:() async {
-                                  // ProductModel productModel = await viewModel.filter(item.value);
-                                  locator<DialogService>().dialogComplete(AlertResponse(status: true, data: item.value));
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children:[
-
-                                        Text(item.text!,style: AppTextStyle.body.copyWith(fontWeight:FontWeight.w600,fontSize: 14),textScaleFactor: 1,),
-
-                                        Icon(Icons.check,color: item.selected! ? AppColor.green: AppColor.secondaryBackground,size: 17,),
-                                      ]
-                                  ),
-                                ),
-                              ));
-                        }).values.toList(),
+                        children: sortOptionList!
+                            .asMap()
+                            .map((index, item) {
+                              return MapEntry(
+                                  index,
+                                  InkWell(
+                                    onTap: () async {
+                                      // ProductModel productModel = await viewModel.filter(item.value);
+                                      locator<DialogService>().dialogComplete(AlertResponse(status: true, data: item.value));
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                        Text(
+                                          item.text!,
+                                          style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
+                                          textScaleFactor: 1,
+                                        ),
+                                        Icon(
+                                          Icons.check,
+                                          color: item.selected! ? AppColor.green : AppColor.secondaryBackground,
+                                          size: 17,
+                                        ),
+                                      ]),
+                                    ),
+                                  ));
+                            })
+                            .values
+                            .toList(),
                       ),
                     ),
                   ),
@@ -65,7 +69,6 @@ class SortBottomSheet extends VGTSBuilderWidget<SortViewModel> {
               )
             ],
           ),
-
           if (viewModel.isBusy)
             Container(
               color: AppColor.white.withOpacity(0.7),
@@ -84,7 +87,6 @@ class SortBottomSheet extends VGTSBuilderWidget<SortViewModel> {
       ),
     );
   }
-
 }
 
 class Header extends StatelessWidget {
@@ -92,33 +94,30 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColor.white,
-      padding: const EdgeInsets.only(left: 10.0,right: 10.0, top: 5.0, bottom: 5),
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5),
       child: Column(
         children: [
-
           Row(
             children: [
               const Icon(Icons.sort),
-
               const Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: 10.0),
-                  child: Text("Sort By",textScaleFactor: 1,style: AppTextStyle.title,),
+                  child: Text(
+                    "Sort By",
+                    textScaleFactor: 1,
+                    style: AppTextStyle.title,
+                  ),
                 ),
               ),
-
-              IconButton(icon: const Icon(Icons.clear), onPressed:()=>Navigator.pop(context))
+              IconButton(icon: const Icon(Icons.clear), onPressed: () => Navigator.pop(context))
             ],
           ),
-
-          Container(height:1,child: AppStyle.customDivider)
+          Container(height: 1, child: AppStyle.customDivider)
         ],
       ),
     );
   }
-
 }
 
-class SortViewModel extends VGTSBaseViewModel {
-
-}
+class SortViewModel extends VGTSBaseViewModel {}

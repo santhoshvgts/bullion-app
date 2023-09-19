@@ -17,9 +17,7 @@ TextStyle _hintTextStyle = AppTextStyle.label.copyWith(color: const Color(0xffbd
 
 BorderRadius _borderRadius = BorderRadius.circular(6.0);
 
-
 class DropdownField<T extends BaseModel> extends StatefulWidget {
-
   DropdownFieldController<T> controller;
 
   String title;
@@ -31,22 +29,9 @@ class DropdownField<T extends BaseModel> extends StatefulWidget {
   bool withAdd = false;
   bool showRequiredHint = true;
 
-  DropdownField(this.title, this.controller, {Key? key, 
-    this.placeholder = "",
-    this.margin = EdgeInsets.zero,
-    this.padding,
-    this.showRequiredHint = true,
-    this.onChange
-  }) : super(key: key);
+  DropdownField(this.title, this.controller, {Key? key, this.placeholder = "", this.margin = EdgeInsets.zero, this.padding, this.showRequiredHint = true, this.onChange}) : super(key: key);
 
-  DropdownField.withAdd(this.title, this.controller, {Key? key, 
-    this.placeholder = "",
-    this.margin = EdgeInsets.zero,
-    this.onChange,
-    this.padding,
-    this.showRequiredHint = true,
-    this.onAddNewPressed
-  }) : super(key: key) {
+  DropdownField.withAdd(this.title, this.controller, {Key? key, this.placeholder = "", this.margin = EdgeInsets.zero, this.onChange, this.padding, this.showRequiredHint = true, this.onAddNewPressed}) : super(key: key) {
     withAdd = true;
   }
 
@@ -55,7 +40,6 @@ class DropdownField<T extends BaseModel> extends StatefulWidget {
 }
 
 class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
-
   BorderRadius borderRadius = BorderRadius.circular(5);
 
   List<DropdownMenuItem<T>> get dropdownMenuItemWidget {
@@ -63,7 +47,10 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
       Map data = value.toJson();
       return DropdownMenuItem<T>(
         value: value,
-        child: Text(data[widget.controller.valueId] ?? '', style: _bodyTextStyle, ),
+        child: Text(
+          data[widget.controller.valueId] ?? '',
+          style: _bodyTextStyle,
+        ),
       );
     }).toList();
   }
@@ -85,7 +72,6 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,7 +79,10 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
       child: DropdownButtonFormField<T>(
         key: widget.controller.fieldKey,
         value: widget.controller.value,
-        icon: const Icon(Icons.keyboard_arrow_down, color: AppColor.text,),
+        icon: const Icon(
+          Icons.keyboard_arrow_down,
+          color: AppColor.text,
+        ),
         iconSize: 24,
         itemHeight: 48,
         validator: (value) {
@@ -125,16 +114,12 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
         focusNode: widget.controller.focusNode,
         selectedItemBuilder: (context) {
           if (widget.controller.value == null) {
-            return [
-            Container()
-          ];
+            return [Container()];
           }
 
           Map? data = widget.controller.value?.toJson();
           if (data?[widget.controller.keyId] == -1) {
-            return [
-              Container()
-            ];
+            return [Container()];
           }
           return List<Widget>.from(dropdownMenuItemWidget);
         },
@@ -151,49 +136,46 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
           setState(() {
             widget.controller.setValue(value);
           });
-          if (widget.onChange!= null) {
+          if (widget.onChange != null) {
             widget.onChange!(value);
           }
         },
         items: [
           ...dropdownMenuItemWidget,
-
           if (widget.withAdd && emptyObject != null)
             DropdownMenuItem<T>(
                 value: emptyObject,
-                onTap: (){
+                onTap: () {
                   if (widget.onAddNewPressed != null) {
                     widget.onAddNewPressed!();
                   }
                 },
                 child: Row(
                   children: [
-
                     Container(
                       width: 24,
                       height: 24,
-                      decoration: BoxDecoration(
-                          color: AppColor.secondary,
-                          borderRadius: BorderRadius.circular(5)
-                      ),
-                      child: const Center(child: Icon(Icons.add, color: Colors.white, size: 18,)),
+                      decoration: BoxDecoration(color: AppColor.secondary, borderRadius: BorderRadius.circular(5)),
+                      child: const Center(
+                          child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 18,
+                      )),
                     ),
-
                     const Padding(
                       padding: EdgeInsets.only(left: 10),
                     ),
-
-                    const Expanded(child: Text("Create New",)),
+                    const Expanded(
+                        child: Text(
+                      "Create New",
+                    )),
                   ],
-                )
-            )
-
+                ))
         ],
       ),
     );
   }
-
-
 
   // InputDecoration decoration({ String? labelText }){
   //
@@ -215,36 +197,19 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
   //       )
   //   );
   // }
-
 }
-
 
 InputBorder _outlineInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: const Color(0xff263238).withOpacity(0.20),
-      width: 1
-  ),
+  borderSide: BorderSide(style: BorderStyle.solid, color: const Color(0xff263238).withOpacity(0.20), width: 1),
 );
 
 InputBorder _focusedInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: const BorderSide(
-      style: BorderStyle.solid,
-      color: AppColor.primary,
-      width: 1
-  ),
+  borderSide: const BorderSide(style: BorderStyle.solid, color: AppColor.primary, width: 1),
 );
 
 InputBorder _errorInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: const BorderSide(
-      style: BorderStyle.solid,
-      color: AppColor.red,
-      width: 1
-  ),
+  borderSide: const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
 );
-
-
-

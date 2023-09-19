@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:bullion/router.dart';
 import 'package:stacked/stacked.dart';
 
 class ModuleUIContainerViewModel extends BaseViewModel {
-
   GlobalKey titleSectionKey = new GlobalKey();
   GlobalKey actionSectionKey = new GlobalKey();
 
@@ -35,28 +33,28 @@ class ModuleUIContainerViewModel extends BaseViewModel {
   List<ActionButton>? get actions => _setting!.actions;
 
   double get headSectionHeight {
-    if ((displaySetting!.actionButtonsPosition.contains("bottom") || displaySetting!.actionButtonsPosition.contains("top")) && setting!.hasActionButton){
+    if ((displaySetting!.actionButtonsPosition.contains("bottom") || displaySetting!.actionButtonsPosition.contains("top")) && setting!.hasActionButton) {
       return _titleSectionHeight + 40;
     }
     return _titleSectionHeight;
   }
 
   double get titleSectionPositionLeft {
-    if (displaySetting!.actionButtonsPosition == "left"){
+    if (displaySetting!.actionButtonsPosition == "left") {
       return _actionSectionWidth + 10;
     }
     return 0;
   }
 
   double get titleSectionPositionRight {
-    if (displaySetting!.actionButtonsPosition == "right"){
+    if (displaySetting!.actionButtonsPosition == "right") {
       return _actionSectionWidth + 10;
     }
     return 0;
   }
 
   double get titleSectionPositionTop {
-    if (displaySetting!.actionButtonsPosition.contains("top")){
+    if (displaySetting!.actionButtonsPosition.contains("top")) {
       return _actionSectionHeight + 10;
     }
     return 0;
@@ -70,19 +68,18 @@ class ModuleUIContainerViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  String timeFormatter (Duration duration) {
-    return ["${duration.inHours.remainder(60)}","${duration.inMinutes.remainder(60)}","${duration.inSeconds.remainder(60)}"].map((seg) => seg.padLeft(2, '0')).join(':');
+  String timeFormatter(Duration duration) {
+    return ["${duration.inHours.remainder(60)}", "${duration.inMinutes.remainder(60)}", "${duration.inSeconds.remainder(60)}"].map((seg) => seg.padLeft(2, '0')).join(':');
   }
 
   void data() {
     if (setting!.metaData?.saleEndDate != null) {
-
       final endDate = DateTime.parse(setting!.metaData!.saleEndDate!);
       final currentDate = DateTime.now();
 
-      DateTime date=new DateTime(currentDate.year,currentDate.month,currentDate.day,endDate.hour,endDate.minute,endDate.second);
+      DateTime date = new DateTime(currentDate.year, currentDate.month, currentDate.day, endDate.hour, endDate.minute, endDate.second);
 
-      if (currentDate.isAfter(date)){
+      if (currentDate.isAfter(date)) {
         date = date.add(Duration(days: 1));
       }
       _seconds = date.difference(currentDate).inSeconds;
@@ -90,38 +87,33 @@ class ModuleUIContainerViewModel extends BaseViewModel {
     }
   }
 
-   void  _startTimer() {
+  void _startTimer() {
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(oneSec, (Timer timer) {
-        if ( _seconds! <= 0) {
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_seconds! <= 0) {
           timer.cancel();
           notifyListeners();
-        }
-        else {
+        } else {
           _seconds = _seconds! - 1;
           notifyListeners();
         }
       },
     );
-
   }
 
-
-  _afterLayout(_){
+  _afterLayout(_) {
     if (setting!.hasHeaderSection) {
       if (titleSectionKey.currentContext != null) {
         _titleSectionHeight = titleSectionKey.currentContext!.size!.height;
       }
 
-      if (setting!.hasActionButton && actionSectionKey.currentContext != null){
+      if (setting!.hasActionButton && actionSectionKey.currentContext != null) {
         _actionSectionHeight = actionSectionKey.currentContext!.size!.height;
         _actionSectionWidth = actionSectionKey.currentContext!.size!.width;
       }
       notifyListeners();
     }
   }
-
-
-
-
 }

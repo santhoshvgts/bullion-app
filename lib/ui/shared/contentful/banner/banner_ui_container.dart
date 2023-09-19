@@ -16,31 +16,24 @@ import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'dart:ui' as ui;
 
 class BannerModule extends StatelessWidget {
-
   final ModuleSettings? setting;
 
   BannerModule(this.setting);
 
   @override
   Widget build(BuildContext context) {
-
     return ModuleUIContainer(
       setting,
       hideHeadSection: false,
-      children: [
-        _BannerModuleSection(setting)
-      ],
+      children: [_BannerModuleSection(setting)],
     );
   }
-
 }
 
 class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
-
   final ModuleSettings? moduleSetting;
 
   _BannerModuleSection(this.moduleSetting);
-
 
   Completer<ui.Image> completer = Completer<ui.Image>();
 
@@ -49,23 +42,20 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
     return null;
   }
 
-
   @override
   void onViewModelReady(BannerViewModel viewModel) {
     viewModel.init(this.moduleSetting!);
 
     Image image = Image.network(viewModel.items!.first.imageUrl!);
-    image.image.resolve(const ImageConfiguration())
-        .addListener(ImageStreamListener(listener));
+    image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener(listener));
   }
 
   @override
-  BannerViewModel viewModelBuilder(BuildContext context)=>BannerViewModel();
+  BannerViewModel viewModelBuilder(BuildContext context) => BannerViewModel();
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, BannerViewModel viewModel, Widget? child) {
-
-    switch(moduleSetting!.displayType) {
+    switch (moduleSetting!.displayType) {
       case BannerType.full:
         return FutureBuilder<ui.Image>(
           future: completer.future,
@@ -75,7 +65,6 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
                 height: (snapshot.data!.height / snapshot.data!.width) * MediaQuery.of(context).size.width,
                 child: Stack(
                   children: [
-
                     Positioned.fill(
                       child: PageView.builder(
                         itemBuilder: (context, index) {
@@ -84,12 +73,9 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
                         controller: viewModel.bannerPageController,
                         physics: const BouncingScrollPhysics(),
                         itemCount: viewModel.items!.length,
-                        onPageChanged: (index) {
-
-                        },
+                        onPageChanged: (index) {},
                       ),
                     ),
-
                     Positioned(
                         bottom: 15,
                         left: 0,
@@ -98,16 +84,9 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
                           child: SmoothPageIndicator(
                             controller: viewModel.bannerPageController,
                             count: viewModel.items!.length,
-                            effect: WormEffect(
-                                dotColor: AppColor.secondaryBackground,
-                                activeDotColor: AppColor.primary,
-                                dotHeight: 7,
-                                dotWidth: 7
-                            ),
+                            effect: WormEffect(dotColor: AppColor.secondaryBackground, activeDotColor: AppColor.primary, dotHeight: 7, dotWidth: 7),
                           ),
-                        )
-                    )
-
+                        ))
                   ],
                 ),
 
@@ -135,10 +114,13 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
                 // ),
               );
             } else {
-              return  SizedBox(
+              return SizedBox(
                   height: 145,
-                  child: ShimmerEffect(shape:BoxShape.circle, color: AppColor.secondaryBackground,margin:const EdgeInsets.all(10.0),)
-              );
+                  child: ShimmerEffect(
+                    shape: BoxShape.circle,
+                    color: AppColor.secondaryBackground,
+                    margin: const EdgeInsets.all(10.0),
+                  ));
             }
           },
         );
@@ -161,12 +143,7 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
             loop: true,
             pagination: SwiperPagination(
               alignment: Alignment.bottomCenter,
-              builder: DotSwiperPaginationBuilder(
-                  color: AppColor.secondaryBackground,
-                  activeColor:AppColor.primary,
-                  size: 7.0,
-                  activeSize: 7.0
-              ),
+              builder: DotSwiperPaginationBuilder(color: AppColor.secondaryBackground, activeColor: AppColor.primary, size: 7.0, activeSize: 7.0),
             ),
           ),
         );
@@ -175,24 +152,22 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
         return Container();
     }
   }
-  }
-
+}
 
 class _BannerItemWidget extends VGTSBuilderWidget<BannerViewModel> {
-
   final BannerItem _items;
   _BannerItemWidget(this._items);
 
-
   @override
-  BannerViewModel viewModelBuilder(BuildContext context)=>BannerViewModel();
+  BannerViewModel viewModelBuilder(BuildContext context) => BannerViewModel();
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, BannerViewModel viewModel, Widget? child) {
     return InkWell(
-        onTap: ()=> viewModel.onTap(_items.targetUrl),
-        child: NetworkImageLoader(image: _items.imageUrl, fit: BoxFit.fitWidth,)
-    );
+        onTap: () => viewModel.onTap(_items.targetUrl),
+        child: NetworkImageLoader(
+          image: _items.imageUrl,
+          fit: BoxFit.fitWidth,
+        ));
   }
-
 }

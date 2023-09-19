@@ -10,13 +10,7 @@ class AuthResponse extends BaseModel {
   bool? isNotAllowed;
   bool? success;
 
-  AuthResponse(
-      {this.token,
-      this.user,
-      this.message,
-      this.isLockedOut,
-      this.isNotAllowed,
-      this.success});
+  AuthResponse({this.token, this.user, this.message, this.isLockedOut, this.isNotAllowed, this.success});
 
   AuthResponse.fromJson(Map<String, dynamic> json) {
     token = json['token'] != null ? Token.fromJson(json['token']) : null;

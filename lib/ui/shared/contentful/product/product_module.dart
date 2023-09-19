@@ -27,7 +27,6 @@ class ProductModuleController {
 }
 
 class ProductModule extends VGTSBuilderWidget<ProductViewModel> {
-
   ProductModuleController? controller;
   ModuleSettings? settings;
   Widget? sortFilterWidget;
@@ -40,7 +39,6 @@ class ProductModule extends VGTSBuilderWidget<ProductViewModel> {
 
   @override
   void onViewModelReady(ProductViewModel viewModel) {
-
     if (controller != null) {
       controller!.onDataChange = viewModel.onDataChange;
     }
@@ -54,24 +52,16 @@ class ProductModule extends VGTSBuilderWidget<ProductViewModel> {
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, ProductViewModel viewModel, Widget? child) {
-    return ModuleUIContainer(viewModel.settings,
+    return ModuleUIContainer(
+      viewModel.settings,
       hideHeadSection: viewModel.settings!.moduleType == ModuleType.productList,
       children: [
-
-        if (viewModel.settings!.moduleType == ModuleType.productList)
-          sortFilterWidget!,
-
-        if (viewModel.settings!.displaySettings!.itemDisplaySettings.displayDirection == DisplayDirection.vertical)
-          _ProductVerticalDisplay()
-        else
-          _ProductHorizontalDisplay()
-
+        if (viewModel.settings!.moduleType == ModuleType.productList) sortFilterWidget!,
+        if (viewModel.settings!.displaySettings!.itemDisplaySettings.displayDirection == DisplayDirection.vertical) _ProductVerticalDisplay() else _ProductHorizontalDisplay()
       ],
     );
   }
-
 }
-
 
 class _ProductVerticalDisplay extends ViewModelWidget<ProductViewModel> {
   @override
@@ -81,15 +71,18 @@ class _ProductVerticalDisplay extends ViewModelWidget<ProductViewModel> {
       spacing: viewModel.spacing,
       runSpacing: viewModel.runSpacing,
       gridCols: viewModel.itemDisplaySettings.gridCols,
-      children: viewModel.items!.asMap().map((index, item){
-        return MapEntry(index, _VerticalItem(item));
-      }).values.toList(),
+      children: viewModel.items!
+          .asMap()
+          .map((index, item) {
+            return MapEntry(index, _VerticalItem(item));
+          })
+          .values
+          .toList(),
     );
   }
 }
 
 class _ProductHorizontalDisplay extends ViewModelWidget<ProductViewModel> {
-
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
     return SingleChildScrollView(
@@ -101,30 +94,30 @@ class _ProductHorizontalDisplay extends ViewModelWidget<ProductViewModel> {
         runSpacing: viewModel.runSpacing,
         direction: Axis.vertical,
         gridCols: 3,
-        children: viewModel.items!.asMap().map((index, item){
-          return MapEntry(index, _HorizontalItem(item));
-        }).values.toList(),
+        children: viewModel.items!
+            .asMap()
+            .map((index, item) {
+              return MapEntry(index, _HorizontalItem(item));
+            })
+            .values
+            .toList(),
       ),
     );
   }
-
 }
 
-
 class _HorizontalItem extends ViewModelWidget<ProductViewModel> {
-
   final ProductOverview _item;
 
   _HorizontalItem(this._item);
 
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
-    return  InkWell(
+    return InkWell(
       key: Key("actionProduct${_item.productId}"),
-      onTap: ()=> viewModel.onItemTap(_item),
+      onTap: () => viewModel.onItemTap(_item),
       child: Stack(
         children: [
-
           Container(
             padding: const EdgeInsets.all(15),
             width: viewModel.itemWidth(context) * 2,
@@ -135,88 +128,69 @@ class _HorizontalItem extends ViewModelWidget<ProductViewModel> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-
                 NetworkImageLoader(
                   image: _item.primaryImageUrl,
                   fit: BoxFit.cover,
                   height: 100,
                 ),
-
                 Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(left:10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(_item.name!,
                             textAlign: TextAlign.left,
                             maxLines: 2,
                             textScaleFactor: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: ProductTextStyle.title(viewModel.itemDisplaySettings.gridCols, color: viewModel.itemDisplaySettings.textColor)
-                        ),
-
-                      VerticalSpacing.d10px(),
-
-                      _PriceSection(_item, Alignment.centerLeft)
-
-                    ],
+                            style: ProductTextStyle.title(viewModel.itemDisplaySettings.gridCols, color: viewModel.itemDisplaySettings.textColor)),
+                        VerticalSpacing.d10px(),
+                        _PriceSection(_item, Alignment.centerLeft)
+                      ],
+                    ),
                   ),
-                ),
-              )
-
+                )
               ],
             ),
           ),
-
           if (_item.ribbonText != null)
             Positioned(
                 top: 10,
                 left: 0,
                 child: Container(
-                    decoration: BoxDecoration(
-                        color: _item.ribbonTextBackgroundColor
-                    ),
+                    decoration: BoxDecoration(color: _item.ribbonTextBackgroundColor),
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    child: Text(_item.ribbonText!, style: const TextStyle(fontSize: 12, color: AppColor.white),textScaleFactor: 1,)
-                )
-            ),
-
+                    child: Text(
+                      _item.ribbonText!,
+                      style: const TextStyle(fontSize: 12, color: AppColor.white),
+                      textScaleFactor: 1,
+                    ))),
         ],
       ),
     );
   }
-
 }
 
 class _VerticalItem extends ViewModelWidget<ProductViewModel> {
-
   final ProductOverview _item;
 
   _VerticalItem(this._item);
 
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
-    return  InkWell(
+    return InkWell(
       key: Key("actionProduct${_item.productId}"),
-      onTap: ()=> viewModel.onItemTap(_item),
+      onTap: () => viewModel.onItemTap(_item),
       child: Container(
         width: viewModel.itemWidth(context),
-        decoration: BoxDecoration(
-            color: AppColor.white,
-            boxShadow: AppStyle.mildCardShadow,
-            borderRadius: BorderRadius.circular(8)
-        ),
+        decoration: BoxDecoration(color: AppColor.white, boxShadow: AppStyle.mildCardShadow, borderRadius: BorderRadius.circular(8)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-
-
             Column(
               children: [
-
                 Stack(
                   children: [
                     Container(
@@ -229,7 +203,6 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
                         ),
                       ),
                     ),
-
                     if (_item.ribbonText != null)
                       Positioned(
                           bottom: 0,
@@ -238,47 +211,44 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
                               decoration: BoxDecoration(
                                   color: _item.ribbonTextBackgroundColor,
                                   boxShadow: [
-                                    BoxShadow(color: _item.ribbonTextBackgroundColor, offset: const Offset(-0.5, 0),),
+                                    BoxShadow(
+                                      color: _item.ribbonTextBackgroundColor,
+                                      offset: const Offset(-0.5, 0),
+                                    ),
                                   ],
-                                  borderRadius: const BorderRadius.only(topRight: Radius.circular(8))
-                              ),
+                                  borderRadius: const BorderRadius.only(topRight: Radius.circular(8))),
                               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-                              child: Text(_item.ribbonText!, style: const TextStyle(fontSize: 12, color: AppColor.white),textScaleFactor: 1,)
-                          )
-                      ),
-
+                              child: Text(
+                                _item.ribbonText!,
+                                style: const TextStyle(fontSize: 12, color: AppColor.white),
+                                textScaleFactor: 1,
+                              ))),
                   ],
                 ),
-
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: Text(_item.name!,
+                  child: Text(
+                    _item.name!,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     textScaleFactor: 1,
-                    style: ProductTextStyle.title(viewModel.itemDisplaySettings.gridCols, color: viewModel.itemDisplaySettings.textColor,),
+                    style: ProductTextStyle.title(
+                      viewModel.itemDisplaySettings.gridCols,
+                      color: viewModel.itemDisplaySettings.textColor,
+                    ),
                   ),
                 ),
-
               ],
             ),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: _PriceSection(_item, Alignment.centerLeft)
-            )
-
+            Padding(padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10), child: _PriceSection(_item, Alignment.centerLeft))
           ],
         ),
       ),
     );
   }
-
 }
 
-
 class _PriceSection extends ViewModelWidget<ProductViewModel> {
-
   final ProductOverview _item;
   final Alignment alignment;
 
@@ -286,38 +256,35 @@ class _PriceSection extends ViewModelWidget<ProductViewModel> {
 
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
-
-    if (_item.productAction == ProductInfoDisplayType.addToCart){
+    if (_item.productAction == ProductInfoDisplayType.addToCart) {
       List<Widget> priceList = [
         Text(
           "${_item.pricing!.formattedNewPrice}",
-          style: ProductTextStyle.price(viewModel.itemDisplaySettings.gridCols, color: viewModel.itemDisplaySettings.textColor)
-              .copyWith(color: _item.pricing!.strikeThroughEnabled! ? const Color(0xffC30000) : AppColor.primaryDark),
+          style:
+              ProductTextStyle.price(viewModel.itemDisplaySettings.gridCols, color: viewModel.itemDisplaySettings.textColor).copyWith(color: _item.pricing!.strikeThroughEnabled! ? const Color(0xffC30000) : AppColor.primaryDark),
           textScaleFactor: 1,
         ),
-
-        if(_item.pricing!.strikeThroughEnabled!)
-          Text(_item.pricing!.formattedOldPrice!,textScaleFactor: 1,
-            style: ProductTextStyle.strikedPrice(viewModel.itemDisplaySettings.gridCols, color: AppColor.green)
-                .copyWith(fontWeight: FontWeight.normal, color: const Color(0xff666666), decoration: TextDecoration.lineThrough),
+        if (_item.pricing!.strikeThroughEnabled!)
+          Text(
+            _item.pricing!.formattedOldPrice!,
+            textScaleFactor: 1,
+            style: ProductTextStyle.strikedPrice(viewModel.itemDisplaySettings.gridCols, color: AppColor.green).copyWith(fontWeight: FontWeight.normal, color: const Color(0xff666666), decoration: TextDecoration.lineThrough),
           )
       ];
 
       return Column(
         crossAxisAlignment: alignment == Alignment.center ? CrossAxisAlignment.center : CrossAxisAlignment.start,
         children: [
-
-          if(_item.pricing!.badgeText != null)
+          if (_item.pricing!.badgeText != null)
             Container(
               padding: const EdgeInsets.only(top: 5),
               alignment: alignment,
-              child: Text(_item.pricing!.badgeText!,
+              child: Text(
+                _item.pricing!.badgeText!,
                 textAlign: TextAlign.center,
                 style: ProductTextStyle.badge(viewModel.itemDisplaySettings.gridCols, color: viewModel.itemDisplaySettings.textColor),
               ),
             ),
-
-
           Wrap(
             alignment: WrapAlignment.center,
             runAlignment: WrapAlignment.center,
@@ -325,64 +292,56 @@ class _PriceSection extends ViewModelWidget<ProductViewModel> {
             spacing: 5,
             children: priceList,
           ),
-
-          if(_item.pricing!.strikeThroughEnabled!)
+          if (_item.pricing!.strikeThroughEnabled!)
             Container(
               padding: const EdgeInsets.only(top: 5),
               alignment: alignment,
-              child: Text(_item.pricing!.discountText!,
+              child: Text(
+                _item.pricing!.discountText!,
                 textAlign: TextAlign.center,
                 style: ProductTextStyle.badge(viewModel.itemDisplaySettings.gridCols, color: AppColor.offerText),
               ),
             ),
-
         ],
       );
-
     }
 
     return Column(
       children: [
-
-      if (_item.alertMe! && !_item.showPrice!)
-        Padding(
-          padding: viewModel.itemDisplaySettings.displayDirection == DisplayDirection.horizontal ? EdgeInsets.zero : const EdgeInsets.only(top: 10.0),
-          child: Container(
-          alignment: alignment,
-            child: Button.outline("AlertMe!®",
-              valueKey: const Key('btnAlert'),
-              height: viewModel.itemDisplaySettings.displayDirection == DisplayDirection.horizontal ? 30 : 40,
-              width: viewModel.itemDisplaySettings.displayDirection == DisplayDirection.horizontal ? 100 : double.infinity,
-              borderRadius: BorderRadius.circular(5.0),
-              textStyle: AppTextStyle.title.copyWith(fontSize:14),
-              borderColor: AppColor.primaryDark,
-              onPressed: () async {
+        if (_item.alertMe! && !_item.showPrice!)
+          Padding(
+            padding: viewModel.itemDisplaySettings.displayDirection == DisplayDirection.horizontal ? EdgeInsets.zero : const EdgeInsets.only(top: 10.0),
+            child: Container(
+                alignment: alignment,
+                child: Button.outline("AlertMe!®",
+                    valueKey: const Key('btnAlert'),
+                    height: viewModel.itemDisplaySettings.displayDirection == DisplayDirection.horizontal ? 30 : 40,
+                    width: viewModel.itemDisplaySettings.displayDirection == DisplayDirection.horizontal ? 100 : double.infinity,
+                    borderRadius: BorderRadius.circular(5.0),
+                    textStyle: AppTextStyle.title.copyWith(fontSize: 14),
+                    borderColor: AppColor.primaryDark, onPressed: () async {
                   // if (!locator<AuthenticationService>().isAuthenticated){
                   //   bool authenticated = await signInRequest(Images.iconAlertBottom, title: "AlertMe!®", content: "Add you Item to Price Alert. Get live update of item availability.");
                   //   if (!authenticated) return;
                   // }
                   //
                   // await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: _item), showViewButton: true,));
-
-                }
-              )
-            ),
-        )
-      else
-        Container(
-            alignment: alignment,
-            child: Text(_item.availabilityText!, textAlign: TextAlign.center, style: AppTextStyle.title.copyWith(color: AppColor.red, fontSize: viewModel.itemDisplaySettings.gridCols > 1 ? 14 : 17),)
-        ),
-
+                })),
+          )
+        else
+          Container(
+              alignment: alignment,
+              child: Text(
+                _item.availabilityText!,
+                textAlign: TextAlign.center,
+                style: AppTextStyle.title.copyWith(color: AppColor.red, fontSize: viewModel.itemDisplaySettings.gridCols > 1 ? 14 : 17),
+              )),
       ],
     );
   }
-
 }
 
-
 class _WrapItemList extends StatelessWidget {
-
   final bool wrap;
   final Axis direction;
   final double runSpacing;
@@ -396,15 +355,16 @@ class _WrapItemList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (wrap)
       return Container(
-        padding: EdgeInsets.symmetric(horizontal: spacing),
-        margin: const EdgeInsets.only(top: 15),
-        child: direction == Axis.vertical ? Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: _buildWrapItems(),
-        ) : Column(
-          children: _buildWrapItems(),
-        )
-      );
+          padding: EdgeInsets.symmetric(horizontal: spacing),
+          margin: const EdgeInsets.only(top: 15),
+          child: direction == Axis.vertical
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _buildWrapItems(),
+                )
+              : Column(
+                  children: _buildWrapItems(),
+                ));
     else {
       return Container(
         width: double.infinity,
@@ -416,39 +376,53 @@ class _WrapItemList extends StatelessWidget {
               child: Row(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: children.map((e) => Padding(
-                    padding: EdgeInsets.only(right: spacing),
-                    child: e,
-                  ),
-                  ).toList()
-              ),
-            )
-        ),
+                  children: children
+                      .map(
+                        (e) => Padding(
+                          padding: EdgeInsets.only(right: spacing),
+                          child: e,
+                        ),
+                      )
+                      .toList()),
+            )),
       );
     }
   }
 
-  List<Widget> _buildWrapItems(){
-
-    if (gridCols! <= 1){
-      return children.expand((e) => [e, SizedBox(height: children.length > 1 ? spacing : 0,)]).toList();
+  List<Widget> _buildWrapItems() {
+    if (gridCols! <= 1) {
+      return children
+          .expand((e) => [
+                e,
+                SizedBox(
+                  height: children.length > 1 ? spacing : 0,
+                )
+              ])
+          .toList();
     }
 
     List<Widget> items = [];
     List<Widget> childItem = children;
 
-    while(childItem.length > 0){
+    while (childItem.length > 0) {
       List<Widget> tuple = childItem.take(gridCols!).toList();
 
       tuple.forEach((element) {
         if (childItem.length > 0) childItem.removeAt(0);
       });
 
-      if (direction == Axis.vertical){
+      if (direction == Axis.vertical) {
         Widget item = IntrinsicHeight(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: tuple.expand((e) => [e, SizedBox(height: spacing,)]).toList(),
+            children: tuple
+                .expand((e) => [
+                      e,
+                      SizedBox(
+                        height: spacing,
+                      )
+                    ])
+                .toList(),
           ),
         );
 
@@ -462,14 +436,26 @@ class _WrapItemList extends StatelessWidget {
         );
         items.add(item);
       }
-
     }
 
-    if (direction == Axis.vertical){
-      return items.expand((element) => [ element, SizedBox(width: spacing,)]).toList();
+    if (direction == Axis.vertical) {
+      return items
+          .expand((element) => [
+                element,
+                SizedBox(
+                  width: spacing,
+                )
+              ])
+          .toList();
     }
 
-    return items.expand((element) => [ element, SizedBox(height: spacing,)]).toList();
+    return items
+        .expand((element) => [
+              element,
+              SizedBox(
+                height: spacing,
+              )
+            ])
+        .toList();
   }
-
 }

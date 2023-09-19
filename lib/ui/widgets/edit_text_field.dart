@@ -7,11 +7,9 @@ import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 import '../../core/res/colors.dart';
 import '../../core/res/images.dart';
 
-TextStyle _errorTextStyle = AppTextStyle.label
-    .copyWith(color: AppColor.red, fontSize: 13, fontWeight: FontWeight.w500);
+TextStyle _errorTextStyle = AppTextStyle.label.copyWith(color: AppColor.red, fontSize: 13, fontWeight: FontWeight.w500);
 TextStyle _bodyTextStyle = AppTextStyle.label;
-TextStyle _hintTextStyle = AppTextStyle.label
-    .copyWith(color: const Color(0xffbdc1c6), fontWeight: FontWeight.normal);
+TextStyle _hintTextStyle = AppTextStyle.label.copyWith(color: const Color(0xffbdc1c6), fontWeight: FontWeight.normal);
 
 BorderRadius _borderRadius = BorderRadius.circular(4.0);
 
@@ -96,10 +94,7 @@ class _EditTextFieldState extends State<EditTextField> {
   }
 
   TextInputType get keyboardType {
-    if ((widget.controller.textInputType == TextInputType.number ||
-            widget.controller.textInputType ==
-                TextInputType.numberWithOptions(decimal: true)) &&
-        Platform.isIOS) {
+    if ((widget.controller.textInputType == TextInputType.number || widget.controller.textInputType == TextInputType.numberWithOptions(decimal: true)) && Platform.isIOS) {
       return const TextInputType.numberWithOptions(decimal: true, signed: true);
     }
     return widget.controller.textInputType;
@@ -116,9 +111,7 @@ class _EditTextFieldState extends State<EditTextField> {
             return null;
           }
 
-          if ((widget.controller.required ||
-                  widget.controller.text.isNotEmpty) &&
-              widget.controller.validator != null) {
+          if ((widget.controller.required || widget.controller.text.isNotEmpty) && widget.controller.validator != null) {
             return widget.controller.validator!(value);
           }
 
@@ -163,9 +156,7 @@ class _EditTextFieldState extends State<EditTextField> {
               maxLength: widget.controller.maxLength,
               maxLines: widget.isPasswordField ? 1 : widget.controller.maxLines,
               minLines: widget.controller.minLines,
-              inputFormatters: widget.isPasswordField ||
-                      widget.controller.textInputType ==
-                          TextInputType.emailAddress
+              inputFormatters: widget.isPasswordField || widget.controller.textInputType == TextInputType.emailAddress
                   ? [
                       FilteringTextInputFormatter.deny(RegExp('[\\ ]')),
                     ]
@@ -182,20 +173,15 @@ class _EditTextFieldState extends State<EditTextField> {
                 focusedBorder: _focusedInputBorder,
                 errorBorder: _errorInputBorder,
                 errorStyle: _errorTextStyle,
-                errorText: state.hasError
-                    ? state.errorText
-                    : widget.controller.overrideErrorText,
+                errorText: state.hasError ? state.errorText : widget.controller.overrideErrorText,
                 errorMaxLines: 3,
                 hintText: widget.placeholder,
                 labelText: widget.label,
-                labelStyle: AppTextStyle.label
-                    .copyWith(color: const Color(0xff263238), fontSize: 15),
+                labelStyle: AppTextStyle.label.copyWith(color: const Color(0xff263238), fontSize: 15),
                 hintStyle: _hintTextStyle,
                 focusColor: AppColor.red,
-                suffixIconConstraints:
-                    const BoxConstraints(minWidth: 15, maxHeight: 20),
-                prefixIconConstraints:
-                    const BoxConstraints(minWidth: 15, maxHeight: 20),
+                suffixIconConstraints: const BoxConstraints(minWidth: 15, maxHeight: 20),
+                prefixIconConstraints: const BoxConstraints(minWidth: 15, maxHeight: 20),
                 prefix: widget.prefixText == null
                     ? null
                     : Text(
@@ -203,9 +189,7 @@ class _EditTextFieldState extends State<EditTextField> {
                         style: _bodyTextStyle,
                       ),
                 prefixIcon: widget.prefixIcon,
-                suffixIcon: widget.isPasswordField
-                    ? _buildPasswordEyeIcon()
-                    : widget.suffixIcon,
+                suffixIcon: widget.isPasswordField ? _buildPasswordEyeIcon() : widget.suffixIcon,
                 counterText: widget.counterText ?? "",
               ),
               keyboardType: keyboardType,
@@ -234,20 +218,15 @@ class _EditTextFieldState extends State<EditTextField> {
 
 InputBorder _outlineInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: const Color(0xff263238).withOpacity(0.20),
-      width: 1),
+  borderSide: BorderSide(style: BorderStyle.solid, color: const Color(0xff263238).withOpacity(0.20), width: 1),
 );
 
 InputBorder _focusedInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: const BorderSide(
-      style: BorderStyle.solid, color: AppColor.primary, width: 1),
+  borderSide: const BorderSide(style: BorderStyle.solid, color: AppColor.primary, width: 1),
 );
 
 InputBorder _errorInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide:
-      const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
+  borderSide: const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
 );

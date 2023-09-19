@@ -9,7 +9,6 @@ import 'logger.dart';
 import '../locator.dart';
 
 class FirebaseRemoteHelper {
-
   final AppConfigService appConfigService = locator<AppConfigService>();
   late FirebaseRemoteConfig remoteConfig;
 
@@ -26,7 +25,9 @@ class FirebaseRemoteHelper {
     } catch (exception, stacktrace) {
       if (appConfigService.config == null) {
         Logger.e("Remote Config Fetch", e: exception, s: stacktrace);
-        locator<ToastService>().showText(text: "There is a problem connecting to the remote server. Please try again",);
+        locator<ToastService>().showText(
+          text: "There is a problem connecting to the remote server. Please try again",
+        );
 
         await Future.delayed(const Duration(seconds: 5));
         exit(0);
@@ -37,6 +38,7 @@ class FirebaseRemoteHelper {
       }
     }
   }
+
   String getStringValue(String value) => remoteConfig.getString(value);
   bool getBoolValue(String value) => remoteConfig.getBool(value);
   int getIntValue(String value) => remoteConfig.getInt(value);

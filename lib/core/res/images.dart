@@ -30,7 +30,6 @@ class Images {
   static const String arrow = "assets/images/v2/arrow.png";
   static const String notification = "assets/images/notification.png";
 
-
   static const String chart = "assets/images/chart.png";
   static const String chart_active = "assets/images/chart_active.png";
 
@@ -49,7 +48,6 @@ class Images {
   static const String deals_coin = "assets/images/deals_coin.png";
   static const String payPal = "assets/images/pay_pal.png";
   static const String bitpay = "assets/images/bitpay.png";
-
 
   static const String iconFav = "assets/images/icon_fav.png";
   static const String iconPriceAlert = "assets/images/icon_price_alert.png";
@@ -118,5 +116,4 @@ class Images {
   static const String sell = "assets/images/v2/settings/sell.png";
   static const String settings = "assets/images/v2/settings/settings.png";
   static const String support = "assets/images/v2/settings/support.png";
-
 }

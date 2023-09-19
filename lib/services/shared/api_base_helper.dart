@@ -1,11 +1,9 @@
-
 import 'dart:convert';
 import 'package:bullion/core/models/api/api_error_response.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ApiBaseHelper {
-
   // SERIALIZE & ASYNC FUNCTION
   @protected
   String serialize(Object? obj) {
@@ -28,8 +26,7 @@ class ApiBaseHelper {
 
   @protected
   Future<ErrorResponse?> handleApiError(http.Response response, bool tokenError) async {
-    if ((tokenError && response.statusCode == 400) ||
-        response.statusCode == 401) {
+    if ((tokenError && response.statusCode == 400) || response.statusCode == 401) {
       return null;
     }
 
@@ -43,5 +40,4 @@ class ApiBaseHelper {
   bool _isJsonResponse(http.Response response) {
     return (response.headers["content-type"]?.contains("json")) == true;
   }
-
 }
