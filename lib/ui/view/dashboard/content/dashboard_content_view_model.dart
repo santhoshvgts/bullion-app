@@ -51,7 +51,6 @@ class DashboardContentViewModel extends VGTSBaseViewModel {
   double get deltaExtent => maxExtent - minExtent;
 
 
-
   double titlePaddingHorizontal = 15;
   double titlePaddingTop = 15;
 
