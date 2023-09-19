@@ -7,14 +7,7 @@ class MarketNews {
   String? source;
   bool? openInNewWindow;
 
-  MarketNews(
-      {this.title,
-      this.featureImage,
-      this.externalLink,
-      this.updatedAgo,
-      this.tags,
-      this.source,
-      this.openInNewWindow});
+  MarketNews({this.title, this.featureImage, this.externalLink, this.updatedAgo, this.tags, this.source, this.openInNewWindow});
 
   MarketNews.fromJson(Map<String, dynamic> json) {
     title = json['title'];

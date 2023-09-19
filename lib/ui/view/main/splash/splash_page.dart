@@ -15,18 +15,14 @@ class SplashPage extends VGTSBuilderWidget<SplashViewModel> {
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, SplashViewModel viewModel, Widget? child) {
     return Scaffold(
-      appBar: AppBar(
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.light
+        appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.light),
+          toolbarHeight: 0,
+          backgroundColor: AppColor.primary,
         ),
-        toolbarHeight: 0,
         backgroundColor: AppColor.primary,
-      ),
-      backgroundColor: AppColor.primary,
-      body: Center(
-        child: Image.asset(Images.appLogo, fit: BoxFit.fitWidth, width: MediaQuery.of(context).size.width / 2),
-      )
-    );
+        body: Center(
+          child: Image.asset(Images.appLogo, fit: BoxFit.fitWidth, width: MediaQuery.of(context).size.width / 2),
+        ));
   }
 }

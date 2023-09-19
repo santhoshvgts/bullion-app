@@ -20,12 +20,10 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
   LoginPage({this.fromMain = true, this.redirectRoute});
 
   @override
-  LoginViewModel viewModelBuilder(BuildContext context) =>
-      LoginViewModel(fromMain, redirectRoute);
+  LoginViewModel viewModelBuilder(BuildContext context) => LoginViewModel(fromMain, redirectRoute);
 
   @override
-  Widget viewBuilder(
-      BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -41,7 +39,6 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
             children: <Widget>[
-
               Align(
                 alignment: Alignment.centerLeft,
                 child: Image.asset(
@@ -62,33 +59,33 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
 
               AutofillGroup(
                   child: Column(
-                    children: [
-                      EditTextField(
-                        "Email Address",
-                        viewModel.emailController,
-                        placeholder: "john@bullion.com",
-                        onSubmitted: (value) {},
-                        onChanged: (value) {},
-                      ),
-
-                      EditTextField.password(
-                        "Password",
-                        viewModel.passwordController,
-                        placeholder: "********",
-                        margin: const EdgeInsets.only(top: 25),
-                        onSubmitted: (value) {},
-                        onChanged: (value) {},
-                      ),
-                    ],
-                  )
-              ),
+                children: [
+                  EditTextField(
+                    "Email Address",
+                    viewModel.emailController,
+                    placeholder: "john@bullion.com",
+                    onSubmitted: (value) {},
+                    onChanged: (value) {},
+                  ),
+                  EditTextField.password(
+                    "Password",
+                    viewModel.passwordController,
+                    placeholder: "********",
+                    margin: const EdgeInsets.only(top: 25),
+                    onSubmitted: (value) {},
+                    onChanged: (value) {},
+                  ),
+                ],
+              )),
 
               Align(
                 alignment: Alignment.centerRight,
                 child: InkWell(
                     key: const Key("btnForgotPassword"),
                     child: Container(
-                      padding: const EdgeInsets.only(top: 10,),
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                      ),
                       child: const Text("Forgot your Password?", textScaleFactor: 1, style: AppTextStyle.buttonSecondary),
                     ),
                     onTap: () => viewModel.forgotPassword()),
@@ -107,7 +104,10 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
               Button.outline(
                 "Continue with Google",
                 valueKey: const Key('btnGoogle'),
-                iconWidget: Image.asset(Images.googleIcon, height: 20,),
+                iconWidget: Image.asset(
+                  Images.googleIcon,
+                  height: 20,
+                ),
                 textStyle: AppTextStyle.buttonSecondary.copyWith(color: AppColor.text),
                 onPressed: () => viewModel.continueWithoutLogin(),
               ),
@@ -117,7 +117,10 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
               Button.outline(
                 "Continue with Facebook",
                 valueKey: const Key('btnFacebook'),
-                iconWidget: Image.asset(Images.googleIcon, height: 20,),
+                iconWidget: Image.asset(
+                  Images.googleIcon,
+                  height: 20,
+                ),
                 textStyle: AppTextStyle.buttonSecondary.copyWith(color: AppColor.text),
                 onPressed: () => viewModel.continueWithoutLogin(),
               ),

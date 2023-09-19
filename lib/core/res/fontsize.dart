@@ -5,7 +5,7 @@ class AppFontSize {
   static const double large = 15;
   static const double medium = 16;
   static const double largest = 18;
-  static const double  xlarge= 17;
+  static const double xlarge = 17;
   static const double xLargest = 19;
 
   static const double dp10 = 10;
@@ -15,8 +15,8 @@ class AppFontSize {
   static const double dp18 = 18;
   static const double dp20 = 20;
 
-  static double titleByValue(String type){
-    switch(type){
+  static double titleByValue(String type) {
+    switch (type) {
       case "mini":
         return dp14;
       case "small":
@@ -30,8 +30,8 @@ class AppFontSize {
     }
   }
 
-  static double subtitleByValue(String type){
-    switch(type){
+  static double subtitleByValue(String type) {
+    switch (type) {
       case "mini":
         return dp12;
       case "small":
@@ -45,8 +45,8 @@ class AppFontSize {
     }
   }
 
-  static double bodyTitleByValue(String type){
-    switch(type){
+  static double bodyTitleByValue(String type) {
+    switch (type) {
       case "mini":
         return dp12;
       case "small":
@@ -60,8 +60,8 @@ class AppFontSize {
     }
   }
 
-  static double bodyContentByValue(String type){
-    switch(type){
+  static double bodyContentByValue(String type) {
+    switch (type) {
       case "mini":
         return dp10;
       case "small":

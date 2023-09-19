@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:bullion/core/res/styles.dart';
 
 class CartSummaryHelpText extends StatelessWidget {
-
   final String? helpText;
 
   CartSummaryHelpText(this.helpText);

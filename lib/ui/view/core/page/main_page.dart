@@ -11,17 +11,18 @@ import 'package:flutter/services.dart';
 import 'package:bullion/core/res/colors.dart';
 
 class MainPage extends StatefulWidget {
-
   final String? path;
 
-  MainPage({Key? key, required this.path,}) : super (key: key);
+  MainPage({
+    Key? key,
+    required this.path,
+  }) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-
   final ContentWrapperController controller = ContentWrapperController();
   String? title = "";
 
@@ -31,7 +32,9 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
-  Widget build(BuildContext context,) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       backgroundColor: AppColor.secondaryBackground,
       appBar: AppBar(
@@ -57,6 +60,4 @@ class _MainPageState extends State<MainPage> {
       },)
     );
   }
-
-
 }

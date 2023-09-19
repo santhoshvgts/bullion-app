@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
 class ForgotPasswordViewModel extends VGTSBaseViewModel {
-
   bool fromMain = true;
 
   EmailFormFieldController emailController = EmailFormFieldController(const ValueKey("txtEmail"));

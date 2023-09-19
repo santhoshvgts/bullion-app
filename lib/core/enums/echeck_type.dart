@@ -1,2 +1,1 @@
-
 enum eCheckType { Plaid, Manual }

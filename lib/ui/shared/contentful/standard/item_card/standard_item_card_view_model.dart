@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 import '../../../../../locator.dart';
 
 class StandardItemCardViewModel extends BaseViewModel {
-
   final ItemDisplaySettings? itemDisplaySettings;
   final StandardItem? item;
 
@@ -22,7 +21,7 @@ class StandardItemCardViewModel extends BaseViewModel {
 
   double get itemSectionHeight {
     double height = 0;
-    if ((itemDisplaySettings!.imagePosition.contains("right") || itemDisplaySettings!.imagePosition.contains("left"))){
+    if ((itemDisplaySettings!.imagePosition.contains("right") || itemDisplaySettings!.imagePosition.contains("left"))) {
       height = _contentSectionHeight;
     }
     height = _contentSectionHeight + _imageSectionHeight;
@@ -32,27 +31,27 @@ class StandardItemCardViewModel extends BaseViewModel {
   double get imageSectionPositionBottom => contentSectionPositionTop - 10;
 
   double get contentSectionPositionLeft {
-    if (itemDisplaySettings!.imagePosition.contains("left")){
+    if (itemDisplaySettings!.imagePosition.contains("left")) {
       return _imageSectionWidth + 10;
     }
     return 0;
   }
 
   double get contentSectionPositionRight {
-    if (itemDisplaySettings!.imagePosition.contains("right")){
+    if (itemDisplaySettings!.imagePosition.contains("right")) {
       return _imageSectionWidth + 10;
     }
     return 0;
   }
 
   double get contentSectionPositionTop {
-    if (itemDisplaySettings!.imagePosition == "bottom" || itemDisplaySettings!.imagePosition == "center" ){
+    if (itemDisplaySettings!.imagePosition == "bottom" || itemDisplaySettings!.imagePosition == "center") {
       return _imageSectionHeight;
     }
     return 0;
   }
 
-  StandardItemCardViewModel({this.itemDisplaySettings, this.item}){
+  StandardItemCardViewModel({this.itemDisplaySettings, this.item}) {
     // WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
 
@@ -66,9 +65,8 @@ class StandardItemCardViewModel extends BaseViewModel {
   //   notifyListeners();
   // }
 
-  onTap(){
+  onTap() {
     print(item!.targetUrl);
     locator<NavigationService>().pushNamed(item!.targetUrl, rootNavigator: true);
   }
-
 }

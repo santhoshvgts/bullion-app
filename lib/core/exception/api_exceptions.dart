@@ -1,4 +1,3 @@
-
 import 'package:bullion/core/models/api/api_error_response.dart';
 
 class ApiException implements Exception {

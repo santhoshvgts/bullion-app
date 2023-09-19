@@ -1,4 +1,3 @@
-
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/cart/cart_button_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -33,7 +32,7 @@ class CartButton extends VGTSBuilderWidget<CartButtonViewModel> {
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, CartButtonViewModel viewModel, Widget? child) {
     return IconButton(
-      onPressed: (){
+      onPressed: () {
         locator<NavigationService>().pushNamed(Routes.viewCart);
       },
       padding: EdgeInsets.zero,
@@ -54,10 +53,8 @@ class CartButton extends VGTSBuilderWidget<CartButtonViewModel> {
                 child: Text(viewModel.totalCartItem.toString(), textScaleFactor: 1, style: AppTextStyle.body.copyWith(fontSize: 12, color: AppColor.white),),
               ),
             )
-
         ],
       ),
     );
   }
-
 }

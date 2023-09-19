@@ -1,4 +1,3 @@
-
 class UserAddress {
   int? id;
   String? firstName;
@@ -19,21 +18,7 @@ class UserAddress {
 
   String get formattedSubAddress => "$city, $state, $country, $zip.";
 
-  UserAddress(
-      {this.id,
-        this.firstName,
-        this.lastName,
-        this.company,
-        this.add1,
-        this.add2,
-        this.city,
-        this.country,
-        this.zip,
-        this.state,
-        this.isDefault,
-        this.primaryPhone,
-        this.isValidated,
-        this.overrideValidation});
+  UserAddress({this.id, this.firstName, this.lastName, this.company, this.add1, this.add2, this.city, this.country, this.zip, this.state, this.isDefault, this.primaryPhone, this.isValidated, this.overrideValidation});
 
   UserAddress.fromJson(Map<String, dynamic> json) {
     id = json['id'];

@@ -59,9 +59,7 @@ class MainTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          decoration: BoxDecoration(
-              color: AppColor.white
-          ),
+          decoration: BoxDecoration(color: AppColor.white),
           child: AspectRatio(
             aspectRatio: 1.62,
             child: Image.network(data.featureImage!, fit: BoxFit.contain),
@@ -117,7 +115,7 @@ class NewsTile extends StatelessWidget {
           flex: 9,
           child: Container(
             decoration: BoxDecoration(
-                color: AppColor.white,
+              color: AppColor.white,
             ),
             child: AspectRatio(
               aspectRatio: 1.62,

@@ -4,7 +4,6 @@ import 'package:bullion/core/models/module/product_listing/filter_module.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
 
 class FilterViewModel extends VGTSBaseViewModel {
-
   ProductModel productModel;
 
   String? selectedFacetName;
@@ -13,7 +12,7 @@ class FilterViewModel extends VGTSBaseViewModel {
 
   List<Facets>? get filterData => productModel.facets;
 
-  FilterViewModel(this.productModel){
+  FilterViewModel(this.productModel) {
     onFilterSectionChange(0);
   }
 
@@ -26,5 +25,4 @@ class FilterViewModel extends VGTSBaseViewModel {
     this.productModel = productModel;
     notifyListeners();
   }
-
 }

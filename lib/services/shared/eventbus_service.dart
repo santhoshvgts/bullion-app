@@ -1,7 +1,6 @@
 import 'package:event_taxi/event_taxi.dart';
 
 class EventBusService {
-
   Future<void> configure() async {
     _eventBus = EventTaxiImpl.singleton();
   }
@@ -16,7 +15,7 @@ class EventBusService {
 class DisableLockTimeoutEvent implements Event {
   final bool disable;
 
-  DisableLockTimeoutEvent({ this.disable = false });
+  DisableLockTimeoutEvent({this.disable = false});
 }
 
 class RefreshDataEvent implements Event {

@@ -14,10 +14,5 @@ class AlertRequest {
   final bool? showDivider;
   final Alignment? headerAlignment;
 
-  AlertRequest({this.title,
-      this.description,
-      this.buttonTitle,
-      this.iconWidget,
-      this.showActionBar,
-      this.contentWidget,this.showCloseIcon, this.isDismissible,this.enableDrag,this.showDivider,this.headerAlignment});
+  AlertRequest({this.title, this.description, this.buttonTitle, this.iconWidget, this.showActionBar, this.contentWidget, this.showCloseIcon, this.isDismissible, this.enableDrag, this.showDivider, this.headerAlignment});
 }

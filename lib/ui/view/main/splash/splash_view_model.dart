@@ -11,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 class SplashViewModel extends VGTSBaseViewModel {
   @override
   Future onInit() async {
-
     await locator<FirebaseRemoteHelper>().configure();
     await preferenceService.init();
 
@@ -26,9 +25,7 @@ class SplashViewModel extends VGTSBaseViewModel {
         try {
           Future.wait([
             Future.delayed(const Duration(milliseconds: 300)),
-          ]).whenComplete(() async {
-
-          });
+          ]).whenComplete(() async {});
         } catch (ex, s) {
           Logger.e(ex.toString(), s: s);
           return;

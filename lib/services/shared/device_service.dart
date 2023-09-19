@@ -33,7 +33,6 @@ class DeviceService {
   }
 
   Future<String?> getEnvironment() async {
-
     String environment;
 
     packageInfo = await PackageInfo.fromPlatform();
@@ -47,7 +46,6 @@ class DeviceService {
     return environment;
   }
 
-
   String? getUserAgent() {
     if (!isNullOrEmpty(_userAgent)) {
       return _userAgent;
@@ -60,8 +58,7 @@ class DeviceService {
     final dartVersionString = Platform.version.split(" ").first;
     final osString = Platform.operatingSystem;
     final osVersionString = Platform.operatingSystemVersion.split(" ").first;
-    _userAgent =
-        "$ogappVersionString Dart/$dartVersionString OS/$osString-$osVersionString";
+    _userAgent = "$ogappVersionString Dart/$dartVersionString OS/$osString-$osVersionString";
     debugPrint("Useragent $_userAgent");
     return _userAgent;
   }
@@ -115,5 +112,4 @@ class DeviceService {
     _deviceId ??= await preferenceService!.getDeviceId();
     return _deviceId;
   }
-
 }

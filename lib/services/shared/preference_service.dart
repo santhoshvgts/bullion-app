@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class PreferenceService {
-
   static const String bearerToken = "BEARERTOKEN";
   static const String refreshToken = "REFRESHTOKEN";
   static const String userName = "USERNAME";
@@ -99,12 +98,10 @@ class PreferenceService {
     return pref.getString(deviceId);
   }
 
-
   setDeviceId(String value) async {
     pref.setString(deviceId, value);
     debugPrint("Device ID stored successfully");
   }
-
 
   setCartId(String? value) async {
     if (value == "-1") {
@@ -116,7 +113,6 @@ class PreferenceService {
     }
   }
 
-
   removeCartId() async {
     pref.remove(cartId);
   }
@@ -125,14 +121,11 @@ class PreferenceService {
     return pref.getString(cartId);
   }
 
-
-
-
   // Clear Data From Preference Service
   clearData() async {
     // pref.clear();
-    for(String key in pref.getKeys()) {
-      if(key != deviceId) {
+    for (String key in pref.getKeys()) {
+      if (key != deviceId) {
         pref.remove(key);
       }
     }
@@ -146,5 +139,4 @@ class PreferenceService {
     pref.clear();
     // await locator<PageStorageService>().write(locator<NavigationService>().navigatorKey.currentContext!, const PageStorageKey('Home'), null);
   }
-
 }

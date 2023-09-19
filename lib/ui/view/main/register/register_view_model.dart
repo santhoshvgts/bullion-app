@@ -30,11 +30,7 @@ class RegisterViewModel extends VGTSBaseViewModel {
     }
 
     setBusy(true);
-    AuthResponse? result = await _authenticationService.register(
-        nameController.text,
-        lnameController.text,
-        emailController.text,
-        passwordController.text);
+    AuthResponse? result = await _authenticationService.register(nameController.text, lnameController.text, emailController.text, passwordController.text);
 
     if (result != null) {
       if (fromMain) {
@@ -58,7 +54,6 @@ class RegisterViewModel extends VGTSBaseViewModel {
 
   login() async {
     locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
-    await navigationService.pushReplacementNamed(Routes.login, arguments: { 'fromMain':fromMain, 'redirectRoute': redirectRoute });
+    await navigationService.pushReplacementNamed(Routes.login, arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
   }
-
 }
