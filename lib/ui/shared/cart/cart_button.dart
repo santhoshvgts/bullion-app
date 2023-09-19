@@ -2,6 +2,7 @@
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/cart/cart_button_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
@@ -15,11 +16,11 @@ import 'package:stacked/stacked.dart';
 
 class CartButton extends VGTSBuilderWidget<CartButtonViewModel> {
 
-  final String image;
+  final Widget icon;
 
-  const CartButton({super.key}) : image = Images.cart_dark;
+  const CartButton({super.key}) : icon = const Icon(CupertinoIcons.cart, color: Colors.white,);
 
-  const CartButton.light({super.key}) : image = Images.cart;
+  const CartButton.light({super.key}) : icon = const Icon(CupertinoIcons.cart,);
 
   @override
   void onViewModelReady(CartButtonViewModel viewModel) {
@@ -39,17 +40,17 @@ class CartButton extends VGTSBuilderWidget<CartButtonViewModel> {
       icon: Stack(
         children: [
 
-          Padding(padding: EdgeInsets.all(12), child: Image.asset(image, width: 21,)),
+          Padding(padding: const EdgeInsets.all(12), child: icon),
 
           if (viewModel.totalCartItem != 0)
             Positioned(
               right: 5,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColor.primary
                 ),
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 child: Text(viewModel.totalCartItem.toString(), textScaleFactor: 1, style: AppTextStyle.body.copyWith(fontSize: 12, color: AppColor.white),),
               ),
             )
