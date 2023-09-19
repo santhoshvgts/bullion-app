@@ -9,7 +9,7 @@ class ProductTextStyle {
   static const TextStyle _badgeStyle = TextStyle(fontWeight: FontWeight.normal, color: Color(0xff202020));
 
   static TextStyle title(int gridCol, {Color color = const Color(0xff202020)}){
-    return _titleStyle.copyWith(fontSize: gridCol > 1 ? 12 : 18, color: color);
+    return _titleStyle.copyWith(fontSize: gridCol > 1 ? 14 : 18, color: color);
   }
 
   static TextStyle price(int gridCol, {Color color = const Color(0xff202020)}){

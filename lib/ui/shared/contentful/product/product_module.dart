@@ -7,15 +7,10 @@ import 'package:bullion/core/constants/display_direction.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
-import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
-import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
-import 'package:bullion/locator.dart';
-import 'package:bullion/services/authentication_service.dart';
-import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -237,7 +232,7 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
 
                     if (_item.ribbonText != null)
                       Positioned(
-                          bottom: 10,
+                          bottom: 0,
                           left: 0,
                           child: Container(
                               decoration: BoxDecoration(
