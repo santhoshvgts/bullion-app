@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/fontsize.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +6,11 @@ class AppStyle {
   static final ThemeData appTheme = ThemeData(
     primaryColor: AppColor.primary,
     primaryColorLight: AppColor.white,
-    // primaryColorBrightness: Platform.isIOS ? Brightness.light : Brightness.dark,
     brightness: Brightness.light,
     dividerColor: AppColor.divider,
     indicatorColor: AppColor.primaryDark,
     iconTheme: const IconThemeData(color: AppColor.black),
-    primaryIconTheme:
-        const IconThemeData.fallback().copyWith(color: AppColor.primary),
+    primaryIconTheme: const IconThemeData.fallback().copyWith(color: AppColor.primary),
     appBarTheme: const AppBarTheme().copyWith(
         color: AppColor.scaffoldBackground,
         elevation: 1,
@@ -92,13 +88,13 @@ class AppTextStyle {
 
   static const TextStyle button = TextStyle(
       fontSize: AppFontSize.medium,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       color: AppColor.white,
       fontFamily: AppTextStyle.fontFamily);
 
   static const TextStyle buttonOutline = TextStyle(
       fontSize: AppFontSize.medium,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       color: AppColor.primary,
       fontFamily: AppTextStyle.fontFamily);
 

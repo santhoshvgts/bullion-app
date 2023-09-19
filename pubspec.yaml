@@ -17,6 +17,7 @@ dependencies:
 
   #core
   stacked: ^3.4.1
+  stacked_themes: ^0.3.12
 
   #Firebase
   firebase_core: ^2.15.1
@@ -31,6 +32,7 @@ dependencies:
   #UI
   card_swiper: ^3.0.1
   smooth_page_indicator: ^1.1.0
+  persistent_bottom_nav_bar_v2: ^4.2.8
 
   #local
   shared_preferences: ^2.2.1

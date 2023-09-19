@@ -11,6 +11,8 @@ import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import 'ui/view/dashboard/dashboard_page.dart';
 const String initialRoute = "login";
 
 class Routes {
@@ -110,13 +112,13 @@ class AppRouter {
           settings: RouteSettings(name: settings.name),
         );
 
-      // case Routes.dashboard:
-      //   return MaterialPageRoute(
-      //     builder: (_) => DashboardPage(),
-      //     settings: RouteSettings(
-      //       name: settings.name,
-      //     ),
-      //   );
+      case Routes.dashboard:
+        return MaterialPageRoute(
+          builder: (_) => DashboardPage(),
+          settings: RouteSettings(
+            name: settings.name,
+          ),
+        );
 
       // case Routes.settings:
       //   return MaterialPageRoute(
