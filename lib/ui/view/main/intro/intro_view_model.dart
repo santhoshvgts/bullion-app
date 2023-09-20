@@ -11,12 +11,41 @@ import '../../../../locator.dart';
 class IntroViewModel extends VGTSBaseViewModel {
   final NavigationService navigationService = locator<NavigationService>();
   PageController? pageController;
+  int index = 0;
 
   List<IntroSliderItem> introSliderItems = [
-    IntroSliderItem(Images.priceAlerts, "Custom Spot Price Alerts", "Tell us your Gold, Silver, Platinum or Palladium target price and we will send you an email or text message as soon as the market reaches your price."),
-    IntroSliderItem(Images.marketNews, "Precious Metals Market News", "Stay up to date on fast-changing Precious Metals market news. Read the latest Gold, Silver, Platinum and Palladium headlines from around the world."),
-    IntroSliderItem(Images.vaultDeals, "Vault Deals", "Find the best savings on Gold, Silver, Collectibles and more."),
+    IntroSliderItem(Images.priceAlerts, "Exclusive Deals", "Access to limited-time offers, discounts and promotions."),
+    IntroSliderItem(Images.marketNews, "Order Tracking", "Easily track your shipments and stay updated on the delivery status."),
+    IntroSliderItem(Images.vaultDeals, "Personalized Recommendations", "Receive tailored product suggestions based on your preferences."),
   ];
+
+  String get _buttonName => introSliderItems.last == introSliderItems[index] ? "Get started" : "Next";
+  String get buttonName => _buttonName;
+
+  bool get _isLastindex => introSliderItems.last == introSliderItems[index] ? true : false;
+  bool get isLastindex => _isLastindex;
+
+  @override
+  Future onInit() {
+    pageController = PageController(initialPage: index);
+    return super.onInit();
+  }
+
+  void skipOnPressed() {
+    pageController?.animateToPage(introSliderItems.length - 1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    notifyListeners();
+    return;
+  }
+
+  void introButtonOnPressed() {
+    if (!isLastindex) {
+      pageController?.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+      notifyListeners();
+      return;
+    }
+    locator<NavigationService>().popAllAndPushNamed(Routes.login);
+    return;
+  }
 
   login() {
     navigationService.pushNamed(Routes.login);

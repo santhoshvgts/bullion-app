@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bullion/helper/firebase_remote_helper.dart';
 import 'package:bullion/helper/update_checker.dart';
 import 'package:bullion/services/appconfig_service.dart';
