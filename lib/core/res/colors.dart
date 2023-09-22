@@ -12,15 +12,18 @@ class AppColor {
   static const Color secondary = Color(0xFF1B84FF);
   static const Color accent = Color(0xFF000000);
   static const Color divider = Color(0x2B495A14);
+  static const Color border = Color(0xffDADADA);
 
   static const Color text = Color(0xFF14203C);
   static const Color introText = Color(0xFF013b53);
+  static const Color greenText = Color(0xFF006214);
 
   static const Color secondaryText = Color(0xFF666666);
   static const Color header = Color(0xFF002539);
   static const Color headerBlack = Color(0xFF202020);
   static const Color secondaryHeader = Color(0xFF2B495A);
   static const Color title = Color(0xFF2B495A);
+  static const Color primaryText = Color(0xFF626A7D);
 
   static const Color background = Color(0xFFFFFFFF);
   static const Color secondaryBackground = Color(0xFFF4F5F7);
