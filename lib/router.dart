@@ -12,7 +12,6 @@ import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'ui/view/dashboard/dashboard_page.dart';
 const String initialRoute = "login";
@@ -51,10 +50,10 @@ class Routes {
   static const String search = "/search";
   static const String main = "/main";
 
-  static String productDesc(id) => "/product/details/${id}";
-  static String productSpec(id) => "/product/specs/${id}";
-  static String productReview(id) => "/product/reviews/${id}";
-  static String productWriteReview(id) => "/product/reviews/add/${id}";
+  static String productDesc(id) => "/product/details/$id";
+  static String productSpec(id) => "/product/specs/$id";
+  static String productReview(id) => "/product/reviews/$id";
+  static String productWriteReview(id) => "/product/reviews/add/$id";
 
   static const String addAddress = "/addAddress";
 
@@ -104,7 +103,7 @@ class AppRouter {
     switch (settings.name) {
       case Routes.splash:
         return NoTransitionRoute(
-          builder: (_) => SplashPage(),
+          builder: (_) => const SplashPage(),
           settings: RouteSettings(name: settings.name),
         );
 
