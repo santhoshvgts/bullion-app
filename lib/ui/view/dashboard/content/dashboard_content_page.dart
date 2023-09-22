@@ -1,5 +1,6 @@
 import 'package:bullion/services/page_storage_service.dart';
 import 'package:bullion/ui/shared/cart/cart_button.dart';
+import 'package:bullion/ui/shared/search_card_section.dart';
 import 'package:bullion/ui/view/core/content_wrapper.dart';
 import 'package:bullion/ui/view/dashboard/content/dashboard_content_view_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +61,7 @@ class DashboardContentPage extends StatelessWidget {
                                   child: FlexibleSpaceBar(
                                     centerTitle: true,
                                     titlePadding: const EdgeInsets.only(top: 10, bottom: 10.0),
-                                    title: _Search(),
+                                    title: SearchCardSection(),
                                     background: AppBar(
                                       backgroundColor: AppColor.primary,
                                       centerTitle: false,
@@ -106,7 +107,7 @@ class _AppBar extends PreferredSize  {
       backgroundColor: AppColor.primary,
       titleSpacing: 0,
       elevation: 0,
-      title: _Search(),
+      title: SearchCardSection(),
       actions: const [
         CartButton()
       ],
@@ -116,7 +117,7 @@ class _AppBar extends PreferredSize  {
 }
 
 
-class _Search extends ViewModelWidget<DashboardContentViewModel> {
+class SearchComponent extends ViewModelWidget<DashboardContentViewModel> {
 
   @override
   Widget build(BuildContext context, DashboardContentViewModel viewModel) {

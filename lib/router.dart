@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
@@ -8,6 +9,7 @@ import 'package:bullion/ui/view/main/intro/intro_page.dart';
 import 'package:bullion/ui/view/main/login/login_page.dart';
 import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
+import 'package:bullion/ui/view/product/product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -366,7 +368,7 @@ class AppRouter {
       //   }
       //   return MaterialPageRoute(builder: (_) => SpotPricePage(metalName,uri.toString()), settings: RouteSettings(name: settings.name));
 
-      // case "product":
+      case "product":
       //   if (settings.name!.startsWith("/product/reviews/add/")) {
       //     return MaterialPageRoute(
       //       builder: (_) => SubmitReviewPage(settings.arguments as int?),
@@ -397,7 +399,7 @@ class AppRouter {
       //     );
       //   }
       //
-      //   return MaterialPageRoute(builder: (context) => ProductPage(productDetails: settings.arguments as ProductDetails?, targetUrl: settings.name,));
+        return MaterialPageRoute(builder: (context) => ProductPage(productDetails: settings.arguments as ProductDetails?, targetUrl: settings.name,));
 
       case "account":
         return accountRoute(settings);
