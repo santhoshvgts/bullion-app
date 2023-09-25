@@ -40,8 +40,10 @@ class LoginViewModel extends VGTSBaseViewModel {
   }
 
   register() {
-    navigationService.pushReplacementNamed(Routes.register, arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+    navigationService.pushNamed(Routes.register, arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
   }
+
+
 
   continueWithoutLogin() {
     preferenceService.setFirstTimeAppOpen(false);

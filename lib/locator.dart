@@ -20,6 +20,8 @@ import 'services/page_storage_service.dart';
 
 GetIt locator = GetIt.instance;
 
+NavigationService navigationService = locator<NavigationService>();
+
 void setupLocator() {
   locator.registerLazySingleton(() => FirebaseRemoteHelper());
   locator.registerLazySingleton(() => AppConfigService());
