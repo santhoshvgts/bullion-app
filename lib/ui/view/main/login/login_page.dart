@@ -31,7 +31,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
         leading: IconButton(
             icon: const Icon(Icons.clear),
             onPressed: () {
-              viewModel.navigationService!.pop(returnValue: false);
+              viewModel.navigationService.pop(returnValue: false);
             }),
       ),
       body: SafeArea(

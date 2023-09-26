@@ -1,9 +1,11 @@
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -35,6 +37,7 @@ class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
             child: LinearProgressIndicator(valueColor: AlwaysStoppedAnimation(AppColor.primary),),
           ),
 
+
         Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
@@ -50,29 +53,10 @@ class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
 
                   Expanded(
                     flex: 5,
-                    child: EditTextField(
-                      "",
-                      viewModel.qtyController,
-                      prefixIcon: IconButton(icon: const Icon(Icons.remove, size: 20, color: AppColor.text,),
-                        onPressed: () => viewModel.decrease(),
-                      ),
-                      suffixIcon: IconButton(icon: const Icon(Icons.add,size: 20, color: AppColor.text,),
-                        onPressed: viewModel.qtyValue >= 9999 ? null : ()=> viewModel.increase(),
-                      ),
-                      textAlign: TextAlign.center,
-                      textInputAction: TextInputAction.done,
-                      onChanged:(val) {
-                        if (viewModel.qtyValidate) viewModel.qtyValidate = false;
-                      },
-                    ),
-                  ),
-
-                  Expanded(
-                    flex: 7,
                     child: Button("Add to Cart",
                         width: double.infinity,
                         color: AppColor.orange,
-                        height: 48,
+                        height: 42,
                         borderColor:AppColor.orange ,
                         valueKey: const Key("btnAddToCart"),
                         onPressed: () {

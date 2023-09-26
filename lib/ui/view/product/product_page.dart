@@ -46,7 +46,7 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
             appBar: AppBar(
               toolbarHeight: 0,
               elevation: 0,
-              backgroundColor: viewModel.showAppBar ? AppColor.white : AppColor.secondaryBackground,
+              backgroundColor: viewModel.showAppBar ? AppColor.white : AppColor.white,
             ),
             body: SafeArea(
               top: false,
@@ -55,7 +55,7 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                   await viewModel.init(viewModel.productDetail, targetUrl!);
                 },
                 child: Container(
-                  color: AppColor.secondaryBackground,
+                  color: AppColor.white,
                   child: TapOutsideUnFocus(
                     child: Stack(
                       children: [
@@ -70,6 +70,7 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                                   child: SingleChildScrollView(
                                     controller: viewModel.scrollController,
                                     physics: const ClampingScrollPhysics(),
+                                    padding: EdgeInsets.zero,
                                     child: Column(
                                         children: [
 

@@ -54,7 +54,7 @@ class IntroViewModel extends VGTSBaseViewModel {
   }
 
   login() {
-    navigationService.pushNamed(Routes.login);
+    navigationService.pushNamed(Routes.login,);
   }
 
   register() {

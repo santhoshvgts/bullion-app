@@ -84,7 +84,7 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
                           child: SmoothPageIndicator(
                             controller: viewModel.bannerPageController,
                             count: viewModel.items!.length,
-                            effect: WormEffect(dotColor: AppColor.secondaryBackground, activeDotColor: AppColor.primary, dotHeight: 7, dotWidth: 7),
+                            effect: const WormEffect(dotColor: AppColor.secondaryBackground, activeDotColor: AppColor.primary, dotHeight: 7, dotWidth: 7),
                           ),
                         ))
                   ],
@@ -141,7 +141,7 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
             scale: 0.95,
             layout: SwiperLayout.DEFAULT,
             loop: true,
-            pagination: SwiperPagination(
+            pagination: const SwiperPagination(
               alignment: Alignment.bottomCenter,
               builder: DotSwiperPaginationBuilder(color: AppColor.secondaryBackground, activeColor: AppColor.primary, size: 7.0, activeSize: 7.0),
             ),

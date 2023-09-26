@@ -30,7 +30,6 @@ class BottomActionCard extends StatelessWidget {
           // await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(productDetails, showViewButton: true,));
         }
       );
-
     else
       return _Button(productDetails!.overview!.availabilityText);
 
