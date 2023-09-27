@@ -64,7 +64,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
               color: AppColor.secondaryBackground,
               child: Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: SingleChildScrollView(
                       controller: enableController! ? viewModel.scrollController : null,

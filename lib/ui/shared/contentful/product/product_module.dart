@@ -193,10 +193,11 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
               children: [
                 Stack(
                   children: [
-                    Container(
-                      color: AppColor.secondaryBackground,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                      child: Container(
+                        color: AppColor.white,
+                        padding: const EdgeInsets.all(5),
                         child: NetworkImageLoader(
                           image: _item.primaryImageUrl,
                           fit: BoxFit.cover,

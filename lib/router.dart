@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
@@ -8,16 +9,17 @@ import 'package:bullion/ui/view/main/intro/intro_page.dart';
 import 'package:bullion/ui/view/main/login/login_page.dart';
 import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
+import 'package:bullion/ui/view/product/product_page.dart';
+import 'package:bullion/ui/widgets/three_sixty_degree.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'ui/view/dashboard/dashboard_page.dart';
+
 const String initialRoute = "login";
 
 class Routes {
-
-
-  static const authenticatedRoutePrefix = [ "/account/", "/checkout/" ];
+  static const authenticatedRoutePrefix = ["/account/", "/checkout/"];
 
   static const String dashboard = "/pages/home";
   static const String home = "/pages/home";
@@ -26,6 +28,9 @@ class Routes {
   static const String settings = "/settings";
 
   static const String spotPrice = "/spotprices";
+
+  // 360 Page
+  static const String threeSixtyPage = "/threeSixtyPage";
 
   // Cart & Checkout
   static const String viewCart = "/cart/viewcart";
@@ -58,7 +63,6 @@ class Routes {
   static const String introPage = "/main/intro";
   static const String marketAlertEntry = "/market_alert/entry";
   static const String marketNews = "/market_news";
-
 
   static const String accountSetting = "/accountSetting";
   static const String orderSuccess = "/orderSuccess";
@@ -119,6 +123,14 @@ class AppRouter {
           ),
         );
 
+      case Routes.threeSixtyPage:
+        return MaterialPageRoute(
+          builder: (_) => const ThreeSixtyDegreePage(),
+          settings: RouteSettings(
+            name: settings.name,
+          ),
+        );
+
       // case Routes.settings:
       //   return MaterialPageRoute(
       //     builder: (_) =>  SettingsPage(key: PageStorageKey('Settings'),),
@@ -132,180 +144,179 @@ class AppRouter {
       //       builder: (_) => CreditCardPage(),
       //       settings: RouteSettings(name: settings.name));
 
-
-    // Cart
+      // Cart
       //
-    //   case Routes.viewCart:
-    //     return MaterialPageRoute(
-    //         builder: (_) => CartPage(redirectDisplayMessage: settings.arguments as DisplayMessage?,),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.reviewCart:
-    //     return MaterialPageRoute(
-    //         builder: (_) => ReviewOrderPage(
-    //           fromPriceExpiry: false,
-    //         ),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.expiredCart:
-    //     return MaterialPageRoute(
-    //         builder: (_) => ReviewOrderPage(
-    //           fromPriceExpiry: true,
-    //         ),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.checkout:
-    //     return MaterialPageRoute(
-    //         builder: (_) => CheckoutPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.checkoutAddress:
-    //     return MaterialPageRoute(
-    //         builder: (_) => DeliveryAddressPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.checkoutPayments:
-    //     return MaterialPageRoute(
-    //         builder: (_) => PaymentMethodPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //
-    //   case Routes.marketAlertEntry:
-    //     return MaterialPageRoute(
-    //       builder: (_) => MarketAlertEntryPage(
-    //         settings.arguments as String?,
-    //       ),
-    //       settings: RouteSettings(
-    //         name: settings.name,
-    //       ),
-    //     );
-    //
-    //   case 'category':
-    //   case Routes.main:
-    //     return MaterialPageRoute(builder: (context) => MainPage(path: settings.name));
-    //
-    //   case Routes.search:
-    //     return MaterialPageRoute(
-    //       builder: (_) => SearchPage(),
-    //       settings: RouteSettings(
-    //         name: settings.name,
-    //       ),
-    //     );
-    //
-    //   case Routes.myFavorites:
-    //     return MaterialPageRoute(
-    //         builder: (_) => FavoritePage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.myProductAlert:
-    //     return MaterialPageRoute(
-    //         builder: (_) => ProductAlertPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.myProductPriceAlert:
-    //     return MaterialPageRoute(
-    //         builder: (_) => PriceAlertPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.orderSuccess:
-    //     return MaterialPageRoute(
-    //         builder: (_) => OrderSuccessPage(settings.arguments as Order?),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.addAddress:
-    //     var data = settings.arguments as int?;
-    //     return MaterialPageRoute(
-    //         builder: (_) => AddAddressBottomSheet(data),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.accountSetting:
-    //     return MaterialPageRoute(
-    //         builder: (_) => AccountSettingsPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.myRewardTransactions:
-    //     return MaterialPageRoute(
-    //         builder: (_) => RewardTransactionHistory(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   //  -----------  PORTFOLIO -----------
-    //   case Routes.portfolioAsset:
-    //     return MaterialPageRoute(
-    //       builder: (_) => PortfolioAssetPage(settings.arguments as String?),
-    //       settings: RouteSettings(
-    //         name: settings.name,
-    //       ),
-    //     );
-    //
-    //   case Routes.portfolioAddAsset:
-    //     return MaterialPageRoute(
-    //       builder: (_) => AssetEntryPage(),
-    //       settings: RouteSettings(
-    //         name: settings.name,
-    //       ),
-    //     );
-    //
-    //   case Routes.portfolioEditAsset:
-    //     return MaterialPageRoute(
-    //       builder: (_) => AssetEditPage(settings.arguments as String?),
-    //       settings: RouteSettings(
-    //         name: settings.name,
-    //       ),
-    //     );
-    //   //  -----------  END PORTFOLIO -----------
-    //
-    //   // Account
-    //   case Routes.myProfile:
-    //     return MaterialPageRoute(
-    //         builder: (_) => ProfilePage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.changeEmail:
-    //     return MaterialPageRoute(
-    //         builder: (_) => ChangeEmailPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.changePassword:
-    //     return MaterialPageRoute(
-    //         builder: (_) => ChangePasswordPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.myAddressBook:
-    //     return MaterialPageRoute(
-    //         builder: (_) => AddressPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //
-    //   case Routes.myPortfolio:
-    //     return MaterialPageRoute(
-    //       builder: (_) => PortfolioPage(),
-    //       settings: RouteSettings(
-    //         name: settings.name,
-    //       ),
-    //     );
-    //
-    //   case Routes.recentlyViewed:
-    //     return MaterialPageRoute(
-    //       builder: (_) => RecentlyViewedPage(),
-    //       settings: RouteSettings(name: settings.name),
-    //     );
-    //
-    //   case Routes.searchHistory:
-    //     return MaterialPageRoute(
-    //       builder: (_) => SearchHistoryPage(),
-    //       settings: RouteSettings(name: settings.name),
-    //     );
-    //
-    //   case Routes.recentlyBought:
-    //     return MaterialPageRoute(
-    //       builder: (_) => RecentlyBoughtPage(),
-    //       settings: RouteSettings(name: settings.name),
-    //     );
-    //
-    //   case Routes.myOrders:
-    //     return MaterialPageRoute(
-    //         builder: (_) => OrderListPage(),
-    //         settings: RouteSettings(name: settings.name));
-    //   // End Account
+      //   case Routes.viewCart:
+      //     return MaterialPageRoute(
+      //         builder: (_) => CartPage(redirectDisplayMessage: settings.arguments as DisplayMessage?,),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.reviewCart:
+      //     return MaterialPageRoute(
+      //         builder: (_) => ReviewOrderPage(
+      //           fromPriceExpiry: false,
+      //         ),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.expiredCart:
+      //     return MaterialPageRoute(
+      //         builder: (_) => ReviewOrderPage(
+      //           fromPriceExpiry: true,
+      //         ),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.checkout:
+      //     return MaterialPageRoute(
+      //         builder: (_) => CheckoutPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.checkoutAddress:
+      //     return MaterialPageRoute(
+      //         builder: (_) => DeliveryAddressPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.checkoutPayments:
+      //     return MaterialPageRoute(
+      //         builder: (_) => PaymentMethodPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //
+      //   case Routes.marketAlertEntry:
+      //     return MaterialPageRoute(
+      //       builder: (_) => MarketAlertEntryPage(
+      //         settings.arguments as String?,
+      //       ),
+      //       settings: RouteSettings(
+      //         name: settings.name,
+      //       ),
+      //     );
+      //
+      //   case 'category':
+      //   case Routes.main:
+      //     return MaterialPageRoute(builder: (context) => MainPage(path: settings.name));
+      //
+      //   case Routes.search:
+      //     return MaterialPageRoute(
+      //       builder: (_) => SearchPage(),
+      //       settings: RouteSettings(
+      //         name: settings.name,
+      //       ),
+      //     );
+      //
+      //   case Routes.myFavorites:
+      //     return MaterialPageRoute(
+      //         builder: (_) => FavoritePage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.myProductAlert:
+      //     return MaterialPageRoute(
+      //         builder: (_) => ProductAlertPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.myProductPriceAlert:
+      //     return MaterialPageRoute(
+      //         builder: (_) => PriceAlertPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.orderSuccess:
+      //     return MaterialPageRoute(
+      //         builder: (_) => OrderSuccessPage(settings.arguments as Order?),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.addAddress:
+      //     var data = settings.arguments as int?;
+      //     return MaterialPageRoute(
+      //         builder: (_) => AddAddressBottomSheet(data),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.accountSetting:
+      //     return MaterialPageRoute(
+      //         builder: (_) => AccountSettingsPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.myRewardTransactions:
+      //     return MaterialPageRoute(
+      //         builder: (_) => RewardTransactionHistory(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   //  -----------  PORTFOLIO -----------
+      //   case Routes.portfolioAsset:
+      //     return MaterialPageRoute(
+      //       builder: (_) => PortfolioAssetPage(settings.arguments as String?),
+      //       settings: RouteSettings(
+      //         name: settings.name,
+      //       ),
+      //     );
+      //
+      //   case Routes.portfolioAddAsset:
+      //     return MaterialPageRoute(
+      //       builder: (_) => AssetEntryPage(),
+      //       settings: RouteSettings(
+      //         name: settings.name,
+      //       ),
+      //     );
+      //
+      //   case Routes.portfolioEditAsset:
+      //     return MaterialPageRoute(
+      //       builder: (_) => AssetEditPage(settings.arguments as String?),
+      //       settings: RouteSettings(
+      //         name: settings.name,
+      //       ),
+      //     );
+      //   //  -----------  END PORTFOLIO -----------
+      //
+      //   // Account
+      //   case Routes.myProfile:
+      //     return MaterialPageRoute(
+      //         builder: (_) => ProfilePage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.changeEmail:
+      //     return MaterialPageRoute(
+      //         builder: (_) => ChangeEmailPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.changePassword:
+      //     return MaterialPageRoute(
+      //         builder: (_) => ChangePasswordPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.myAddressBook:
+      //     return MaterialPageRoute(
+      //         builder: (_) => AddressPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //
+      //   case Routes.myPortfolio:
+      //     return MaterialPageRoute(
+      //       builder: (_) => PortfolioPage(),
+      //       settings: RouteSettings(
+      //         name: settings.name,
+      //       ),
+      //     );
+      //
+      //   case Routes.recentlyViewed:
+      //     return MaterialPageRoute(
+      //       builder: (_) => RecentlyViewedPage(),
+      //       settings: RouteSettings(name: settings.name),
+      //     );
+      //
+      //   case Routes.searchHistory:
+      //     return MaterialPageRoute(
+      //       builder: (_) => SearchHistoryPage(),
+      //       settings: RouteSettings(name: settings.name),
+      //     );
+      //
+      //   case Routes.recentlyBought:
+      //     return MaterialPageRoute(
+      //       builder: (_) => RecentlyBoughtPage(),
+      //       settings: RouteSettings(name: settings.name),
+      //     );
+      //
+      //   case Routes.myOrders:
+      //     return MaterialPageRoute(
+      //         builder: (_) => OrderListPage(),
+      //         settings: RouteSettings(name: settings.name));
+      //   // End Account
     }
 
     var uri = Uri.parse(settings.name!);
@@ -318,14 +329,14 @@ class AppRouter {
       if (campaign != null && campaign.isNotEmpty) {
         var promo = campaign.split('-');
         locator<AnalyticsService>().logEvent('select_promotion', {
-          'promotion_id': promo.length < 1 ? '' : promo[0] ,
+          'promotion_id': promo.length < 1 ? '' : promo[0],
           'promotion_name': promo.length < 2 ? '' : promo[1],
           'creative_name': promo.length < 3 ? '' : promo[2],
           'creative_slot': promo.length < 4 ? '' : promo[3],
           'location_id': promo.length < 5 ? '' : promo[4]
         });
       }
-    } catch(ex, st) {
+    } catch (ex, st) {
       Logger.e("Campaign Error in Routing", e: ex, s: st);
     }
 
@@ -341,7 +352,10 @@ class AppRouter {
       //   return MaterialPageRoute(builder: (context) => SearchResultPage(settings.name,));
 
       case "pages":
-        return MaterialPageRoute(builder: (context) => MainPage(path: settings.name,));
+        return MaterialPageRoute(
+            builder: (context) => MainPage(
+                  path: settings.name,
+                ));
 
       // case "market_news":
       //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
@@ -365,44 +379,48 @@ class AppRouter {
       //   }
       //   return MaterialPageRoute(builder: (_) => SpotPricePage(metalName,uri.toString()), settings: RouteSettings(name: settings.name));
 
-      // case "product":
-      //   if (settings.name!.startsWith("/product/reviews/add/")) {
-      //     return MaterialPageRoute(
-      //       builder: (_) => SubmitReviewPage(settings.arguments as int?),
-      //       settings: RouteSettings(
-      //         name: settings.name,
-      //       ),
-      //     );
-      //   } else if (settings.name!.startsWith("/product/reviews/")) {
-      //     return MaterialPageRoute(
-      //       builder: (_) => ProductReviewPage(settings.arguments as ProductDetails?),
-      //       settings: RouteSettings(
-      //         name: settings.name,
-      //       ),
-      //     );
-      //   } else if (settings.name!.startsWith("/product/details/")) {
-      //     return MaterialPageRoute(
-      //       builder: (_) => ProductDescriptionPage(settings.arguments as String?),
-      //       settings: RouteSettings(
-      //         name: settings.name,
-      //       ),
-      //     );
-      //   } else if (settings.name!.startsWith("/product/specs/")) {
-      //     return MaterialPageRoute(
-      //       builder: (_) => ProductSpecificationPage(settings.arguments as List<Specifications>?),
-      //       settings: RouteSettings(
-      //         name: settings.name,
-      //       ),
-      //     );
-      //   }
-      //
-      //   return MaterialPageRoute(builder: (context) => ProductPage(productDetails: settings.arguments as ProductDetails?, targetUrl: settings.name,));
+      case "product":
+        //   if (settings.name!.startsWith("/product/reviews/add/")) {
+        //     return MaterialPageRoute(
+        //       builder: (_) => SubmitReviewPage(settings.arguments as int?),
+        //       settings: RouteSettings(
+        //         name: settings.name,
+        //       ),
+        //     );
+        //   } else if (settings.name!.startsWith("/product/reviews/")) {
+        //     return MaterialPageRoute(
+        //       builder: (_) => ProductReviewPage(settings.arguments as ProductDetails?),
+        //       settings: RouteSettings(
+        //         name: settings.name,
+        //       ),
+        //     );
+        //   } else if (settings.name!.startsWith("/product/details/")) {
+        //     return MaterialPageRoute(
+        //       builder: (_) => ProductDescriptionPage(settings.arguments as String?),
+        //       settings: RouteSettings(
+        //         name: settings.name,
+        //       ),
+        //     );
+        //   } else if (settings.name!.startsWith("/product/specs/")) {
+        //     return MaterialPageRoute(
+        //       builder: (_) => ProductSpecificationPage(settings.arguments as List<Specifications>?),
+        //       settings: RouteSettings(
+        //         name: settings.name,
+        //       ),
+        //     );
+        //   }
+        //
+        return MaterialPageRoute(
+            builder: (context) => ProductPage(
+                  productDetails: settings.arguments as ProductDetails?,
+                  targetUrl: settings.name,
+                ));
 
       case "account":
         return accountRoute(settings);
 
       default:
-      // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
+        // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
         return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
     }
   }
@@ -411,56 +429,56 @@ class AppRouter {
     Uri uri = Uri.parse(settings.name!);
     if (uri.pathSegments.length > 1) {
       switch (uri.pathSegments[1].toLowerCase()) {
-      // Order Details
-      //   case "orderdetails":
-      //     Map<String, dynamic> data = new Map();
-      //     data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-      //     data['from_success'] = false;
-      //     return MaterialPageRoute(builder: (_) => OrderDetailPage(data), settings: RouteSettings(name: settings.name));
-      //
-      //   case "resetpassword":
-      //     return MaterialPageRoute(
-      //       builder: (_) =>
-      //           ResetPasswordPage(uri.pathSegments[uri.pathSegments.length - 1]),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case "productreviews":
-      //     return MaterialPageRoute(
-      //       builder: (_) => ReviewListPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case "myclubstatus":
-      //     return MaterialPageRoute(
-      //       builder: (_) => ApmexClubPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case "myclub":
-      //     return MaterialPageRoute(
-      //       builder: (_) => ApmexClubPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case "myrewards":
-      //     return MaterialPageRoute(
-      //       builder: (_) => BullionCardPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case "marketalerts":
-      //     String metalName = "gold";
-      //     if (uri.pathSegments.length > 2) {
-      //       metalName = uri.pathSegments.last;
-      //     }
-      //
-      //     return MaterialPageRoute(
-      //       builder: (_) => MarketAlertPage(metalName),
-      //       settings: RouteSettings(
-      //         name: settings.name,
-      //       ),
-      //     );
+        // Order Details
+        //   case "orderdetails":
+        //     Map<String, dynamic> data = new Map();
+        //     data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
+        //     data['from_success'] = false;
+        //     return MaterialPageRoute(builder: (_) => OrderDetailPage(data), settings: RouteSettings(name: settings.name));
+        //
+        //   case "resetpassword":
+        //     return MaterialPageRoute(
+        //       builder: (_) =>
+        //           ResetPasswordPage(uri.pathSegments[uri.pathSegments.length - 1]),
+        //       settings: RouteSettings(name: settings.name),
+        //     );
+        //
+        //   case "productreviews":
+        //     return MaterialPageRoute(
+        //       builder: (_) => ReviewListPage(),
+        //       settings: RouteSettings(name: settings.name),
+        //     );
+        //
+        //   case "myclubstatus":
+        //     return MaterialPageRoute(
+        //       builder: (_) => ApmexClubPage(),
+        //       settings: RouteSettings(name: settings.name),
+        //     );
+        //
+        //   case "myclub":
+        //     return MaterialPageRoute(
+        //       builder: (_) => ApmexClubPage(),
+        //       settings: RouteSettings(name: settings.name),
+        //     );
+        //
+        //   case "myrewards":
+        //     return MaterialPageRoute(
+        //       builder: (_) => BullionCardPage(),
+        //       settings: RouteSettings(name: settings.name),
+        //     );
+        //
+        //   case "marketalerts":
+        //     String metalName = "gold";
+        //     if (uri.pathSegments.length > 2) {
+        //       metalName = uri.pathSegments.last;
+        //     }
+        //
+        //     return MaterialPageRoute(
+        //       builder: (_) => MarketAlertPage(metalName),
+        //       settings: RouteSettings(
+        //         name: settings.name,
+        //       ),
+        //     );
 
         case "login":
           Map? data = settings.arguments as Map?;
@@ -490,7 +508,6 @@ class AppRouter {
             settings: RouteSettings(name: settings.name),
           );
 
-
         default:
           return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
       }
@@ -502,12 +519,10 @@ class AppRouter {
 /// NoTransitionRoute
 /// Custom route which has no transitions
 class NoTransitionRoute<T> extends MaterialPageRoute<T> {
-  NoTransitionRoute({required WidgetBuilder builder, RouteSettings? settings})
-      : super(builder: builder, settings: settings);
+  NoTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     return child;
   }
 }
@@ -537,8 +552,7 @@ class TransparentRoute extends PageRoute<void> {
   Duration get transitionDuration => Duration(milliseconds: 350);
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
     final result = builder(context);
     return FadeTransition(
       opacity: Tween<double>(begin: 0, end: 1).animate(animation),
@@ -554,12 +568,10 @@ class TransparentRoute extends PageRoute<void> {
 /// NoPushTransitionRoute
 /// Custom route which has no transition when pushed, but has a pop animation
 class NoPushTransitionRoute<T> extends CupertinoPageRoute<T> {
-  NoPushTransitionRoute({required WidgetBuilder builder, RouteSettings? settings})
-      : super(builder: builder, settings: settings);
+  NoPushTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     // is popping
     if (animation.status == AnimationStatus.reverse) {
       return super.buildTransitions(context, animation, secondaryAnimation, child);
@@ -571,16 +583,13 @@ class NoPushTransitionRoute<T> extends CupertinoPageRoute<T> {
 /// NoPopTransitionRoute
 /// Custom route which has no transition when popped, but has a push animation
 class NoPopTransitionRoute<T> extends MaterialPageRoute<T> {
-  NoPopTransitionRoute({required WidgetBuilder builder, RouteSettings? settings})
-      : super(builder: builder, settings: settings);
+  NoPopTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     // is pushing
     if (animation.status == AnimationStatus.forward) {
-      return super
-          .buildTransitions(context, animation, secondaryAnimation, child);
+      return super.buildTransitions(context, animation, secondaryAnimation, child);
     }
     return child;
   }
@@ -589,15 +598,12 @@ class NoPopTransitionRoute<T> extends MaterialPageRoute<T> {
 class RouteUtils {
   static RoutePredicate withNameLike(String name) {
     return (Route<dynamic> route) {
-      return !route.willHandlePopInternally &&
-          route is ModalRoute &&
-          route.settings.name != null &&
-          route.settings.name!.contains(name);
+      return !route.willHandlePopInternally && route is ModalRoute && route.settings.name != null && route.settings.name!.contains(name);
     };
   }
 }
 
 extension StringCasingExtension on String {
-  String toCapitalized() => length > 0 ?'${this[0].toUpperCase()}${substring(1).toLowerCase()}':'';
+  String toCapitalized() => length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
   String toTitleCase() => replaceAll(RegExp(' +'), ' ').split(' ').map((str) => str.toCapitalized()).join(' ');
 }

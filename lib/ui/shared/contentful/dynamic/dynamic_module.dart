@@ -1,9 +1,9 @@
+import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
-import 'market_news/market_news_list.dart';
 
 class DynamicModule extends StatelessWidget {
   final ModuleSettings? _setting;
@@ -54,12 +54,12 @@ class DynamicItem extends StatelessWidget {
       //     },
       //   );
       //
-      // case DynamicType.productView:
-      //   return ProductOverviewSection(pageSettings!.productDetails,pageSettings!.slug);
-      //
+      case DynamicType.productView:
+        return ProductOverviewSection(pageSettings!.productDetails,pageSettings!.slug);
+
       // case DynamicType.productDetail:
       //   return ProductDetailSection(pageSettings!.productDetails);
-      //
+
       // case DynamicType.marketNews:
       //   return MarketNewsList(setting!.dynamicItemData,metalName: metalName,);
       //

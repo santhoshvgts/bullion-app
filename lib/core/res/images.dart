@@ -8,6 +8,11 @@ class Images {
   static const String priceAlerts = "assets/images/price-alerts.png";
   static const String vaultDeals = "assets/images/vault-deals.png";
 
+  // Product Detail Screen
+  static const String threeSixtyDegree = "assets/images/360-degrees.png";
+
+  
+
   // BOTTOM MENU ICONS
   static const String home = "assets/images/v2/home.png";
   static const String home_active = "assets/images/v2/home_active.png";
