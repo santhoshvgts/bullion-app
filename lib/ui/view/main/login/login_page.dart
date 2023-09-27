@@ -76,7 +76,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                             padding: const EdgeInsets.only(
                               top: 10,
                             ),
-                            child: const Text("Forgot your Password?", textScaleFactor: 1, style: AppTextStyle.buttonSecondary),
+                            child: Text("Forgot your Password?", textScaleFactor: 1, style: AppTextStyle.buttonSecondary.copyWith(color: AppColor.primary)),
                           ),
                           onTap: () => viewModel.forgotPassword()),
                     ),
@@ -97,30 +97,37 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                       textStyle: AppTextStyle.buttonSecondary.copyWith(color: AppColor.text),
                       onPressed: () => viewModel.continueWithoutLogin(),
                     ),
-                    VerticalSpacing.d15px(),
-                    Button.outline(
-                      "Continue with Facebook",
-                      valueKey: const Key('btnFacebook'),
-                      iconWidget: Image.asset(
-                        Images.facebookIcon,
-                        height: 22,
-                      ),
-                      textStyle: AppTextStyle.buttonSecondary.copyWith(color: AppColor.text),
-                      onPressed: () => viewModel.continueWithoutLogin(),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 10)),
+                    const Padding(padding: EdgeInsets.only(top: 15)),
                     Align(
-                        alignment: Alignment.bottomCenter,
-                        child: InkWell(
-                          key: const Key("btnCreateAccount"),
-                          onTap: () => viewModel.register(),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            child: const Text("Create Account", textScaleFactor: 1, style: AppTextStyle.buttonSecondary),
-                          ),
-                        )),
+                      alignment: Alignment.bottomCenter,
+                      child: InkWell(
+                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                        onTap: viewModel.register,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Don’t have an account ?',
+                              style: AppTextStyle.normal.copyWith(
+                                color: AppColor.text,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            HorizontalSpacing.custom(value: 8),
+                            Text(
+                              'Sign Up',
+                              style: AppTextStyle.normal.copyWith(
+                                color: AppColor.primary,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -130,14 +137,13 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                   key: const Key("btnContinueAsGuest"),
                   onTap: () => viewModel.continueWithoutLogin(),
                   child: Container(
-                  
                     width: double.infinity,
                     alignment: Alignment.center,
-                    child: const Text("Explore as Guest", textScaleFactor: 1, style: AppTextStyle.buttonSecondary),
+                    child: Text("Explore as Guest", textScaleFactor: 1, style: AppTextStyle.buttonSecondary.copyWith(color: AppColor.primary)),
                   ),
                 ),
               ),
-              VerticalSpacing.custom(value: 26),
+              VerticalSpacing.custom(value: 16),
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -145,7 +151,8 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                   alignment: Alignment.center,
                   child: Text("@2023 Bullion.com All rights reserved", textScaleFactor: 1, style: AppTextStyle.normal.copyWith(fontSize: 12, color: AppColor.primaryText, fontWeight: FontWeight.w500)),
                 ),
-              )
+              ),
+              VerticalSpacing.custom(value: 5),
             ],
           ),
         ),

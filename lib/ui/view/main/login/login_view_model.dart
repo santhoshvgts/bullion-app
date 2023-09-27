@@ -36,7 +36,7 @@ class LoginViewModel extends VGTSBaseViewModel {
   }
 
   forgotPassword() {
-    navigationService.pushReplacementNamed(Routes.forgotPassword, arguments: fromMain);
+    navigationService.pushNamed(Routes.forgotPassword, arguments: fromMain);
   }
 
   register() {
