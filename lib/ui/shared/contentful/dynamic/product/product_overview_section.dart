@@ -118,7 +118,7 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
         onIndexChanged: (index) {
           viewModel.activeIndex = index;
         },
-        itemCount: images!.length,
+        itemCount: images!.length, 
         loop: true,
         layout: SwiperLayout.DEFAULT,
         pagination: SwiperPagination(
