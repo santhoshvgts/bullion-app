@@ -15,15 +15,16 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:stacked/stacked.dart';
 
-const double _searchBarHeight = 42;
-const double _appBarCollapsedHeight = kToolbarHeight;
-const double _appBarExpandedHeight = 75 + _searchBarHeight; // 115
 
 class DashboardContentPage extends StatelessWidget {
 
   final String? path;
 
   const DashboardContentPage({ key, this.path }) : super(key: key);
+
+  // final double _searchBarHeight = 35;
+  final double _appBarCollapsedHeight = kToolbarHeight;
+  final double _appBarExpandedHeight = 70 + 35; // 115
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +48,16 @@ class DashboardContentPage extends StatelessWidget {
                         SliverLayoutBuilder(
                             builder: (context, constraints) {
                             return SliverAppBar(
-                                backgroundColor: AppColor.primary,
+                                backgroundColor: AppColor.white,
                                 titleSpacing: 0,
-                                elevation: 0,
                                 toolbarHeight: _appBarCollapsedHeight,
                                 collapsedHeight: _appBarCollapsedHeight,
                                 expandedHeight: _appBarExpandedHeight,
                                 floating: false,
                                 pinned: true,
+                                forceElevated: true,
+                                elevation: 1,
+                                shadowColor: AppColor.secondaryBackground,
                                 flexibleSpace: FlexibleSpaceBar.createSettings(
                                   currentExtent: _appBarCollapsedHeight,
                                   minExtent: _appBarCollapsedHeight,
@@ -66,14 +69,16 @@ class DashboardContentPage extends StatelessWidget {
                                       rightPadding: viewModel.titlePaddingHorizontal,
                                     ),
                                     background: AppBar(
-                                      backgroundColor: AppColor.primary,
+                                      backgroundColor: AppColor.white,
                                       centerTitle: false,
-                                      title: Image.asset(Images.appLogo, height: 20, color: Colors.white,),
+                                      elevation: 1,
+                                      shadowColor: AppColor.secondaryBackground,
+                                      title: Image.asset(Images.appLogo, height: 20,),
                                     ),
                                    ),
                                 ),
                                 actions: const [
-                                  CartButton(),
+                                  CartButton.light(),
                                 ],
                               );
                         })
@@ -107,12 +112,13 @@ class _AppBar extends PreferredSize  {
   _AppBar({ required this.path,}) : super(
     preferredSize:  const Size.fromHeight(kToolbarHeight),
     child: AppBar(
-      backgroundColor: AppColor.primary,
+      backgroundColor: AppColor.white,
       titleSpacing: 0,
-      elevation: 0,
-      title: SearchCardSection(),
+      elevation: 1,
+      shadowColor: AppColor.secondaryBackground,
+      title: SearchCardSection(rightPadding: 0,),
       actions: const [
-        CartButton()
+        CartButton.light()
       ],
     )
   );

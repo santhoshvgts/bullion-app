@@ -19,7 +19,6 @@ class DashboardContentViewModel extends VGTSBaseViewModel {
 
   bool _resumeRefresh = false;
 
-
   bool get resumeRefresh => _resumeRefresh;
 
   User? get user => locator<AuthenticationService>().getUser;
@@ -50,7 +49,6 @@ class DashboardContentViewModel extends VGTSBaseViewModel {
   double get maxExtent => scrollController.position.maxScrollExtent;
   double get deltaExtent => maxExtent - minExtent;
 
-
   double titlePaddingHorizontal = 15;
   double titlePaddingTop = 15;
 
@@ -71,10 +69,11 @@ class DashboardContentViewModel extends VGTSBaseViewModel {
       notifyListeners();
   }
 
-  double _remapCurrentExtent(Tween<double> target) {
-    final double? deltaTarget = target.end! - target.begin!;
 
-    double? currentTarget = (((currentExtent - minExtent) * deltaTarget!) / deltaExtent) + target.begin!;
+  double _remapCurrentExtent(Tween<double> target) {
+    final double deltaTarget = target.end! - target.begin!;
+
+    double? currentTarget = (((currentExtent - minExtent) * deltaTarget) / deltaExtent) + target.begin!;
     double? t = (currentTarget - target.begin!) / deltaTarget;
 
     double? curveT =  Curves.easeOutCubic.transform(t <= 1.0 ? t : 1.0);

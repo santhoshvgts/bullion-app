@@ -27,7 +27,7 @@ class SearchCardSection extends PreferredSize {
         margin: EdgeInsets.only(left: leftPadding ?? 15, right: rightPadding ?? 15),
         padding: const EdgeInsets.only(left: 10.0),
         decoration: BoxDecoration(
-            color: AppColor.white,
+            color: AppColor.secondaryBackground,
             borderRadius: BorderRadius.circular(50),
             border: Border.all(color: Colors.black12)
         ),
