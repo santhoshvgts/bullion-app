@@ -5,6 +5,7 @@ import 'package:bullion/ui/shared/contentful/product/product_module.dart';
 import 'package:bullion/ui/shared/contentful/standard/standard_module.dart';
 import 'package:bullion/ui/view/core/content_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/loading_data.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/core/constants/alignment.dart';
@@ -69,39 +70,47 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                     child: SingleChildScrollView(
                       controller: enableController! ? viewModel.scrollController : null,
                       child: Column(children: [
-                        if (viewModel.modules!.isEmpty)
-                          const CircularProgressIndicator()
-                        // LoadingData()
-                        else
-                          ...viewModel.modules!.map((module) {
-                            switch (module!.moduleType) {
-                              case ModuleType.dynamic:
-                                return DynamicModule(
-                                  module,
-                                  viewModel.pageSetting,
-                                  metalName: metalName,
-                                );
 
-                              case ModuleType.standard:
-                                return StandardModule(module);
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return FadeTransition(opacity: animation, child: child);
+                          },
+                          child: viewModel.modules?.isNotEmpty == true ? Column(
+                            children: [
+                              ...viewModel.modules?.map((module) {
+                                switch (module?.moduleType) {
+                                  case ModuleType.dynamic:
+                                    return DynamicModule(
+                                      module,
+                                      viewModel.pageSetting,
+                                      metalName: metalName,
+                                    );
 
-                              case ModuleType.product:
-                              case ModuleType.productList:
-                                return ProductModule(module,
-                                    controller: viewModel.productModuleController,
-                                    sortFilterWidget: SortFilterWidget(
-                                      key: viewModel.sortFilterWidgetKey,
-                                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                                    ),
-                                    isLoadingFilter: viewModel.isBusy);
+                                  case ModuleType.standard:
+                                    return StandardModule(module);
 
-                              case ModuleType.banner:
-                                return BannerModule(module);
+                                  case ModuleType.product:
+                                  case ModuleType.productList:
+                                    return ProductModule(module,
+                                        controller: viewModel.productModuleController,
+                                        sortFilterWidget: SortFilterWidget(
+                                          key: viewModel.sortFilterWidgetKey,
+                                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                                        ),
+                                        isLoadingFilter: viewModel.isBusy);
 
-                              default:
-                                return Container();
-                            }
-                          }).toList(),
+                                  case ModuleType.banner:
+                                    return BannerModule(module);
+
+                                  default:
+                                    return Container();
+                                }
+                              }).toList() ?? []
+                            ],
+                          ) : LoadingData(),
+                        ),
+
                         if (viewModel.paginationLoading)
                           Container(
                               margin: const EdgeInsets.all(15),

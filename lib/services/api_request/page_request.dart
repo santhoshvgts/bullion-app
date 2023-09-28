@@ -12,4 +12,12 @@ class PageRequest {
     return RequestSettings("/pages/get-route?url=$url", RequestMethod.GET, params: null, authenticated: true);
   }
 
+  static RequestSettings filterProduct({ required String path }) {
+    return RequestSettings(path, RequestMethod.GET, params: null, authenticated: true);
+  }
+
+  static RequestSettings paginate({ required String path }) {
+    return RequestSettings(path, RequestMethod.GET, params: null, authenticated: true);
+  }
+
 }

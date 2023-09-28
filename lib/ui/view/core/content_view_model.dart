@@ -1,13 +1,8 @@
-import 'package:bullion/services/api_request/auth_request.dart';
 import 'package:bullion/services/api_request/page_request.dart';
-import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/shared/contentful/product/product_module.dart';
-import 'package:bullion/ui/shared/contentful/product/sort_filter/filter_bottom_sheet.dart';
-import 'package:bullion/ui/shared/contentful/product/sort_filter/sort_bottom_sheet.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/core/constants/module_type.dart';
-import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/product_item.dart';
@@ -16,7 +11,6 @@ import 'package:bullion/services/shared/analytics_service.dart';
 import '../../../../locator.dart';
 import '../../../../router.dart';
 import '../../../services/shared/eventbus_service.dart';
-import '../../../../services/shared/preference_service.dart';
 
 class ContentViewModel extends VGTSBaseViewModel {
   GlobalKey sortFilterWidgetKey = GlobalKey();
@@ -168,28 +162,28 @@ class ContentViewModel extends VGTSBaseViewModel {
   }
 
   Future<ModuleSettings?> paginate(String url) async {
-    // setBusy(true);
-    // notifyListeners();
-    //
-    // ModuleSettings? data = await categoryApi?.paginateProducts(url);
-    //
-    // setBusy(false);
-    // notifyListeners();
-    //
-    // // Trigger the paginate function in Product Module Controller that associate with
-    // // the product module
-    // // [Returns] next page product list fetch from api
-    // ProductModel productModel = ProductModel.fromJson(data?.productModel);
-    //
-    // // get the list of product already exists in product module
-    // List<ProductOverview> productList = ProductModel.fromJson(productListingModule?.productModel).products ?? [];
-    //
-    // // insert existing products to new product list
-    // productModel.products?.insertAll(0, productList);
-    //
-    // data?.productModel = productModel.toJson();
+    setBusy(true);
+    notifyListeners();
 
-    // return data;
+    ModuleSettings? data = (await request<PageSettings>(PageRequest.paginate(path: url)))?.productListingModule;
+
+    setBusy(false);
+    notifyListeners();
+
+    // Trigger the paginate function in Product Module Controller that associate with
+    // the product module
+    // [Returns] next page product list fetch from api
+    ProductModel productModel = ProductModel.fromJson(data?.productModel);
+
+    // get the list of product already exists in product module
+    List<ProductOverview> productList = ProductModel.fromJson(productListingModule?.productModel).products ?? [];
+
+    // insert existing products to new product list
+    productModel.products?.insertAll(0, productList);
+
+    data?.productModel = productModel.toJson();
+
+    return data;
   }
 
   findAndReplaceModuleSetting(ModuleSettings? moduleSettings) async {

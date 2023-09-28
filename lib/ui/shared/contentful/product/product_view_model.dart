@@ -51,10 +51,10 @@ class ProductViewModel extends BaseViewModel {
   init(ModuleSettings? settings) {
     this.settings = settings;
     if (settings?.moduleType == ModuleType.productList) {
-      this._productListModule = ProductModel.fromJson(settings?.productModel);
-      this._items = _productListModule!.products;
+      _productListModule = ProductModel.fromJson(settings?.productModel);
+      _items = _productListModule!.products;
     } else {
-      this._items = (settings?.productModel as List).map((e) => ProductOverview.fromJson(e)).toList();
+      _items = (settings?.productModel as List?)?.map((e) => ProductOverview.fromJson(e)).toList() ?? [];
     }
     notifyListeners();
   }

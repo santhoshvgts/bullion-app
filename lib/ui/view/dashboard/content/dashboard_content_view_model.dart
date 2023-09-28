@@ -32,7 +32,7 @@ class DashboardContentViewModel extends VGTSBaseViewModel {
 
   refreshPage() async {
     resumeRefresh = true;
-    await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(const Duration(milliseconds: 300));
     resumeRefresh = false;
   }
 

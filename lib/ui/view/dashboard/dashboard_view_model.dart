@@ -10,15 +10,15 @@ class DashboardViewModel extends VGTSBaseViewModel {
   final PersistentTabController bottomNavController = PersistentTabController(initialIndex: 0);
 
   final List<Widget> pages = [
-    DashboardContentPage(key: const PageStorageKey('Shop'), path: "/pages/home"),
+    const DashboardContentPage(key: PageStorageKey('Shop'), path: "/pages/home"),
 
-    DashboardContentPage(key: const PageStorageKey('Shop'), path: "/pages/home"),
+    const DashboardContentPage(key: PageStorageKey('Shop'), path: "/pages/home"),
 
-    DashboardContentPage(key: const PageStorageKey('Deals'), path: "/pages/deals"),
+    const DashboardContentPage(key: PageStorageKey('Charts'), path: "/spot-prices"),
 
-    DashboardContentPage(key: const PageStorageKey('Spot Price'), path: "/spot-prices?includeCommodoties=true"),
+    const DashboardContentPage(key: PageStorageKey('Spot Price'), path: "/pages/deals"),
 
-    DashboardContentPage(key: const PageStorageKey('BullionClub'), path: "/pages/bullion-club"),
+    const DashboardContentPage(key: PageStorageKey('BullionClub'), path: "/pages/bullion-club"),
   ];
 
 

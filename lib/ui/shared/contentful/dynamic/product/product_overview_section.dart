@@ -43,32 +43,57 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
           Stack(
             children: [
 
-              if (viewModel.productDetails!.productPictures == null)
+              _ImageList(viewModel.productDetails?.productPictures ?? [ viewModel.productDetails!.overview!.primaryImageUrl! ]),
+
+              if (viewModel.productDetails?.overview?.ribbonText?.isNotEmpty == true)
                 Positioned(
-                    child: Container(
-                      color: AppColor.white,
-                      height: MediaQuery.of(context).size.height / 1.5,
-                      width: double.infinity,
-                      child: NetworkImageLoader(
-                        image: viewModel.productDetails!.overview!.primaryImageUrl,
-                        fit: BoxFit.contain,
-                      ),
+                  top: kToolbarHeight + 10,
+                  child: Container(
+                    decoration: BoxDecoration(color: viewModel.productDetails!.overview!.ribbonTextBackgroundColor,),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    child: Text(
+                      viewModel.productDetails!.overview!.ribbonText!,
+                      style: const TextStyle(fontSize: 12, color: AppColor.white),
+                      textScaleFactor: 1,
                     )
-                )
-              else
-                Positioned(child: _ImageList(viewModel.productDetails!.productPictures)),
+                  ),
+                ),
 
               Positioned(
-                top: kToolbarHeight + 15,
+                bottom: 70,
+                right: 10,
                 child: Container(
-                  decoration: BoxDecoration(color: viewModel.productDetails!.overview!.ribbonTextBackgroundColor,),
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  child: Text(
-                    viewModel.productDetails!.overview!.ribbonText!,
-                    style: const TextStyle(fontSize: 12, color: AppColor.white),
-                    textScaleFactor: 1,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: AppStyle.chipShadow
+                  ),
+                  child: IconButton(
+                    icon: const Icon(CupertinoIcons.heart, color: AppColor.red,),
+                    onPressed: () {
+
+                    },
+                  ),
+                )
+              ),
+
+              Positioned(
+                  bottom: 130,
+                  right: 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: AppStyle.chipShadow
+                    ),
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      icon: const Icon(Icons.attach_money, color: AppColor.red,),
+                      onPressed: () {
+
+                      },
+                    ),
                   )
-                ),
               ),
 
             ],
@@ -96,12 +121,12 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
 class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
   final List<String>? images;
 
-  _ImageList(this.images);
+  const _ImageList(this.images);
 
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-      height: MediaQuery.of(context).size.height / 1.5,
+      height: MediaQuery.of(context).size.height / 1.55,
       color: AppColor.white,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
@@ -109,9 +134,14 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
             onTap: () {
               // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(images, index)));
             },
-            child: NetworkImageLoader(
-              image: images![index],
-              fit: BoxFit.contain,
+            child: Container(
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 30, left: 5, right: 5),
+              child: NetworkImageLoader(
+                image: images![index],
+                fit: BoxFit.contain,
+
+              ),
             ),
           );
         },
@@ -119,7 +149,7 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
           viewModel.activeIndex = index;
         },
         itemCount: images!.length, 
-        loop: true,
+        loop: false,
         layout: SwiperLayout.DEFAULT,
         pagination: SwiperPagination(
           alignment: Alignment.bottomLeft,
@@ -667,7 +697,7 @@ class AlertToast extends StatelessWidget {
   final Function? onViewAllTap;
   final bool? showView;
 
-  AlertToast(
+  const AlertToast(
       this.productDetails, this.title, this.titleColor, this.onViewAllTap,
       {this.showView = false});
 

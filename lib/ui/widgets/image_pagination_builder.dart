@@ -1,3 +1,4 @@
+import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
@@ -32,7 +33,7 @@ class ImagePaginationBuilder extends SwiperPlugin {
                     config.controller.move(index);
                   },
                   child: Container(
-                    decoration: BoxDecoration(border: index == config.activeIndex ? Border.all(color: activeBorderColor!, width: 1) : null, borderRadius: BorderRadius.circular(5)),
+                    decoration: BoxDecoration(border: Border.all(color: index == config.activeIndex ? AppColor.primary : Colors.black.withOpacity(0.2), width: 1), borderRadius: BorderRadius.circular(5)),
                     padding: const EdgeInsets.all(5),
                     child: NetworkImageLoader(
                       image: e,

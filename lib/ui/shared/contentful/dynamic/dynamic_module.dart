@@ -1,4 +1,5 @@
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/spot_price/grid/spot_price_grid.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bullion/core/constants/module_type.dart';
@@ -43,9 +44,9 @@ class DynamicItem extends StatelessWidget {
       // case DynamicType.spotPriceStrip:
       //   return SpotPriceStripList(itemData:setting!.dynamicItemData,);
       //
-      // case DynamicType.spotPrice:
-      //   return SpotPriceGrid(pageSettings!.spotPriceWithPortfolio);
-      //
+      case DynamicType.spotPrice:
+        return SpotPriceGrid(pageSettings!.spotPriceWithPortfolio);
+
       // case DynamicType.spotPriceChart:
       //   return SpotPriceChartView(
       //     pageSettings!.slug,

@@ -1,6 +1,5 @@
 import 'package:bullion/services/page_storage_service.dart';
 import 'package:bullion/ui/shared/cart/cart_button.dart';
-import 'package:bullion/ui/shared/loading_widget.dart';
 import 'package:bullion/ui/shared/search_card_section.dart';
 import 'package:bullion/ui/view/core/content_wrapper.dart';
 import 'package:bullion/ui/view/dashboard/content/dashboard_content_view_model.dart';
@@ -9,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
-import 'package:bullion/core/res/spacing.dart';
-import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:stacked/stacked.dart';
@@ -88,8 +85,7 @@ class DashboardContentPage extends StatelessWidget {
                 ),)
               ),
           );
-        }
-        else {
+        } else {
           return PageWillPop(
             child: Scaffold(
               appBar: _AppBar(path: path ?? ''),
