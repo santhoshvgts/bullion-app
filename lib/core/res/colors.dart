@@ -64,6 +64,9 @@ class AppColor {
   static const Color bullionProgress = Color(0xffBF9A78);
   static const Color bullionProgressBg = Color(0xffADAAA7);
 
+  static const Color accountBg = Color(0x0D006936);
+  static const Color privacySubTitle = Color(0x6614203C);
+
   static Color metalColor(String metalName) {
     switch (metalName.toLowerCase()) {
       case "gold":
@@ -97,15 +100,21 @@ class AppColor {
   static Color opacityMetalColor(String metalName) {
     switch (metalName.toLowerCase()) {
       case "gold":
-        return const MaterialColor(0xFFF4BB40, {200: const Color.fromRGBO(244, 187, 64, .3)}).shade200;
+        return const MaterialColor(
+            0xFFF4BB40, {200: const Color.fromRGBO(244, 187, 64, .3)}).shade200;
       case "silver":
-        return const MaterialColor(0xFF797979, {600: const Color.fromRGBO(121, 121, 121, .7)}).shade600;
+        return const MaterialColor(
+                0xFF797979, {600: const Color.fromRGBO(121, 121, 121, .7)})
+            .shade600;
       case "platinum":
-        return const MaterialColor(0xFFEA616B, {700: const Color.fromRGBO(234, 97, 107, .8)}).shade700;
+        return const MaterialColor(
+            0xFFEA616B, {700: const Color.fromRGBO(234, 97, 107, .8)}).shade700;
       case "palladium":
-        return const MaterialColor(0xFF5F38B7, {600: const Color.fromRGBO(95, 56, 183, .7)}).shade600;
+        return const MaterialColor(
+            0xFF5F38B7, {600: const Color.fromRGBO(95, 56, 183, .7)}).shade600;
       default:
-        return const MaterialColor(0xFF5F38B7, {200: const Color.fromRGBO(95, 56, 183, .3)}).shade200;
+        return const MaterialColor(
+            0xFF5F38B7, {200: const Color.fromRGBO(95, 56, 183, .3)}).shade200;
     }
   }
 
