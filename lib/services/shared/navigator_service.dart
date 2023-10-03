@@ -71,6 +71,8 @@ class NavigationService {
     );
   }
 
+
+
   Future<dynamic> popAllAndPushNamed(
     String routeName, {
     Object? arguments,
@@ -78,6 +80,13 @@ class NavigationService {
     return navigatorKey.currentState!.pushNamedAndRemoveUntil(
       routeName,
       (_) => false,
+      arguments: arguments,
+    );
+  }
+
+      Future<dynamic> popAndPushNamed(String routeName, {Object? arguments}) {
+    return navigatorKey.currentState!.popAndPushNamed(
+      routeName,
       arguments: arguments,
     );
   }

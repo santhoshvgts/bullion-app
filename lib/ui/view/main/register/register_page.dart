@@ -1,7 +1,9 @@
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/router.dart';
 import 'package:bullion/ui/view/main/register/register_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -38,7 +40,11 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                 style: AppTextStyle.normal.copyWith(fontSize: 24, color: AppColor.text),
               ),
               VerticalSpacing.custom(value: 45),
-              EditTextField(
+              Form(
+                key: viewModel.formKey ,
+                child: Column(
+                children: [
+                  EditTextField(
                 "First Name",
                 viewModel.nameController,
                 placeholder: "john",
@@ -67,14 +73,36 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                 viewModel.passwordController,
                 placeholder: "********",
                 margin: const EdgeInsets.only(top: 25),
-                onSubmitted: (value) {},
+                onSubmitted: (value) {
+                  FocusScope.of(context).unfocus();
+                },
                 onChanged: (value) {},
               ),
+                ],
+              ) ),
+              
               VerticalSpacing.custom(value: 28),
               Button(
                 "Create Account",
                 valueKey: const Key("btnSignIn"),
-                onPressed: () => viewModel.login(),
+                onPressed: () => viewModel.register(context),
+              ),
+              VerticalSpacing.d15px(),
+              Center(
+                  child: Text(
+                '--------   Or sign in with   --------',
+                style: AppTextStyle.normal.copyWith(color: AppColor.secondaryText, fontSize: 12),
+              )),
+              VerticalSpacing.d15px(),
+              Button.outline(
+                "Continue with Google",
+                valueKey: const Key('btnGoogle'),
+                iconWidget: Image.asset(
+                  Images.googleIcon,
+                  height: 20,
+                ),
+                textStyle: AppTextStyle.buttonSecondary.copyWith(color: AppColor.text),
+                onPressed: () => viewModel.continueWithoutLogin(),
               ),
             ],
           ),

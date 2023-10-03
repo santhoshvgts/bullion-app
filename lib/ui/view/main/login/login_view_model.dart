@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
@@ -6,6 +8,7 @@ import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
+import 'package:vgts_plugin/form/utils/input_validator.dart';
 import '../../../../core/constants/module_type.dart';
 
 class LoginViewModel extends VGTSBaseViewModel {
@@ -18,17 +21,8 @@ class LoginViewModel extends VGTSBaseViewModel {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  EmailFormFieldController emailController = EmailFormFieldController(const ValueKey("txtEmail"));
-  PasswordFormFieldController passwordController = PasswordFormFieldController(const ValueKey("txtPassword"));
-
-  bool _rememberCheck = false;
-
-  bool get rememberCheck => _rememberCheck;
-
-  set rememberCheck(bool value) {
-    _rememberCheck = value;
-    notifyListeners();
-  }
+  EmailFormFieldController emailController = EmailFormFieldController(const ValueKey("txtEmail"), required: true, requiredText: 'Required Email Address !');
+  PasswordFormFieldController passwordController = PasswordFormFieldController(const ValueKey("txtPassword"), required: true, requiredText: 'Required Password !');
 
   init(bool fromMain, String? redirectRoute) {
     this.fromMain = fromMain;
@@ -43,22 +37,12 @@ class LoginViewModel extends VGTSBaseViewModel {
     navigationService.pushNamed(Routes.register, arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
   }
 
-
-
-  continueWithoutLogin() {
-    preferenceService.setFirstTimeAppOpen(false);
-    navigationService.pushReplacementNamed(Routes.dashboard);
-    locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
-  }
-
-  Future<String> login() async {
+  login() async {
     if (formKey.currentState?.validate() != true) {
-      return "Invalid Information";
+      return;
     }
-
     setBusy(true);
     AuthResponse? result = await _authenticationService.login(emailController.text, passwordController.text);
-
     if (result != null) {
       if (fromMain) {
         navigationService.popAllAndPushNamed(Routes.dashboard);
@@ -66,11 +50,16 @@ class LoginViewModel extends VGTSBaseViewModel {
         navigationService.pushReplacementNamed(redirectRoute!);
       } else {
         navigationService.pop(returnValue: true);
-        locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
       }
       preferenceService.setFirstTimeAppOpen(false);
     }
     setBusy(false);
-    return "Success";
+    notifyListeners();
+  }
+
+  continueWithoutLogin() {
+    preferenceService.setFirstTimeAppOpen(false);
+    navigationService.pushReplacementNamed(Routes.dashboard);
+    locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
   }
 }

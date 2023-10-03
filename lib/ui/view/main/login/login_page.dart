@@ -2,6 +2,7 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/locator.dart';
 import 'package:bullion/ui/view/main/login/login_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -24,14 +25,40 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
     return Scaffold(
-      appBar: AppBar(automaticallyImplyLeading: false, elevation: 0),
+      bottomNavigationBar: SizedBox(
+        height: 85,
+        child: Column(
+          children: [
+            InkWell(
+              key: const Key("btnContinueAsGuest"),
+              onTap: () => viewModel.continueWithoutLogin(),
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: Text("Explore as Guest", textScaleFactor: 1, style: AppTextStyle.buttonSecondary.copyWith(color: AppColor.primary)),
+              ),
+            ),
+            VerticalSpacing.custom(value: 16),
+            Container(
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: Text("@2023 Bullion.com All rights reserved", textScaleFactor: 1, style: AppTextStyle.normal.copyWith(fontSize: 12, color: AppColor.primaryText, fontWeight: FontWeight.w500)),
+            ),
+            VerticalSpacing.custom(value: 5),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        elevation: 0,
+        leading: IconButton(onPressed: () => navigationService.pop(), icon: const Icon(Icons.arrow_back)),
+      ),
       body: SafeArea(
         child: TapOutsideUnFocus(
           child: Column(
             children: [
               Expanded(
                 child: ListView(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                   children: <Widget>[
                     Align(
                       alignment: Alignment.centerLeft,
@@ -47,27 +74,32 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                       style: AppTextStyle.header,
                     ),
                     VerticalSpacing.custom(value: 70),
-                    AutofillGroup(
-                        child: Column(
-                      children: [
-                        EditTextField(
-                          "Email Address",
-                          viewModel.emailController,
-                          placeholder: "john@bullion.com",
-                          onSubmitted: (value) {},
-                          onChanged: (value) {},
-                        ),
-                        VerticalSpacing.custom(value: 14),
-                        EditTextField.password(
-                          "Password",
-                          viewModel.passwordController,
-                          placeholder: "********",
-                          margin: const EdgeInsets.only(top: 25),
-                          onSubmitted: (value) {},
-                          onChanged: (value) {},
-                        ),
-                      ],
-                    )),
+                    Form(
+                      key: viewModel.formKey,
+                      child: AutofillGroup(
+                          child: Column(
+                        children: [
+                          EditTextField(
+                            "Email Address",
+                            viewModel.emailController,
+                            placeholder: "john@bullion.com",
+                            key: const Key("txtEmailAddress"),
+                            onChanged: (value) {},
+                          ),
+                          VerticalSpacing.custom(value: 14),
+                          EditTextField.password(
+                            "Password",
+                            viewModel.passwordController,
+                            placeholder: "********",
+                            margin: const EdgeInsets.only(top: 25),
+                            onSubmitted: (value) {
+                              FocusScope.of(context).unfocus();
+                            },
+                            onChanged: (value) {},
+                          ),
+                        ],
+                      )),
+                    ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: InkWell(
@@ -95,7 +127,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                         height: 20,
                       ),
                       textStyle: AppTextStyle.buttonSecondary.copyWith(color: AppColor.text),
-                      onPressed: () => viewModel.continueWithoutLogin(),
+                      onPressed: () {},
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     Align(
@@ -129,27 +161,6 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                       ),
                     ),
                   ],
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: InkWell(
-                  key: const Key("btnContinueAsGuest"),
-                  onTap: () => viewModel.continueWithoutLogin(),
-                  child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    child: Text("Explore as Guest", textScaleFactor: 1, style: AppTextStyle.buttonSecondary.copyWith(color: AppColor.primary)),
-                  ),
-                ),
-              ),
-              VerticalSpacing.custom(value: 16),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: Text("@2023 Bullion.com All rights reserved", textScaleFactor: 1, style: AppTextStyle.normal.copyWith(fontSize: 12, color: AppColor.primaryText, fontWeight: FontWeight.w500)),
                 ),
               ),
               VerticalSpacing.custom(value: 5),
