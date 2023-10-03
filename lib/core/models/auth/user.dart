@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, unnecessary_string_interpolations
+
 import 'package:bullion/core/models/base_model.dart';
 
 class User extends BaseModel {
@@ -18,7 +20,7 @@ class User extends BaseModel {
   String? clubStatus;
   String? clubImage;
 
-  String get fullName => "${firstName ?? '' + lastName!}";
+  String get fullName => "${firstName ?? '${lastName!}'}";
 
   User({this.userId, this.firstName, this.lastName, this.email, this.postedDate});
 

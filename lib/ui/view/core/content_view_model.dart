@@ -1,22 +1,15 @@
-import 'package:bullion/services/api_request/auth_request.dart';
 import 'package:bullion/services/api_request/page_request.dart';
-import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/shared/contentful/product/product_module.dart';
-import 'package:bullion/ui/shared/contentful/product/sort_filter/filter_bottom_sheet.dart';
-import 'package:bullion/ui/shared/contentful/product/sort_filter/sort_bottom_sheet.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/core/constants/module_type.dart';
-import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
-import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import '../../../../locator.dart';
 import '../../../../router.dart';
 import '../../../services/shared/eventbus_service.dart';
-import '../../../../services/shared/preference_service.dart';
 
 class ContentViewModel extends VGTSBaseViewModel {
   GlobalKey sortFilterWidgetKey = GlobalKey();

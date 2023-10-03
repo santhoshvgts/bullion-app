@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
@@ -107,7 +109,7 @@ class AppRouter {
 
       case Routes.introPage:
         return NoTransitionRoute(
-          builder: (_) => IntroPage(),
+          builder: (_) => const IntroPage(),
           settings: RouteSettings(name: settings.name),
         );
 
@@ -311,14 +313,13 @@ class AppRouter {
     var uri = Uri.parse(settings.name!);
     Logger.d(settings.name);
     Logger.d(uri.pathSegments.toString());
-    Logger.d(uri.pathSegments.toString());
 
     try {
       var campaign = uri.queryParameters['_campaign'];
       if (campaign != null && campaign.isNotEmpty) {
         var promo = campaign.split('-');
         locator<AnalyticsService>().logEvent('select_promotion', {
-          'promotion_id': promo.length < 1 ? '' : promo[0] ,
+          'promotion_id': promo.isEmpty ? '' : promo[0] ,
           'promotion_name': promo.length < 2 ? '' : promo[1],
           'creative_name': promo.length < 3 ? '' : promo[2],
           'creative_slot': promo.length < 4 ? '' : promo[3],
@@ -534,7 +535,7 @@ class TransparentRoute extends PageRoute<void> {
   bool get maintainState => true;
 
   @override
-  Duration get transitionDuration => Duration(milliseconds: 350);
+  Duration get transitionDuration => const Duration(milliseconds: 350);
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,

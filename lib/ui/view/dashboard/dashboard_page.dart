@@ -3,11 +3,12 @@
 import 'package:bullion/ui/view/dashboard/dashboard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
+  const DashboardPage({super.key});
+
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, DashboardViewModel viewModel, Widget? child) {
