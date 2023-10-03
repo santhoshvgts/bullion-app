@@ -66,6 +66,7 @@ class AppColor {
 
   static const Color accountBg = Color(0x0D006936);
   static const Color privacySubTitle = Color(0x6614203C);
+  static const Color mercury = Color(0xffE6E6E6);
 
   static Color metalColor(String metalName) {
     switch (metalName.toLowerCase()) {

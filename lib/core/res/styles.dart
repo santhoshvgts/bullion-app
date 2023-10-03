@@ -195,6 +195,12 @@ class AppTextStyle {
   static const TextStyle subTitleReg = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w400,
+      color: AppColor.privacySubTitle,
+      fontFamily: AppTextStyle.fontFamily);
+
+  static const TextStyle subTitleRegOpaque = TextStyle(
+      fontSize: AppFontSize.dp14,
+      fontWeight: FontWeight.w400,
       color: AppColor.text,
       fontFamily: AppTextStyle.fontFamily);
 
@@ -220,5 +226,11 @@ class AppTextStyle {
       fontSize: AppFontSize.dp12,
       fontWeight: FontWeight.w500,
       color: AppColor.privacySubTitle,
+      fontFamily: AppTextStyle.fontFamily);
+
+  static const TextStyle email = TextStyle(
+      fontSize: AppFontSize.dp14,
+      fontWeight: FontWeight.w500,
+      color: AppColor.mercury,
       fontFamily: AppTextStyle.fontFamily);
 }
