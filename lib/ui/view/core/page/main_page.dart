@@ -1,13 +1,8 @@
-import 'package:bullion/core/res/styles.dart';
-import 'package:bullion/locator.dart';
-import 'package:bullion/router.dart';
-import 'package:bullion/services/shared/navigator_service.dart';
-import 'package:bullion/ui/shared/cart/cart_button.dart';
-import 'package:bullion/ui/view/core/content_wrapper.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/ui/shared/cart/cart_button.dart';
+import 'package:bullion/ui/shared/search_card_section.dart';
+import 'package:bullion/ui/view/core/content_wrapper.dart';
+import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
   final String? path;
@@ -35,27 +30,31 @@ class _MainPageState extends State<MainPage> {
     BuildContext context,
   ) {
     return Scaffold(
-      backgroundColor: AppColor.secondaryBackground,
-      appBar: AppBar(
-       centerTitle: true,
-        elevation: 1,
-        titleSpacing: 0,
-        title: Text(title ?? "" , textAlign: TextAlign.center, style: AppTextStyle.appBarTitle.copyWith(fontSize: 16),),
-        actions: [
-          IconButton(icon: const Icon(CupertinoIcons.search, color: AppColor.primaryDark,), onPressed: (){
-              locator<NavigationService>().pushNamed(Routes.search);
-            },
+        backgroundColor: AppColor.secondaryBackground,
+        appBar: AppBar(
+          centerTitle: true,
+          elevation: 1,
+          titleSpacing: 0,
+          title: SearchCardSection(
+            rightPadding: 0,
+            leftPadding: 0,
+            placeholder: title,
           ),
-          const CartButton.light(),
-        ],
-      ),
-      body: ContentWrapper(widget.path, controller: controller,  onPageFetched: (pageSetting){
-        if (mounted) {
-          setState(() {
-            title = pageSetting?.title;
-          });
-        }
-      },)
-    );
+          // title: Text(title ?? "" , textAlign: TextAlign.center, style: AppTextStyle.appBarTitle.copyWith(fontSize: 16),),
+          actions: [
+            const CartButton.light(),
+          ],
+        ),
+        body: ContentWrapper(
+          widget.path,
+          controller: controller,
+          onPageFetched: (pageSetting) {
+            if (mounted) {
+              setState(() {
+                title = pageSetting?.title;
+              });
+            }
+          },
+        ));
   }
 }

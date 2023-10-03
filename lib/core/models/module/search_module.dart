@@ -1,24 +1,14 @@
+import 'package:bullion/core/models/base_model.dart';
 
-class SearchList{
-  List<searchProduct>? product;
-
-  SearchList({this.product});
-
-  factory SearchList.fromJson(List<dynamic> parsedJson) {
-    return new SearchList(
-      product : parsedJson.map((i) => searchProduct.fromJson(i)).toList(),
-    );
-  }
-
-}
-
-class searchProduct {
+class SearchResult extends BaseModel {
   String? name;
   String? targetUrl;
 
-  searchProduct({this.name, this.targetUrl});
+  SearchResult({this.name, this.targetUrl});
 
-  searchProduct.fromJson(Map<String, dynamic> json) {
+  SearchResult fromJson(json) => SearchResult.fromJson(json);
+
+  SearchResult.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     targetUrl = json['target_url'];
   }

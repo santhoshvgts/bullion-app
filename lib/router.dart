@@ -4,6 +4,7 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
+import 'package:bullion/ui/view/core/search/search_page.dart';
 import 'package:bullion/ui/view/main/forgot_password/forgot_password_page.dart';
 import 'package:bullion/ui/view/main/intro/intro_page.dart';
 import 'package:bullion/ui/view/main/login/login_page.dart';
@@ -195,14 +196,14 @@ class AppRouter {
       //   case Routes.main:
       //     return MaterialPageRoute(builder: (context) => MainPage(path: settings.name));
       //
-      //   case Routes.search:
-      //     return MaterialPageRoute(
-      //       builder: (_) => SearchPage(),
-      //       settings: RouteSettings(
-      //         name: settings.name,
-      //       ),
-      //     );
-      //
+      case Routes.search:
+        return MaterialPageRoute(
+          builder: (_) => SearchPage(),
+          settings: RouteSettings(
+            name: settings.name,
+          ),
+        );
+
       //   case Routes.myFavorites:
       //     return MaterialPageRoute(
       //         builder: (_) => FavoritePage(),
@@ -341,12 +342,15 @@ class AppRouter {
     }
 
     if (uri.pathSegments.isEmpty) {
-      return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
+      return TransparentRoute(
+          builder: (context) =>
+              PageMiddleware(settings.name, settings.arguments));
     }
 
     switch (uri.pathSegments.first) {
       case "category":
-        return MaterialPageRoute(builder: (context) => MainPage(path: settings.name));
+        return MaterialPageRoute(
+            builder: (context) => MainPage(path: settings.name));
 
       // case "search":
       //   return MaterialPageRoute(builder: (context) => SearchResultPage(settings.name,));
@@ -421,7 +425,9 @@ class AppRouter {
 
       default:
         // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
-        return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
+        return TransparentRoute(
+            builder: (context) =>
+                PageMiddleware(settings.name, settings.arguments));
     }
   }
 
@@ -509,20 +515,26 @@ class AppRouter {
           );
 
         default:
-          return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
+          return TransparentRoute(
+              builder: (context) =>
+                  PageMiddleware(settings.name, settings.arguments));
       }
     }
-    return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
+    return TransparentRoute(
+        builder: (context) =>
+            PageMiddleware(settings.name, settings.arguments));
   }
 }
 
 /// NoTransitionRoute
 /// Custom route which has no transitions
 class NoTransitionRoute<T> extends MaterialPageRoute<T> {
-  NoTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
+  NoTransitionRoute({required WidgetBuilder builder, RouteSettings? settings})
+      : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     return child;
   }
 }
@@ -552,7 +564,8 @@ class TransparentRoute extends PageRoute<void> {
   Duration get transitionDuration => Duration(milliseconds: 350);
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation) {
     final result = builder(context);
     return FadeTransition(
       opacity: Tween<double>(begin: 0, end: 1).animate(animation),
@@ -568,13 +581,17 @@ class TransparentRoute extends PageRoute<void> {
 /// NoPushTransitionRoute
 /// Custom route which has no transition when pushed, but has a pop animation
 class NoPushTransitionRoute<T> extends CupertinoPageRoute<T> {
-  NoPushTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
+  NoPushTransitionRoute(
+      {required WidgetBuilder builder, RouteSettings? settings})
+      : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     // is popping
     if (animation.status == AnimationStatus.reverse) {
-      return super.buildTransitions(context, animation, secondaryAnimation, child);
+      return super
+          .buildTransitions(context, animation, secondaryAnimation, child);
     }
     return child;
   }
@@ -583,13 +600,17 @@ class NoPushTransitionRoute<T> extends CupertinoPageRoute<T> {
 /// NoPopTransitionRoute
 /// Custom route which has no transition when popped, but has a push animation
 class NoPopTransitionRoute<T> extends MaterialPageRoute<T> {
-  NoPopTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
+  NoPopTransitionRoute(
+      {required WidgetBuilder builder, RouteSettings? settings})
+      : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     // is pushing
     if (animation.status == AnimationStatus.forward) {
-      return super.buildTransitions(context, animation, secondaryAnimation, child);
+      return super
+          .buildTransitions(context, animation, secondaryAnimation, child);
     }
     return child;
   }
@@ -598,12 +619,19 @@ class NoPopTransitionRoute<T> extends MaterialPageRoute<T> {
 class RouteUtils {
   static RoutePredicate withNameLike(String name) {
     return (Route<dynamic> route) {
-      return !route.willHandlePopInternally && route is ModalRoute && route.settings.name != null && route.settings.name!.contains(name);
+      return !route.willHandlePopInternally &&
+          route is ModalRoute &&
+          route.settings.name != null &&
+          route.settings.name!.contains(name);
     };
   }
 }
 
 extension StringCasingExtension on String {
-  String toCapitalized() => length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
-  String toTitleCase() => replaceAll(RegExp(' +'), ' ').split(' ').map((str) => str.toCapitalized()).join(' ');
+  String toCapitalized() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
+      .split(' ')
+      .map((str) => str.toCapitalized())
+      .join(' ');
 }
