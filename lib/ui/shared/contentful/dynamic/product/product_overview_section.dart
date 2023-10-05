@@ -45,7 +45,9 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
     return Container(
       color: AppColor.white,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _Header(),
           Stack(
             children: [
               _ImageList(viewModel.productDetails?.productPictures ??
@@ -99,6 +101,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                   )),
             ],
           ),
+          VerticalSpacing.d5px(),
           _ProductInfoSection(),
           if (viewModel.productDetails!.productNotes != null) _ProductNotes(),
           if (viewModel.productDetails!.volumePricing == null)
@@ -109,6 +112,77 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
             _VolumePricing(),
           if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
             _CoinGradeSpecification()
+        ],
+      ),
+    );
+  }
+}
+
+class _Header extends ViewModelWidget<ProductDetailViewModel> {
+  @override
+  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 15,
+        right: 15,
+        top: 20,
+        bottom: 10,
+      ),
+      color: AppColor.white,
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 1.2,
+            child: Text(
+              viewModel.productDetails?.overview?.name ?? "-",
+              style: AppTextStyle.header,
+              textScaleFactor: 1,
+            ),
+          ),
+          VerticalSpacing.d10px(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (viewModel.productDetails!.overview!.reviewCount != 0)
+                RatingBar(
+                  initialRating:
+                      viewModel.productDetails?.overview?.avgRatings ?? 0,
+                  allowHalfRating: true,
+                  itemSize: 17,
+                  glow: true,
+                  glowColor: Colors.red,
+                  maxRating: 5,
+                  unratedColor: AppColor.disabled,
+                  ratingWidget: RatingWidget(
+                    full: const Icon(
+                      CupertinoIcons.star_fill,
+                      color: AppColor.primary,
+                    ),
+                    half: const Icon(
+                      CupertinoIcons.star_lefthalf_fill,
+                      color: AppColor.primary,
+                    ),
+                    empty: const Icon(
+                      CupertinoIcons.star,
+                      color: AppColor.primary,
+                    ),
+                  ),
+                  onRatingUpdate: (double value) {},
+                ),
+              HorizontalSpacing.d5px(),
+              Expanded(
+                  child: Text(
+                viewModel.productDetails!.overview!.reviewCount == 0
+                    ? ""
+                    : "${viewModel.productDetails?.overview?.avgRatings} | ${viewModel.productDetails!.overview!.reviewCount} Reviews",
+                textScaleFactor: 1,
+                textAlign: TextAlign.left,
+                style: AppTextStyle.body,
+              )),
+            ],
+          ),
         ],
       ),
     );
@@ -170,59 +244,11 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            viewModel.productDetails?.overview?.name ?? "-",
-            style: AppTextStyle.title,
-            textScaleFactor: 1,
-          ),
-          VerticalSpacing.d5px(),
           if (viewModel.productDetails!.overview!.productAction ==
               ProductInfoDisplayType.addToCart)
             _PriceInfo()
           else
             _AlertText(),
-          VerticalSpacing.d10px(),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if (viewModel.productDetails!.overview!.reviewCount != 0)
-                RatingBar(
-                  initialRating:
-                      viewModel.productDetails?.overview?.avgRatings ?? 0,
-                  allowHalfRating: true,
-                  itemSize: 15,
-                  glow: true,
-                  glowColor: Colors.red,
-                  maxRating: 5,
-                  unratedColor: AppColor.disabled,
-                  ratingWidget: RatingWidget(
-                    full: const Icon(
-                      CupertinoIcons.star_fill,
-                      color: AppColor.primary,
-                    ),
-                    half: const Icon(
-                      CupertinoIcons.star_lefthalf_fill,
-                      color: AppColor.primary,
-                    ),
-                    empty: const Icon(
-                      CupertinoIcons.star,
-                      color: AppColor.primary,
-                    ),
-                  ),
-                  onRatingUpdate: (double value) {},
-                ),
-              HorizontalSpacing.d5px(),
-              Expanded(
-                  child: Text(
-                viewModel.productDetails!.overview!.reviewCount == 0
-                    ? ""
-                    : "${viewModel.productDetails?.overview?.avgRatings} (${viewModel.productDetails!.overview!.reviewCount})",
-                textScaleFactor: 1,
-                textAlign: TextAlign.left,
-                style: AppTextStyle.label,
-              )),
-            ],
-          ),
           VerticalSpacing.d20px(),
           _ShippingInfoCard(),
           VerticalSpacing.d10px(),
