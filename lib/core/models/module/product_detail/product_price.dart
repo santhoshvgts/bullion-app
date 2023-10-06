@@ -19,4 +19,14 @@ class ProductPricesByPaymentType {
     data['formatted_price'] = this.formattedPrice;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProductPricesByPaymentType &&
+          runtimeType == other.runtimeType &&
+          name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
 }

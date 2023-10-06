@@ -1,8 +1,9 @@
+import 'package:bullion/core/models/base_model.dart';
 import 'package:bullion/core/models/chart_data.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:flutter/material.dart';
 
-class SpotPrice {
+class SpotPrice extends BaseModel {
   String? metalName;
   String? title;
   double? bid;
@@ -53,6 +54,9 @@ class SpotPrice {
     this.chartData,
   });
 
+  @override
+  SpotPrice fromJson(json) => SpotPrice.fromJson(json);
+
   SpotPrice.fromJson(Map<String, dynamic> json) {
     metalName = json['metal_name'];
     title = json['title'];
@@ -81,6 +85,7 @@ class SpotPrice {
     }
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['metal_name'] = this.metalName;

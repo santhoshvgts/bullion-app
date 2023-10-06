@@ -2,15 +2,12 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
-import 'package:bullion/locator.dart';
 import 'package:bullion/ui/view/main/login/login_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
@@ -20,10 +17,12 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
   const LoginPage({super.key, this.fromMain = true, this.redirectRoute});
 
   @override
-  LoginViewModel viewModelBuilder(BuildContext context) => LoginViewModel(fromMain, redirectRoute);
+  LoginViewModel viewModelBuilder(BuildContext context) =>
+      LoginViewModel(fromMain, redirectRoute);
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
+  Widget viewBuilder(
+      BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
     return Scaffold(
       bottomNavigationBar: SizedBox(
         height: 85,
@@ -35,14 +34,22 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.center,
-                child: Text("Explore as Guest", textScaleFactor: 1, style: AppTextStyle.buttonSecondary.copyWith(color: AppColor.primary)),
+                child: Text("Explore as Guest",
+                    textScaleFactor: 1,
+                    style: AppTextStyle.buttonSecondary
+                        .copyWith(color: AppColor.primary)),
               ),
             ),
             VerticalSpacing.custom(value: 16),
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              child: Text("@2023 Bullion.com All rights reserved", textScaleFactor: 1, style: AppTextStyle.normal.copyWith(fontSize: 12, color: AppColor.primaryText, fontWeight: FontWeight.w500)),
+              child: Text("@2023 Bullion.com All rights reserved",
+                  textScaleFactor: 1,
+                  style: AppTextStyle.normal.copyWith(
+                      fontSize: 12,
+                      color: AppColor.primaryText,
+                      fontWeight: FontWeight.w500)),
             ),
             VerticalSpacing.custom(value: 5),
           ],
@@ -50,7 +57,9 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
       ),
       appBar: AppBar(
         elevation: 0,
-        leading: IconButton(onPressed: () => navigationService.pop(), icon: const Icon(Icons.arrow_back)),
+        leading: IconButton(
+            onPressed: () => navigationService.pop(),
+            icon: const Icon(Icons.arrow_back)),
       ),
       body: SafeArea(
         child: TapOutsideUnFocus(
@@ -108,7 +117,10 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                             padding: const EdgeInsets.only(
                               top: 10,
                             ),
-                            child: Text("Forgot your Password?", textScaleFactor: 1, style: AppTextStyle.buttonSecondary.copyWith(color: AppColor.primary)),
+                            child: Text("Forgot your Password?",
+                                textScaleFactor: 1,
+                                style: AppTextStyle.buttonSecondary
+                                    .copyWith(color: AppColor.primary)),
                           ),
                           onTap: () => viewModel.forgotPassword()),
                     ),
@@ -126,14 +138,16 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                         Images.googleIcon,
                         height: 20,
                       ),
-                      textStyle: AppTextStyle.buttonSecondary.copyWith(color: AppColor.text),
+                      textStyle: AppTextStyle.buttonSecondary
+                          .copyWith(color: AppColor.text),
                       onPressed: () {},
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: InkWell(
-                        overlayColor: MaterialStateProperty.all(Colors.transparent),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
                         onTap: viewModel.register,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,

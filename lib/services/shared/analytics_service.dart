@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/locator.dart';
-import 'package:bullion/services/appconfig_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
-// import 'package:flutter_riskified/flutter_riskified.dart';
 import 'package:kochava_tracker/kochava_tracker.dart';
 import '../authentication_service.dart';
 
@@ -175,27 +173,28 @@ class AnalyticsService {
   //   );
   // }
   //
-  // Future<void> logProductView(ProductDetails? _productDetails) async {
-  //   locator<AnalyticsService>().logEvent('view_item', {
-  //     'currency': _productDetails?.overview!.pricing!.currency ?? 'USD',
-  //     'items': [
-  //       {
-  //         "item_id": _productDetails?.productId,
-  //         "item_name": _productDetails?.overview!.name
-  //       }
-  //     ].toString(),
-  //     "item": _productDetails?.productId,
-  //     'value': _productDetails?.overview?.pricing?.newPrice?.toString()
-  //   });
-  //
-  //   var eventMapObject = {
-  //     "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
-  //     "name":  _productDetails?.overview?.name,
-  //     "content_id": _productDetails?.productId,
-  //   };
-  //
-  //   KochavaTracker.instance.sendEventWithDictionary("View Product", eventMapObject);
-  // }
+
+  Future<void> logProductView(ProductDetails? _productDetails) async {
+    locator<AnalyticsService>().logEvent('view_item', {
+      'currency': _productDetails?.overview!.pricing!.currency ?? 'USD',
+      'items': [
+        {
+          "item_id": _productDetails?.productId,
+          "item_name": _productDetails?.overview!.name
+        }
+      ].toString(),
+      "item": _productDetails?.productId,
+      'value': _productDetails?.overview?.pricing?.newPrice?.toString()
+    });
+
+    var eventMapObject = {
+      "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
+      "name":  _productDetails?.overview?.name,
+      "content_id": _productDetails?.productId,
+    };
+
+    KochavaTracker.instance.sendEventWithDictionary("View Product", eventMapObject);
+  }
 
   Map<String, Object> filterOutNulls(Map<String, Object?> parameters) {
     final Map<String, Object> filtered = <String, Object>{};

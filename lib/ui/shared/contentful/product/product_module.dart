@@ -32,7 +32,7 @@ class ProductModule extends VGTSBuilderWidget<ProductViewModel> {
   Widget? sortFilterWidget;
   bool isLoadingFilter;
 
-  ProductModule(this.settings, {this.controller, this.sortFilterWidget, this.isLoadingFilter = false});
+  ProductModule(this.settings, {super.key, this.controller, this.sortFilterWidget, this.isLoadingFilter = false});
 
   @override
   bool get reactive => true;
@@ -179,11 +179,14 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
 
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
+
+    double _itemWidth = viewModel.itemWidth(context);
+
     return InkWell(
       key: Key("actionProduct${_item.productId}"),
       onTap: () => viewModel.onItemTap(_item),
       child: Container(
-        width: viewModel.itemWidth(context),
+        width: _itemWidth,
         decoration: BoxDecoration(color: AppColor.white, boxShadow: AppStyle.mildCardShadow, borderRadius: BorderRadius.circular(8)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,10 +196,13 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
               children: [
                 Stack(
                   children: [
-                    Container(
-                      color: AppColor.secondaryBackground,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+                      child: Container(
+                        color: AppColor.white,
+                        padding: const EdgeInsets.all(5),
+                        width: _itemWidth,
+                        height: _itemWidth,
                         child: NetworkImageLoader(
                           image: _item.primaryImageUrl,
                           fit: BoxFit.cover,

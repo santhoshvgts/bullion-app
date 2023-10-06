@@ -33,6 +33,10 @@ dependencies:
   card_swiper: ^3.0.1
   smooth_page_indicator: ^1.1.0
   persistent_bottom_nav_bar_v2: ^4.2.8
+  flutter_rating_bar: ^4.0.1
+
+  #chart
+  chart_sparkline: ^1.0.13
 
   #local
   shared_preferences: ^2.2.1
@@ -46,6 +50,8 @@ dependencies:
   package_info_plus: ^4.1.0
   device_info_plus: ^9.0.3
   auto_size_text: ^3.0.0
+  flutter_cache_manager: ^3.3.1
+  model_viewer_plus: ^1.7.0
 
   #html_utils
   flutter_widget_from_html: ^0.10.5+3
@@ -76,6 +82,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/models/
 
   fonts:
     - family: Poppins

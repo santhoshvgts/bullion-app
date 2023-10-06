@@ -77,41 +77,22 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
                       ),
                     ),
                     Positioned(
-                        bottom: 15,
+                        bottom: 10,
                         left: 0,
                         right: 0,
                         child: Center(
                           child: SmoothPageIndicator(
                             controller: viewModel.bannerPageController,
                             count: viewModel.items!.length,
-                            effect: WormEffect(dotColor: AppColor.secondaryBackground, activeDotColor: AppColor.primary, dotHeight: 7, dotWidth: 7),
+                            effect: const WormEffect(dotColor: AppColor.secondaryBackground,
+                                activeDotColor: AppColor.primary,
+                                dotHeight: 7, dotWidth: 7,
+                            ),
                           ),
                         ))
                   ],
                 ),
 
-                // Swiper(
-                //   itemBuilder: (BuildContext context, int index) {
-                //     return _BannerItemWidget(viewModel.items[index]);
-                //   },
-                //   index: viewModel.index,
-                //   itemCount: viewModel.items.length,
-                //   layout: SwiperLayout.DEFAULT,
-                //   controller: SwiperController(),
-                //   loop: true,
-                //   onIndexChanged: (int index){
-                //     viewModel.index = index;
-                //   },
-                //   pagination: SwiperPagination(
-                //     alignment: Alignment.bottomCenter,
-                //     builder: DotSwiperPaginationBuilder(
-                //         color: AppColor.secondaryBackground,
-                //         activeColor: AppColor.primary,
-                //         size: 7.0,
-                //         activeSize: 7.0
-                //     ),
-                //   ),
-                // ),
               );
             } else {
               return SizedBox(
@@ -141,7 +122,7 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
             scale: 0.95,
             layout: SwiperLayout.DEFAULT,
             loop: true,
-            pagination: SwiperPagination(
+            pagination: const SwiperPagination(
               alignment: Alignment.bottomCenter,
               builder: DotSwiperPaginationBuilder(color: AppColor.secondaryBackground, activeColor: AppColor.primary, size: 7.0, activeSize: 7.0),
             ),

@@ -1,22 +1,17 @@
-import 'package:bullion/services/api_request/auth_request.dart';
-import 'package:bullion/services/api_request/page_request.dart';
-import 'package:bullion/services/shared/dialog_service.dart';
-import 'package:bullion/ui/shared/contentful/product/product_module.dart';
-import 'package:bullion/ui/shared/contentful/product/sort_filter/filter_bottom_sheet.dart';
-import 'package:bullion/ui/shared/contentful/product/sort_filter/sort_bottom_sheet.dart';
-import 'package:bullion/ui/view/vgts_base_view_model.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/constants/module_type.dart';
-import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
+import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/ui/shared/contentful/product/product_module.dart';
+import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:flutter/material.dart';
+
 import '../../../../locator.dart';
 import '../../../../router.dart';
 import '../../../services/shared/eventbus_service.dart';
-import '../../../../services/shared/preference_service.dart';
 
 class ContentViewModel extends VGTSBaseViewModel {
   GlobalKey sortFilterWidgetKey = GlobalKey();
@@ -36,13 +31,17 @@ class ContentViewModel extends VGTSBaseViewModel {
 
   ModuleSettings? productListingModule;
 
-  ProductModel get productModel => ProductModel.fromJson(productListingModule!.productModel);
+  ProductModel get productModel =>
+      ProductModel.fromJson(productListingModule!.productModel);
 
   String? get productListingModuleTitle {
     return productModel.totalCountText;
   }
 
-  List<ModuleSettings?>? get modules => _pageSetting == null || sortFilterLoading ? [] : _pageSetting!.moduleSetting;
+  List<ModuleSettings?>? get modules =>
+      _pageSetting == null || sortFilterLoading
+          ? []
+          : _pageSetting!.moduleSetting;
 
   bool get sortFilterLoading => _sortFilterLoading;
 
@@ -60,8 +59,12 @@ class ContentViewModel extends VGTSBaseViewModel {
 
   String _path = '';
 
-  ContentViewModel(String path, Function(PageSettings?)? onPageFetched, PageSettings? initialValue, Function(bool name)? onLoading) {
-    locator<EventBusService>().eventBus.registerTo<RefreshDataEvent>().listen((event) async {
+  ContentViewModel(String path, Function(PageSettings?)? onPageFetched,
+      PageSettings? initialValue, Function(bool name)? onLoading) {
+    locator<EventBusService>()
+        .eventBus
+        .registerTo<RefreshDataEvent>()
+        .listen((event) async {
       if (event.name == RefreshType.homeRefresh) {
         fetchContent(_path, refresh: true);
       }
@@ -72,7 +75,8 @@ class ContentViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  init(String path, Function(PageSettings?)? onPageFetched, PageSettings? initialValue, Function(bool name)? onLoading) async {
+  init(String path, Function(PageSettings?)? onPageFetched,
+      PageSettings? initialValue, Function(bool name)? onLoading) async {
     scrollController.addListener(paginationFunction);
 
     _path = path;
@@ -105,22 +109,26 @@ class ContentViewModel extends VGTSBaseViewModel {
     this.onLoading(false);
   }
 
-  Future<PageSettings?> fetchContent(String path, {bool refresh = false}) async {
+  Future<PageSettings?> fetchContent(String path,
+      {bool refresh = false}) async {
     setBusy(true);
     notifyListeners();
 
-    PageSettings? _pageSettingData = await request<PageSettings>(PageRequest.fetch(path: path));
+    PageSettings? pageSettingData =
+        await request<PageSettings>(PageRequest.fetch(path: path));
     notifyListeners();
 
-    onPageFetched(_pageSettingData);
+    onPageFetched(pageSettingData);
 
-    if (refresh) {
-      _pageSetting = null;
-      await Future.delayed(const Duration(milliseconds: 100));
-    }
+    // if (refresh) {
+    //   _pageSetting = null;
+    //   await Future.delayed(const Duration(milliseconds: 100));
+    // }
 
-    _pageSetting = _pageSettingData;
-    productListingModule = modules!.singleWhere((element) => element!.moduleType == ModuleType.productList, orElse: () => null);
+    _pageSetting = pageSettingData;
+    productListingModule = modules!.singleWhere(
+        (element) => element!.moduleType == ModuleType.productList,
+        orElse: () => null);
 
     setBusy(false);
     notifyListeners();
@@ -136,7 +144,10 @@ class ContentViewModel extends VGTSBaseViewModel {
     listenAndToggleSortSection();
 
     // Checking the scroll reached the end
-    if (scrollController.position.pixels < (scrollController.position.maxScrollExtent - (scrollController.position.pixels.toString().length * 50)) || paginationLoading) {
+    if (scrollController.position.pixels <
+            (scrollController.position.maxScrollExtent -
+                (scrollController.position.pixels.toString().length * 50)) ||
+        paginationLoading) {
       return null;
     }
 
@@ -146,7 +157,8 @@ class ContentViewModel extends VGTSBaseViewModel {
         return null;
       }
 
-      ProductModel data = ProductModel.fromJson(productListingModule!.productModel);
+      ProductModel data =
+          ProductModel.fromJson(productListingModule!.productModel);
 
       if (!data.hasNextPage!) {
         return null;
@@ -168,33 +180,39 @@ class ContentViewModel extends VGTSBaseViewModel {
   }
 
   Future<ModuleSettings?> paginate(String url) async {
-    // setBusy(true);
-    // notifyListeners();
-    //
-    // ModuleSettings? data = await categoryApi?.paginateProducts(url);
-    //
-    // setBusy(false);
-    // notifyListeners();
-    //
-    // // Trigger the paginate function in Product Module Controller that associate with
-    // // the product module
-    // // [Returns] next page product list fetch from api
-    // ProductModel productModel = ProductModel.fromJson(data?.productModel);
-    //
-    // // get the list of product already exists in product module
-    // List<ProductOverview> productList = ProductModel.fromJson(productListingModule?.productModel).products ?? [];
-    //
-    // // insert existing products to new product list
-    // productModel.products?.insertAll(0, productList);
-    //
-    // data?.productModel = productModel.toJson();
+    setBusy(true);
+    notifyListeners();
 
-    // return data;
+    ModuleSettings? data =
+        (await request<PageSettings>(PageRequest.paginate(path: url)))
+            ?.productListingModule;
+
+    setBusy(false);
+    notifyListeners();
+
+    // Trigger the paginate function in Product Module Controller that associate with
+    // the product module
+    // [Returns] next page product list fetch from api
+    ProductModel productModel = ProductModel.fromJson(data?.productModel);
+
+    // get the list of product already exists in product module
+    List<ProductOverview> productList =
+        ProductModel.fromJson(productListingModule?.productModel).products ??
+            [];
+
+    // insert existing products to new product list
+    productModel.products?.insertAll(0, productList);
+
+    data?.productModel = productModel.toJson();
+
+    return data;
   }
 
   findAndReplaceModuleSetting(ModuleSettings? moduleSettings) async {
     // find the index of the product module
-    int index = modules?.indexWhere((element) => element?.moduleType == ModuleType.productList) ?? 0;
+    int index = modules?.indexWhere(
+            (element) => element?.moduleType == ModuleType.productList) ??
+        0;
 
     // Remove and replace the module settings
     _pageSetting?.moduleSetting?.removeAt(index);
@@ -285,9 +303,11 @@ class ContentViewModel extends VGTSBaseViewModel {
       return;
     }
 
-    RenderBox? box = sortFilterWidgetKey.currentContext?.findRenderObject() as RenderBox?;
+    RenderBox? box =
+        sortFilterWidgetKey.currentContext?.findRenderObject() as RenderBox?;
     if (box != null) {
-      Offset position = box.localToGlobal(Offset.zero); //this is global position
+      Offset position =
+          box.localToGlobal(Offset.zero); //this is global position
       double y = position.dy;
 
       if (y < 119 && !showSortAppBarSection) {
