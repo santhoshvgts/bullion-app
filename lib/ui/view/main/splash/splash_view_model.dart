@@ -26,7 +26,11 @@ class SplashViewModel extends VGTSBaseViewModel {
           Future.wait([
             Future.delayed(const Duration(milliseconds: 300)),
           ]).whenComplete(() async {
-            navigationService.popAllAndPushNamed(Routes.dashboard);
+            if (preferenceService.isFirstTimeAppOpen()) {
+              navigationService.popAllAndPushNamed(Routes.introPage);
+            } else {
+              navigationService.popAllAndPushNamed(Routes.dashboard);
+            }
           });
         } catch (ex, s) {
           Logger.e(ex.toString(), s: s);

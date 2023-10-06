@@ -53,8 +53,8 @@ class LoginViewModel extends VGTSBaseViewModel {
       }
       preferenceService.setFirstTimeAppOpen(false);
     }
-    setBusy(false);
     notifyListeners();
+    setBusy(false);
   }
 
   continueWithoutLogin() {

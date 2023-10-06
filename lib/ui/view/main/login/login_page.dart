@@ -26,11 +26,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
-    return viewModel.isBusy
-        ? LoadingWidget(
-            message: "Authenticating...",
-          )
-        : Scaffold(
+    return Scaffold(
             bottomNavigationBar: SizedBox(
               height: 85,
               child: Column(
@@ -92,7 +88,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                                   key: const Key("txtEmailAddress"),
                                   onChanged: (value) {},
                                 ),
-                                VerticalSpacing.custom(value: 14),
+                                VerticalSpacing.custom(value: 7),
                                 EditTextField.password(
                                   "Password",
                                   viewModel.passwordController,
@@ -121,6 +117,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                           const Padding(padding: EdgeInsets.only(top: 24)),
                           Button(
                             "Login",
+                            loading: viewModel.isBusy,
                             valueKey: const Key("btnSignIn"),
                             onPressed: () => viewModel.login(),
                           ),

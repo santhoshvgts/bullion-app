@@ -28,7 +28,6 @@ class RegisterViewModel extends VGTSBaseViewModel {
     if (formKey.currentState?.validate() != true) {
       return;
     }
-
     setBusy(true);
     AuthResponse? result = await _authenticationService.register(nameController.text, lnameController.text, emailController.text, passwordController.text);
 
@@ -43,7 +42,8 @@ class RegisterViewModel extends VGTSBaseViewModel {
       }
       preferenceService.setFirstTimeAppOpen(false);
     }
-    setBusy(false);
+    notifyListeners();
+     setBusy(false);
   }
 
   continueWithoutLogin() {
