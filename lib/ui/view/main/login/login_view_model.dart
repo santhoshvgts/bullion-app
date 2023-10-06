@@ -8,7 +8,7 @@ import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
-import 'package:vgts_plugin/form/utils/input_validator.dart';
+
 import '../../../../core/constants/module_type.dart';
 
 class LoginViewModel extends VGTSBaseViewModel {
@@ -17,12 +17,19 @@ class LoginViewModel extends VGTSBaseViewModel {
 
   LoginViewModel(this.fromMain, this.redirectRoute);
 
-  final AuthenticationService _authenticationService = locator<AuthenticationService>();
+  final AuthenticationService _authenticationService =
+      locator<AuthenticationService>();
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  EmailFormFieldController emailController = EmailFormFieldController(const ValueKey("txtEmail"), required: true, requiredText: 'Required Email Address !');
-  PasswordFormFieldController passwordController = PasswordFormFieldController(const ValueKey("txtPassword"), required: true, requiredText: 'Required Password !');
+  EmailFormFieldController emailController = EmailFormFieldController(
+      const ValueKey("txtEmail"),
+      required: true,
+      requiredText: 'Required Email Address !');
+  TextFormFieldController passwordController = TextFormFieldController(
+      const ValueKey("txtPassword"),
+      required: true,
+      requiredText: 'Required Password !');
 
   init(bool fromMain, String? redirectRoute) {
     this.fromMain = fromMain;
@@ -34,7 +41,8 @@ class LoginViewModel extends VGTSBaseViewModel {
   }
 
   register() {
-    navigationService.pushNamed(Routes.register, arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+    navigationService.pushNamed(Routes.register,
+        arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
   }
 
   login() async {
@@ -42,7 +50,10 @@ class LoginViewModel extends VGTSBaseViewModel {
       return;
     }
     setBusy(true);
-    AuthResponse? result = await _authenticationService.login(emailController.text, passwordController.text);
+    AuthResponse? result = await _authenticationService.login(
+      emailController.text,
+      passwordController.text,
+    );
     if (result != null) {
       if (fromMain) {
         navigationService.popAllAndPushNamed(Routes.dashboard);
@@ -60,6 +71,8 @@ class LoginViewModel extends VGTSBaseViewModel {
   continueWithoutLogin() {
     preferenceService.setFirstTimeAppOpen(false);
     navigationService.pushReplacementNamed(Routes.dashboard);
-    locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+    locator<EventBusService>()
+        .eventBus
+        .fire(RefreshDataEvent(RefreshType.homeRefresh));
   }
 }

@@ -64,10 +64,7 @@ class BaseModel extends BaseObject {
         return Redirection() as T;
 
       case Token:
-        return Token() as T;  
-        
-      
-        
+        return Token() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }

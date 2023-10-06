@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/core/models/auth/user.dart';
+import 'package:bullion/locator.dart';
 import 'package:bullion/services/api_request/auth_request.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
-import 'package:bullion/services/toast_service.dart';
-import 'package:bullion/locator.dart';
-
+import 'package:bullion/services/shared/api_model/error_response_exception.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/preference_service.dart';
 import 'package:bullion/services/token_service.dart';
 
@@ -16,13 +16,14 @@ class AuthenticationService {
   final ApiBaseService _apiBaseService = locator<ApiBaseService>();
   final TokenService _tokenService = locator<TokenService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  final DialogService _dialogService = locator<DialogService>();
 
   // final PushNotificationService? _pushService = locator<PushNotificationService>();
 
   User? _user;
   StreamController<User?> userController = StreamController<User?>();
 
-  bool get isAuthenticated => _tokenService?.getToken()?.isNotEmpty == true;
+  bool get isAuthenticated => _tokenService.getToken()?.isNotEmpty == true;
 
   User? get getUser => _user;
 
@@ -40,7 +41,6 @@ class AuthenticationService {
       userController.add(authResult.user);
       _user = authResult.user;
       _analyticsService.setUserId(_user!.userId);
-
 
       // TODO - Push Implementation
       // _pushService!.setUser(_user!.userId);
@@ -65,19 +65,27 @@ class AuthenticationService {
   }
 
   Future<AuthResponse?> login(String email, String password) async {
-    var authResult =  await _apiBaseService.request<AuthResponse>(AuthRequest.login(email, password));
-    if (authResult != null) {
+    try {
+      var authResult = await _apiBaseService
+          .request<AuthResponse>(AuthRequest.login(email, password));
       _setUser(authResult);
       _analyticsService.loglogin();
 
       // TODO - Refresh Page Storage Service
       // await locator<PageStorageService>().write(locator<NavigationService>().navigatorKey.currentContext!, const PageStorageKey("Spot Price"), null);
+      return authResult;
+    } on ErrorResponseException catch (ex) {
+      _showAlert(ex, "Error");
     }
-    return authResult;
+    return null;
   }
 
   Future<void> logout(String anyMessage) async {
-    await _apiBaseService.logOut();
+    try {
+      await _apiBaseService.logOut();
+    } on ErrorResponseException catch (ex) {
+      _showAlert(ex, "Error");
+    }
 
     // TODO - Clear Cart Service
     // await locator<CartService>().clear();
@@ -91,62 +99,93 @@ class AuthenticationService {
   }
 
   Future<AuthResponse?> register(
-      String firstName, String lastName, String email, String password) async {
-    var authResult = await _apiBaseService.request<AuthResponse>(AuthRequest.register(
-      firstName,
-      lastName,
-      email,
-      password,
-    ));
-    if (authResult != null) {
+    String firstName,
+    String lastName,
+    String email,
+    String password,
+  ) async {
+    try {
+      var authResult = await _apiBaseService.request<AuthResponse>(
+        AuthRequest.register(
+          firstName,
+          lastName,
+          email,
+          password,
+        ),
+      );
       _setUser(authResult);
       _analyticsService.logSignUp();
+      return authResult;
+    } on ErrorResponseException catch (ex) {
+      _showAlert(ex, "Error");
     }
-
-    return authResult;
+    return null;
   }
 
   Future<AuthResponse?> registerAsGuest(String email) async {
-    var authResult = await _apiBaseService.request<AuthResponse>(AuthRequest.registerAsGuest(email));
-    if (authResult != null) {
+    try {
+      var authResult = await _apiBaseService
+          .request<AuthResponse>(AuthRequest.registerAsGuest(email));
       _setUser(authResult);
-    }
 
-    return authResult;
+      return authResult;
+    } on ErrorResponseException catch (ex) {
+      _showAlert(ex, "Error");
+    }
+    return null;
   }
 
-  Future<AuthResponse?> resetPassword(String? key, String? email,
-      String newPassword, String oldPassword) async {
-    var authResult = await _apiBaseService.request<AuthResponse>(AuthRequest.resetPassword(key, email, newPassword, oldPassword));
-    if (authResult != null) {
+  Future<AuthResponse?> resetPassword(
+    String? key,
+    String? email,
+    String newPassword,
+    String oldPassword,
+  ) async {
+    try {
+      var authResult = await _apiBaseService.request<AuthResponse>(
+          AuthRequest.resetPassword(key, email, newPassword, oldPassword));
       _setUser(authResult);
       _analyticsService.loglogin();
-    }
 
-    return authResult;
+      return authResult;
+    } on ErrorResponseException catch (ex) {
+      _showAlert(ex, "Error");
+    }
+    return null;
   }
 
   Future<AuthResponse?> guestToAccount(String password, bool emailOptIn) async {
-    var authResult = await _apiBaseService.request<AuthResponse>(AuthRequest.guestToAccount(password, emailOptIn));
-    if (authResult != null) {
+    try {
+      var authResult = await _apiBaseService.request<AuthResponse>(
+          AuthRequest.guestToAccount(password, emailOptIn));
       _setUser(authResult);
       _analyticsService.logSignUp();
-    }
 
-    return authResult;
+      return authResult;
+    } on ErrorResponseException catch (ex) {
+      _showAlert(ex, "Error");
+    }
+    return null;
   }
 
   Future<User?> getUserInfo() async {
-    String token = _tokenService.getToken()!;
-    if (token.isEmpty) {
-      return null;
-    }
+    try {
+      String token = _tokenService.getToken()!;
+      if (token.isEmpty) {
+        return null;
+      }
 
-    var user = await _apiBaseService.request<User>(AuthRequest.getUserInfo());
-    if (user != null) {
+      var user = await _apiBaseService.request<User>(AuthRequest.getUserInfo());
       updateUserProfile(user);
+      return user;
+    } on ErrorResponseException catch (ex) {
+      _showAlert(ex, "Error");
     }
-    return user;
+    return null;
+  }
+
+  _showAlert(ErrorResponseException error, String title) {
+    _dialogService.showDialog(title: title, description: error.error?.message);
   }
 
   // TODO - Sentry Implementation
