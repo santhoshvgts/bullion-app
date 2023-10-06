@@ -31,143 +31,142 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
     _buildContext = context;
 
     return ViewModelBuilder.reactive(
-        onViewModelReady: (dynamic viewModel) {
-          _productPageViewModel = viewModel;
-          WidgetsBinding.instance.addObserver(this);
-        },
-        onDispose: (ProductPageViewModel viewModel) {
-          WidgetsBinding.instance.removeObserver(this);
-        },
-        builder: (context, ProductPageViewModel viewModel, child) {
-          return PageWillPop(
-            child: Scaffold(
-              backgroundColor: AppColor.white,
-              appBar: AppBar(
-                elevation: 1,
-                titleSpacing: 0,
-                centerTitle: true,
-                title: SearchCardSection(
-                  leftPadding: 0,
-                  rightPadding: 0,
-                ),
-                actions: const [CartButton.light()],
+      onViewModelReady: (dynamic viewModel) {
+        _productPageViewModel = viewModel;
+        WidgetsBinding.instance.addObserver(this);
+      },
+      onDispose: (ProductPageViewModel viewModel) {
+        WidgetsBinding.instance.removeObserver(this);
+      },
+      builder: (context, ProductPageViewModel viewModel, child) {
+        return PageWillPop(
+          child: Scaffold(
+            backgroundColor: AppColor.white,
+            appBar: AppBar(
+              elevation: 1,
+              titleSpacing: 0,
+              centerTitle: true,
+              title: SearchCardSection(
+                leftPadding: 0,
+                rightPadding: 0,
               ),
-              body: SafeArea(
-                top: false,
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    await viewModel.init(viewModel.productDetail, targetUrl!);
-                  },
-                  child: Container(
-                    color: AppColor.white,
-                    child: TapOutsideUnFocus(
-                      child: Stack(
-                        children: [
-                          if (viewModel.productDetail != null ||
-                              viewModel.pageSetting != null)
-                            Column(
-                              children: [
-                                Flexible(
-                                  child: SizedBox(
-                                    height: double.infinity,
-                                    child: SingleChildScrollView(
-                                      controller: viewModel.scrollController,
-                                      physics: const ClampingScrollPhysics(),
-                                      padding: EdgeInsets.zero,
-                                      child: Column(children: [
-                                        if (viewModel.isBusy)
-                                          ProductOverviewSection(
-                                              viewModel.productDetail, "")
-                                        else
-                                          ...viewModel.modules?.map((module) {
-                                                switch (module?.moduleType) {
-                                                  case ModuleType.dynamic:
-                                                    return DynamicModule(module,
-                                                        viewModel.pageSetting);
+              actions: const [CartButton.light()],
+            ),
+            body: SafeArea(
+              top: false,
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await viewModel.init(viewModel.productDetail, targetUrl!);
+                },
+                child: Container(
+                  color: AppColor.white,
+                  child: TapOutsideUnFocus(
+                    child: Stack(
+                      children: [
+                        if (viewModel.productDetail != null ||
+                            viewModel.pageSetting != null)
+                          Column(
+                            children: [
+                              Flexible(
+                                child: SizedBox(
+                                  height: double.infinity,
+                                  child: SingleChildScrollView(
+                                    controller: viewModel.scrollController,
+                                    physics: const ClampingScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    child: Column(children: [
+                                      if (viewModel.isBusy)
+                                        ProductOverviewSection(
+                                            viewModel.productDetail, "")
+                                      else
+                                        ...viewModel.modules?.map((module) {
+                                              switch (module?.moduleType) {
+                                                case ModuleType.dynamic:
+                                                  return DynamicModule(module,
+                                                      viewModel.pageSetting);
 
-                                                  case ModuleType.standard:
-                                                    return StandardModule(
-                                                        module);
+                                                case ModuleType.standard:
+                                                  return StandardModule(module);
 
-                                                  case ModuleType.product:
-                                                  case ModuleType.productList:
-                                                    return ProductModule(
-                                                      module,
-                                                    );
+                                                case ModuleType.product:
+                                                case ModuleType.productList:
+                                                  return ProductModule(
+                                                    module,
+                                                  );
 
-                                                  case ModuleType.banner:
-                                                    return BannerModule(module);
+                                                case ModuleType.banner:
+                                                  return BannerModule(module);
 
-                                                  default:
-                                                    return Container();
-                                                }
-                                              }).toList() ??
-                                              [],
-                                      ]),
-                                    ),
+                                                default:
+                                                  return Container();
+                                              }
+                                            }).toList() ??
+                                            [],
+                                    ]),
                                   ),
                                 ),
-                                BottomActionCard(viewModel.productDetail)
-                              ],
-                            )
-                          else
-                            const SizedBox(
-                                height: double.infinity,
-                                child: Center(
-                                  child: SizedBox(
-                                    height: 80,
-                                    width: 80,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation(
-                                          AppColor.primary),
-                                      strokeWidth: 2,
-                                    ),
+                              ),
+                              BottomActionCard(viewModel.productDetail)
+                            ],
+                          )
+                        else
+                          const SizedBox(
+                              height: double.infinity,
+                              child: Center(
+                                child: SizedBox(
+                                  height: 80,
+                                  width: 80,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation(
+                                        AppColor.primary),
+                                    strokeWidth: 2,
                                   ),
-                                )),
-                          // Positioned(
-                          //   left: 0,
-                          //   right: 0,
-                          //   top: 0,
-                          //   child: AnimatedOpacity(
-                          //     duration: const Duration(milliseconds: 200),
-                          //     opacity: viewModel.showAppBar ? 1 : 0,
-                          //     child: AppBar(
-                          //       elevation: 1,
-                          //       titleSpacing: 0,
-                          //       centerTitle: true,
-                          //       title: SearchCardSection(
-                          //         leftPadding: 0,
-                          //         rightPadding: 0,
-                          //       ),
-                          //       actions: const [CartButton.light()],
-                          //     ),
-                          //   ),
-                          // ),
-                          // Positioned(
-                          //   left: 0,
-                          //   right: 0,
-                          //   top: 0,
-                          //   child: AnimatedOpacity(
-                          //     duration: const Duration(milliseconds: 200),
-                          //     opacity: viewModel.showAppBar ? 0 : 1,
-                          //     child: AppBar(
-                          //       backgroundColor: Colors.transparent,
-                          //       elevation: 0,
-                          //       actions: const [CartButton.light()],
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
+                                ),
+                              )),
+                        // Positioned(
+                        //   left: 0,
+                        //   right: 0,
+                        //   top: 0,
+                        //   child: AnimatedOpacity(
+                        //     duration: const Duration(milliseconds: 200),
+                        //     opacity: viewModel.showAppBar ? 1 : 0,
+                        //     child: AppBar(
+                        //       elevation: 1,
+                        //       titleSpacing: 0,
+                        //       centerTitle: true,
+                        //       title: SearchCardSection(
+                        //         leftPadding: 0,
+                        //         rightPadding: 0,
+                        //       ),
+                        //       actions: const [CartButton.light()],
+                        //     ),
+                        //   ),
+                        // ),
+                        // Positioned(
+                        //   left: 0,
+                        //   right: 0,
+                        //   top: 0,
+                        //   child: AnimatedOpacity(
+                        //     duration: const Duration(milliseconds: 200),
+                        //     opacity: viewModel.showAppBar ? 0 : 1,
+                        //     child: AppBar(
+                        //       backgroundColor: Colors.transparent,
+                        //       elevation: 0,
+                        //       actions: const [CartButton.light()],
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
                     ),
                   ),
                 ),
               ),
             ),
-          );
-        },
-        viewModelBuilder: () =>
-            ProductPageViewModel(productDetails, targetUrl!));
+          ),
+        );
+      },
+      viewModelBuilder: () => ProductPageViewModel(productDetails, targetUrl!),
+    );
   }
 
   @override

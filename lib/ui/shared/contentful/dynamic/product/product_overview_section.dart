@@ -13,7 +13,6 @@ import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
 import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/chip_item.dart';
-import 'package:bullion/ui/widgets/image_pagination_builder.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:bullion/ui/widgets/shimmer_effect.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -40,26 +39,39 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
       ProductDetailViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      ProductDetailViewModel viewModel, Widget? child) {
+  Widget viewBuilder(
+    BuildContext context,
+    AppLocalizations locale,
+    ProductDetailViewModel viewModel,
+    Widget? child,
+  ) {
     return Container(
       color: AppColor.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _Header(),
-          Stack(
-            children: [
-              _ImageList(viewModel.productDetails?.productPictures ??
-                  [viewModel.productDetails!.overview!.primaryImageUrl!]),
-              if (viewModel.productDetails?.overview?.ribbonText?.isNotEmpty ==
-                  true)
-                Positioned(
-                  top: kToolbarHeight + 10,
-                  child: Container(
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+            child: Stack(
+              children: [
+                _ImageList(
+                  viewModel.productDetails?.productPictures ??
+                      [viewModel.productDetails!.overview!.primaryImageUrl!],
+                ),
+                if (viewModel
+                        .productDetails?.overview?.ribbonText?.isNotEmpty ==
+                    true)
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
                       decoration: BoxDecoration(
                         color: viewModel.productDetails!.overview!
                             .ribbonTextBackgroundColor,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
                       ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 15,
@@ -72,10 +84,11 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                           color: AppColor.white,
                         ),
                         textScaleFactor: 1,
-                      )),
-                ),
-              Positioned(
-                  bottom: 70,
+                      ),
+                    ),
+                  ),
+                Positioned(
+                  bottom: 10,
                   right: 10,
                   child: InkWell(
                     onTap: () {
@@ -98,8 +111,55 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                         height: 25,
                       ),
                     ),
-                  )),
-            ],
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: AppColor.outlineBorder,
+                              width: 0.5,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.heart,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      VerticalSpacing.d5px(),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: AppColor.outlineBorder,
+                              width: 0.5,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.bell,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           VerticalSpacing.d5px(),
           _ProductInfoSection(),
@@ -173,14 +233,15 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
                 ),
               HorizontalSpacing.d5px(),
               Expanded(
-                  child: Text(
-                viewModel.productDetails!.overview!.reviewCount == 0
-                    ? ""
-                    : "${viewModel.productDetails?.overview?.avgRatings} | ${viewModel.productDetails!.overview!.reviewCount} Reviews",
-                textScaleFactor: 1,
-                textAlign: TextAlign.left,
-                style: AppTextStyle.body,
-              )),
+                child: Text(
+                  viewModel.productDetails!.overview!.reviewCount == 0
+                      ? ""
+                      : "${viewModel.productDetails?.overview?.avgRatings} | ${viewModel.productDetails!.overview!.reviewCount} Reviews",
+                  textScaleFactor: 1,
+                  textAlign: TextAlign.left,
+                  style: AppTextStyle.body,
+                ),
+              ),
             ],
           ),
         ],
@@ -197,8 +258,11 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-      height: MediaQuery.of(context).size.height / 1.55,
-      color: AppColor.white,
+      height: MediaQuery.of(context).size.height / 2,
+      decoration: BoxDecoration(
+        color: AppColor.secondaryBackground,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
@@ -207,7 +271,7 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
             },
             child: Container(
               alignment: Alignment.topCenter,
-              padding: const EdgeInsets.only(top: 30, left: 5, right: 5),
+              padding: const EdgeInsets.all(10),
               child: NetworkImageLoader(
                 image: images![index],
                 fit: BoxFit.contain,
@@ -221,13 +285,9 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
         itemCount: images!.length,
         loop: false,
         layout: SwiperLayout.DEFAULT,
-        pagination: SwiperPagination(
-          alignment: Alignment.bottomLeft,
-          builder: ImagePaginationBuilder(
-              activeBorderColor: AppColor.primary,
-              activeSize: 40,
-              size: 40,
-              images: images),
+        pagination: const SwiperPagination(
+          alignment: Alignment.bottomCenter,
+          builder: DotSwiperPaginationBuilder(activeSize: 7, size: 7, space: 2),
         ),
       ),
     );
