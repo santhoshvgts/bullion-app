@@ -106,7 +106,7 @@ class _AppBar extends PreferredSize  {
   final String path;
 
   _AppBar({ required this.path,}) : super(
-    preferredSize:  const Size.fromHeight(kToolbarHeight),
+    preferredSize: const Size.fromHeight(kToolbarHeight),
     child: AppBar(
       backgroundColor: AppColor.white,
       titleSpacing: 0,

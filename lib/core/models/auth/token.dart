@@ -1,4 +1,6 @@
-class Token {
+import 'package:bullion/core/models/base_model.dart';
+
+class Token extends BaseModel {
   String? authToken;
   String? expiration;
   String? refreshToken;

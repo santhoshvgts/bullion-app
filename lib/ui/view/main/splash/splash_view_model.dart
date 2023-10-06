@@ -42,7 +42,11 @@ class SplashViewModel extends VGTSBaseViewModel {
           navigationService.popAllAndPushNamed(Routes.dashboard);
           return;
         }
-        navigationService.popAllAndPushNamed(Routes.introPage);
+        if (preferenceService.isFirstTimeAppOpen()) {
+          navigationService.popAllAndPushNamed(Routes.introPage);
+        } else {
+          navigationService.popAllAndPushNamed(Routes.dashboard);
+        }
       });
     } catch (ex, s) {
       debugPrint("EXCEPTION $ex");
