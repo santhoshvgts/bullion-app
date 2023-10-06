@@ -19,21 +19,23 @@ class IntroPage extends VGTSBuilderWidget<IntroViewModel> {
       appBar: AppBar(
         elevation: 0,
         actions: [
-          InkWell(
-            onTap: viewModel.skipOnPressed,
-            overlayColor: MaterialStateProperty.all(Colors.transparent),
-            child: Container(
-              margin: const EdgeInsets.only(top: 12, right: 20),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColor.border)),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 9),
-                child: Text(
-                  'Skip',
-                  style: AppTextStyle.normal.copyWith(color: AppColor.greenText, fontWeight: FontWeight.w500, fontSize: 16),
-                ),
-              ),
-            ),
-          )
+          !viewModel.isLastindex
+              ? InkWell(
+                  onTap: viewModel.skipOnPressed,
+                  overlayColor: MaterialStateProperty.all(Colors.transparent),
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 12, right: 20),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColor.border)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 9),
+                      child: Text(
+                        'Skip',
+                        style: AppTextStyle.normal.copyWith(color: AppColor.greenText, fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox(),
         ],
       ),
       //

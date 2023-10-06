@@ -6,7 +6,6 @@ import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +17,7 @@ import 'forgot_password_view_model.dart';
 class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
   final bool fromMain;
 
-  ForgotPasswordPage({this.fromMain = true});
+  const ForgotPasswordPage({super.key, this.fromMain = true});
 
   @override
   void onViewModelReady(ForgotPasswordViewModel viewModel) {
@@ -38,9 +37,9 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
         automaticallyImplyLeading: false,
         elevation: 0,
         leading: IconButton(
-            icon: const Icon(Icons.clear),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              viewModel.navigationService!.pop(returnValue: false);
+              viewModel.navigationService.pop(returnValue: false);
             }),
       ),
       body: SafeArea(
@@ -77,7 +76,7 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
                 viewModel.emailController,
                 margin: const EdgeInsets.only(top: 30),
                 onSubmitted: (value) {
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                  FocusScope.of(context).requestFocus(FocusNode());
                 },
                 onChanged: (value) {},
               ),

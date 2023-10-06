@@ -49,7 +49,7 @@ class IntroViewModel extends VGTSBaseViewModel {
       notifyListeners();
       return;
     }
-    navigationService.popAllAndPushNamed(Routes.login);
+    navigationService.pushNamed(Routes.login);
     return;
   }
 

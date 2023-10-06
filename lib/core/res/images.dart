@@ -2,11 +2,13 @@ class Images {
   static const String appLogoWhite = "assets/images/app_logo_white.png";
   static const String appLogo = "assets/images/app_logo.png";
   static const String googleIcon = "assets/images/google_icon.png";
+  static const String facebookIcon = "assets/images/facebook_icon.png";
 
   static const String marketAlerts = "assets/images/market_alerts.png";
   static const String marketNews = "assets/images/market-news.png";
   static const String priceAlerts = "assets/images/price-alerts.png";
   static const String vaultDeals = "assets/images/vault-deals.png";
+  
 
   // Product Detail Screen
   static const String threeSixtyDegree = "assets/images/360-degrees.png";

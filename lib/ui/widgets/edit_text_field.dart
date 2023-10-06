@@ -204,6 +204,7 @@ class _EditTextFieldState extends State<EditTextField> {
         padding: EdgeInsets.zero,
         icon: Icon(
           isVisible ? Icons.remove_red_eye : Icons.remove_red_eye_outlined,
+           color: AppColor.text.withOpacity(0.5),
         ),
         onPressed: () {
           isVisible = !isVisible;
