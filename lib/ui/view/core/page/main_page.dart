@@ -40,7 +40,7 @@ class _MainPageState extends State<MainPage> {
             leftPadding: 0,
             placeholder: title,
           ),
-          // title: Text(title ?? "" , textAlign: TextAlign.center, style: AppTextStyle.appBarTitle.copyWith(fontSize: 16),),
+          // title: Text(title ?? "" , textAlign: TextAlign.center, style: AppTextStyle.titleLarge.copyWith(fontSize: 16),),
           actions: [
             const CartButton.light(),
           ],

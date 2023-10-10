@@ -1,16 +1,13 @@
-import 'package:bullion/core/models/module/selected_item_list.dart';
-import 'package:bullion/ui/view/vgts_base_view_model.dart';
-import 'package:bullion/ui/view/vgts_builder_widget.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:bullion/core/models/alert/alert_response.dart';
+import 'package:bullion/core/models/module/selected_item_list.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:stacked/stacked.dart';
 
 class SortBottomSheet extends VGTSBuilderWidget<SortViewModel> {
   List<SelectedItemList>? sortOptionList;
@@ -20,7 +17,8 @@ class SortBottomSheet extends VGTSBuilderWidget<SortViewModel> {
   SortViewModel viewModelBuilder(BuildContext context) => new SortViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale, SortViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale,
+      SortViewModel viewModel, Widget? child) {
     return Container(
       height: MediaQuery.of(context).size.height / 2.2,
       child: Stack(
@@ -41,22 +39,34 @@ class SortBottomSheet extends VGTSBuilderWidget<SortViewModel> {
                                   InkWell(
                                     onTap: () async {
                                       // ProductModel productModel = await viewModel.filter(item.value);
-                                      locator<DialogService>().dialogComplete(AlertResponse(status: true, data: item.value));
+                                      locator<DialogService>().dialogComplete(
+                                          AlertResponse(
+                                              status: true, data: item.value));
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.all(15.0),
-                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                        Text(
-                                          item.text!,
-                                          style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
-                                          textScaleFactor: 1,
-                                        ),
-                                        Icon(
-                                          Icons.check,
-                                          color: item.selected! ? AppColor.green : AppColor.secondaryBackground,
-                                          size: 17,
-                                        ),
-                                      ]),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              item.text!,
+                                              style: AppTextStyle.bodyMedium
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 14),
+                                              textScaleFactor: 1,
+                                            ),
+                                            Icon(
+                                              Icons.check,
+                                              color: item.selected!
+                                                  ? AppColor.green
+                                                  : AppColor
+                                                      .secondaryBackground,
+                                              size: 17,
+                                            ),
+                                          ]),
                                     ),
                                   ));
                             })
@@ -94,7 +104,8 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColor.white,
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5),
+      padding:
+          const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5),
       child: Column(
         children: [
           Row(
@@ -103,14 +114,13 @@ class Header extends StatelessWidget {
               const Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(left: 10.0),
-                  child: Text(
-                    "Sort By",
-                    textScaleFactor: 1,
-                    style: AppTextStyle.title,
-                  ),
+                  child: Text("Sort By",
+                      textScaleFactor: 1, style: AppTextStyle.titleLarge),
                 ),
               ),
-              IconButton(icon: const Icon(Icons.clear), onPressed: () => Navigator.pop(context))
+              IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () => Navigator.pop(context))
             ],
           ),
           Container(height: 1, child: AppStyle.customDivider)

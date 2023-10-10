@@ -195,8 +195,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                 textScaleFactor: 1,
                 textAlign: UIAlignment.textAlign(viewModel
                     .productListingModule!.displaySettings!.titleAlignment),
-                style:
-                    AppTextStyle.buttonOutline.copyWith(color: AppColor.title)),
+                style: AppTextStyle.titleSmall.copyWith(color: AppColor.title)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -216,7 +215,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                       Text(
                         "Sort",
                         textScaleFactor: 1,
-                        style: AppTextStyle.buttonOutline
+                        style: AppTextStyle.titleSmall
                             .copyWith(color: AppColor.title),
                       )
                     ],
@@ -257,7 +256,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                                 ? " (${viewModel.productModel.selectedFacetsCount})"
                                 : ""),
                         textScaleFactor: 1,
-                        style: AppTextStyle.buttonOutline
+                        style: AppTextStyle.titleSmall
                             .copyWith(color: AppColor.title),
                       )
                     ],

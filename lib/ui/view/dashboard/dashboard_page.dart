@@ -57,8 +57,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
       ],
       padding: const NavBarPadding.all(4),
       confineInSafeArea: true,
-      hideNavigationBarWhenKeyboardShows:
-          true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+      hideNavigationBarWhenKeyboardShows: true,
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
       decoration: NavBarDecoration(boxShadow: AppStyle.topShadow),

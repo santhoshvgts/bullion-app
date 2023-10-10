@@ -1,6 +1,3 @@
-import 'package:bullion/services/shared/navigator_service.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/search_item.dart';
 import 'package:bullion/core/res/colors.dart';
@@ -8,13 +5,16 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:flutter/material.dart';
 
 class TrendingSection extends StatelessWidget {
   final ModuleSettings? settings;
 
   TrendingSection(this.settings);
 
-  List<SearchItem> get list => settings!.dynamicItemData!.map((e) => SearchItem.fromJson(e)).toList();
+  List<SearchItem> get list =>
+      settings!.dynamicItemData!.map((e) => SearchItem.fromJson(e)).toList();
 
   @override
   Widget build(
@@ -30,7 +30,10 @@ class TrendingSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(settings!.title ?? "Top Searches", textScaleFactor: 1, textAlign: TextAlign.start, style: AppTextStyle.title),
+          Text(settings!.title ?? "Top Searches",
+              textScaleFactor: 1,
+              textAlign: TextAlign.start,
+              style: AppTextStyle.titleMedium),
           VerticalSpacing.d15px(),
           Wrap(
             spacing: 10,
@@ -60,15 +63,19 @@ class _ItemCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         FocusManager.instance.primaryFocus!.unfocus();
-        locator<NavigationService>().pushAndPopUntil(_item.targetUrl!, removeRouteName: Routes.dashboard);
+        locator<NavigationService>().pushAndPopUntil(_item.targetUrl!,
+            removeRouteName: Routes.dashboard);
       },
       child: Container(
         padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0, top: 3),
-        decoration: BoxDecoration(color: AppColor.white, borderRadius: BorderRadius.all(Radius.circular(20)), border: Border.all(color: AppColor.text, width: 0.8)),
+        decoration: BoxDecoration(
+            color: AppColor.white,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            border: Border.all(color: AppColor.text, width: 0.8)),
         child: Text(
           _item.name!,
           textScaleFactor: 1,
-          style: AppTextStyle.text.copyWith(fontSize: 13),
+          style: AppTextStyle.labelMedium.copyWith(fontSize: 13),
         ),
       ),
     );

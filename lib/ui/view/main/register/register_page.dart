@@ -4,13 +4,11 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
-import 'package:bullion/ui/shared/loading_widget.dart';
 import 'package:bullion/ui/view/main/register/register_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -21,14 +19,18 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
   const RegisterPage({super.key, this.fromMain = true, this.redirectRoute});
 
   @override
-  RegisterViewModel viewModelBuilder(BuildContext context) => RegisterViewModel(fromMain, redirectRoute);
+  RegisterViewModel viewModelBuilder(BuildContext context) =>
+      RegisterViewModel(fromMain, redirectRoute);
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale, RegisterViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale,
+      RegisterViewModel viewModel, Widget? child) {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          leading: IconButton(onPressed: () => locator<NavigationService>().pop(), icon: const Icon(Icons.arrow_back)),
+          leading: IconButton(
+              onPressed: () => locator<NavigationService>().pop(),
+              icon: const Icon(Icons.arrow_back)),
         ),
         body: SafeArea(
             child: TapOutsideUnFocus(
@@ -38,7 +40,8 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
               VerticalSpacing.custom(value: 21),
               Text(
                 'Create Account',
-                style: AppTextStyle.normal.copyWith(fontSize: 24, color: AppColor.text),
+                style: AppTextStyle.bodyMedium
+                    .copyWith(fontSize: 24, color: AppColor.text),
               ),
               VerticalSpacing.custom(value: 45),
               Form(
@@ -91,7 +94,8 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
               Center(
                   child: Text(
                 '--------   Or sign in with   --------',
-                style: AppTextStyle.normal.copyWith(color: AppColor.secondaryText, fontSize: 12),
+                style: AppTextStyle.bodyMedium
+                    .copyWith(color: AppColor.secondaryText, fontSize: 12),
               )),
               VerticalSpacing.d15px(),
               Button.outline(
@@ -101,7 +105,8 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                   Images.googleIcon,
                   height: 20,
                 ),
-                textStyle: AppTextStyle.buttonSecondary.copyWith(color: AppColor.text),
+                textStyle:
+                    AppTextStyle.titleSmall.copyWith(color: AppColor.text),
                 onPressed: () => viewModel.continueWithoutLogin(),
               ),
             ],
