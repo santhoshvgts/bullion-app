@@ -37,11 +37,6 @@ class AppColor {
   static const Color platinum = Color(0xFFFD5567);
   static const Color palladium = Color(0xFF6636BE);
 
-  static const Color secondaryGold = Color(0xFFECB43D); //F5B32A
-  static const Color secondarySilver = Color(0xFF797979);
-  static const Color secondaryPlatinum = Color(0xFFD86F76);
-  static const Color secondaryPalladium = Color(0xFF6E50B2);
-
   static const Color shadowColor = Color(0xFFE3E3E3);
   static Color chipShadowColor = const Color(0xFF808080).withOpacity(0.5);
 
@@ -49,20 +44,16 @@ class AppColor {
 
   static const Color green = Color(0xFF0F8110);
   static const Color red = Color(0xFFCD3737);
-  static const Color offerText = Color(0xFF24A186);
   static const Color orange = Color(0xFFf98d29);
   static const Color blue = Color(0xFF005f9b);
+
+  static const Color offerText = Color(0xFF24A186);
 
   static const Color dealsRed = Color(0xFFC30000);
   static const Color black20 = Color(0xFF344456);
 
   static const Color outline = Color(0xFFE0E0E0);
   static const Color outlineBorder = Color(0xFFC1C2B8);
-
-  static const Color bullion = Color(0xff001A29);
-  static const Color bullionBg = Color(0xffFFFDF2);
-  static const Color bullionProgress = Color(0xffBF9A78);
-  static const Color bullionProgressBg = Color(0xffADAAA7);
 
   static Color metalColor(String metalName) {
     switch (metalName.toLowerCase()) {
@@ -97,15 +88,20 @@ class AppColor {
   static Color opacityMetalColor(String metalName) {
     switch (metalName.toLowerCase()) {
       case "gold":
-        return const MaterialColor(0xFFF4BB40, {200: const Color.fromRGBO(244, 187, 64, .3)}).shade200;
+        return const MaterialColor(
+            0xFFF4BB40, {200: Color.fromRGBO(244, 187, 64, .3)}).shade200;
       case "silver":
-        return const MaterialColor(0xFF797979, {600: const Color.fromRGBO(121, 121, 121, .7)}).shade600;
+        return const MaterialColor(
+            0xFF797979, {600: Color.fromRGBO(121, 121, 121, .7)}).shade600;
       case "platinum":
-        return const MaterialColor(0xFFEA616B, {700: const Color.fromRGBO(234, 97, 107, .8)}).shade700;
+        return const MaterialColor(
+            0xFFEA616B, {700: Color.fromRGBO(234, 97, 107, .8)}).shade700;
       case "palladium":
-        return const MaterialColor(0xFF5F38B7, {600: const Color.fromRGBO(95, 56, 183, .7)}).shade600;
+        return const MaterialColor(
+            0xFF5F38B7, {600: Color.fromRGBO(95, 56, 183, .7)}).shade600;
       default:
-        return const MaterialColor(0xFF5F38B7, {200: const Color.fromRGBO(95, 56, 183, .3)}).shade200;
+        return const MaterialColor(
+            0xFF5F38B7, {200: Color.fromRGBO(95, 56, 183, .3)}).shade200;
     }
   }
 

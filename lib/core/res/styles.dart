@@ -10,8 +10,9 @@ class AppStyle {
     dividerColor: AppColor.divider,
     indicatorColor: AppColor.primaryDark,
     iconTheme: const IconThemeData(color: AppColor.black),
-    primaryIconTheme:
-        const IconThemeData.fallback().copyWith(color: AppColor.primary),
+    primaryIconTheme: const IconThemeData.fallback().copyWith(
+      color: AppColor.primary,
+    ),
     appBarTheme: const AppBarTheme().copyWith(
         color: AppColor.scaffoldBackground,
         elevation: 1,
@@ -30,10 +31,10 @@ class AppStyle {
     const BoxShadow(color: Colors.black12, spreadRadius: 0.1, blurRadius: 1),
   ];
 
-  static final List<BoxShadow> dealsShadow = [
-    const BoxShadow(
-        color: AppColor.shadowColor, offset: Offset(0, 5), blurRadius: 10),
-  ];
+  // static final List<BoxShadow> dealsShadow = [
+  //   const BoxShadow(
+  //       color: AppColor.shadowColor, offset: Offset(0, 5), blurRadius: 10),
+  // ];
 
   static final List<BoxShadow> topShadow = [
     const BoxShadow(
@@ -184,7 +185,7 @@ class AppTextStyle {
   //     letterSpacing: 0.15,
   //     height: 1.5);
 
-  static const TextStyle displayLarge = const TextStyle(
+  static const TextStyle displayLarge = TextStyle(
     fontSize: 57,
     decoration: TextDecoration.none,
     fontStyle: FontStyle.normal,
