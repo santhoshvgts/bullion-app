@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 
 class AppStyle {
   static final ThemeData appTheme = ThemeData(
-    primaryColor: AppColor.primary,
+    useMaterial3: true,
     primaryColorLight: AppColor.white,
     brightness: Brightness.light,
     dividerColor: AppColor.divider,
     indicatorColor: AppColor.primaryDark,
+    colorSchemeSeed: AppColor.primary,
     iconTheme: const IconThemeData(color: AppColor.black),
     primaryIconTheme: const IconThemeData.fallback().copyWith(
       color: AppColor.primary,

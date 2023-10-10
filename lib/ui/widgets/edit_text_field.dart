@@ -1,20 +1,19 @@
 import 'dart:io';
 
 import 'package:bullion/core/res/styles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
 import '../../core/res/colors.dart';
 
-TextStyle _errorTextStyle = AppTextStyle.labelMedium.copyWith(
-  color: AppColor.red,
-  fontSize: 13,
-  fontWeight: FontWeight.w500,
+TextStyle _errorTextStyle = AppTextStyle.bodySmall.copyWith(
+  color: AppColor.error,
 );
-TextStyle _bodyTextStyle = AppTextStyle.bodyLarge;
-TextStyle _hintTextStyle = AppTextStyle.labelMedium.copyWith(
-  color: const Color(0xffbdc1c6),
+TextStyle _bodyTextStyle = AppTextStyle.bodyMedium;
+TextStyle _hintTextStyle = AppTextStyle.bodyMedium.copyWith(
+  color: const Color(0xff49454F).withOpacity(0.7),
   fontWeight: FontWeight.normal,
 );
 
@@ -103,7 +102,7 @@ class _EditTextFieldState extends State<EditTextField> {
   TextInputType get keyboardType {
     if ((widget.controller.textInputType == TextInputType.number ||
             widget.controller.textInputType ==
-                TextInputType.numberWithOptions(decimal: true)) &&
+                const TextInputType.numberWithOptions(decimal: true)) &&
         Platform.isIOS) {
       return const TextInputType.numberWithOptions(decimal: true, signed: true);
     }
@@ -149,7 +148,8 @@ class _EditTextFieldState extends State<EditTextField> {
             textAlign: widget.textAlign,
             style: widget.textStyle ??
                 _bodyTextStyle.copyWith(
-                    color: !widget.enabled ? const Color(0xff8C8C8D) : null),
+                  color: !widget.enabled ? const Color(0xff8C8C8D) : null,
+                ),
             focusNode: widget.controller.focusNode,
             autofocus: widget.autoFocus,
             cursorColor: AppColor.text,
@@ -179,7 +179,10 @@ class _EditTextFieldState extends State<EditTextField> {
               fillColor: !widget.enabled ? AppColor.text : Colors.white,
               filled: true,
               contentPadding: widget.padding ??
-                  const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                  const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 12,
+                  ),
               alignLabelWithHint: true,
               floatingLabelBehavior: FloatingLabelBehavior.always,
               border: _outlineInputBorder,
@@ -187,20 +190,23 @@ class _EditTextFieldState extends State<EditTextField> {
               disabledBorder: _outlineInputBorder,
               focusedBorder: _focusedInputBorder,
               errorBorder: _errorInputBorder,
-              errorStyle: _errorTextStyle,
               errorText: state.hasError
                   ? state.errorText
                   : widget.controller.overrideErrorText,
               errorMaxLines: 3,
               hintText: widget.placeholder,
               labelText: widget.label,
-              labelStyle: AppTextStyle.bodySmall,
+              errorStyle: _errorTextStyle,
               hintStyle: _hintTextStyle,
-              focusColor: AppColor.red,
-              suffixIconConstraints:
-                  const BoxConstraints(minWidth: 15, maxHeight: 20),
-              prefixIconConstraints:
-                  const BoxConstraints(minWidth: 15, maxHeight: 20),
+              focusColor: AppColor.error,
+              suffixIconConstraints: const BoxConstraints(
+                minWidth: 15,
+                maxHeight: 20,
+              ),
+              prefixIconConstraints: const BoxConstraints(
+                minWidth: 15,
+                maxHeight: 20,
+              ),
               prefix: widget.prefixText == null
                   ? null
                   : Text(
@@ -225,8 +231,8 @@ class _EditTextFieldState extends State<EditTextField> {
     return IconButton(
         padding: EdgeInsets.zero,
         icon: Icon(
-          isVisible ? Icons.remove_red_eye : Icons.remove_red_eye_outlined,
-          color: AppColor.text.withOpacity(0.5),
+          isVisible ? CupertinoIcons.eye_slash_fill : CupertinoIcons.eye_fill,
+          size: 20,
         ),
         onPressed: () {
           isVisible = !isVisible;
@@ -241,20 +247,27 @@ class _EditTextFieldState extends State<EditTextField> {
 
 InputBorder _outlineInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: const Color(0xff263238).withOpacity(0.20),
-      width: 1),
+  borderSide: const BorderSide(
+    style: BorderStyle.solid,
+    color: Color(0xff79747E),
+    width: 0.5,
+  ),
 );
 
 InputBorder _focusedInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
   borderSide: const BorderSide(
-      style: BorderStyle.solid, color: AppColor.primary, width: 1),
+    style: BorderStyle.solid,
+    color: AppColor.primary,
+    width: 1,
+  ),
 );
 
 InputBorder _errorInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide:
-      const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
+  borderSide: const BorderSide(
+    style: BorderStyle.solid,
+    color: AppColor.error,
+    width: 1,
+  ),
 );

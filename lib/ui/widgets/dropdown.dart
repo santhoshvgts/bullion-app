@@ -7,17 +7,14 @@ import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
 import '../../core/res/colors.dart';
 
-Color _focusBgColor = AppColor.primary;
-Color _errorBgColor = const Color(0xffFFF5F5);
-Color _errorColor = const Color(0xffEB1414);
-
-TextStyle _errorTextStyle = AppTextStyle.labelMedium
-    .copyWith(color: AppColor.red, fontSize: 13, fontWeight: FontWeight.w500);
-TextStyle _labelTextStyle =
-    AppTextStyle.labelMedium.copyWith(fontWeight: FontWeight.w600);
-TextStyle _bodyTextStyle = AppTextStyle.labelMedium;
-TextStyle _hintTextStyle = AppTextStyle.labelMedium
-    .copyWith(color: const Color(0xffbdc1c6), fontWeight: FontWeight.normal);
+TextStyle _errorTextStyle = AppTextStyle.bodySmall.copyWith(
+  color: AppColor.error,
+);
+TextStyle _bodyTextStyle = AppTextStyle.bodyMedium;
+TextStyle _hintTextStyle = AppTextStyle.bodyMedium.copyWith(
+  color: const Color(0xff49454F).withOpacity(0.7),
+  fontWeight: FontWeight.normal,
+);
 
 BorderRadius _borderRadius = BorderRadius.circular(6.0);
 
@@ -119,12 +116,10 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
           disabledBorder: _outlineInputBorder,
           focusedBorder: _focusedInputBorder,
           errorBorder: _errorInputBorder,
-          errorStyle: _errorTextStyle,
           errorMaxLines: 3,
           hintText: widget.placeholder,
           labelText: widget.title,
-          labelStyle: AppTextStyle.labelMedium
-              .copyWith(color: const Color(0xff263238), fontSize: 15),
+          errorStyle: _errorTextStyle,
           hintStyle: _hintTextStyle,
           focusColor: AppColor.secondary,
           suffixIconConstraints:
@@ -226,20 +221,27 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
 
 InputBorder _outlineInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: const Color(0xff263238).withOpacity(0.20),
-      width: 1),
+  borderSide: const BorderSide(
+    style: BorderStyle.solid,
+    color: Color(0xff79747E),
+    width: 0.5,
+  ),
 );
 
 InputBorder _focusedInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
   borderSide: const BorderSide(
-      style: BorderStyle.solid, color: AppColor.primary, width: 1),
+    style: BorderStyle.solid,
+    color: AppColor.primary,
+    width: 1,
+  ),
 );
 
 InputBorder _errorInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide:
-      const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
+  borderSide: const BorderSide(
+    style: BorderStyle.solid,
+    color: AppColor.error,
+    width: 1,
+  ),
 );
