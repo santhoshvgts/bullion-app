@@ -1,5 +1,7 @@
+import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/view/settings/settings_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -152,6 +154,7 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   height: 96,
                   child: Card(
+                    color: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

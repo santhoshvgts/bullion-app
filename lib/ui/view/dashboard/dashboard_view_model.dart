@@ -1,5 +1,4 @@
 import 'package:bullion/ui/view/dashboard/content/dashboard_content_page.dart';
-import 'package:bullion/ui/view/settings/settings_page.dart';
 import 'package:bullion/ui/view/settings/settings_user_page.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';

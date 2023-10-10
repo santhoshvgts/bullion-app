@@ -239,39 +239,6 @@ class AppTextStyle {
     height: 32 / 24,
     letterSpacing: 0,
   );
-  static const TextStyle title = TextStyle(
-      fontFamily: AppTextStyle.fontFamily,
-      fontSize: AppFontSize.dp18,
-      fontWeight: FontWeight.w600,
-      color: AppColor.primaryDark,
-      letterSpacing: 0.15,
-      height: 1.5);
-
-  static const TextStyle subtitle = TextStyle(
-      fontFamily: AppTextStyle.fontFamily,
-      fontSize: AppFontSize.dp16,
-      fontWeight: FontWeight.normal,
-      color: AppColor.primaryDark,
-      letterSpacing: 0.15,
-      height: 1.5);
-
-  static const TextStyle headerWhite = TextStyle(
-      fontSize: AppFontSize.dp22,
-      fontWeight: FontWeight.w600,
-      color: Colors.white,
-      fontFamily: AppTextStyle.fontFamily);
-
-  static const TextStyle titleMed = TextStyle(
-      fontSize: AppFontSize.dp16,
-      fontWeight: FontWeight.w500,
-      color: AppColor.text,
-      fontFamily: AppTextStyle.fontFamily);
-
-  static const TextStyle titleMed18 = TextStyle(
-      fontSize: AppFontSize.dp18,
-      fontWeight: FontWeight.w500,
-      color: AppColor.text,
-      fontFamily: AppTextStyle.fontFamily);
 
   static const TextStyle titleLarge = TextStyle(
     fontSize: 22,
@@ -353,48 +320,70 @@ class AppTextStyle {
     height: 16 / 12,
     letterSpacing: 0,
   );
+
+  @Deprecated("Removed")
+  static const TextStyle headerWhite = TextStyle(
+      fontSize: AppFontSize.dp22,
+      fontWeight: FontWeight.w600,
+      color: Colors.white,
+      fontFamily: AppTextStyle.fontFamily);
+
+  @Deprecated("Removed")
+  static const TextStyle titleMed = TextStyle(
+      fontSize: AppFontSize.dp16,
+      fontWeight: FontWeight.w500,
+      color: AppColor.text,
+      fontFamily: AppTextStyle.fontFamily);
+
+  @Deprecated("Removed")
+  static const TextStyle titleMed18 = TextStyle(
+      fontSize: AppFontSize.dp18,
+      fontWeight: FontWeight.w500,
+      color: AppColor.text,
+      fontFamily: AppTextStyle.fontFamily);
+  @Deprecated("Removed")
   static const TextStyle buttonOutlineSemi = TextStyle(
       fontSize: AppFontSize.dp12,
       fontWeight: FontWeight.w600,
       color: AppColor.primaryText,
       fontFamily: AppTextStyle.fontFamily);
-
+  @Deprecated("Removed")
   static const TextStyle subTitleReg = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w400,
       color: AppColor.privacySubTitle,
       fontFamily: AppTextStyle.fontFamily);
-
+  @Deprecated("Removed")
   static const TextStyle subTitleRegOpaque = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w400,
       color: AppColor.text,
       fontFamily: AppTextStyle.fontFamily);
-
+  @Deprecated("Removed")
   static const TextStyle privacySubTitle = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w500,
       color: AppColor.privacySubTitle,
       fontFamily: AppTextStyle.fontFamily);
-
+  @Deprecated("Removed")
   static const TextStyle privacyValue = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w500,
       color: AppColor.secondary,
       fontFamily: AppTextStyle.fontFamily);
-
+  @Deprecated("Removed")
   static const TextStyle privacySubTitleBold = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w600,
       color: AppColor.privacySubTitle,
       fontFamily: AppTextStyle.fontFamily);
-
+  @Deprecated("Removed")
   static const TextStyle version = TextStyle(
       fontSize: AppFontSize.dp12,
       fontWeight: FontWeight.w500,
       color: AppColor.privacySubTitle,
       fontFamily: AppTextStyle.fontFamily);
-
+  @Deprecated("Removed")
   static const TextStyle email = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w500,
