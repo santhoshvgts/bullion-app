@@ -55,7 +55,7 @@ class AppStyle {
   static Border divider =
       const Border(bottom: BorderSide(color: AppColor.divider, width: 0.3));
 
-  static final Widget customDivider = const Divider(
+  static const Widget customDivider = Divider(
     color: AppColor.divider,
     thickness: 0.3,
   );
