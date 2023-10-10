@@ -6,13 +6,13 @@
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// import 'package:spot/core/models/module/product_detail/product_detail.dart';
-// import 'package:spot/core/res/colors.dart';
-// import 'package:spot/core/res/spacing.dart';
-// import 'package:spot/core/res/styles.dart';
-// import 'package:spot/services/shared/navigation_service.dart';
-// import 'package:spot/ui/v2/shared/dynamic/product/product_detail_view_model.dart';
-// import 'package:spot/ui/widgets/rating_bar.dart';
+// import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+// import 'package:bullion/core/res/colors.dart';
+// import 'package:bullion/core/res/spacing.dart';
+// import 'package:bullion/core/res/styles.dart';
+// import 'package:bullion/services/shared/navigation_service.dart';
+// import 'package:bullion/ui/v2/shared/dynamic/product/product_detail_view_model.dart';
+// import 'package:bullion/ui/widgets/rating_bar.dart';
 // import 'package:stacked/stacked.dart';
 // import '../../../../../locator.dart';
 // import '../../../../../router.dart';
@@ -70,7 +70,7 @@
 //               child: Column(
 //                 crossAxisAlignment: CrossAxisAlignment.start,
 //                 children: [
-//                   Text(title!,style: AppTextStyle.title.copyWith(fontSize: 17)),
+//                   Text(title!,style: AppTextStyle.titleLarge.copyWith(fontSize: 17)),
 //
 //                   if (showRating)
 //                     Container(
@@ -89,7 +89,7 @@
 //                         HorizontalSpacing.d5px(),
 //
 //                         Expanded(
-//                             child: Text("(${viewModel.productDetails!.overview!.reviewCount})", textScaleFactor: 1, textAlign: TextAlign.left, style: AppTextStyle.body,)
+//                             child: Text("(${viewModel.productDetails!.overview!.reviewCount})", textScaleFactor: 1, textAlign: TextAlign.left, style: AppTextStyle.bodyMedium,)
 //                         ),
 //                       ],
 //                     ),

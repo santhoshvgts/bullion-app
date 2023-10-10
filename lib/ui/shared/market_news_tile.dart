@@ -1,11 +1,11 @@
-import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/models/market_news.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/url_launcher.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
+import 'package:flutter/material.dart';
 
 class MarketNewsTile extends StatelessWidget {
   final MarketNews data;
@@ -22,10 +22,12 @@ class MarketNewsTile extends StatelessWidget {
         if (data.openInNewWindow!) {
           launchUrl(data.externalLink!);
 
-          locator<AnalyticsService>().logScreenView(data.externalLink, className: "launch_url");
+          locator<AnalyticsService>()
+              .logScreenView(data.externalLink, className: "launch_url");
         } else {
           ApmexWebView.open(data.externalLink, title: "Market News");
-          locator<AnalyticsService>().logScreenView(data.externalLink, className: "in_app_browser");
+          locator<AnalyticsService>()
+              .logScreenView(data.externalLink, className: "in_app_browser");
           // Navigator.push(
           //   context,
           //   MaterialPageRoute(
@@ -69,7 +71,7 @@ class MainTile extends StatelessWidget {
         Text(
           data.title!,
           textScaleFactor: 1,
-          style: AppTextStyle.normal,
+          style: AppTextStyle.bodyMedium,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),
@@ -80,14 +82,14 @@ class MainTile extends StatelessWidget {
               child: Text(
                 data.source!,
                 textScaleFactor: 1,
-                style: AppTextStyle.label,
+                style: AppTextStyle.labelMedium,
                 maxLines: 1,
               ),
             ),
             Text(
               data.updatedAgo!,
               textScaleFactor: 1,
-              style: AppTextStyle.label,
+              style: AppTextStyle.labelMedium,
               maxLines: 1,
             )
           ],
@@ -133,7 +135,7 @@ class NewsTile extends StatelessWidget {
               Text(
                 data.title!,
                 textScaleFactor: 1,
-                style: AppTextStyle.normal,
+                style: AppTextStyle.bodyMedium,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -144,14 +146,14 @@ class NewsTile extends StatelessWidget {
                     child: Text(
                       data.source!,
                       textScaleFactor: 1,
-                      style: AppTextStyle.label,
+                      style: AppTextStyle.labelMedium,
                       maxLines: 1,
                     ),
                   ),
                   Text(
                     data.updatedAgo!,
                     textScaleFactor: 1,
-                    style: AppTextStyle.label,
+                    style: AppTextStyle.labelMedium,
                     maxLines: 1,
                   )
                 ],

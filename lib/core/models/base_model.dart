@@ -1,8 +1,10 @@
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/core/models/auth/forgot_password.dart';
+import 'package:bullion/core/models/auth/token.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/redirection.dart';
+import 'package:bullion/core/models/module/search_module.dart';
 import 'package:bullion/core/models/spot_price.dart';
 import 'package:vgts_plugin/form/base_object.dart';
 
@@ -63,8 +65,14 @@ class BaseModel extends BaseObject {
       case Redirection:
         return Redirection() as T;
 
+      case Token:
+        return Token() as T;
+
       case SpotPrice:
         return SpotPrice() as T;
+
+      case SearchResult:
+        return SearchResult() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }

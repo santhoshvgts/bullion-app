@@ -6,7 +6,6 @@ import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,29 +17,34 @@ import 'forgot_password_view_model.dart';
 class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
   final bool fromMain;
 
-  ForgotPasswordPage({this.fromMain = true});
+  const ForgotPasswordPage({super.key, this.fromMain = true});
 
   @override
   void onViewModelReady(ForgotPasswordViewModel viewModel) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: AppColor.white, statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: AppColor.white,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark));
 
     viewModel.init(fromMain);
     super.onViewModelReady(viewModel);
   }
 
   @override
-  ForgotPasswordViewModel viewModelBuilder(BuildContext context) => ForgotPasswordViewModel();
+  ForgotPasswordViewModel viewModelBuilder(BuildContext context) =>
+      ForgotPasswordViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale, ForgotPasswordViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale,
+      ForgotPasswordViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
         leading: IconButton(
-            icon: const Icon(Icons.clear),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              viewModel.navigationService!.pop(returnValue: false);
+              viewModel.navigationService.pop(returnValue: false);
             }),
       ),
       body: SafeArea(
@@ -59,25 +63,29 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
               const Text(
                 "Forgot Password",
                 textScaleFactor: 1,
-                style: AppTextStyle.header,
+                style: AppTextStyle.headlineSmall,
               ),
               const Padding(padding: EdgeInsets.only(top: 10)),
               Linkify(
                 onOpen: (link) async {
                   launchUrl(link.url);
                 },
-                linkifiers: const [PhoneNumberLinkifier(), EmailLinkifier(), UrlLinkifier()],
+                linkifiers: const [
+                  PhoneNumberLinkifier(),
+                  EmailLinkifier(),
+                  UrlLinkifier()
+                ],
                 text:
                     "Enter the email address associated with your account and we'll email you a secure link to reset your password. If you do not receive an email, please try resubmitting your request or contacting customer service at service@APMEX.com for assistance.",
-                style: AppTextStyle.body,
-                linkStyle: AppTextStyle.body.copyWith(color: Colors.blue),
+                style: AppTextStyle.bodyMedium,
+                linkStyle: AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
               ),
               EditTextField(
                 "Email Address",
                 viewModel.emailController,
                 margin: const EdgeInsets.only(top: 30),
                 onSubmitted: (value) {
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                  FocusScope.of(context).requestFocus(FocusNode());
                 },
                 onChanged: (value) {},
               ),

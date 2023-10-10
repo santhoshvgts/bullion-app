@@ -4,15 +4,14 @@ class AppColor {
   static const Color primary = Color(0xFF006936);
   static Color primary60 = const Color(0xFF006936).withOpacity(0.6);
 
-  static Color gradient = const Color(0xFF06283A);
-  static Color gradient1 = const Color(0xFF134762);
-
   static const Color indicatorColor = Color(0xFFB8F5D4);
   static const Color primaryDark = Color(0xFF002539);
-  static const Color secondary = Color(0xFF1B84FF);
+  static const Color secondary = Color(0xFF006936);
   static const Color accent = Color(0xFF000000);
   static const Color divider = Color(0x2B495A14);
   static const Color border = Color(0xffDADADA);
+
+  static const Color error = Color(0xFFB3261E);
 
   static const Color text = Color(0xFF14203C);
   static const Color introText = Color(0xFF013b53);

@@ -1,11 +1,9 @@
-import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/view/settings/settings_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/res/styles.dart';
-import '../../widgets/button.dart';
 
 class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
   const SettingsPage({super.key});

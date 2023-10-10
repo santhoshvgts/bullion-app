@@ -1,13 +1,13 @@
-import 'package:bullion/locator.dart';
-import 'package:bullion/services/shared/api_base_service.dart';
-import 'package:bullion/services/shared/navigator_service.dart';
-import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/material.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/url_launcher.dart';
+import 'package:bullion/locator.dart';
 import 'package:bullion/services/appconfig_service.dart';
+import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ApmexWebView {
@@ -71,7 +71,8 @@ class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
             print("URL ${navigationDelegate.url.toLowerCase()}");
             print("Widget URL ${widget.url?.toLowerCase()}");
 
-            if (navigationDelegate.url.toLowerCase() == widget.url?.toLowerCase()) {
+            if (navigationDelegate.url.toLowerCase() ==
+                widget.url?.toLowerCase()) {
               return NavigationDecision.navigate;
             }
 
@@ -81,19 +82,23 @@ class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
               return NavigationDecision.prevent;
             }
 
-            List<String> blacklistUrl = locator<AppConfigService>().config?.webViewUrl?.blacklist ?? [];
-            List<String> whitelistUrl = locator<AppConfigService>().config?.webViewUrl?.whitelist ?? [];
+            List<String> blacklistUrl =
+                locator<AppConfigService>().config?.webViewUrl?.blacklist ?? [];
+            List<String> whitelistUrl =
+                locator<AppConfigService>().config?.webViewUrl?.whitelist ?? [];
 
             print(blacklistUrl.toString());
             print(whitelistUrl.toString());
 
-            String? blackList = blacklistUrl.singleWhereOrNull((element) => navigationDelegate.url.startsWith(element));
+            String? blackList = blacklistUrl.singleWhereOrNull(
+                (element) => navigationDelegate.url.startsWith(element));
 
             if (blackList != null) {
               return NavigationDecision.prevent;
             }
 
-            String? whitelist = whitelistUrl.singleWhereOrNull((element) => navigationDelegate.url.startsWith(element));
+            String? whitelist = whitelistUrl.singleWhereOrNull(
+                (element) => navigationDelegate.url.startsWith(element));
 
             if (whitelist != null) {
               Uri uri = Uri.parse(navigationDelegate.url);
@@ -125,7 +130,7 @@ class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
           title: Text(
             widget.title ?? '',
             textScaleFactor: 1,
-            style: AppTextStyle.appBarTitle,
+            style: AppTextStyle.titleLarge,
           ),
         ),
         body: Column(

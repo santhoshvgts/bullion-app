@@ -1,9 +1,3 @@
-import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
-import 'package:bullion/ui/shared/contentful/standard/item_card/pile_item_card.dart';
-import 'package:bullion/ui/shared/contentful/standard/item_card/standard_item_card.dart';
-import 'package:bullion/ui/shared/contentful/standard/standard_view_model.dart';
-import 'package:bullion/ui/view/vgts_builder_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/constants/alignment.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/models/module/item_display_settings.dart';
@@ -11,6 +5,12 @@ import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/fontsize.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
+import 'package:bullion/ui/shared/contentful/standard/item_card/pile_item_card.dart';
+import 'package:bullion/ui/shared/contentful/standard/item_card/standard_item_card.dart';
+import 'package:bullion/ui/shared/contentful/standard/standard_view_model.dart';
+import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
@@ -30,16 +30,25 @@ class StandardModule extends VGTSBuilderWidget<StandardViewModel> {
   }
 
   @override
-  StandardViewModel viewModelBuilder(BuildContext context) => StandardViewModel();
+  StandardViewModel viewModelBuilder(BuildContext context) =>
+      StandardViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale, StandardViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale,
+      StandardViewModel viewModel, Widget? child) {
     return ModuleUIContainer(
       settings,
       hideHeadSection: false,
       children: [
-        Container(margin: EdgeInsets.only(top: viewModel.settings.hasHeaderSection ? 10 : 0), child: _ItemCard()),
-        if (viewModel.itemDisplaySettings.collpasable && !viewModel.isCollPaSable) _CollPaSableButton() else if (viewModel.isCollPaSable) _ShowLess()
+        Container(
+            margin: EdgeInsets.only(
+                top: viewModel.settings.hasHeaderSection ? 10 : 0),
+            child: _ItemCard()),
+        if (viewModel.itemDisplaySettings.collpasable &&
+            !viewModel.isCollPaSable)
+          _CollPaSableButton()
+        else if (viewModel.isCollPaSable)
+          _ShowLess()
       ],
     );
   }
@@ -67,7 +76,9 @@ class _ItemCard extends ViewModelWidget<StandardViewModel> {
       // Cell Display Type
       case DisplayType.cell:
         return Container(
-          margin: viewModel.settings.displaySettings!.fullBleed ? null : const EdgeInsets.only(left: 10.0, right: 10.0),
+          margin: viewModel.settings.displaySettings!.fullBleed
+              ? null
+              : const EdgeInsets.only(left: 10.0, right: 10.0),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           color: AppColor.white,
           child: _WrapItemList(
@@ -78,7 +89,8 @@ class _ItemCard extends ViewModelWidget<StandardViewModel> {
             children: viewModel.items!
                 .asMap()
                 .map((index, item) {
-                  return MapEntry(index, CellItemCard(item, index, viewModel.items!.length));
+                  return MapEntry(index,
+                      CellItemCard(item, index, viewModel.items!.length));
                 })
                 .values
                 .toList(),
@@ -102,8 +114,13 @@ class _ItemCard extends ViewModelWidget<StandardViewModel> {
                         padding: const EdgeInsets.only(top: 10, bottom: 2),
                         child: Text(item.content!,
                             textScaleFactor: 1,
-                            style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600, fontSize: AppFontSize.bodyContentByValue(viewModel.itemDisplaySettings.titleStyle), color: viewModel.itemDisplaySettings.textColor),
-                            textAlign: UIAlignment.textAlign(viewModel.itemDisplaySettings.contentAlignment)),
+                            style: AppTextStyle.bodyMedium.copyWith(
+                                fontWeight: FontWeight.w600,
+                                fontSize: AppFontSize.bodyContentByValue(
+                                    viewModel.itemDisplaySettings.titleStyle),
+                                color: viewModel.itemDisplaySettings.textColor),
+                            textAlign: UIAlignment.textAlign(viewModel
+                                .itemDisplaySettings.contentAlignment)),
                       ),
                     ));
               })
@@ -146,7 +163,13 @@ class _WrapItemList extends StatelessWidget {
   final List<Widget> children;
   final ItemDisplaySettings? itemDisplaySettings;
 
-  _WrapItemList({this.wrap = false, this.direction = Axis.horizontal, this.runSpacing = 0.0, this.itemDisplaySettings, this.spacing = 0.0, this.children = const <Widget>[]});
+  _WrapItemList(
+      {this.wrap = false,
+      this.direction = Axis.horizontal,
+      this.runSpacing = 0.0,
+      this.itemDisplaySettings,
+      this.spacing = 0.0,
+      this.children = const <Widget>[]});
 
   @override
   Widget build(BuildContext context) {
@@ -158,14 +181,17 @@ class _WrapItemList extends StatelessWidget {
           ),
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
-            children: _buildWrapItems(itemDisplaySettings?.itemMainAxisAlignment),
+            children:
+                _buildWrapItems(itemDisplaySettings?.itemMainAxisAlignment),
           ));
     } else {
       return SingleChildScrollView(
         scrollDirection: direction,
         primary: false,
         controller: new ScrollController(keepScrollOffset: false),
-        padding: itemDisplaySettings!.fullBleed ? EdgeInsets.zero : EdgeInsets.symmetric(horizontal: runSpacing),
+        padding: itemDisplaySettings!.fullBleed
+            ? EdgeInsets.zero
+            : EdgeInsets.symmetric(horizontal: runSpacing),
         child: IntrinsicHeight(
           child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,7 +222,8 @@ class _WrapItemList extends StatelessWidget {
     List<Widget> childItem = children;
 
     while (childItem.length > 0) {
-      List<Widget> tuple = childItem.take(itemDisplaySettings!.gridCols).toList();
+      List<Widget> tuple =
+          childItem.take(itemDisplaySettings!.gridCols).toList();
 
       tuple.forEach((element) {
         if (childItem.length > 0) childItem.removeAt(0);
@@ -204,7 +231,8 @@ class _WrapItemList extends StatelessWidget {
 
       Widget item = IntrinsicHeight(
         child: Row(
-          mainAxisAlignment: itemMainAxisAlignment ?? MainAxisAlignment.spaceBetween,
+          mainAxisAlignment:
+              itemMainAxisAlignment ?? MainAxisAlignment.spaceBetween,
           children: tuple.map((e) => e).toList(),
         ),
       );
@@ -237,12 +265,14 @@ class _CollPaSableButton extends ViewModelWidget<StandardViewModel> {
           children: [
             Text(
               "Show ${viewModel.moreCategoriesLength} more Categories",
-              style: AppTextStyle.text.copyWith(color: const Color(0xff008fbe), fontWeight: FontWeight.w600),
+              style: AppTextStyle.labelMedium.copyWith(
+                  color: const Color(0xff008fbe), fontWeight: FontWeight.w600),
               textScaleFactor: 1,
             ),
             const Padding(
               padding: EdgeInsets.all(3.0),
-              child: Icon(Icons.arrow_drop_down_sharp, size: 35, color: Color(0xff008fbe)),
+              child: Icon(Icons.arrow_drop_down_sharp,
+                  size: 35, color: Color(0xff008fbe)),
             )
           ],
         ));
@@ -259,12 +289,14 @@ class _ShowLess extends ViewModelWidget<StandardViewModel> {
           children: [
             Text(
               "Show Less",
-              style: AppTextStyle.text.copyWith(color: const Color(0xff008fbe), fontWeight: FontWeight.w600),
+              style: AppTextStyle.labelMedium.copyWith(
+                  color: const Color(0xff008fbe), fontWeight: FontWeight.w600),
               textScaleFactor: 1,
             ),
             const Padding(
               padding: EdgeInsets.only(top: 5.0),
-              child: Icon(Icons.arrow_drop_up, size: 35, color: Color(0xff008fbe)),
+              child:
+                  Icon(Icons.arrow_drop_up, size: 35, color: Color(0xff008fbe)),
             )
           ],
         ));

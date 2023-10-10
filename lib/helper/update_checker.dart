@@ -40,7 +40,7 @@ class UpdateChecker {
     //                   VerticalSpacing.d10px(),
     //                   CustomHtmlWidget(
     //                     appStore.updateMessage ?? '',
-    //                     textStyle: AppTextStyle.bodyMedium,
+    //                     textStyle: AppTextStyle.bodyMediumMedium,
     //                   ),
     //                   VerticalSpacing.d30px(),
     //                   SizedBox(
@@ -109,7 +109,7 @@ class UpdateChecker {
     //                           VerticalSpacing.d10px(),
     //                           CustomHtmlWidget(
     //                             appStore.updateMessage ?? '',
-    //                             textStyle: AppTextStyle.bodyMedium,
+    //                             textStyle: AppTextStyle.bodyMediumMedium,
     //                           ),
     //                         ],
     //                       ),

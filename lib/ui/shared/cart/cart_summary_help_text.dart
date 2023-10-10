@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:flutter/material.dart';
 
 class CartSummaryHelpText extends StatelessWidget {
   final String? helpText;
@@ -13,7 +13,7 @@ class CartSummaryHelpText extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Text(
           helpText!,
-          style: AppTextStyle.body,
+          style: AppTextStyle.bodyMedium,
         ),
       ),
     );

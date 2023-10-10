@@ -16,6 +16,7 @@ class SplashPage extends VGTSBuilderWidget<SplashViewModel> {
   Widget viewBuilder(BuildContext context, AppLocalizations locale, SplashViewModel viewModel, Widget? child) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           systemOverlayStyle: const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.light),
           toolbarHeight: 0,
           backgroundColor: AppColor.primary,

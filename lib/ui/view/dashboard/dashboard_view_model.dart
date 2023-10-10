@@ -11,9 +11,9 @@ class DashboardViewModel extends VGTSBaseViewModel {
 
   final List<Widget> pages = [
     const DashboardContentPage(
-        key: PageStorageKey('Shop'), path: "/pages/home"),
+        key: PageStorageKey('Home'), path: "/pages/home"),
     const DashboardContentPage(
-        key: PageStorageKey('Shop'), path: "/pages/home"),
+        key: PageStorageKey('Shop'), path: "/pages/shop"),
     const DashboardContentPage(
         key: PageStorageKey('Charts'), path: "/spot-prices"),
     const DashboardContentPage(
