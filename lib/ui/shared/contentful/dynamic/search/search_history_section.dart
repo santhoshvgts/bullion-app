@@ -1,21 +1,20 @@
-import 'package:bullion/services/shared/navigator_service.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/search_item.dart';
 import 'package:bullion/core/res/colors.dart';
-import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:flutter/material.dart';
 
 class SearchHistorySection extends StatelessWidget {
   final ModuleSettings? settings;
 
   SearchHistorySection(this.settings);
 
-  List<SearchItem> get list => settings!.dynamicItemData!.map((e) => SearchItem.fromJson(e)).toList();
+  List<SearchItem> get list =>
+      settings!.dynamicItemData!.map((e) => SearchItem.fromJson(e)).toList();
 
   @override
   Widget build(
@@ -31,7 +30,12 @@ class SearchHistorySection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(settings!.title ?? "Recent Searches", textScaleFactor: 1, textAlign: TextAlign.start, style: AppTextStyle.title),
+          Text(
+            settings!.title ?? "Recent Searches",
+            textScaleFactor: 1,
+            textAlign: TextAlign.start,
+            style: AppTextStyle.titleLarge,
+          ),
           VerticalSpacing.d10px(),
           Column(
             children: list.map((item) {
@@ -64,11 +68,13 @@ class _ItemCard extends StatelessWidget {
           child: InkWell(
               onTap: () {
                 FocusManager.instance.primaryFocus!.unfocus();
-                locator<NavigationService>().pushAndPopUntil(_item.targetUrl!, removeRouteName: Routes.dashboard);
+                locator<NavigationService>().pushAndPopUntil(_item.targetUrl!,
+                    removeRouteName: Routes.dashboard);
               },
               child: Text(
                 _item.name!,
-                style: AppTextStyle.body.copyWith(fontSize: 16, fontWeight: FontWeight.normal),
+                style: AppTextStyle.bodyMedium
+                    .copyWith(fontSize: 16, fontWeight: FontWeight.normal),
                 textScaleFactor: 1,
               )),
         ),

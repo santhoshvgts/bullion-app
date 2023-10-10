@@ -57,7 +57,7 @@ class SearchPage extends VGTSBuilderWidget<SearchViewModel> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Search Product Name, Mint, Gold, Silver',
-                          hintStyle: AppTextStyle.text.copyWith(
+                          hintStyle: AppTextStyle.labelMedium.copyWith(
                             fontSize: 16,
                             color: AppColor.secondaryText,
                           ),
@@ -149,7 +149,7 @@ class _Item extends ViewModelWidget<SearchViewModel> {
                           _item.name,
                           viewModel.searchController.text,
                         ),
-                        style: AppTextStyle.body.copyWith(
+                        style: AppTextStyle.bodyMedium.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
                         )),

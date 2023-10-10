@@ -1,11 +1,11 @@
-import 'package:bullion/services/shared/navigator_service.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/models/market_news.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/header_card.dart';
 import 'package:bullion/ui/shared/market_news_tile.dart';
+import 'package:flutter/material.dart';
 
 class MarketNewsList extends StatelessWidget {
   final List<dynamic>? dataList;
@@ -13,7 +13,8 @@ class MarketNewsList extends StatelessWidget {
 
   MarketNewsList(this.dataList, {this.metalName});
 
-  List<MarketNews> get list => dataList!.map((e) => MarketNews.fromJson(e)).toList();
+  List<MarketNews> get list =>
+      dataList!.map((e) => MarketNews.fromJson(e)).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +49,18 @@ class MarketNewsList extends StatelessWidget {
                       metal = metalName;
                     }
 
-                    if (['gold', 'silver', 'platinum', 'palladium'].contains(metal?.toLowerCase()) != true) {
+                    if (['gold', 'silver', 'platinum', 'palladium']
+                            .contains(metal?.toLowerCase()) !=
+                        true) {
                       metal = "all";
                     }
-                    locator<NavigationService>().pushNamed(Routes.marketNews + "/${metal}");
+                    locator<NavigationService>()
+                        .pushNamed(Routes.marketNews + "/${metal}");
                   },
                   child: Text(
                     "View More",
                     textScaleFactor: 1,
-                    style: AppTextStyle.buttonSecondary,
+                    style: AppTextStyle.titleSmall,
                   )),
               Padding(padding: EdgeInsets.only(bottom: 15)),
             ],

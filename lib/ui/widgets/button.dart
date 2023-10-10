@@ -11,7 +11,7 @@ class Button extends StatelessWidget {
   String? image;
   String? icon;
 
-  final TextStyle textStyle;
+  TextStyle? textStyle;
   final double width;
   final double height;
   final VoidCallback? onPressed;
@@ -26,7 +26,7 @@ class Button extends StatelessWidget {
     this.text, {
     super.key,
     required this.valueKey,
-    this.textStyle = AppTextStyle.button,
+    this.textStyle,
     this.width = 160,
     this.height = 42,
     required this.onPressed,
@@ -38,41 +38,49 @@ class Button extends StatelessWidget {
     this.loading = false,
   });
 
-  Button.outline(this.text,
-      {super.key,
-      required this.valueKey,
-      this.textStyle = AppTextStyle.buttonOutline,
-      this.width = 160,
-      this.height = 42,
-      required this.onPressed,
-      this.color = Colors.transparent,
-      this.borderColor = AppColor.outlineBorder,
-      this.borderRadius,
-      this.disabled = false,
-      this.iconWidget,
-      this.loading = false});
+  Button.outline(
+    this.text, {
+    super.key,
+    required this.valueKey,
+    this.textStyle,
+    this.width = 160,
+    this.height = 42,
+    required this.onPressed,
+    this.color = Colors.transparent,
+    this.borderColor = AppColor.outlineBorder,
+    this.borderRadius,
+    this.disabled = false,
+    this.iconWidget,
+    this.loading = false,
+  });
 
-  Button.image(this.image, this.icon,
-      {super.key,
-      required this.valueKey,
-      this.textStyle = AppTextStyle.buttonOutline,
-      this.width = 160,
-      this.height = 42,
-      this.text = "",
-      required this.onPressed,
-      this.color = Colors.transparent,
-      this.borderColor = AppColor.primary,
-      this.borderRadius,
-      this.disabled = false,
-      this.iconWidget,
-      this.loading = false});
+  Button.image(
+    this.image,
+    this.icon, {
+    super.key,
+    required this.valueKey,
+    this.textStyle,
+    this.width = 160,
+    this.height = 42,
+    this.text = "",
+    required this.onPressed,
+    this.color = Colors.transparent,
+    this.borderColor = AppColor.primary,
+    this.borderRadius,
+    this.disabled = false,
+    this.iconWidget,
+    this.loading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(color: disabled ? Colors.black12 : color, borderRadius: borderRadius ?? BorderRadius.circular(8), border: disabled ? null : Border.all(color: borderColor, width: 0.6)),
+      decoration: BoxDecoration(
+          color: disabled ? Colors.black12 : color,
+          borderRadius: borderRadius ?? BorderRadius.circular(8),
+          border: disabled ? null : Border.all(color: borderColor, width: 0.6)),
       alignment: Alignment.center,
       child: SizedBox(
         width: double.infinity,
@@ -136,8 +144,13 @@ class Button extends StatelessWidget {
                           Text(
                             text!,
                             textScaleFactor: 1,
-                            style: disabled ? textStyle.copyWith(color: Colors.black26) : textStyle,
                             maxLines: 1,
+                            style: (disabled
+                                    ? textStyle?.copyWith(color: Colors.black26)
+                                    : textStyle) ??
+                                AppTextStyle.titleSmall.copyWith(
+                                  color: Colors.white,
+                                ),
                             overflow: TextOverflow.fade,
                           ),
                         ],

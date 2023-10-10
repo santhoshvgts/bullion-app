@@ -193,13 +193,10 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 1.2,
-            child: Text(
-              viewModel.productDetails?.overview?.name ?? "-",
-              style: AppTextStyle.header,
-              textScaleFactor: 1,
-            ),
+          Text(
+            viewModel.productDetails?.overview?.name ?? "-",
+            style: AppTextStyle.titleLarge,
+            textScaleFactor: 1,
           ),
           VerticalSpacing.d10px(),
           Row(
@@ -233,15 +230,14 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
                 ),
               HorizontalSpacing.d5px(),
               Expanded(
-                child: Text(
-                  viewModel.productDetails!.overview!.reviewCount == 0
-                      ? ""
-                      : "${viewModel.productDetails?.overview?.avgRatings} | ${viewModel.productDetails!.overview!.reviewCount} Reviews",
-                  textScaleFactor: 1,
-                  textAlign: TextAlign.left,
-                  style: AppTextStyle.body,
-                ),
-              ),
+                  child: Text(
+                viewModel.productDetails!.overview!.reviewCount == 0
+                    ? ""
+                    : "${viewModel.productDetails?.overview?.avgRatings} (${viewModel.productDetails!.overview!.reviewCount})",
+                textScaleFactor: 1,
+                textAlign: TextAlign.left,
+                style: AppTextStyle.labelMedium,
+              )),
             ],
           ),
         ],
@@ -332,7 +328,7 @@ class _ProductNotes extends ViewModelWidget<ProductDetailViewModel> {
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: Text(
               e,
-              style: AppTextStyle.body.copyWith(
+              style: AppTextStyle.bodyMedium.copyWith(
                 fontSize: 14,
               ),
               textAlign: TextAlign.start,
@@ -401,11 +397,8 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Volume Discount Pricing",
-                    textScaleFactor: 1,
-                    style: AppTextStyle.title,
-                  ),
+                  const Text("Volume Discount Pricing",
+                      textScaleFactor: 1, style: AppTextStyle.titleLarge),
                   HorizontalSpacing.d5px(),
                   InkWell(
                       onTap: () {},
@@ -502,14 +495,14 @@ class _VolumeDiscountCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyle.body.copyWith(
+            style: AppTextStyle.bodyMedium.copyWith(
                 fontWeight: FontWeight.w500,
                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
           ),
           VerticalSpacing.d5px(),
           Text(
             price,
-            style: AppTextStyle.body.copyWith(
+            style: AppTextStyle.bodyMedium.copyWith(
                 fontWeight: FontWeight.w500,
                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
             textAlign: TextAlign.center,
@@ -540,7 +533,7 @@ class _VolumeDiscountCard extends StatelessWidget {
 //                   const Text(
 //                     "Volume Discount Pricing",
 //                     textScaleFactor: 1,
-//                     style: AppTextStyle.title,
+//                     style: AppTextStyle.titleLarge
 //                   ),
 //                   HorizontalSpacing.d5px(),
 //                   InkWell(
@@ -643,14 +636,14 @@ class _VolumeDiscountCard extends StatelessWidget {
 //         children: [
 //           Text(
 //             title,
-//             style: AppTextStyle.subtitle.copyWith(
+//             style: AppTextStyle.titleMedium.copyWith(
 //                 fontWeight: FontWeight.w500,
 //                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
 //           ),
 //           VerticalSpacing.d5px(),
 //           Text(
 //             price,
-//             style: AppTextStyle.subtitle.copyWith(
+//             style: AppTextStyle.titleMedium.copyWith(
 //                 fontWeight: FontWeight.w500,
 //                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
 //             textAlign: TextAlign.center,
@@ -754,7 +747,7 @@ class _CoinGradeSpecification extends ViewModelWidget<ProductDetailViewModel> {
                         const Text(
                           "Information Provided By ",
                           textScaleFactor: 1,
-                          style: AppTextStyle.body,
+                          style: AppTextStyle.bodyMedium,
                         ),
                         NetworkImageLoader(
                           image: viewModel.productDetails!
@@ -779,7 +772,7 @@ class _AlertText extends ViewModelWidget<ProductDetailViewModel> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Text(
         viewModel.productDetails!.overview!.availabilityText!,
-        style: AppTextStyle.title.copyWith(color: AppColor.red),
+        style: AppTextStyle.titleLarge.copyWith(color: AppColor.red),
       ),
     );
   }
@@ -801,7 +794,8 @@ class _ShippingInfoCard extends ViewModelWidget<ProductDetailViewModel> {
             children: [
               Text(
                 "Quick Shipping",
-                style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w500),
+                style: AppTextStyle.bodyMedium
+                    .copyWith(fontWeight: FontWeight.w500),
               ),
               HorizontalSpacing.d5px(),
               const Icon(
@@ -812,7 +806,7 @@ class _ShippingInfoCard extends ViewModelWidget<ProductDetailViewModel> {
           ),
           VerticalSpacing.d2px(),
           const Text("Ships in 6 business days from receipt",
-              style: AppTextStyle.body),
+              style: AppTextStyle.bodyMedium),
         ],
       ),
     );
@@ -830,7 +824,8 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
         children: [
           Text(
             "Weight",
-            style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w500),
+            style:
+                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
           ),
           VerticalSpacing.d10px(),
           Wrap(
@@ -850,7 +845,7 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
                             )),
                         child: Text(
                           e,
-                          style: AppTextStyle.body.copyWith(
+                          style: AppTextStyle.bodyMedium.copyWith(
                             color: AppColor.text,
                           ),
                         ),
@@ -861,7 +856,8 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
           VerticalSpacing.d15px(),
           Text(
             "Year",
-            style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w500),
+            style:
+                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
           ),
           VerticalSpacing.d10px(),
           Wrap(
@@ -881,7 +877,7 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
                             )),
                         child: Text(
                           e,
-                          style: AppTextStyle.body.copyWith(
+                          style: AppTextStyle.bodyMedium.copyWith(
                             color: AppColor.text,
                           ),
                         ),
@@ -909,7 +905,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
               text: TextSpan(
                   text:
                       "${viewModel.productOverview!.pricing!.formattedNewPrice} ",
-                  style: AppTextStyle.title.copyWith(
+                  style: AppTextStyle.titleLarge.copyWith(
                       fontSize: 20,
                       color: viewModel
                               .productOverview!.pricing!.strikeThroughEnabled!
@@ -921,7 +917,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
                       TextSpan(
                           text: viewModel
                               .productOverview!.pricing!.formattedOldPrice,
-                          style: AppTextStyle.title.copyWith(
+                          style: AppTextStyle.titleLarge.copyWith(
                               fontWeight: FontWeight.normal,
                               fontSize: 20,
                               color: const Color(0xff666666),
@@ -935,7 +931,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
             child: Text(
               viewModel.productDetails?.priceBadgeText ?? '',
               textAlign: TextAlign.left,
-              style: AppTextStyle.body.copyWith(fontSize: 14),
+              style: AppTextStyle.bodyMedium.copyWith(fontSize: 14),
             ),
           ),
 
@@ -944,7 +940,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
             padding: const EdgeInsets.only(top: 5),
             child: Text(viewModel.productOverview!.pricing!.discountText ?? '',
                 textAlign: TextAlign.left,
-                style: AppTextStyle.body.copyWith(
+                style: AppTextStyle.bodyMedium.copyWith(
                     color: AppColor.offerText,
                     fontWeight: FontWeight.w600,
                     fontSize: 14)),
@@ -1000,14 +996,14 @@ class AlertToast extends StatelessWidget {
                 Text(
                   title,
                   textScaleFactor: 1,
-                  style: AppTextStyle.body
+                  style: AppTextStyle.bodyMedium
                       .copyWith(color: titleColor, fontWeight: FontWeight.bold),
                 ),
                 VerticalSpacing.d2px(),
                 Text(
                   productDetails!.overview!.name!,
                   textScaleFactor: 1,
-                  style: AppTextStyle.body.copyWith(fontSize: 12),
+                  style: AppTextStyle.bodyMedium.copyWith(fontSize: 12),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -1022,8 +1018,8 @@ class AlertToast extends StatelessWidget {
                 child: Text(
                   "View",
                   textScaleFactor: 1,
-                  style:
-                      AppTextStyle.body.copyWith(fontWeight: FontWeight.bold),
+                  style: AppTextStyle.bodyMedium
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
             )

@@ -21,17 +21,22 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
 
   @override
   void onViewModelReady(ForgotPasswordViewModel viewModel) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: AppColor.white, statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: AppColor.white,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.dark));
 
     viewModel.init(fromMain);
     super.onViewModelReady(viewModel);
   }
 
   @override
-  ForgotPasswordViewModel viewModelBuilder(BuildContext context) => ForgotPasswordViewModel();
+  ForgotPasswordViewModel viewModelBuilder(BuildContext context) =>
+      ForgotPasswordViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale, ForgotPasswordViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale,
+      ForgotPasswordViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -58,18 +63,22 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
               const Text(
                 "Forgot Password",
                 textScaleFactor: 1,
-                style: AppTextStyle.header,
+                style: AppTextStyle.headlineSmall,
               ),
               const Padding(padding: EdgeInsets.only(top: 10)),
               Linkify(
                 onOpen: (link) async {
                   launchUrl(link.url);
                 },
-                linkifiers: const [PhoneNumberLinkifier(), EmailLinkifier(), UrlLinkifier()],
+                linkifiers: const [
+                  PhoneNumberLinkifier(),
+                  EmailLinkifier(),
+                  UrlLinkifier()
+                ],
                 text:
                     "Enter the email address associated with your account and we'll email you a secure link to reset your password. If you do not receive an email, please try resubmitting your request or contacting customer service at service@APMEX.com for assistance.",
-                style: AppTextStyle.body,
-                linkStyle: AppTextStyle.body.copyWith(color: Colors.blue),
+                style: AppTextStyle.bodyMedium,
+                linkStyle: AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
               ),
               EditTextField(
                 "Email Address",
