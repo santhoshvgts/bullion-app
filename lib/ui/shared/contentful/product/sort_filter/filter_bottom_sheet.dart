@@ -1,11 +1,11 @@
-import 'package:bullion/ui/shared/contentful/product/sort_filter/filter_view_model.dart';
-import 'package:bullion/ui/view/vgts_builder_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/models/module/product_listing/items.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/ui/shared/contentful/product/sort_filter/filter_view_model.dart';
+import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
@@ -35,10 +35,12 @@ class FilterBottomSheet extends VGTSBuilderWidget<FilterViewModel> {
   }
 
   @override
-  FilterViewModel viewModelBuilder(BuildContext context) => FilterViewModel(productModel);
+  FilterViewModel viewModelBuilder(BuildContext context) =>
+      FilterViewModel(productModel);
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale, FilterViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale,
+      FilterViewModel viewModel, Widget? child) {
     return Container(
       child: Stack(
         children: [
@@ -101,7 +103,7 @@ class _Bottom extends ViewModelWidget<FilterViewModel> {
           valueKey: Key('btnSeeAllResult'),
           width: double.infinity,
           color: AppColor.primary,
-          textStyle: AppTextStyle.buttonOutline.copyWith(color: AppColor.white),
+          textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.white),
           borderColor: AppColor.primary,
           onPressed: () => Navigator.pop(context)),
     );
@@ -129,14 +131,21 @@ class _FacetList extends ViewModelWidget<FilterViewModel> {
                         child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
-                              color: viewModel.selectedFacetName == item.facetName ? AppColor.white : AppColor.secondaryBackground,
-                              border: viewModel.selectedFacetName == item.facetName
-                                  ? Border(
-                                      left: BorderSide(width: 4.0, color: AppColor.primary),
-                                    )
-                                  : null,
+                              color:
+                                  viewModel.selectedFacetName == item.facetName
+                                      ? AppColor.white
+                                      : AppColor.secondaryBackground,
+                              border:
+                                  viewModel.selectedFacetName == item.facetName
+                                      ? Border(
+                                          left: BorderSide(
+                                              width: 4.0,
+                                              color: AppColor.primary),
+                                        )
+                                      : null,
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
                             child: Row(
                               children: [
                                 Expanded(
@@ -144,13 +153,20 @@ class _FacetList extends ViewModelWidget<FilterViewModel> {
                                     item.displayName!,
                                     maxLines: 2,
                                     textScaleFactor: 1,
-                                    style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600, color: viewModel.selectedFacetName == item.facetName ? AppColor.primary : AppColor.header),
+                                    style: AppTextStyle.bodyMedium.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: viewModel.selectedFacetName ==
+                                                item.facetName
+                                            ? AppColor.primary
+                                            : AppColor.header),
                                   ),
                                 ),
                                 if (item.hasSelectedItems!)
                                   Container(
                                     margin: EdgeInsets.only(left: 15),
-                                    decoration: BoxDecoration(color: AppColor.primary, shape: BoxShape.circle),
+                                    decoration: BoxDecoration(
+                                        color: AppColor.primary,
+                                        shape: BoxShape.circle),
                                     height: 7,
                                     width: 7,
                                   )
@@ -189,7 +205,11 @@ class _ItemsList extends ViewModelWidget<FilterViewModel> {
                       return MapEntry(
                           index,
                           Container(
-                              padding: EdgeInsets.only(left: 15.0, right: 10.0, bottom: 14.0, top: 10),
+                              padding: EdgeInsets.only(
+                                  left: 15.0,
+                                  right: 10.0,
+                                  bottom: 14.0,
+                                  top: 10),
                               child: _CheckBoxListWidget(
                                 item,
                                 onSelect: (item) async {
@@ -229,12 +249,18 @@ class _CheckBoxListWidget extends ViewModelWidget<FilterViewModel> {
             padding: const EdgeInsets.only(left: 10.0),
             child: RichText(
               textScaleFactor: 1,
-              text: TextSpan(text: _item.displayName, style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600, fontSize: 15), children: <TextSpan>[
-                TextSpan(
-                  text: ' (${_item.count})',
-                  style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600, color: AppColor.secondaryText),
-                ),
-              ]),
+              text: TextSpan(
+                  text: _item.displayName,
+                  style: AppTextStyle.bodyMedium
+                      .copyWith(fontWeight: FontWeight.w600, fontSize: 15),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: ' (${_item.count})',
+                      style: AppTextStyle.bodyMedium.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColor.secondaryText),
+                    ),
+                  ]),
             ),
           ),
         ),
@@ -273,7 +299,7 @@ class Header extends StatelessWidget {
               child: Text(
                 "Filter",
                 textScaleFactor: 1,
-                style: AppTextStyle.title.copyWith(
+                style: AppTextStyle.titleLarge.copyWith(
                   fontSize: 17,
                 ),
               ),
@@ -287,7 +313,8 @@ class Header extends StatelessWidget {
               child: Text(
                 "Reset",
                 textScaleFactor: 1,
-                style: AppTextStyle.subtitle.copyWith(fontWeight: FontWeight.w600),
+                style: AppTextStyle.titleMedium
+                    .copyWith(fontWeight: FontWeight.w600),
               ),
             ),
           ),

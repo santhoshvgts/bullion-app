@@ -42,7 +42,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                 alignment: Alignment.center,
                 child: Text("Explore as Guest",
                     textScaleFactor: 1,
-                    style: AppTextStyle.buttonSecondary
+                    style: AppTextStyle.titleSmall
                         .copyWith(color: AppColor.primary)),
               ),
             ),
@@ -52,7 +52,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
               alignment: Alignment.center,
               child: Text("@2023 Bullion.com All rights reserved",
                   textScaleFactor: 1,
-                  style: AppTextStyle.normal.copyWith(
+                  style: AppTextStyle.bodyMedium.copyWith(
                       fontSize: 12,
                       color: AppColor.primaryText,
                       fontWeight: FontWeight.w500)),
@@ -86,7 +86,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                     const Text(
                       "Welcome back",
                       textScaleFactor: 1,
-                      style: AppTextStyle.header,
+                      style: AppTextStyle.headlineSmall,
                     ),
                     VerticalSpacing.custom(value: 70),
                     Form(
@@ -125,7 +125,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                             ),
                             child: Text("Forgot your Password?",
                                 textScaleFactor: 1,
-                                style: AppTextStyle.buttonSecondary
+                                style: AppTextStyle.titleSmall
                                     .copyWith(color: AppColor.primary)),
                           ),
                           onTap: () => viewModel.forgotPassword()),
@@ -145,7 +145,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                         Images.googleIcon,
                         height: 20,
                       ),
-                      textStyle: AppTextStyle.buttonSecondary
+                      textStyle: AppTextStyle.titleSmall
                           .copyWith(color: AppColor.text),
                       onPressed: () {},
                     ),
@@ -162,7 +162,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                           children: [
                             Text(
                               'Don’t have an account ?',
-                              style: AppTextStyle.normal.copyWith(
+                              style: AppTextStyle.bodyMedium.copyWith(
                                 color: AppColor.text,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -171,7 +171,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                             HorizontalSpacing.custom(value: 8),
                             Text(
                               'Sign Up',
-                              style: AppTextStyle.normal.copyWith(
+                              style: AppTextStyle.bodyMedium.copyWith(
                                 color: AppColor.primary,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,

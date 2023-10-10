@@ -29,7 +29,7 @@ class ChipItem extends StatelessWidget {
             )),
         child: Text(
           text,
-          style: AppTextStyle.body.copyWith(
+          style: AppTextStyle.bodyMedium.copyWith(
             color: AppColor.text,
           ),
         ),

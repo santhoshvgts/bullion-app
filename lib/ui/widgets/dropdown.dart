@@ -4,16 +4,20 @@ import 'package:bullion/core/models/base_model.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
+
 import '../../core/res/colors.dart';
 
 Color _focusBgColor = AppColor.primary;
 Color _errorBgColor = const Color(0xffFFF5F5);
 Color _errorColor = const Color(0xffEB1414);
 
-TextStyle _errorTextStyle = AppTextStyle.label.copyWith(color: AppColor.red, fontSize: 13, fontWeight: FontWeight.w500);
-TextStyle _labelTextStyle = AppTextStyle.label.copyWith(fontWeight: FontWeight.w600);
-TextStyle _bodyTextStyle = AppTextStyle.label;
-TextStyle _hintTextStyle = AppTextStyle.label.copyWith(color: const Color(0xffbdc1c6), fontWeight: FontWeight.normal);
+TextStyle _errorTextStyle = AppTextStyle.labelMedium
+    .copyWith(color: AppColor.red, fontSize: 13, fontWeight: FontWeight.w500);
+TextStyle _labelTextStyle =
+    AppTextStyle.labelMedium.copyWith(fontWeight: FontWeight.w600);
+TextStyle _bodyTextStyle = AppTextStyle.labelMedium;
+TextStyle _hintTextStyle = AppTextStyle.labelMedium
+    .copyWith(color: const Color(0xffbdc1c6), fontWeight: FontWeight.normal);
 
 BorderRadius _borderRadius = BorderRadius.circular(6.0);
 
@@ -29,9 +33,24 @@ class DropdownField<T extends BaseModel> extends StatefulWidget {
   bool withAdd = false;
   bool showRequiredHint = true;
 
-  DropdownField(this.title, this.controller, {Key? key, this.placeholder = "", this.margin = EdgeInsets.zero, this.padding, this.showRequiredHint = true, this.onChange}) : super(key: key);
+  DropdownField(this.title, this.controller,
+      {Key? key,
+      this.placeholder = "",
+      this.margin = EdgeInsets.zero,
+      this.padding,
+      this.showRequiredHint = true,
+      this.onChange})
+      : super(key: key);
 
-  DropdownField.withAdd(this.title, this.controller, {Key? key, this.placeholder = "", this.margin = EdgeInsets.zero, this.onChange, this.padding, this.showRequiredHint = true, this.onAddNewPressed}) : super(key: key) {
+  DropdownField.withAdd(this.title, this.controller,
+      {Key? key,
+      this.placeholder = "",
+      this.margin = EdgeInsets.zero,
+      this.onChange,
+      this.padding,
+      this.showRequiredHint = true,
+      this.onAddNewPressed})
+      : super(key: key) {
     withAdd = true;
   }
 
@@ -91,7 +110,8 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,
-          contentPadding: widget.padding ?? const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+          contentPadding: widget.padding ??
+              const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           alignLabelWithHint: false,
           border: _outlineInputBorder,
@@ -103,11 +123,14 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
           errorMaxLines: 3,
           hintText: widget.placeholder,
           labelText: widget.title,
-          labelStyle: AppTextStyle.label.copyWith(color: const Color(0xff263238), fontSize: 15),
+          labelStyle: AppTextStyle.labelMedium
+              .copyWith(color: const Color(0xff263238), fontSize: 15),
           hintStyle: _hintTextStyle,
           focusColor: AppColor.secondary,
-          suffixIconConstraints: const BoxConstraints(minWidth: 15, maxHeight: 20),
-          prefixIconConstraints: const BoxConstraints(minWidth: 15, maxHeight: 20),
+          suffixIconConstraints:
+              const BoxConstraints(minWidth: 15, maxHeight: 20),
+          prefixIconConstraints:
+              const BoxConstraints(minWidth: 15, maxHeight: 20),
         ),
         style: _bodyTextStyle,
         isExpanded: true,
@@ -155,7 +178,9 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
                     Container(
                       width: 24,
                       height: 24,
-                      decoration: BoxDecoration(color: AppColor.secondary, borderRadius: BorderRadius.circular(5)),
+                      decoration: BoxDecoration(
+                          color: AppColor.secondary,
+                          borderRadius: BorderRadius.circular(5)),
                       child: const Center(
                           child: Icon(
                         Icons.add,
@@ -184,7 +209,7 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
   //   return InputDecoration(
   //       labelText: labelText,
   //       labelStyle: AppTextStyle.subHeading,
-  //       floatingLabelStyle: AppTextStyle.bodySemiBold.copyWith(color: const Color(0xff263238), fontSize: 15),
+  //       floatingLabelStyle: AppTextStyle.bodyMediumSemiBold.copyWith(color: const Color(0xff263238), fontSize: 15),
   //       contentPadding: const EdgeInsets.only(left: 15, right: 20, top: 20, bottom: 20),
   //       focusedBorder: const OutlineInputBorder(
   //         borderSide: BorderSide(color: AppColor.primary, width: 1.5),
@@ -201,15 +226,20 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
 
 InputBorder _outlineInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: BorderSide(style: BorderStyle.solid, color: const Color(0xff263238).withOpacity(0.20), width: 1),
+  borderSide: BorderSide(
+      style: BorderStyle.solid,
+      color: const Color(0xff263238).withOpacity(0.20),
+      width: 1),
 );
 
 InputBorder _focusedInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: const BorderSide(style: BorderStyle.solid, color: AppColor.primary, width: 1),
+  borderSide: const BorderSide(
+      style: BorderStyle.solid, color: AppColor.primary, width: 1),
 );
 
 InputBorder _errorInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
+  borderSide:
+      const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
 );

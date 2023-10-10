@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:bullion/core/models/alert/alert_request.dart';
 import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:flutter/material.dart';
 
 class DialogManager extends StatefulWidget {
   final Widget? child;
@@ -47,15 +47,16 @@ class _DialogManagerState extends State<DialogManager> {
               title: Text(
                 request.title!,
                 textScaleFactor: 1,
-                style: AppTextStyle.dialogButtonOutline,
+                style: AppTextStyle.labelMedium,
               ),
-              content: Text(request.description!, style: AppTextStyle.body),
+              content:
+                  Text(request.description!, style: AppTextStyle.bodyMedium),
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     "OK",
                     textScaleFactor: 1,
-                    style: AppTextStyle.dialogButton,
+                    style: AppTextStyle.labelMedium,
                   ),
                   onPressed: () {
                     _dialogService!.dialogComplete(AlertResponse(status: true));
@@ -80,25 +81,28 @@ class _DialogManagerState extends State<DialogManager> {
               title: Text(
                 request.title!,
                 textScaleFactor: 1,
-                style: AppTextStyle.appBarTitle.copyWith(color: AppColor.primary),
+                style:
+                    AppTextStyle.titleLarge.copyWith(color: AppColor.primary),
               ),
-              content: Text(request.description!, textScaleFactor: 1, style: AppTextStyle.text),
+              content: Text(request.description!,
+                  textScaleFactor: 1, style: AppTextStyle.labelMedium),
               actions: <Widget>[
                 TextButton(
                   child: Text(
                     "Cancel",
                     textScaleFactor: 1,
-                    style: AppTextStyle.dialogButton,
+                    style: AppTextStyle.labelMedium,
                   ),
                   onPressed: () {
-                    _dialogService!.dialogComplete(AlertResponse(status: false));
+                    _dialogService!
+                        .dialogComplete(AlertResponse(status: false));
                   },
                 ),
                 TextButton(
                   child: Text(
                     request.buttonTitle!,
                     textScaleFactor: 1,
-                    style: AppTextStyle.dialogButton,
+                    style: AppTextStyle.labelMedium,
                   ),
                   onPressed: () {
                     _dialogService!.dialogComplete(AlertResponse(status: true));
@@ -119,16 +123,22 @@ class _DialogManagerState extends State<DialogManager> {
         backgroundColor: Colors.transparent,
         builder: (context) => Container(
               padding: MediaQuery.of(context).viewInsets,
-              margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.bottom > 0 ? MediaQuery.of(context).viewPadding.bottom : 25),
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).viewPadding.bottom > 0
+                      ? MediaQuery.of(context).viewPadding.bottom
+                      : 25),
               decoration: BoxDecoration(
                 color: AppColor.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)),
               ),
               child: Wrap(
                 children: [
                   if (request.showActionBar!)
                     Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 5, top: 5),
+                      padding:
+                          const EdgeInsets.only(left: 15, right: 5, top: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -142,11 +152,12 @@ class _DialogManagerState extends State<DialogManager> {
                                   ? Container()
                                   : Container(
                                       alignment: request.headerAlignment,
-                                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                                      padding:
+                                          EdgeInsets.only(top: 10, bottom: 10),
                                       child: Text(
                                         request.title!,
                                         textScaleFactor: 1,
-                                        style: AppTextStyle.title.copyWith(
+                                        style: AppTextStyle.titleLarge.copyWith(
                                           fontSize: 17,
                                         ),
                                         textAlign: TextAlign.center,
@@ -155,10 +166,14 @@ class _DialogManagerState extends State<DialogManager> {
                           if (request.showCloseIcon!)
                             IconButton(
                               onPressed: () {
-                                _dialogService!.dialogComplete(AlertResponse(status: null));
+                                _dialogService!.dialogComplete(
+                                    AlertResponse(status: null));
                               },
                               icon: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, color: AppColor.secondaryBackground, boxShadow: AppStyle.mildCardShadow),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColor.secondaryBackground,
+                                    boxShadow: AppStyle.mildCardShadow),
                                 padding: EdgeInsets.all(5),
                                 child: Icon(
                                   Icons.close,
@@ -202,12 +217,14 @@ class _DialogManagerState extends State<DialogManager> {
               return false;
             },
             child: Dialog(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 child: Wrap(
                   children: [
                     if (request.showActionBar!)
                       Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 5, top: 5),
+                        padding:
+                            const EdgeInsets.only(left: 15, right: 5, top: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -222,7 +239,7 @@ class _DialogManagerState extends State<DialogManager> {
                                     : Text(
                                         request.title!,
                                         textScaleFactor: 1,
-                                        style: AppTextStyle.title.copyWith(
+                                        style: AppTextStyle.titleLarge.copyWith(
                                           fontSize: 17,
                                         ),
                                       )),
@@ -231,7 +248,10 @@ class _DialogManagerState extends State<DialogManager> {
                                 _dialogService!.dialogComplete(AlertResponse());
                               },
                               icon: Container(
-                                decoration: BoxDecoration(shape: BoxShape.circle, color: AppColor.secondaryBackground, boxShadow: AppStyle.mildCardShadow),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColor.secondaryBackground,
+                                    boxShadow: AppStyle.mildCardShadow),
                                 padding: EdgeInsets.all(5),
                                 child: Icon(
                                   Icons.close,

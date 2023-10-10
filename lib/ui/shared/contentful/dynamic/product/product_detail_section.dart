@@ -70,7 +70,7 @@
 //               child: Column(
 //                 crossAxisAlignment: CrossAxisAlignment.start,
 //                 children: [
-//                   Text(title!,style: AppTextStyle.title.copyWith(fontSize: 17)),
+//                   Text(title!,style: AppTextStyle.titleLarge.copyWith(fontSize: 17)),
 //
 //                   if (showRating)
 //                     Container(
@@ -89,7 +89,7 @@
 //                         HorizontalSpacing.d5px(),
 //
 //                         Expanded(
-//                             child: Text("(${viewModel.productDetails!.overview!.reviewCount})", textScaleFactor: 1, textAlign: TextAlign.left, style: AppTextStyle.body,)
+//                             child: Text("(${viewModel.productDetails!.overview!.reviewCount})", textScaleFactor: 1, textAlign: TextAlign.left, style: AppTextStyle.bodyMedium,)
 //                         ),
 //                       ],
 //                     ),

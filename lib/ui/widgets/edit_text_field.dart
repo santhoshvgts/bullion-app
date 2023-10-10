@@ -4,12 +4,19 @@ import 'package:bullion/core/res/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
-import '../../core/res/colors.dart';
-import '../../core/res/images.dart';
 
-TextStyle _errorTextStyle = AppTextStyle.label.copyWith(color: AppColor.red, fontSize: 13, fontWeight: FontWeight.w500);
-TextStyle _bodyTextStyle = AppTextStyle.label;
-TextStyle _hintTextStyle = AppTextStyle.label.copyWith(color: const Color(0xffbdc1c6), fontWeight: FontWeight.normal);
+import '../../core/res/colors.dart';
+
+TextStyle _errorTextStyle = AppTextStyle.labelMedium.copyWith(
+  color: AppColor.red,
+  fontSize: 13,
+  fontWeight: FontWeight.w500,
+);
+TextStyle _bodyTextStyle = AppTextStyle.bodyLarge;
+TextStyle _hintTextStyle = AppTextStyle.labelMedium.copyWith(
+  color: const Color(0xffbdc1c6),
+  fontWeight: FontWeight.normal,
+);
 
 BorderRadius _borderRadius = BorderRadius.circular(4.0);
 
@@ -94,7 +101,10 @@ class _EditTextFieldState extends State<EditTextField> {
   }
 
   TextInputType get keyboardType {
-    if ((widget.controller.textInputType == TextInputType.number || widget.controller.textInputType == TextInputType.numberWithOptions(decimal: true)) && Platform.isIOS) {
+    if ((widget.controller.textInputType == TextInputType.number ||
+            widget.controller.textInputType ==
+                TextInputType.numberWithOptions(decimal: true)) &&
+        Platform.isIOS) {
       return const TextInputType.numberWithOptions(decimal: true, signed: true);
     }
     return widget.controller.textInputType;
@@ -111,7 +121,9 @@ class _EditTextFieldState extends State<EditTextField> {
             return null;
           }
 
-          if ((widget.controller.required || widget.controller.text.isNotEmpty) && widget.controller.validator != null) {
+          if ((widget.controller.required ||
+                  widget.controller.text.isNotEmpty) &&
+              widget.controller.validator != null) {
             return widget.controller.validator!(value);
           }
 
@@ -129,71 +141,81 @@ class _EditTextFieldState extends State<EditTextField> {
           });
 
           return TextField(
-              key: widget.controller.fieldKey,
-              readOnly: widget.readOnly ?? false,
-              controller: widget.controller.textEditingController,
-              obscureText: widget.isPasswordField && !isVisible ? true : false,
-              textInputAction: widget.textInputAction,
-              textAlign: widget.textAlign,
-              style: widget.textStyle ?? _bodyTextStyle.copyWith(color: !widget.enabled ? const Color(0xff8C8C8D) : null),
-              focusNode: widget.controller.focusNode,
-              autofocus: widget.autoFocus,
-              cursorColor: AppColor.text,
-              cursorWidth: 1.5,
-              onChanged: (value) {
-                state.reset();
-                state.didChange(value);
-                if (widget.onChanged != null) {
-                  widget.onChanged!(value);
-                }
-              },
-              onSubmitted: (value) {
-                if (widget.onSubmitted != null) {
-                  widget.onSubmitted!(value);
-                }
-              },
-              enabled: widget.enabled,
-              maxLength: widget.controller.maxLength,
-              maxLines: widget.isPasswordField ? 1 : widget.controller.maxLines,
-              minLines: widget.controller.minLines,
-              inputFormatters: widget.isPasswordField || widget.controller.textInputType == TextInputType.emailAddress
-                  ? [
-                      FilteringTextInputFormatter.deny(RegExp('[\\ ]')),
-                    ]
-                  : widget.controller.inputFormatter,
-              decoration: InputDecoration(
-                fillColor: !widget.enabled ? AppColor.text : Colors.white,
-                filled: true,
-                contentPadding: widget.padding ?? const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                alignLabelWithHint: true,
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                border: _outlineInputBorder,
-                enabledBorder: _outlineInputBorder,
-                disabledBorder: _outlineInputBorder,
-                focusedBorder: _focusedInputBorder,
-                errorBorder: _errorInputBorder,
-                errorStyle: _errorTextStyle,
-                errorText: state.hasError ? state.errorText : widget.controller.overrideErrorText,
-                errorMaxLines: 3,
-                hintText: widget.placeholder,
-                labelText: widget.label,
-                labelStyle: AppTextStyle.label.copyWith(color: const Color(0xff263238), fontSize: 15),
-                hintStyle: _hintTextStyle,
-                focusColor: AppColor.red,
-                suffixIconConstraints: const BoxConstraints(minWidth: 15, maxHeight: 20),
-                prefixIconConstraints: const BoxConstraints(minWidth: 15, maxHeight: 20),
-                prefix: widget.prefixText == null
-                    ? null
-                    : Text(
-                        "${widget.prefixText} ",
-                        style: _bodyTextStyle,
-                      ),
-                prefixIcon: widget.prefixIcon,
-                suffixIcon: widget.isPasswordField ? _buildPasswordEyeIcon() : widget.suffixIcon,
-                counterText: widget.counterText ?? "",
-              ),
-              keyboardType: keyboardType,
-              textCapitalization: widget.controller.textCapitalization);
+            key: widget.controller.fieldKey,
+            readOnly: widget.readOnly ?? false,
+            controller: widget.controller.textEditingController,
+            obscureText: widget.isPasswordField && !isVisible ? true : false,
+            textInputAction: widget.textInputAction,
+            textAlign: widget.textAlign,
+            style: widget.textStyle ??
+                _bodyTextStyle.copyWith(
+                    color: !widget.enabled ? const Color(0xff8C8C8D) : null),
+            focusNode: widget.controller.focusNode,
+            autofocus: widget.autoFocus,
+            cursorColor: AppColor.text,
+            cursorWidth: 1.5,
+            onChanged: (value) {
+              state.reset();
+              state.didChange(value);
+              if (widget.onChanged != null) {
+                widget.onChanged!(value);
+              }
+            },
+            onSubmitted: (value) {
+              if (widget.onSubmitted != null) {
+                widget.onSubmitted!(value);
+              }
+            },
+            enabled: widget.enabled,
+            maxLength: widget.controller.maxLength,
+            maxLines: widget.isPasswordField ? 1 : widget.controller.maxLines,
+            minLines: widget.controller.minLines,
+            inputFormatters: widget.isPasswordField ||
+                    widget.controller.textInputType ==
+                        TextInputType.emailAddress
+                ? [FilteringTextInputFormatter.deny(RegExp('[\\ ]'))]
+                : widget.controller.inputFormatter,
+            decoration: InputDecoration(
+              fillColor: !widget.enabled ? AppColor.text : Colors.white,
+              filled: true,
+              contentPadding: widget.padding ??
+                  const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              alignLabelWithHint: true,
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              border: _outlineInputBorder,
+              enabledBorder: _outlineInputBorder,
+              disabledBorder: _outlineInputBorder,
+              focusedBorder: _focusedInputBorder,
+              errorBorder: _errorInputBorder,
+              errorStyle: _errorTextStyle,
+              errorText: state.hasError
+                  ? state.errorText
+                  : widget.controller.overrideErrorText,
+              errorMaxLines: 3,
+              hintText: widget.placeholder,
+              labelText: widget.label,
+              labelStyle: AppTextStyle.bodySmall,
+              hintStyle: _hintTextStyle,
+              focusColor: AppColor.red,
+              suffixIconConstraints:
+                  const BoxConstraints(minWidth: 15, maxHeight: 20),
+              prefixIconConstraints:
+                  const BoxConstraints(minWidth: 15, maxHeight: 20),
+              prefix: widget.prefixText == null
+                  ? null
+                  : Text(
+                      "${widget.prefixText} ",
+                      style: _bodyTextStyle,
+                    ),
+              prefixIcon: widget.prefixIcon,
+              suffixIcon: widget.isPasswordField
+                  ? _buildPasswordEyeIcon()
+                  : widget.suffixIcon,
+              counterText: widget.counterText ?? "",
+            ),
+            keyboardType: keyboardType,
+            textCapitalization: widget.controller.textCapitalization,
+          );
         },
       ),
     );
@@ -204,7 +226,7 @@ class _EditTextFieldState extends State<EditTextField> {
         padding: EdgeInsets.zero,
         icon: Icon(
           isVisible ? Icons.remove_red_eye : Icons.remove_red_eye_outlined,
-           color: AppColor.text.withOpacity(0.5),
+          color: AppColor.text.withOpacity(0.5),
         ),
         onPressed: () {
           isVisible = !isVisible;
@@ -219,15 +241,20 @@ class _EditTextFieldState extends State<EditTextField> {
 
 InputBorder _outlineInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: BorderSide(style: BorderStyle.solid, color: const Color(0xff263238).withOpacity(0.20), width: 1),
+  borderSide: BorderSide(
+      style: BorderStyle.solid,
+      color: const Color(0xff263238).withOpacity(0.20),
+      width: 1),
 );
 
 InputBorder _focusedInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: const BorderSide(style: BorderStyle.solid, color: AppColor.primary, width: 1),
+  borderSide: const BorderSide(
+      style: BorderStyle.solid, color: AppColor.primary, width: 1),
 );
 
 InputBorder _errorInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
-  borderSide: const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
+  borderSide:
+      const BorderSide(style: BorderStyle.solid, color: AppColor.red, width: 1),
 );

@@ -13,9 +13,9 @@ class ProductSpecificationPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.secondaryBackground,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Product Specification",
-          style: AppTextStyle.appBarTitle,
+          style: AppTextStyle.titleLarge,
         ),
         centerTitle: true,
         elevation: 1,
@@ -54,7 +54,7 @@ class SpecificationItem extends StatelessWidget {
           Text(
             data.key!,
             textScaleFactor: 1,
-            style: AppTextStyle.body,
+            style: AppTextStyle.bodyMedium,
           ),
           if (data.keyHelpText!.isNotEmpty)
             InkWell(
@@ -74,7 +74,8 @@ class SpecificationItem extends StatelessWidget {
               child: Text(
             data.value!,
             textScaleFactor: 1,
-            style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w600),
+            style:
+                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w600),
             textAlign: TextAlign.right,
           )),
         ],

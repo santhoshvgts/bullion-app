@@ -66,7 +66,7 @@ class SearchViewModel extends VGTSBaseViewModel {
           match.start,
           match.end,
         ),
-        style: AppTextStyle.body
+        style: AppTextStyle.bodyMedium
             .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
       ));
 

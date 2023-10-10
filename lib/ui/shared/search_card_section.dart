@@ -53,7 +53,7 @@ class SearchCardSection extends PreferredSize {
                           ),
                           child: Text(
                             placeholder ?? "Search Products and Deals",
-                            style: AppTextStyle.text.copyWith(
+                            style: AppTextStyle.labelMedium.copyWith(
                               fontSize: 16,
                               color: AppColor.secondaryText,
                             ),
