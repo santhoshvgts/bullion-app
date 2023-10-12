@@ -20,7 +20,7 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
         elevation: 0,
         title: const Text(
           "Account",
-          style: AppTextStyle.headerWhite,
+          style: AppTextStyle.titleLarge,
           textScaleFactor: 1,
         ),
       ),
@@ -47,27 +47,30 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
                         const Padding(
                           padding: EdgeInsets.only(top: 16.0),
                           child:
-                              Text('Privacy', style: AppTextStyle.titleMed18),
+                              Text('Privacy', style: AppTextStyle.titleMedium),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
                           child: Text('Visit Bullion.com',
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium
+                                  .copyWith(color: AppColor.navyBlue40)),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
                           child: Text("User Agreements",
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium
+                                  .copyWith(color: AppColor.navyBlue40)),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 16.0),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
                           child: Text('Privacy Policy',
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium
+                                  .copyWith(color: AppColor.navyBlue40)),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(top: 24.0),
                           child: Text('Contact Us',
-                              style: AppTextStyle.titleMed18),
+                              style: AppTextStyle.titleMedium),
                         ),
                         getTextRowWithTopPadding(
                             'Toll Free : ', '800.375.9006'),
@@ -78,23 +81,26 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
                         const Padding(
                           padding: EdgeInsets.only(top: 24.0),
                           child: Text('Hours of Operation',
-                              style: AppTextStyle.privacySubTitleBold),
+                              style: AppTextStyle.titleMedium),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
                           child: Text('Monday - Thursday | 8 a.m - 8 p.m(EST)',
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium
+                                  .copyWith(color: AppColor.navyBlue40)),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
                           child: Text('Friday | 8 a.m - 6 p.m(EST)',
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium
+                                  .copyWith(color: AppColor.navyBlue40)),
                         ),
-                        const Center(
+                        Center(
                           child: Padding(
-                            padding: EdgeInsets.only(top: 48.0),
+                            padding: const EdgeInsets.only(top: 48.0),
                             child: Text('Version 1.0.3 (10)',
-                                style: AppTextStyle.version),
+                                style: AppTextStyle.bodySmall
+                                    .copyWith(color: AppColor.navyBlue40)),
                           ),
                         )
                       ],
@@ -120,14 +126,14 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Sign in to do more with your account',
-                            style: AppTextStyle.titleMed),
+                            style: AppTextStyle.titleMedium),
                         const SizedBox(
                           height: 16,
                         ),
                         getTextsWithBullets([
                           'Easily manage your orders',
                           'Customize your profile',
-                          'Track your portfolio',
+                          'Track your portfolio and rewards',
                         ]),
                         const SizedBox(
                           height: 16,
@@ -153,12 +159,12 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   height: 96,
-                  child: Card(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: AppStyle.elevatedCardShadow,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -169,18 +175,20 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
                               Icon(Icons.list),
                               SizedBox(width: 8),
                               Text('Order History',
-                                  style: AppTextStyle.titleMed),
+                                  style: AppTextStyle.titleMedium),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Text('Track your order status',
-                                  style: AppTextStyle.subTitleReg),
+                              Text('Track your order status',
+                                  style: AppTextStyle.bodyMedium
+                                      .copyWith(color: AppColor.navyBlue40)),
                               Button("Track Order",
-                                  width: 96,
+                                  width: 104,
                                   color: Colors.white,
-                                  textStyle: AppTextStyle.buttonOutlineSemi,
+                                  textStyle: AppTextStyle.titleSmall,
                                   height: 32,
                                   borderColor: AppColor.primary,
                                   valueKey: const Key("btnSignInCreate"),
@@ -212,11 +220,11 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
         children: [
           Text(
             text1,
-            style: AppTextStyle.privacySubTitle,
+            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40),
           ),
           Text(
             text2,
-            style: AppTextStyle.privacyValue,
+            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.clearBlue),
           ),
         ],
       ),
@@ -237,7 +245,8 @@ class SettingsPage extends VGTSBuilderWidget<SettingsViewModel> {
                     Expanded(
                         child: Text(
                       text,
-                      style: AppTextStyle.subTitleReg,
+                      style: AppTextStyle.bodyMedium
+                          .copyWith(color: AppColor.navyBlue40),
                     )),
                   ],
                 ),
