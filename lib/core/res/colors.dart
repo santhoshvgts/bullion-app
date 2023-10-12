@@ -63,6 +63,12 @@ class AppColor {
   static const Color bullionProgress = Color(0xffBF9A78);
   static const Color bullionProgressBg = Color(0xffADAAA7);
 
+  static const Color accountBg = Color(0x0D006936);
+  static const Color navyBlue40 = Color(0x6614203C);
+  static const Color mercury = Color(0xffE6E6E6);
+  static const Color clearBlue = Color(0xff1B84FF);
+  static const Color platinumColor = Color(0xffe2e2e2);
+
   static Color metalColor(String metalName) {
     switch (metalName.toLowerCase()) {
       case "gold":
