@@ -19,7 +19,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
         elevation: 0,
         title: const Text(
           "Hi, User",
-          style: AppTextStyle.headerWhite,
+          style: AppTextStyle.titleLarge,
           textScaleFactor: 1,
         ),
       ),
@@ -30,18 +30,19 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               children: [
                 Container(
                   color: AppColor.primary,
-                  height: 312,
+                  height: 316,
                   width: double.infinity,
                 ),
                 const SizedBox(height: 112),
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: AppStyle.elevatedCardShadow,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -49,16 +50,20 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.only(bottom: 16.0),
-                            child: Text('Alerts', style: AppTextStyle.titleMed),
+                            child: Text('Alerts', style: AppTextStyle.titleMedium),
                           ),
                           getTextsLayout(
                               const Icon(Icons.person), "Custom Spot Price"),
-                          const Divider(),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
                           getTextsLayout(
                             const Icon(Icons.person),
                             "Alert Me!",
                           ),
-                          const Divider(),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
                           getTextsLayout(
                             const Icon(Icons.person),
                             "Price Alert",
@@ -69,16 +74,17 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   ),
                 ),
                 const SizedBox(
-                  height: 16,
+                  height: 24,
                 ),
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: AppStyle.elevatedCardShadow,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -87,16 +93,20 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                           const Padding(
                             padding: EdgeInsets.only(bottom: 16.0),
                             child:
-                                Text('Activity', style: AppTextStyle.titleMed),
+                                Text('Activity', style: AppTextStyle.titleMedium),
                           ),
                           getTextsLayout(
                               const Icon(Icons.person), "Search History"),
-                          const Divider(),
+                          const Divider(
+                              color: AppColor.platinumColor,
+                          ),
                           getTextsLayout(
                             const Icon(Icons.person),
                             "Recently Viewed",
                           ),
-                          const Divider(),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
                           getTextsLayout(
                             const Icon(Icons.person),
                             "Buy Again",
@@ -119,27 +129,27 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         const Padding(
                           padding: EdgeInsets.only(top: 16.0),
                           child:
-                              Text('Privacy', style: AppTextStyle.titleMed18),
+                              Text('Privacy', style: AppTextStyle.titleMedium),
                         ),
-                        const Padding(
+                         Padding(
                           padding: EdgeInsets.only(top: 16.0),
                           child: Text('Visit Bullion.com',
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40)),
                         ),
-                        const Padding(
+                         Padding(
                           padding: EdgeInsets.only(top: 16.0),
                           child: Text("User Agreements",
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40)),
                         ),
-                        const Padding(
+                         Padding(
                           padding: EdgeInsets.only(top: 16.0),
                           child: Text('Privacy Policy',
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40)),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(top: 24.0),
                           child: Text('Contact Us',
-                              style: AppTextStyle.titleMed18),
+                              style: AppTextStyle.titleMedium),
                         ),
                         getTextRowWithTopPadding(
                             'Toll Free : ', '800.375.9006'),
@@ -150,23 +160,23 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         const Padding(
                           padding: EdgeInsets.only(top: 24.0),
                           child: Text('Hours of Operation',
-                              style: AppTextStyle.privacySubTitleBold),
+                              style: AppTextStyle.titleMedium),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
+                         Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
                           child: Text('Monday - Thursday | 8 a.m - 8 p.m(EST)',
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40)),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
+                         Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
                           child: Text('Friday | 8 a.m - 6 p.m(EST)',
-                              style: AppTextStyle.privacySubTitle),
+                              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40)),
                         ),
                         const Center(
                           child: Padding(
                             padding: EdgeInsets.only(top: 48.0),
                             child: Text('Version 1.0.3 (10)',
-                                style: AppTextStyle.version),
+                                style: AppTextStyle.bodySmall),
                           ),
                         )
                       ],
@@ -175,13 +185,13 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 ),
               ],
             ),
-            const Positioned(
+            Positioned(
                 top: 0,
                 left: 0,
                 right: 0,
                 child: Text(
                   "username@mail.com",
-                  style: AppTextStyle.email,
+                  style: AppTextStyle.bodyMedium.copyWith(color: AppColor.mercury),
                   textAlign: TextAlign.center,
                 )),
             Positioned(
@@ -192,25 +202,26 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   height: 116,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: AppStyle.cardShadow,
+                        borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 2,
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
+                          const Row(
                             children: [
                               Icon(Icons.list),
                               SizedBox(width: 8),
                               Text('Order History',
-                                  style: AppTextStyle.titleMed),
+                                  style: AppTextStyle.titleMedium),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           Row(
@@ -219,7 +230,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                               Expanded(
                                 child: Text(
                                     'Track your order status or view your order history and receipts',
-                                    style: AppTextStyle.subTitleReg),
+                                    style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40)),
                               ),
                             ],
                           ),
@@ -229,17 +240,18 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   ),
                 )),
             Positioned(
-                top: 160,
+                top: 168,
                 left: 0,
                 right: 0,
                 child: Container(
                   width: double.infinity,
                   margin: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: AppStyle.elevatedCardShadow,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 2,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -248,19 +260,23 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                           const Padding(
                             padding: EdgeInsets.only(bottom: 16.0),
                             child: Text('Manage Account',
-                                style: AppTextStyle.titleMed),
+                                style: AppTextStyle.titleMedium),
                           ),
                           getTextsLayout(
                             const Icon(Icons.person),
                             "Personal Info",
                             "Profile, Change Email and password",
                           ),
-                          const Divider(),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
                           getTextsLayout(
                             const Icon(Icons.pin_drop_outlined),
                             "Addresses",
                           ),
-                          const Divider(),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
                           getTextsLayout(
                             const Icon(Icons.favorite_border),
                             "Favorites",
@@ -288,11 +304,11 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
         children: [
           Text(
             text1,
-            style: AppTextStyle.privacySubTitle,
+            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40),
           ),
           Text(
             text2,
-            style: AppTextStyle.privacyValue,
+            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.clearBlue),
           ),
         ],
       ),
@@ -311,8 +327,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(text1, style: AppTextStyle.subTitleRegOpaque),
-              if (text2 != null) Text(text2, style: AppTextStyle.subTitleReg),
+              Text(text1, style: AppTextStyle.bodyMedium),
+              if (text2 != null) Text(text2, style: AppTextStyle.bodySmall.copyWith(color: AppColor.navyBlue40)),
             ],
           ),
         ],

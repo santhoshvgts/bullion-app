@@ -32,6 +32,10 @@ class AppStyle {
     const BoxShadow(color: Colors.black12, spreadRadius: 0.1, blurRadius: 1),
   ];
 
+  static final List<BoxShadow> elevatedCardShadow = [
+    const BoxShadow(color: Colors.black12, offset: Offset(0, 2), blurRadius: 10),
+  ];
+
   // static final List<BoxShadow> dealsShadow = [
   //   const BoxShadow(
   //       color: AppColor.shadowColor, offset: Offset(0, 5), blurRadius: 10),
@@ -351,7 +355,7 @@ class AppTextStyle {
   static const TextStyle subTitleReg = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w400,
-      color: AppColor.privacySubTitle,
+      color: AppColor.navyBlue40,
       fontFamily: AppTextStyle.fontFamily);
   @Deprecated("Removed")
   static const TextStyle subTitleRegOpaque = TextStyle(
@@ -363,7 +367,7 @@ class AppTextStyle {
   static const TextStyle privacySubTitle = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w500,
-      color: AppColor.privacySubTitle,
+      color: AppColor.navyBlue40,
       fontFamily: AppTextStyle.fontFamily);
   @Deprecated("Removed")
   static const TextStyle privacyValue = TextStyle(
@@ -375,13 +379,13 @@ class AppTextStyle {
   static const TextStyle privacySubTitleBold = TextStyle(
       fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w600,
-      color: AppColor.privacySubTitle,
+      color: AppColor.navyBlue40,
       fontFamily: AppTextStyle.fontFamily);
   @Deprecated("Removed")
   static const TextStyle version = TextStyle(
       fontSize: AppFontSize.dp12,
       fontWeight: FontWeight.w500,
-      color: AppColor.privacySubTitle,
+      color: AppColor.navyBlue40,
       fontFamily: AppTextStyle.fontFamily);
   @Deprecated("Removed")
   static const TextStyle email = TextStyle(
