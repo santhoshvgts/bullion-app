@@ -1,166 +1,75 @@
-import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/ui/view/my_orders_section.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 
-import '../../../core/res/colors.dart';
-import '../vgts_builder_widget.dart';
+import '../../../core/res/styles.dart';
 import 'orders_view_model.dart';
 
-class OrdersPage extends VGTSBuilderWidget<OrdersViewModel> {
+class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
 
   @override
-  OrdersViewModel viewModelBuilder(BuildContext context) {
-    return OrdersViewModel();
+  State<OrdersPage> createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
+  late TabController _tabController;
+  late OrdersViewModel ordersViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
-  void onViewModelReady(OrdersViewModel viewModel) {
-    super.onViewModelReady(viewModel);
-  }
-
-  @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      OrdersViewModel viewModel, Widget? child) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.arrow_back),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "My Orders",
-              style: AppTextStyle.titleLarge,
-            ),
-            const SizedBox(
-              height: 16.0,
-            ),
-            Container(
-              height: 160,
-              decoration: BoxDecoration(
-                border: Border.all(width: 1, color: AppColor.border),
-                borderRadius: BorderRadius.circular(12),
-              ),
+  Widget build(BuildContext context) {
+    return ViewModelBuilder.reactive(
+      onViewModelReady: (viewModel) {
+        ordersViewModel = viewModel;
+      },
+      viewModelBuilder: () => OrdersViewModel(),
+      builder: (context, viewModel, child) {
+        return Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 80,
+            leadingWidth: double.infinity,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 16),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Flexible(
-                    flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColor.iconBG,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            width: 56,
-                            height: 56,
-                            child: const Icon(
-                              Icons.receipt_long_outlined,
-                              size: 32,
-                              color: AppColor.turtleGreen,
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "#7161760",
-                                    style: AppTextStyle.bodyMedium,
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    "Processing Payment",
-                                    style: AppTextStyle.labelMedium
-                                        .copyWith(color: AppColor.cyanBlue),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const Icon(Icons.arrow_forward_ios_outlined)
-                        ],
-                      ),
-                    ),
+                  Icon(Icons.arrow_back_ios),
+                  const Text(
+                    "My Orders",
+                    style: AppTextStyle.titleLarge,
                   ),
-                  Flexible(
-                    flex: 2,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: AppColor.snowDrift,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Order Date",
-                                    style: AppTextStyle.labelSmall,
-                                  ),
-                                  Text(
-                                    "June 5, 2023",
-                                    style: AppTextStyle.labelLarge,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                VerticalDivider(
-                                  width: 2,
-                                  indent: 16,
-                                  endIndent: 16,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 16.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Payment Method",
-                                        style: AppTextStyle.labelSmall,
-                                      ),
-                                      Text(
-                                        "Bank Wire",
-                                        style: AppTextStyle.labelLarge,
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
                 ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
+            bottom: TabBar(
+              controller: _tabController,
+              isScrollable: true,
+              tabs: const [
+                Tab(text: "All Orders"),
+                Tab(text: "In Progress"),
+                Tab(text: "Shipped Orders"),
+                Tab(text: "Cancelled Orders"),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            controller: _tabController,
+            children: const [
+              MyOrdersPage(),
+              MyOrdersPage(),
+              MyOrdersPage(),
+              MyOrdersPage(),
+            ],
+          ),
+        );
+      },
     );
   }
 }
