@@ -72,6 +72,10 @@ class AppColor {
   static const Color snowDrift = Color(0xffF9F9F9);
   static const Color iconBG = Color(0xffF5F5F5);
   static const Color turtleGreen = Color(0xff429283);
+  static const Color redOrange = Color(0xffFF3B30);
+  static const Color concord = Color(0xff7C7C7C);
+  static const Color orangePeel = Color(0xffFF9800);
+  static const Color eggSour = Color(0xffFFF3E0);
 
   static Color metalColor(String metalName) {
     switch (metalName.toLowerCase()) {
