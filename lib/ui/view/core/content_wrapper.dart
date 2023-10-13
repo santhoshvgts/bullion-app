@@ -161,7 +161,10 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
         children: [
           if (viewModel.productListingModuleTitle != null)
             AutoSizeText(viewModel.productListingModuleTitle!,
-                textScaleFactor: 1, textAlign: UIAlignment.textAlign(viewModel.productListingModule!.displaySettings!.titleAlignment), style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title)),
+                textScaleFactor: 1,
+                textAlign: UIAlignment.textAlign(viewModel
+                    .productListingModule!.displaySettings!.titleAlignment),
+                style: AppTextStyle.titleSmall.copyWith(color: AppColor.title)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -180,7 +183,8 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                       Text(
                         "Sort",
                         textScaleFactor: 1,
-                        style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title),
+                        style: AppTextStyle.titleSmall
+                            .copyWith(color: AppColor.title),
                       )
                     ],
                   ),
@@ -221,7 +225,8 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                       Text(
                         "Filter${viewModel.productModel.selectedFacetsCount! > 0 ? " (${viewModel.productModel.selectedFacetsCount})" : ""}",
                         textScaleFactor: 1,
-                        style: AppTextStyle.buttonOutline.copyWith(color: AppColor.title),
+                        style: AppTextStyle.titleSmall
+                            .copyWith(color: AppColor.title),
                       )
                     ],
                   ),

@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 
 class AppStyle {
   static final ThemeData appTheme = ThemeData(
-    primaryColor: AppColor.primary,
+    useMaterial3: true,
     primaryColorLight: AppColor.white,
     brightness: Brightness.light,
     dividerColor: AppColor.divider,
     indicatorColor: AppColor.primaryDark,
+    colorSchemeSeed: AppColor.primary,
     iconTheme: const IconThemeData(color: AppColor.black),
-    primaryIconTheme:
-        const IconThemeData.fallback().copyWith(color: AppColor.primary),
+    primaryIconTheme: const IconThemeData.fallback().copyWith(
+      color: AppColor.primary,
+    ),
     appBarTheme: const AppBarTheme().copyWith(
         color: AppColor.scaffoldBackground,
         elevation: 1,
         centerTitle: true,
-        titleTextStyle: AppTextStyle.appBarTitle,
+        titleTextStyle: AppTextStyle.titleLarge,
         iconTheme: const IconThemeData().copyWith(color: AppColor.primaryDark)),
     fontFamily: "Poppins",
     scaffoldBackgroundColor: AppColor.scaffoldBackground,
@@ -30,10 +32,14 @@ class AppStyle {
     const BoxShadow(color: Colors.black12, spreadRadius: 0.1, blurRadius: 1),
   ];
 
-  static final List<BoxShadow> dealsShadow = [
-    const BoxShadow(
-        color: AppColor.shadowColor, offset: Offset(0, 5), blurRadius: 10),
+  static final List<BoxShadow> elevatedCardShadow = [
+    const BoxShadow(color: Colors.black12, offset: Offset(0, 2), blurRadius: 10),
   ];
+
+  // static final List<BoxShadow> dealsShadow = [
+  //   const BoxShadow(
+  //       color: AppColor.shadowColor, offset: Offset(0, 5), blurRadius: 10),
+  // ];
 
   static final List<BoxShadow> topShadow = [
     const BoxShadow(
@@ -53,7 +59,7 @@ class AppStyle {
   static Border divider =
       const Border(bottom: BorderSide(color: AppColor.divider, width: 0.3));
 
-  static final Widget customDivider = const Divider(
+  static const Widget customDivider = Divider(
     color: AppColor.divider,
     thickness: 0.3,
   );
@@ -62,109 +68,329 @@ class AppStyle {
 class AppTextStyle {
   static const String fontFamily = "Poppins";
 
-  static const TextStyle appBarTitle = TextStyle(
-      fontSize: AppFontSize.xlarge,
-      fontWeight: FontWeight.bold,
-      color: AppColor.header,
-      fontFamily: AppTextStyle.fontFamily);
+  // titleLarge
+  // static const TextStyle appBarTitle = TextStyle(
+  //     fontSize: AppFontSize.xlarge,
+  //     fontWeight: FontWeight.bold,
+  //     color: AppColor.header,
+  //     fontFamily: AppTextStyle.fontFamily);
 
-  static const TextStyle header = TextStyle(
-      fontSize: AppFontSize.xLargest,
+  // headlineSmall
+  // static const TextStyle header = TextStyle(
+  //     fontSize: AppFontSize.xLargest,
+  //     fontWeight: FontWeight.w600,
+  //     color: AppColor.header,
+  //     fontFamily: AppTextStyle.fontFamily);
+
+  // titleMedium
+  // static const TextStyle subHeader = TextStyle(
+  //     fontSize: AppFontSize.medium,
+  //     fontWeight: FontWeight.w600,
+  //     color: AppColor.primary,
+  //     fontFamily: AppTextStyle.fontFamily);
+
+  // bodyMedium
+  // static const TextStyle body = TextStyle(
+  //     fontSize: AppFontSize.normal,
+  //     fontWeight: FontWeight.normal,
+  //     color: AppColor.header,
+  //     height: 1.5,
+  //     fontFamily: AppTextStyle.fontFamily);
+
+  // titleSmall
+  // static const TextStyle button = TextStyle(
+  //     fontSize: AppFontSize.medium,
+  //     fontWeight: FontWeight.w500,
+  //     color: AppColor.white,
+  //     fontFamily: AppTextStyle.fontFamily);
+
+  // titleSmall
+  // static const TextStyle buttonOutline = TextStyle(
+  //     fontSize: AppFontSize.medium,
+  //     fontWeight: FontWeight.w500,
+  //     color: AppColor.primary,
+  //     fontFamily: AppTextStyle.fontFamily);
+
+  // titleSmall
+  // static const TextStyle buttonTextSecondary = TextStyle(
+  //     fontSize: AppFontSize.small,
+  //     fontWeight: FontWeight.normal,
+  //     color: AppColor.white,
+  //     fontFamily: AppTextStyle.fontFamily);
+
+  // titleSmall
+  // static const TextStyle buttonSecondary = TextStyle(
+  //     fontSize: AppFontSize.normal,
+  //     fontWeight: FontWeight.w500,
+  //     color: AppColor.secondary,
+  //     fontFamily: AppTextStyle.fontFamily);
+
+  // labelMedium
+  // static const TextStyle dialogButtonOutline = TextStyle(
+  //   fontSize: AppFontSize.small,
+  //   fontWeight: FontWeight.normal,
+  //   color: AppColor.primary,
+  // );
+
+  // labelMedium
+  // static const TextStyle dialogButton = TextStyle(
+  //   fontSize: AppFontSize.small,
+  //   fontWeight: FontWeight.w600,
+  //   color: AppColor.primary,
+  // );
+
+  // labelMedium
+  // static const TextStyle label = TextStyle(
+  //     fontFamily: AppTextStyle.fontFamily,
+  //     fontSize: AppFontSize.small,
+  //     fontWeight: FontWeight.normal,
+  //     color: AppColor.secondaryText,
+  //     height: 1.5);
+
+  // labelMedium
+  // static const TextStyle text = TextStyle(
+  //     fontFamily: AppTextStyle.fontFamily,
+  //     fontSize: AppFontSize.large,
+  //     fontWeight: FontWeight.normal,
+  //     color: AppColor.text,
+  //     height: 1.5);
+
+  // bodyMedium
+  // static const TextStyle normal = TextStyle(
+  //     fontFamily: AppTextStyle.fontFamily,
+  //     fontSize: AppFontSize.normal,
+  //     fontWeight: FontWeight.w600,
+  //     color: AppColor.primaryDark,
+  //     height: 1.5);
+
+  // titleLarge
+  // static const TextStyle largest = TextStyle(
+  //   fontFamily: AppTextStyle.fontFamily,
+  //   fontSize: AppFontSize.largest,
+  //   fontWeight: FontWeight.bold,
+  //   color: AppColor.text,
+  // );
+
+  // Version 2 Text Style
+  // titleLarge
+  // static const TextStyle title = TextStyle(
+  //     fontFamily: AppTextStyle.fontFamily,
+  //     fontSize: AppFontSize.dp18,
+  //     fontWeight: FontWeight.w600,
+  //     color: AppColor.primaryDark,
+  //     letterSpacing: 0.15,
+  //     height: 1.5);
+
+  // titleMedium
+  // static const TextStyle subtitle = TextStyle(
+  //     fontFamily: AppTextStyle.fontFamily,
+  //     fontSize: AppFontSize.dp16,
+  //     fontWeight: FontWeight.normal,
+  //     color: AppColor.primaryDark,
+  //     letterSpacing: 0.15,
+  //     height: 1.5);
+
+  static const TextStyle displayLarge = TextStyle(
+    fontSize: 57,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 64 / 57,
+    letterSpacing: -0.25,
+  );
+
+  static const TextStyle displayMedium = TextStyle(
+    fontSize: 45,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 52 / 45,
+    letterSpacing: 0,
+  );
+
+  static const TextStyle displaySmall = TextStyle(
+    fontSize: 36,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 44 / 36,
+    letterSpacing: 0,
+  );
+
+  static const TextStyle headlineLarge = TextStyle(
+    fontSize: 32,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 40 / 32,
+    letterSpacing: 0,
+  );
+
+  static const TextStyle headlineMedium = TextStyle(
+    fontSize: 28,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 36 / 28,
+    letterSpacing: 0,
+  );
+
+  static const TextStyle headlineSmall = TextStyle(
+    fontSize: 24,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 32 / 24,
+    letterSpacing: 0,
+  );
+
+  static const TextStyle titleLarge = TextStyle(
+    fontSize: 22,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 28 / 22,
+    letterSpacing: 0,
+  );
+
+  static const TextStyle titleMedium = TextStyle(
+    fontSize: AppFontSize.dp16,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 24 / 16,
+    letterSpacing: 0.15,
+  );
+
+  static const TextStyle titleSmall = TextStyle(
+    fontSize: AppFontSize.dp14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 20 / 14,
+    letterSpacing: -0.11,
+  );
+
+  static const TextStyle labelLarge = TextStyle(
+    fontSize: AppFontSize.dp14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 20 / 14,
+    letterSpacing: 0.1,
+  );
+
+  static const TextStyle labelMedium = TextStyle(
+    fontSize: AppFontSize.dp12,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 16 / 12,
+    letterSpacing: 0.1,
+  );
+
+  static const TextStyle labelSmall = TextStyle(
+    fontSize: 11,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+    height: 16 / 11,
+    letterSpacing: 0.1,
+  );
+
+  static const TextStyle bodyLarge = TextStyle(
+    fontSize: AppFontSize.dp16,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 24 / 16,
+    letterSpacing: 0.5,
+  );
+
+  static const TextStyle bodyMedium = TextStyle(
+    fontSize: AppFontSize.dp14,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 20 / 14,
+    letterSpacing: 0.25,
+  );
+
+  static const TextStyle bodySmall = TextStyle(
+    fontSize: AppFontSize.dp12,
+    decoration: TextDecoration.none,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w400,
+    height: 16 / 12,
+    letterSpacing: 0,
+  );
+
+  @Deprecated("Removed")
+  static const TextStyle headerWhite = TextStyle(
+      fontSize: AppFontSize.dp22,
       fontWeight: FontWeight.w600,
-      color: AppColor.header,
+      color: Colors.white,
       fontFamily: AppTextStyle.fontFamily);
 
-  static const TextStyle subHeader = TextStyle(
-      fontSize: AppFontSize.medium,
+  @Deprecated("Removed")
+  static const TextStyle titleMed = TextStyle(
+      fontSize: AppFontSize.dp16,
+      fontWeight: FontWeight.w500,
+      color: AppColor.text,
+      fontFamily: AppTextStyle.fontFamily);
+
+  @Deprecated("Removed")
+  static const TextStyle titleMed18 = TextStyle(
+      fontSize: AppFontSize.dp18,
+      fontWeight: FontWeight.w500,
+      color: AppColor.text,
+      fontFamily: AppTextStyle.fontFamily);
+  @Deprecated("Removed")
+  static const TextStyle buttonOutlineSemi = TextStyle(
+      fontSize: AppFontSize.dp12,
       fontWeight: FontWeight.w600,
-      color: AppColor.primary,
+      color: AppColor.primaryText,
       fontFamily: AppTextStyle.fontFamily);
-
-  static const TextStyle body = TextStyle(
-      fontSize: AppFontSize.normal,
-      fontWeight: FontWeight.normal,
-      color: AppColor.header,
-      height: 1.5,
+  @Deprecated("Removed")
+  static const TextStyle subTitleReg = TextStyle(
+      fontSize: AppFontSize.dp14,
+      fontWeight: FontWeight.w400,
+      color: AppColor.navyBlue40,
       fontFamily: AppTextStyle.fontFamily);
-
-  static const TextStyle button = TextStyle(
-      fontSize: AppFontSize.medium,
+  @Deprecated("Removed")
+  static const TextStyle subTitleRegOpaque = TextStyle(
+      fontSize: AppFontSize.dp14,
+      fontWeight: FontWeight.w400,
+      color: AppColor.text,
+      fontFamily: AppTextStyle.fontFamily);
+  @Deprecated("Removed")
+  static const TextStyle privacySubTitle = TextStyle(
+      fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w500,
-      color: AppColor.white,
+      color: AppColor.navyBlue40,
       fontFamily: AppTextStyle.fontFamily);
-
-  static const TextStyle buttonOutline = TextStyle(
-      fontSize: AppFontSize.medium,
-      fontWeight: FontWeight.w500,
-      color: AppColor.primary,
-      fontFamily: AppTextStyle.fontFamily);
-
-  static const TextStyle buttonTextSecondary = TextStyle(
-      fontSize: AppFontSize.small,
-      fontWeight: FontWeight.normal,
-      color: AppColor.white,
-      fontFamily: AppTextStyle.fontFamily);
-
-  static const TextStyle buttonSecondary = TextStyle(
-      fontSize: AppFontSize.normal,
+  @Deprecated("Removed")
+  static const TextStyle privacyValue = TextStyle(
+      fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w500,
       color: AppColor.secondary,
       fontFamily: AppTextStyle.fontFamily);
-
-  static const TextStyle dialogButtonOutline = TextStyle(
-    fontSize: AppFontSize.small,
-    fontWeight: FontWeight.normal,
-    color: AppColor.primary,
-  );
-
-  static const TextStyle dialogButton = TextStyle(
-    fontSize: AppFontSize.small,
-    fontWeight: FontWeight.w600,
-    color: AppColor.primary,
-  );
-
-  static const TextStyle label = TextStyle(
-      fontFamily: AppTextStyle.fontFamily,
-      fontSize: AppFontSize.small,
-      fontWeight: FontWeight.normal,
-      color: AppColor.secondaryText,
-      height: 1.5);
-
-  static const TextStyle text = TextStyle(
-      fontFamily: AppTextStyle.fontFamily,
-      fontSize: AppFontSize.large,
-      fontWeight: FontWeight.normal,
-      color: AppColor.text,
-      height: 1.5);
-
-  static const TextStyle normal = TextStyle(
-      fontFamily: AppTextStyle.fontFamily,
-      fontSize: AppFontSize.normal,
+  @Deprecated("Removed")
+  static const TextStyle privacySubTitleBold = TextStyle(
+      fontSize: AppFontSize.dp14,
       fontWeight: FontWeight.w600,
-      color: AppColor.primaryDark,
-      height: 1.5);
-
-  static const TextStyle largest = TextStyle(
-    fontFamily: AppTextStyle.fontFamily,
-    fontSize: AppFontSize.largest,
-    fontWeight: FontWeight.bold,
-    color: AppColor.text,
-  );
-
-  // Version 2 Text Style
-  static const TextStyle title = TextStyle(
-      fontFamily: AppTextStyle.fontFamily,
-      fontSize: AppFontSize.dp18,
-      fontWeight: FontWeight.w600,
-      color: AppColor.primaryDark,
-      letterSpacing: 0.15,
-      height: 1.5);
-
-  static const TextStyle subtitle = TextStyle(
-      fontFamily: AppTextStyle.fontFamily,
-      fontSize: AppFontSize.dp16,
-      fontWeight: FontWeight.normal,
-      color: AppColor.primaryDark,
-      letterSpacing: 0.15,
-      height: 1.5);
+      color: AppColor.navyBlue40,
+      fontFamily: AppTextStyle.fontFamily);
+  @Deprecated("Removed")
+  static const TextStyle version = TextStyle(
+      fontSize: AppFontSize.dp12,
+      fontWeight: FontWeight.w500,
+      color: AppColor.navyBlue40,
+      fontFamily: AppTextStyle.fontFamily);
+  @Deprecated("Removed")
+  static const TextStyle email = TextStyle(
+      fontSize: AppFontSize.dp14,
+      fontWeight: FontWeight.w500,
+      color: AppColor.mercury,
+      fontFamily: AppTextStyle.fontFamily);
 }

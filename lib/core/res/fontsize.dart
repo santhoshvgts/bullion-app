@@ -14,6 +14,7 @@ class AppFontSize {
   static const double dp16 = 16;
   static const double dp18 = 18;
   static const double dp20 = 20;
+  static const double dp22 = 22;
 
   static double titleByValue(String type) {
     switch (type) {

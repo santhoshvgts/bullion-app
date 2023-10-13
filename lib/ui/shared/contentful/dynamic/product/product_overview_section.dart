@@ -13,7 +13,6 @@ import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
 import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/chip_item.dart';
-import 'package:bullion/ui/widgets/image_pagination_builder.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:bullion/ui/widgets/shimmer_effect.dart';
 import 'package:card_swiper/card_swiper.dart';
@@ -40,24 +39,39 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
       ProductDetailViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      ProductDetailViewModel viewModel, Widget? child) {
+  Widget viewBuilder(
+    BuildContext context,
+    AppLocalizations locale,
+    ProductDetailViewModel viewModel,
+    Widget? child,
+  ) {
     return Container(
       color: AppColor.white,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              _ImageList(viewModel.productDetails?.productPictures ??
-                  [viewModel.productDetails!.overview!.primaryImageUrl!]),
-              if (viewModel.productDetails?.overview?.ribbonText?.isNotEmpty ==
-                  true)
-                Positioned(
-                  top: kToolbarHeight + 10,
-                  child: Container(
+          _Header(),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+            child: Stack(
+              children: [
+                _ImageList(
+                  viewModel.productDetails?.productPictures ??
+                      [viewModel.productDetails!.overview!.primaryImageUrl!],
+                ),
+                if (viewModel
+                        .productDetails?.overview?.ribbonText?.isNotEmpty ==
+                    true)
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
                       decoration: BoxDecoration(
                         color: viewModel.productDetails!.overview!
                             .ribbonTextBackgroundColor,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
                       ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 15,
@@ -70,10 +84,11 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                           color: AppColor.white,
                         ),
                         textScaleFactor: 1,
-                      )),
-                ),
-              Positioned(
-                  bottom: 70,
+                      ),
+                    ),
+                  ),
+                Positioned(
+                  bottom: 10,
                   right: 10,
                   child: InkWell(
                     onTap: () {
@@ -96,9 +111,57 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                         height: 25,
                       ),
                     ),
-                  )),
-            ],
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: AppColor.outlineBorder,
+                              width: 0.5,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.heart,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      VerticalSpacing.d5px(),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: AppColor.outlineBorder,
+                              width: 0.5,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.bell,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
+          VerticalSpacing.d5px(),
           _ProductInfoSection(),
           if (viewModel.productDetails!.productNotes != null) _ProductNotes(),
           if (viewModel.productDetails!.volumePricing == null)
@@ -115,56 +178,16 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
   }
 }
 
-class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
-  final List<String>? images;
-
-  const _ImageList(this.images);
-
+class _Header extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-      height: MediaQuery.of(context).size.height / 1.55,
-      color: AppColor.white,
-      child: Swiper(
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(images, index)));
-            },
-            child: Container(
-              alignment: Alignment.topCenter,
-              padding: const EdgeInsets.only(top: 30, left: 5, right: 5),
-              child: NetworkImageLoader(
-                image: images![index],
-                fit: BoxFit.contain,
-              ),
-            ),
-          );
-        },
-        onIndexChanged: (index) {
-          viewModel.activeIndex = index;
-        },
-        itemCount: images!.length,
-        loop: false,
-        layout: SwiperLayout.DEFAULT,
-        pagination: SwiperPagination(
-          alignment: Alignment.bottomLeft,
-          builder: ImagePaginationBuilder(
-              activeBorderColor: AppColor.primary,
-              activeSize: 40,
-              size: 40,
-              images: images),
-        ),
+      padding: const EdgeInsets.only(
+        left: 15,
+        right: 15,
+        top: 20,
+        bottom: 10,
       ),
-    );
-  }
-}
-
-class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
-  @override
-  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Container(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
       color: AppColor.white,
       width: double.infinity,
       child: Column(
@@ -172,25 +195,19 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
         children: [
           Text(
             viewModel.productDetails?.overview?.name ?? "-",
-            style: AppTextStyle.title,
+            style: AppTextStyle.titleLarge,
             textScaleFactor: 1,
           ),
-          VerticalSpacing.d5px(),
-          if (viewModel.productDetails!.overview!.productAction ==
-              ProductInfoDisplayType.addToCart)
-            _PriceInfo()
-          else
-            _AlertText(),
           VerticalSpacing.d10px(),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (viewModel.productDetails!.overview!.reviewCount != 0)
                 RatingBar(
                   initialRating:
                       viewModel.productDetails?.overview?.avgRatings ?? 0,
                   allowHalfRating: true,
-                  itemSize: 15,
+                  itemSize: 17,
                   glow: true,
                   glowColor: Colors.red,
                   maxRating: 5,
@@ -219,10 +236,75 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
                     : "${viewModel.productDetails?.overview?.avgRatings} (${viewModel.productDetails!.overview!.reviewCount})",
                 textScaleFactor: 1,
                 textAlign: TextAlign.left,
-                style: AppTextStyle.label,
+                style: AppTextStyle.labelMedium,
               )),
             ],
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
+  final List<String>? images;
+
+  const _ImageList(this.images);
+
+  @override
+  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+    return Container(
+      height: MediaQuery.of(context).size.height / 2,
+      decoration: BoxDecoration(
+        color: AppColor.secondaryBackground,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Swiper(
+        itemBuilder: (BuildContext context, int index) {
+          return InkWell(
+            onTap: () {
+              // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(images, index)));
+            },
+            child: Container(
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.all(10),
+              child: NetworkImageLoader(
+                image: images![index],
+                fit: BoxFit.contain,
+              ),
+            ),
+          );
+        },
+        onIndexChanged: (index) {
+          viewModel.activeIndex = index;
+        },
+        itemCount: images!.length,
+        loop: false,
+        layout: SwiperLayout.DEFAULT,
+        pagination: const SwiperPagination(
+          alignment: Alignment.bottomCenter,
+          builder: DotSwiperPaginationBuilder(activeSize: 7, size: 7, space: 2),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
+  @override
+  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+    return Container(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+      color: AppColor.white,
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (viewModel.productDetails!.overview!.productAction ==
+              ProductInfoDisplayType.addToCart)
+            _PriceInfo()
+          else
+            _AlertText(),
           VerticalSpacing.d20px(),
           _ShippingInfoCard(),
           VerticalSpacing.d10px(),
@@ -246,7 +328,7 @@ class _ProductNotes extends ViewModelWidget<ProductDetailViewModel> {
             padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: Text(
               e,
-              style: AppTextStyle.body.copyWith(
+              style: AppTextStyle.bodyMedium.copyWith(
                 fontSize: 14,
               ),
               textAlign: TextAlign.start,
@@ -315,11 +397,8 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Volume Discount Pricing",
-                    textScaleFactor: 1,
-                    style: AppTextStyle.title,
-                  ),
+                  const Text("Volume Discount Pricing",
+                      textScaleFactor: 1, style: AppTextStyle.titleLarge),
                   HorizontalSpacing.d5px(),
                   InkWell(
                       onTap: () {},
@@ -416,14 +495,14 @@ class _VolumeDiscountCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyle.body.copyWith(
+            style: AppTextStyle.bodyMedium.copyWith(
                 fontWeight: FontWeight.w500,
                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
           ),
           VerticalSpacing.d5px(),
           Text(
             price,
-            style: AppTextStyle.body.copyWith(
+            style: AppTextStyle.bodyMedium.copyWith(
                 fontWeight: FontWeight.w500,
                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
             textAlign: TextAlign.center,
@@ -454,7 +533,7 @@ class _VolumeDiscountCard extends StatelessWidget {
 //                   const Text(
 //                     "Volume Discount Pricing",
 //                     textScaleFactor: 1,
-//                     style: AppTextStyle.title,
+//                     style: AppTextStyle.titleLarge
 //                   ),
 //                   HorizontalSpacing.d5px(),
 //                   InkWell(
@@ -557,14 +636,14 @@ class _VolumeDiscountCard extends StatelessWidget {
 //         children: [
 //           Text(
 //             title,
-//             style: AppTextStyle.subtitle.copyWith(
+//             style: AppTextStyle.titleMedium.copyWith(
 //                 fontWeight: FontWeight.w500,
 //                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
 //           ),
 //           VerticalSpacing.d5px(),
 //           Text(
 //             price,
-//             style: AppTextStyle.subtitle.copyWith(
+//             style: AppTextStyle.titleMedium.copyWith(
 //                 fontWeight: FontWeight.w500,
 //                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
 //             textAlign: TextAlign.center,
@@ -668,7 +747,7 @@ class _CoinGradeSpecification extends ViewModelWidget<ProductDetailViewModel> {
                         const Text(
                           "Information Provided By ",
                           textScaleFactor: 1,
-                          style: AppTextStyle.body,
+                          style: AppTextStyle.bodyMedium,
                         ),
                         NetworkImageLoader(
                           image: viewModel.productDetails!
@@ -693,7 +772,7 @@ class _AlertText extends ViewModelWidget<ProductDetailViewModel> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Text(
         viewModel.productDetails!.overview!.availabilityText!,
-        style: AppTextStyle.title.copyWith(color: AppColor.red),
+        style: AppTextStyle.titleLarge.copyWith(color: AppColor.red),
       ),
     );
   }
@@ -715,7 +794,8 @@ class _ShippingInfoCard extends ViewModelWidget<ProductDetailViewModel> {
             children: [
               Text(
                 "Quick Shipping",
-                style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w500),
+                style: AppTextStyle.bodyMedium
+                    .copyWith(fontWeight: FontWeight.w500),
               ),
               HorizontalSpacing.d5px(),
               const Icon(
@@ -726,7 +806,7 @@ class _ShippingInfoCard extends ViewModelWidget<ProductDetailViewModel> {
           ),
           VerticalSpacing.d2px(),
           const Text("Ships in 6 business days from receipt",
-              style: AppTextStyle.body),
+              style: AppTextStyle.bodyMedium),
         ],
       ),
     );
@@ -744,7 +824,8 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
         children: [
           Text(
             "Weight",
-            style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w500),
+            style:
+                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
           ),
           VerticalSpacing.d10px(),
           Wrap(
@@ -764,7 +845,7 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
                             )),
                         child: Text(
                           e,
-                          style: AppTextStyle.body.copyWith(
+                          style: AppTextStyle.bodyMedium.copyWith(
                             color: AppColor.text,
                           ),
                         ),
@@ -775,7 +856,8 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
           VerticalSpacing.d15px(),
           Text(
             "Year",
-            style: AppTextStyle.body.copyWith(fontWeight: FontWeight.w500),
+            style:
+                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
           ),
           VerticalSpacing.d10px(),
           Wrap(
@@ -795,7 +877,7 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
                             )),
                         child: Text(
                           e,
-                          style: AppTextStyle.body.copyWith(
+                          style: AppTextStyle.bodyMedium.copyWith(
                             color: AppColor.text,
                           ),
                         ),
@@ -823,7 +905,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
               text: TextSpan(
                   text:
                       "${viewModel.productOverview!.pricing!.formattedNewPrice} ",
-                  style: AppTextStyle.title.copyWith(
+                  style: AppTextStyle.titleLarge.copyWith(
                       fontSize: 20,
                       color: viewModel
                               .productOverview!.pricing!.strikeThroughEnabled!
@@ -835,7 +917,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
                       TextSpan(
                           text: viewModel
                               .productOverview!.pricing!.formattedOldPrice,
-                          style: AppTextStyle.title.copyWith(
+                          style: AppTextStyle.titleLarge.copyWith(
                               fontWeight: FontWeight.normal,
                               fontSize: 20,
                               color: const Color(0xff666666),
@@ -849,7 +931,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
             child: Text(
               viewModel.productDetails?.priceBadgeText ?? '',
               textAlign: TextAlign.left,
-              style: AppTextStyle.body.copyWith(fontSize: 14),
+              style: AppTextStyle.bodyMedium.copyWith(fontSize: 14),
             ),
           ),
 
@@ -858,7 +940,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
             padding: const EdgeInsets.only(top: 5),
             child: Text(viewModel.productOverview!.pricing!.discountText ?? '',
                 textAlign: TextAlign.left,
-                style: AppTextStyle.body.copyWith(
+                style: AppTextStyle.bodyMedium.copyWith(
                     color: AppColor.offerText,
                     fontWeight: FontWeight.w600,
                     fontSize: 14)),
@@ -914,14 +996,14 @@ class AlertToast extends StatelessWidget {
                 Text(
                   title,
                   textScaleFactor: 1,
-                  style: AppTextStyle.body
+                  style: AppTextStyle.bodyMedium
                       .copyWith(color: titleColor, fontWeight: FontWeight.bold),
                 ),
                 VerticalSpacing.d2px(),
                 Text(
                   productDetails!.overview!.name!,
                   textScaleFactor: 1,
-                  style: AppTextStyle.body.copyWith(fontSize: 12),
+                  style: AppTextStyle.bodyMedium.copyWith(fontSize: 12),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -936,8 +1018,8 @@ class AlertToast extends StatelessWidget {
                 child: Text(
                   "View",
                   textScaleFactor: 1,
-                  style:
-                      AppTextStyle.body.copyWith(fontWeight: FontWeight.bold),
+                  style: AppTextStyle.bodyMedium
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
             )

@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:flutter/material.dart';
 
 class HeaderCard extends StatelessWidget {
   final String title;
@@ -12,7 +11,13 @@ class HeaderCard extends StatelessWidget {
   final EdgeInsets margin;
   final EdgeInsets? padding;
 
-  HeaderCard(this.title, {this.arrowPressed, this.backgroundColor = AppColor.white, this.child, this.trailing, this.padding, this.margin = EdgeInsets.zero});
+  HeaderCard(this.title,
+      {this.arrowPressed,
+      this.backgroundColor = AppColor.white,
+      this.child,
+      this.trailing,
+      this.padding,
+      this.margin = EdgeInsets.zero});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,7 @@ class HeaderCard extends StatelessWidget {
                     child: Text(
                   title,
                   textScaleFactor: 1,
-                  style: AppTextStyle.header,
+                  style: AppTextStyle.headlineSmall,
                 )),
                 trailing == null ? Container() : trailing!,
                 arrowPressed == null

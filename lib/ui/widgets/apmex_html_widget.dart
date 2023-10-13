@@ -10,7 +10,7 @@ class ApmexHtmlWidget extends StatelessWidget {
   final String? content;
   final TextStyle textStyle;
 
-  ApmexHtmlWidget(this.content, {this.textStyle = AppTextStyle.body});
+  ApmexHtmlWidget(this.content, {this.textStyle = AppTextStyle.bodyMedium});
 
   @override
   Widget build(BuildContext context) {

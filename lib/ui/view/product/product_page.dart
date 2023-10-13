@@ -1,3 +1,6 @@
+import 'package:bullion/core/constants/module_type.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/shared/cart/cart_button.dart';
 import 'package:bullion/ui/shared/contentful/banner/banner_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/dynamic_module.dart';
@@ -7,28 +10,24 @@ import 'package:bullion/ui/shared/contentful/product/product_module.dart';
 import 'package:bullion/ui/shared/contentful/standard/standard_module.dart';
 import 'package:bullion/ui/shared/search_card_section.dart';
 import 'package:bullion/ui/view/product/product_page_viewmodel.dart';
-import 'package:flutter/material.dart';
-import 'package:bullion/core/constants/module_type.dart';
-import 'package:bullion/core/models/module/product_detail/product_detail.dart';
-import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class ProductPage extends StatelessWidget with WidgetsBindingObserver {
-
   final ProductDetails? productDetails;
   final String? targetUrl;
 
   late BuildContext _buildContext;
 
-  ProductPage({Key? key, required this.productDetails, this.targetUrl}) : super (key: key);
+  ProductPage({Key? key, required this.productDetails, this.targetUrl})
+      : super(key: key);
 
   late ProductPageViewModel _productPageViewModel;
 
   @override
   Widget build(BuildContext context) {
-
     _buildContext = context;
 
     return ViewModelBuilder.reactive(
@@ -36,7 +35,7 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
         _productPageViewModel = viewModel;
         WidgetsBinding.instance.addObserver(this);
       },
-      onDispose: (ProductPageViewModel viewModel){
+      onDispose: (ProductPageViewModel viewModel) {
         WidgetsBinding.instance.removeObserver(this);
       },
       builder: (context, ProductPageViewModel viewModel, child) {
@@ -44,9 +43,14 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
           child: Scaffold(
             backgroundColor: AppColor.white,
             appBar: AppBar(
-              toolbarHeight: 0,
-              elevation: 0,
-              backgroundColor: viewModel.showAppBar ? AppColor.white : AppColor.white,
+              elevation: 1,
+              titleSpacing: 0,
+              centerTitle: true,
+              title: SearchCardSection(
+                leftPadding: 0,
+                rightPadding: 0,
+              ),
+              actions: const [CartButton.light()],
             ),
             body: SafeArea(
               top: false,
@@ -59,11 +63,10 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                   child: TapOutsideUnFocus(
                     child: Stack(
                       children: [
-
-                        if (viewModel.productDetail != null || viewModel.pageSetting != null)
+                        if (viewModel.productDetail != null ||
+                            viewModel.pageSetting != null)
                           Column(
                             children: [
-
                               Flexible(
                                 child: SizedBox(
                                   height: double.infinity,
@@ -71,25 +74,25 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                                     controller: viewModel.scrollController,
                                     physics: const ClampingScrollPhysics(),
                                     padding: EdgeInsets.zero,
-                                    child: Column(
-                                        children: [
-
-                                          if (viewModel.isBusy)
-                                            ProductOverviewSection(viewModel.productDetail, "")
-
-                                          else
-                                            ...viewModel.modules?.map((module){
-                                              switch(module?.moduleType){
-
+                                    child: Column(children: [
+                                      if (viewModel.isBusy)
+                                        ProductOverviewSection(
+                                            viewModel.productDetail, "")
+                                      else
+                                        ...viewModel.modules?.map((module) {
+                                              switch (module?.moduleType) {
                                                 case ModuleType.dynamic:
-                                                  return DynamicModule(module, viewModel.pageSetting);
+                                                  return DynamicModule(module,
+                                                      viewModel.pageSetting);
 
                                                 case ModuleType.standard:
                                                   return StandardModule(module);
 
                                                 case ModuleType.product:
                                                 case ModuleType.productList:
-                                                  return ProductModule(module,);
+                                                  return ProductModule(
+                                                    module,
+                                                  );
 
                                                 case ModuleType.banner:
                                                   return BannerModule(module);
@@ -97,16 +100,13 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                                                 default:
                                                   return Container();
                                               }
-
-                                            }).toList() ?? [],
-                                        ]
-                                    ),
+                                            }).toList() ??
+                                            [],
+                                    ]),
                                   ),
                                 ),
                               ),
-
                               BottomActionCard(viewModel.productDetail)
-
                             ],
                           )
                         else
@@ -117,56 +117,45 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                                   height: 80,
                                   width: 80,
                                   child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                                    valueColor: AlwaysStoppedAnimation(
+                                        AppColor.primary),
                                     strokeWidth: 2,
                                   ),
                                 ),
-                              )
-                          ),
-
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          child: AnimatedOpacity(
-                            duration: const Duration(milliseconds: 200),
-                            opacity: viewModel.showAppBar ? 1 : 0,
-                            child: AppBar(
-                              elevation: 1,
-                              titleSpacing: 0,
-                              centerTitle: true,
-                              title: SearchCardSection(
-                                leftPadding: 0,
-                                rightPadding: 0,
-                              ),
-                              actions: const [
-
-                                CartButton.light()
-
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          child: AnimatedOpacity(
-                            duration: const Duration(milliseconds: 200),
-                            opacity: viewModel.showAppBar ? 0 : 1,
-                            child: AppBar(
-                              backgroundColor: Colors.transparent,
-                              elevation: 0,
-                              actions: const [
-
-                                CartButton.light()
-
-                              ],
-                            ),
-                          ),
-                        ),
-
+                              )),
+                        // Positioned(
+                        //   left: 0,
+                        //   right: 0,
+                        //   top: 0,
+                        //   child: AnimatedOpacity(
+                        //     duration: const Duration(milliseconds: 200),
+                        //     opacity: viewModel.showAppBar ? 1 : 0,
+                        //     child: AppBar(
+                        //       elevation: 1,
+                        //       titleSpacing: 0,
+                        //       centerTitle: true,
+                        //       title: SearchCardSection(
+                        //         leftPadding: 0,
+                        //         rightPadding: 0,
+                        //       ),
+                        //       actions: const [CartButton.light()],
+                        //     ),
+                        //   ),
+                        // ),
+                        // Positioned(
+                        //   left: 0,
+                        //   right: 0,
+                        //   top: 0,
+                        //   child: AnimatedOpacity(
+                        //     duration: const Duration(milliseconds: 200),
+                        //     opacity: viewModel.showAppBar ? 0 : 1,
+                        //     child: AppBar(
+                        //       backgroundColor: Colors.transparent,
+                        //       elevation: 0,
+                        //       actions: const [CartButton.light()],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -176,22 +165,21 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
           ),
         );
       },
-      viewModelBuilder: ()=> ProductPageViewModel(productDetails, targetUrl!)
+      viewModelBuilder: () => ProductPageViewModel(productDetails, targetUrl!),
     );
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if(state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.paused) {
       print('Product Page state: Paused audio playback');
     }
-    if(state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed) {
       if (ModalRoute.of(_buildContext)?.isCurrent == true) {
         _productPageViewModel.init(productDetails, targetUrl!);
       }
       print('Product Page state: Resumed audio playback');
     }
   }
-
 }
