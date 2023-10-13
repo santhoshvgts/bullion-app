@@ -10,11 +10,16 @@ import '../core/res/images.dart';
 import '../core/res/styles.dart';
 
 class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
-  const OrderDetails({super.key});
+  OrderDetails({super.key});
+
+  late OrderDetailsViewModel orderDetailsViewModel;
+  String text =
+      "In accordance with our Market Loss Policy, this transaction is locked in and may not be cancelled by you if you do not send in your payment, you will be subject to our Market";
 
   @override
   void onViewModelReady(OrderDetailsViewModel viewModel) {
     super.onViewModelReady(viewModel);
+    orderDetailsViewModel = viewModel;
   }
 
   @override
@@ -361,10 +366,10 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
               border: Border.all(width: 1, color: AppColor.orangePeel),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Column(children: [
-                Row(
+                const Row(
                   children: [
                     Icon(
                       Icons.info_outline,
@@ -380,10 +385,30 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    "In accordance with our Market Loss Policy, this transaction is locked in and may not be cancelled by you if you do not send in your payment, you will be subject to our Market Learn More",
-                    style: AppTextStyle.bodyMedium,
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    child: orderDetailsViewModel.isExpanded
+                        ? Text(
+                            text,
+                            style: AppTextStyle.bodyMedium,
+                          )
+                        : Wrap(
+                            children: [
+                              Text(
+                                "${text.substring(0, 150)}...",
+                                style: AppTextStyle.bodyMedium,
+                              ),
+                              InkWell(
+                                  child: Text(
+                                    "Learn More",
+                                    style: AppTextStyle.bodyMedium
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  onTap: () {
+                                    orderDetailsViewModel.isExpanded = true;
+                                  }),
+                            ],
+                          ),
                   ),
                 )
               ]),
