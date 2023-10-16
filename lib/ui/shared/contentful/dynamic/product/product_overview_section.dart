@@ -185,7 +185,6 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
       padding: const EdgeInsets.only(
         left: 15,
         right: 15,
-        top: 20,
         bottom: 10,
       ),
       color: AppColor.white,

@@ -19,6 +19,7 @@ class AppStyle {
         elevation: 1,
         centerTitle: true,
         titleTextStyle: AppTextStyle.titleLarge,
+        surfaceTintColor: AppColor.white,
         iconTheme: const IconThemeData().copyWith(color: AppColor.primaryDark)),
     fontFamily: "Poppins",
     scaffoldBackgroundColor: AppColor.scaffoldBackground,

@@ -13,13 +13,13 @@ class SearchCardSection extends PreferredSize {
   double? rightPadding;
   String? placeholder;
 
-  SearchCardSection(
-      {super.key,
-      this.height,
-      this.rightPadding,
-      this.leftPadding,
-      this.placeholder})
-      : super(
+  SearchCardSection({
+    super.key,
+    this.height,
+    this.rightPadding,
+    this.leftPadding,
+    this.placeholder,
+  }) : super(
           preferredSize: Size(double.infinity, height ?? 40),
           child: InkWell(
             onTap: () {
@@ -54,9 +54,9 @@ class SearchCardSection extends PreferredSize {
                       child: Text(
                         placeholder ?? "Search Products and Deals",
                         style: AppTextStyle.labelMedium.copyWith(
-                          fontSize: 16,
-                          color: AppColor.secondaryText,
-                        ),
+                            fontSize: 16,
+                            color: AppColor.secondaryText,
+                            fontFamily: AppTextStyle.fontFamily),
                         textAlign: TextAlign.start,
                         textScaleFactor: 1,
                         overflow: TextOverflow.ellipsis,
