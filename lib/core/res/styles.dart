@@ -16,10 +16,12 @@ class AppStyle {
     ),
     appBarTheme: const AppBarTheme().copyWith(
         color: AppColor.scaffoldBackground,
-        elevation: 1,
+        elevation: 0.5,
+        scrolledUnderElevation: 1,
         centerTitle: true,
         titleTextStyle: AppTextStyle.titleLarge,
         surfaceTintColor: AppColor.white,
+        shadowColor: AppColor.shadowColor,
         iconTheme: const IconThemeData().copyWith(color: AppColor.primaryDark)),
     fontFamily: "Poppins",
     scaffoldBackgroundColor: AppColor.scaffoldBackground,

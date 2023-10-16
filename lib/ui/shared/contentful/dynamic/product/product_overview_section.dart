@@ -92,8 +92,9 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                   right: 10,
                   child: InkWell(
                     onTap: () {
-                      locator<NavigationService>()
-                          .pushNamed(Routes.threeSixtyPage);
+                      locator<NavigationService>().pushNamed(
+                        Routes.threeSixtyPage,
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10),
@@ -133,25 +134,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                           child: const Icon(
                             CupertinoIcons.heart,
                             size: 20,
-                          ),
-                        ),
-                      ),
-                      VerticalSpacing.d5px(),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                              color: AppColor.outlineBorder,
-                              width: 0.5,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            CupertinoIcons.bell,
-                            size: 20,
+                            color: AppColor.outlineBorder,
                           ),
                         ),
                       ),
@@ -182,11 +165,7 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-      padding: const EdgeInsets.only(
-        left: 15,
-        right: 15,
-        bottom: 10,
-      ),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 20),
       color: AppColor.white,
       width: double.infinity,
       child: Column(
@@ -194,39 +173,41 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
         children: [
           Text(
             viewModel.productDetails?.overview?.name ?? "-",
-            style: AppTextStyle.titleLarge,
+            style: AppTextStyle.titleMedium.copyWith(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
             textScaleFactor: 1,
           ),
           VerticalSpacing.d10px(),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (viewModel.productDetails!.overview!.reviewCount != 0)
-                RatingBar(
-                  initialRating:
-                      viewModel.productDetails?.overview?.avgRatings ?? 0,
-                  allowHalfRating: true,
-                  itemSize: 17,
-                  glow: true,
-                  glowColor: Colors.red,
-                  maxRating: 5,
-                  unratedColor: AppColor.disabled,
-                  ratingWidget: RatingWidget(
-                    full: const Icon(
-                      CupertinoIcons.star_fill,
-                      color: AppColor.primary,
-                    ),
-                    half: const Icon(
-                      CupertinoIcons.star_lefthalf_fill,
-                      color: AppColor.primary,
-                    ),
-                    empty: const Icon(
-                      CupertinoIcons.star,
-                      color: AppColor.primary,
-                    ),
+              RatingBar(
+                initialRating:
+                    viewModel.productDetails?.overview?.avgRatings ?? 0,
+                allowHalfRating: true,
+                itemSize: 15,
+                glow: true,
+                glowColor: Colors.red,
+                maxRating: 5,
+                unratedColor: AppColor.disabled,
+                ratingWidget: RatingWidget(
+                  full: const Icon(
+                    CupertinoIcons.star_fill,
+                    color: AppColor.primary,
                   ),
-                  onRatingUpdate: (double value) {},
+                  half: const Icon(
+                    CupertinoIcons.star_lefthalf_fill,
+                    color: AppColor.primary,
+                  ),
+                  empty: const Icon(
+                    CupertinoIcons.star,
+                    color: AppColor.primary,
+                  ),
                 ),
+                onRatingUpdate: (double value) {},
+              ),
               HorizontalSpacing.d5px(),
               Expanded(
                   child: Text(
@@ -235,7 +216,7 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
                     : "${viewModel.productDetails?.overview?.avgRatings} (${viewModel.productDetails!.overview!.reviewCount})",
                 textScaleFactor: 1,
                 textAlign: TextAlign.left,
-                style: AppTextStyle.labelMedium,
+                style: AppTextStyle.bodySmall,
               )),
             ],
           ),
@@ -255,8 +236,8 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
     return Container(
       height: MediaQuery.of(context).size.height / 2,
       decoration: BoxDecoration(
-        color: AppColor.secondaryBackground,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColor.border, style: BorderStyle.solid),
       ),
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
@@ -282,7 +263,13 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
         layout: SwiperLayout.DEFAULT,
         pagination: const SwiperPagination(
           alignment: Alignment.bottomCenter,
-          builder: DotSwiperPaginationBuilder(activeSize: 7, size: 7, space: 2),
+          builder: DotSwiperPaginationBuilder(
+            activeSize: 7,
+            size: 7,
+            space: 2,
+            activeColor: AppColor.primary,
+            color: AppColor.shadowColor,
+          ),
         ),
       ),
     );
@@ -893,59 +880,85 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
 class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
       children: [
-        Padding(
-            padding: const EdgeInsets.only(top: 0, bottom: 2.0),
-            child: RichText(
-              textScaleFactor: 1,
-              textAlign: TextAlign.left,
-              text: TextSpan(
-                  text:
-                      "${viewModel.productOverview!.pricing!.formattedNewPrice} ",
-                  style: AppTextStyle.titleLarge.copyWith(
-                      fontSize: 20,
-                      color: viewModel
-                              .productOverview!.pricing!.strikeThroughEnabled!
-                          ? const Color(0xffC30000)
-                          : AppColor.primaryDark),
-                  children: <TextSpan>[
-                    if (viewModel
-                        .productOverview!.pricing!.strikeThroughEnabled!)
-                      TextSpan(
-                          text: viewModel
-                              .productOverview!.pricing!.formattedOldPrice,
-                          style: AppTextStyle.titleLarge.copyWith(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 20,
-                              color: const Color(0xff666666),
-                              decoration: TextDecoration.lineThrough))
-                  ]),
-            )),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 0, bottom: 2.0),
+                  child: RichText(
+                    textScaleFactor: 1,
+                    textAlign: TextAlign.left,
+                    text: TextSpan(
+                        text:
+                            "${viewModel.productOverview!.pricing!.formattedNewPrice} ",
+                        style: AppTextStyle.titleLarge.copyWith(
+                            fontSize: 20,
+                            color: viewModel.productOverview!.pricing!
+                                    .strikeThroughEnabled!
+                                ? const Color(0xffC30000)
+                                : AppColor.primaryDark),
+                        children: <TextSpan>[
+                          if (viewModel
+                              .productOverview!.pricing!.strikeThroughEnabled!)
+                            TextSpan(
+                                text: viewModel.productOverview!.pricing!
+                                    .formattedOldPrice,
+                                style: AppTextStyle.titleLarge.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 20,
+                                    color: const Color(0xff666666),
+                                    decoration: TextDecoration.lineThrough))
+                        ]),
+                  )),
 
-        if (viewModel.productDetails?.priceBadgeText?.isNotEmpty == true)
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: Text(
-              viewModel.productDetails?.priceBadgeText ?? '',
-              textAlign: TextAlign.left,
-              style: AppTextStyle.bodyMedium.copyWith(fontSize: 14),
+              if (viewModel.productDetails?.priceBadgeText?.isNotEmpty == true)
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Text(
+                    viewModel.productDetails?.priceBadgeText ?? '',
+                    textAlign: TextAlign.left,
+                    style: AppTextStyle.bodyMedium.copyWith(fontSize: 14),
+                  ),
+                ),
+
+              if (viewModel.productOverview?.pricing?.strikeThroughEnabled ==
+                  true)
+                Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Text(
+                      viewModel.productOverview!.pricing!.discountText ?? '',
+                      textAlign: TextAlign.left,
+                      style: AppTextStyle.bodyMedium.copyWith(
+                          color: AppColor.offerText,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14)),
+                ),
+
+              // VerticalSpacing.d15px(),
+            ],
+          ),
+        ),
+        InkWell(
+          onTap: () {},
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: AppColor.outlineBorder,
+                width: 0.5,
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              CupertinoIcons.bell,
+              size: 20,
             ),
           ),
-
-        if (viewModel.productOverview?.pricing?.strikeThroughEnabled == true)
-          Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: Text(viewModel.productOverview!.pricing!.discountText ?? '',
-                textAlign: TextAlign.left,
-                style: AppTextStyle.bodyMedium.copyWith(
-                    color: AppColor.offerText,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14)),
-          ),
-
-        // VerticalSpacing.d15px(),
+        ),
       ],
     );
   }

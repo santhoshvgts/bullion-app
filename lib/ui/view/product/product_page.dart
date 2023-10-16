@@ -8,6 +8,7 @@ import 'package:bullion/ui/shared/contentful/dynamic/product/bottom_action_card.
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
 import 'package:bullion/ui/shared/contentful/product/product_module.dart';
 import 'package:bullion/ui/shared/contentful/standard/standard_module.dart';
+import 'package:bullion/ui/shared/search_card_section.dart';
 import 'package:bullion/ui/view/product/product_page_viewmodel.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
@@ -42,9 +43,14 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
           child: Scaffold(
             backgroundColor: AppColor.white,
             appBar: AppBar(
-              elevation: 1,
+              elevation: 0.5,
               titleSpacing: 0,
               centerTitle: true,
+              title: SearchCardSection(
+                rightPadding: 0,
+                leftPadding: 0,
+                placeholder: "Search Bullion.com",
+              ),
               actions: const [CartButton.light()],
             ),
             body: SafeArea(

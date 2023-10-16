@@ -79,7 +79,7 @@ class Button extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
           color: disabled ? Colors.black12 : color,
-          borderRadius: borderRadius ?? BorderRadius.circular(8),
+          borderRadius: borderRadius ?? BorderRadius.circular(100),
           border: disabled ? null : Border.all(color: borderColor, width: 0.6)),
       alignment: Alignment.center,
       child: SizedBox(

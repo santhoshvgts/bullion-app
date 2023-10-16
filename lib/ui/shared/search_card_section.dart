@@ -33,9 +33,9 @@ class SearchCardSection extends PreferredSize {
               ),
               padding: const EdgeInsets.only(left: 10.0),
               decoration: BoxDecoration(
-                color: AppColor.secondaryBackground,
                 borderRadius: BorderRadius.circular(50),
-                border: Border.all(color: Colors.black12),
+                color: AppColor.secondaryBackground,
+                border: Border.all(color: Colors.black12, width: 0.25),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -53,10 +53,10 @@ class SearchCardSection extends PreferredSize {
                       ),
                       child: Text(
                         placeholder ?? "Search Products and Deals",
-                        style: AppTextStyle.labelMedium.copyWith(
-                            fontSize: 16,
-                            color: AppColor.secondaryText,
-                            fontFamily: AppTextStyle.fontFamily),
+                        style: AppTextStyle.bodyMedium.copyWith(
+                          color: AppColor.text,
+                          fontFamily: AppTextStyle.fontFamily,
+                        ),
                         textAlign: TextAlign.start,
                         textScaleFactor: 1,
                         overflow: TextOverflow.ellipsis,
