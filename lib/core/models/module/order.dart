@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/base_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/core/models/module/cart/order_total_summary.dart';
@@ -7,24 +8,13 @@ import 'package:bullion/core/models/module/order/simple_image_cta.dart';
 import 'package:bullion/core/models/module/tracking_info_module.dart';
 import 'package:bullion/core/res/colors.dart';
 
-class Order {
+class Order extends BaseModel {
   String? orderId;
   String? currency;
   String? orderStatus;
 
   bool? hasShipmentInfo;
   bool? requestRating;
-
-  Color get orderStatusColor {
-    if (orderStatus == null) {
-      return AppColor.text;
-    }
-
-    if (orderStatus!.contains("Success")) {
-      return AppColor.green;
-    }
-    return AppColor.title;
-  }
 
   String? formattedPostedDate;
 
@@ -85,16 +75,18 @@ class Order {
       this.predictiveMargin,
       this.shippingAmount,
       this.tax,
-        this.primaryImage,
-        this.itemsCount,
-        this.subTitle,
-        this.title,
-        this.colorCode,
-        this.step,
-        this.actionRequired});
+      this.primaryImage,
+      this.itemsCount,
+      this.subTitle,
+      this.title,
+      this.colorCode,
+      this.step,
+      this.actionRequired});
+
+  Order fromJson(json) => Order.fromJson(json);
 
   Order.fromJson(Map<String, dynamic> json) {
-    orderId = json['order_id'].toString();
+    orderId = json['order_id'];
     currency = json['currency'];
     orderStatus = json['order_status'];
     formattedPostedDate = json['formatted_posted_date'];
@@ -201,7 +193,7 @@ class Order {
     }
     if (this.orderSummary != null) {
       data['order_summary'] =
-          this.orderTotalSummary!.map((v) => v.toJson()).toList();
+          this.orderSummary!.map((v) => v.toJson()).toList();
     }
     data['show_payment_acknowledge'] = this.showPaymentAcknowledge;
     data['has_shipment_info'] = this.hasShipmentInfo;
@@ -238,5 +230,16 @@ class Order {
     data['step'] = this.step;
     data['action_required'] = this.actionRequired;
     return data;
+  }
+
+  Color get orderStatusColor {
+    if (orderStatus == null) {
+      return AppColor.text;
+    }
+
+    if (orderStatus!.contains("Success")) {
+      return AppColor.green;
+    }
+    return AppColor.title;
   }
 }

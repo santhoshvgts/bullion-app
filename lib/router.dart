@@ -10,6 +10,7 @@ import 'package:bullion/ui/view/main/login/login_page.dart';
 import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
+import 'package:bullion/ui/view/settings/orders_page.dart';
 import 'package:bullion/ui/widgets/three_sixty_degree.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -312,10 +313,10 @@ class AppRouter {
       //       settings: RouteSettings(name: settings.name),
       //     );
       //
-      //   case Routes.myOrders:
-      //     return MaterialPageRoute(
-      //         builder: (_) => OrderListPage(),
-      //         settings: RouteSettings(name: settings.name));
+        case Routes.myOrders:
+          return MaterialPageRoute(
+              builder: (_) => const OrdersPage(),
+              settings: RouteSettings(name: settings.name));
       //   // End Account
     }
 

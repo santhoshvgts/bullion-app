@@ -6,11 +6,19 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
 import '../../../locator.dart';
+import '../../../router.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/shared/navigator_service.dart';
 import '../../widgets/button.dart';
 
 class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   const SettingsUserPage({super.key});
+
+  @override
+  void onViewModelReady(SettingsUserViewModel viewModel) {
+    viewModel.refreshData();
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale,
@@ -162,34 +170,39 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   boxShadow: AppStyle.cardShadow,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        children: [
-                          Icon(Icons.list),
-                          SizedBox(width: 8),
-                          Text('Order History',
-                              style: AppTextStyle.titleMedium),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                                'Track your order status or view your order history and receipts',
-                                style: AppTextStyle.bodyMedium
-                                    .copyWith(color: AppColor.navyBlue40)),
-                          ),
-                        ],
-                      ),
-                    ],
+                child: InkWell(
+                  onTap: () {
+                    locator<NavigationService>().pushNamed(Routes.myOrders);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          children: [
+                            Icon(Icons.list),
+                            SizedBox(width: 8),
+                            Text('Order History',
+                                style: AppTextStyle.titleMedium),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                  'Track your order status or view your order history and receipts',
+                                  style: AppTextStyle.bodyMedium
+                                      .copyWith(color: AppColor.navyBlue40)),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

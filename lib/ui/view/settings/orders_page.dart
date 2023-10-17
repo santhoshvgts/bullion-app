@@ -2,6 +2,7 @@ import 'package:bullion/ui/view/my_orders_section.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../core/enums/order_status.dart';
 import '../../../core/res/styles.dart';
 import 'orders_view_model.dart';
 
@@ -34,14 +35,14 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
           appBar: AppBar(
             toolbarHeight: 80,
             leadingWidth: double.infinity,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 16),
+            leading: const Padding(
+              padding: EdgeInsets.only(left: 16),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(Icons.arrow_back_ios),
-                  const Text(
+                  Text(
                     "My Orders",
                     style: AppTextStyle.titleLarge,
                   ),
@@ -59,15 +60,19 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
               ],
             ),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: const [
-              MyOrdersPage(),
-              MyOrdersPage(),
-              MyOrdersPage(),
-              MyOrdersPage(),
-            ],
-          ),
+          body: viewModel.isBusy
+              ? const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: LinearProgressIndicator())
+              : TabBarView(
+                  controller: _tabController,
+                  children: [
+                    MyOrdersPage(viewModel.ordersList, OrderStatus.ALL),
+                    MyOrdersPage(viewModel.ordersList, OrderStatus.INPROGRESS),
+                    MyOrdersPage(viewModel.ordersList, OrderStatus.SHIPPED),
+                    MyOrdersPage(viewModel.ordersList, OrderStatus.CANCELLED),
+                  ],
+                ),
         );
       },
     );
