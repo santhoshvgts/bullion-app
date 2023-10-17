@@ -6,6 +6,15 @@ class MyOrdersViewModel extends VGTSBaseViewModel {
   List<Order>? ordersList;
   List<Order>? _filteredList;
   OrderStatus? orderStatus;
+  List<String> days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
 
   MyOrdersViewModel(this.ordersList, this.orderStatus) {
     handleOrderStatus(orderStatus);
@@ -30,10 +39,9 @@ class MyOrdersViewModel extends VGTSBaseViewModel {
         break;
 
       case null:
-        throw("Null, No data");
+        throw ("Null, No data");
     }
   }
-
 
   List<Order> ordersListBasedOnStatus(String status) {
     List<Order> filteredList = [];
@@ -43,6 +51,16 @@ class MyOrdersViewModel extends VGTSBaseViewModel {
       }
     });
     return filteredList;
+  }
+
+  String? getDayCode(String? text) {
+
+    for (var day in days) {
+      final regexp = RegExp(day, caseSensitive: false);
+      text = text?.replaceAll(regexp, day.substring(0, 3));
+    }
+
+    return text;
   }
 
   List<Order>? get filteredList => _filteredList;

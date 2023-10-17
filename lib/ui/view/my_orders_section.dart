@@ -32,7 +32,7 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
         itemBuilder: (context, index) {
           return Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -80,7 +80,9 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        viewModel.filteredList?[index].orderId ?? "0",
+                                        viewModel
+                                                .filteredList?[index].orderId ??
+                                            "0",
                                         style: AppTextStyle.bodyMedium,
                                       ),
                                       const SizedBox(
@@ -88,8 +90,7 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                       ),
                                       Text(
                                         viewModel.filteredList?[index]
-                                                .orderSummary?[2]
-                                                .value ??
+                                                .orderSummary?[2].value ??
                                             "0",
                                         style: AppTextStyle.labelMedium
                                             .copyWith(color: AppColor.cyanBlue),
@@ -125,9 +126,10 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                         style: AppTextStyle.labelSmall,
                                       ),
                                       Text(
-                                        viewModel.filteredList?[index]
+                                        viewModel.getDayCode(viewModel
+                                                .filteredList?[index]
                                                 .orderSummary?[0]
-                                                .value ??
+                                                .value) ??
                                             "0",
                                         style: AppTextStyle.labelLarge,
                                       )
@@ -158,8 +160,7 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                           ),
                                           Text(
                                             viewModel.filteredList?[index]
-                                                    .orderSummary?[3]
-                                                    .value ??
+                                                    .orderSummary?[3].value ??
                                                 "0",
                                             style: AppTextStyle.labelLarge,
                                           )
