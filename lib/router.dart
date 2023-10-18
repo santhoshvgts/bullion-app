@@ -2,6 +2,7 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/ui/order_details.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
 import 'package:bullion/ui/view/main/forgot_password/forgot_password_page.dart';
@@ -15,6 +16,7 @@ import 'package:bullion/ui/widgets/three_sixty_degree.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'core/models/module/order.dart';
 import 'ui/view/dashboard/dashboard_page.dart';
 
 const String initialRoute = "login";
@@ -78,6 +80,7 @@ class Routes {
   static const String myAddressBook = "/account/addressbook";
   static const String myPortfolio = "/account/portfolio";
   static const String myOrders = "/account/orders";
+  static const String orderDetails = "/account/orderDetails";
   static const String myRewards = "/account/myrewards";
   static const String myRewardTransactions = "/account/myrewards/transaction";
   static const String myOrderDetails = "/account/orderdetails";
@@ -317,6 +320,11 @@ class AppRouter {
           return MaterialPageRoute(
               builder: (_) => const OrdersPage(),
               settings: RouteSettings(name: settings.name));
+
+      case Routes.myOrderDetails:
+        return MaterialPageRoute(
+            builder: (_) => OrderDetails(settings.arguments as Order),
+            settings: RouteSettings(name: settings.name, arguments: settings.arguments));
       //   // End Account
     }
 
