@@ -20,7 +20,7 @@ class MarketNewsTile extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (data.openInNewWindow!) {
-          launchUrl(data.externalLink!);
+          launchAnUrl(data.externalLink!);
 
           locator<AnalyticsService>()
               .logScreenView(data.externalLink, className: "launch_url");

@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
+import '../../../helper/url_launcher.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
 import '../../../services/authentication_service.dart';
@@ -294,9 +295,9 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               padding: EdgeInsets.only(top: 24.0),
               child: Text('Contact Us', style: AppTextStyle.titleMedium),
             ),
-            getTextRowWithTopPadding('Toll Free : ', '800.375.9006'),
-            getTextRowWithTopPadding('Local Number : ', '405.595.2100'),
-            getTextRowWithTopPadding('Email : ', 'service@bullion.com'),
+            showContactInfo('Toll Free : ', '8003759006'),
+            showContactInfo('Local Number : ', '405.595.2100'),
+            showContactInfo('Email : ', 'service@bullion.com'),
             const Padding(
               padding: EdgeInsets.only(top: 24.0),
               child:
@@ -462,18 +463,24 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getTextRowWithTopPadding(String text1, String text2) {
+  Widget showContactInfo(String key, String contactValue) {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
       child: Row(
         children: [
           Text(
-            text1,
+            key,
             style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40),
           ),
-          Text(
-            text2,
-            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.clearBlue),
+          InkWell(
+            onTap: () => launchAnUrl(contactValue.contains('@')
+                ? "mailto:$contactValue"
+                : "tel:$contactValue"),
+            child: Text(
+              contactValue,
+              style:
+                  AppTextStyle.bodyMedium.copyWith(color: AppColor.clearBlue),
+            ),
           ),
         ],
       ),
