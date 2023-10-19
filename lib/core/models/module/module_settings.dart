@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_print, must_be_immutable
+
+import 'package:bullion/core/models/base_model.dart';
 import 'package:bullion/core/models/module/action_button.dart';
 import 'package:bullion/core/models/module/display_settings.dart';
 import 'package:bullion/core/models/module/meta_data.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
 
-class ModuleSettings {
+class ModuleSettings extends BaseModel {
   String? moduleType;
   String? itemSource;
   String? displayType;
@@ -46,6 +49,8 @@ class ModuleSettings {
     this.productModel = productModel.toJson();
   }
 
+  
+
   ModuleSettings.fromJson(Map<String, dynamic> json) {
     moduleType = json['module_type'];
     itemSource = json["item_source"];
@@ -55,12 +60,12 @@ class ModuleSettings {
     title = json['title'];
     subtitle = json['subtitle'];
     metaData = json['meta_data'] != null
-        ? new MetaData.fromJson(json['meta_data'])
+        ? MetaData.fromJson(json['meta_data'])
         : null;
     if (json['actions'] != null) {
       actions = <ActionButton>[];
       json['actions'].forEach((v) {
-        actions!.add(new ActionButton.fromJson(v));
+        actions!.add(ActionButton.fromJson(v));
       });
     }
     productModel = json['product_model'];
@@ -68,35 +73,39 @@ class ModuleSettings {
     dynamicItemData = json['item_data'];
     itemData = json['item_data_as_object'];
     displaySettings = json['display_settings'] != null
-        ? new DisplaySettings.fromJson(json['display_settings'])
+        ? DisplaySettings.fromJson(json['display_settings'])
         : null;
     slug = json['slug'];
 
   }
 
+    @override
+      ModuleSettings fromJson(json) => ModuleSettings.fromJson(json);
+
+  @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['module_type'] = this.moduleType;
-    data['item_source'] = this.itemSource;
-    data['display_type'] = this.displayType;
-    data['display_order'] = this.displayOrder;
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['subtitle'] = this.subtitle;
-    data['items'] = this.items;
-    data['item_data'] = this.dynamicItemData;
-    if (this.metaData != null) {
-      data['meta_data'] = this.metaData!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['module_type'] = moduleType;
+    data['item_source'] = itemSource;
+    data['display_type'] = displayType;
+    data['display_order'] = displayOrder;
+    data['id'] = id;
+    data['title'] = title;
+    data['subtitle'] = subtitle;
+    data['items'] = items;
+    data['item_data'] = dynamicItemData;
+    if (metaData != null) {
+      data['meta_data'] = metaData!.toJson();
     }
-    if (this.actions != null) {
-      data['actions'] = this.actions!.map((v) => v.toJson()).toList();
+    if (actions != null) {
+      data['actions'] = actions!.map((v) => v.toJson()).toList();
     }
-    if (this.displaySettings != null) {
-      data['display_settings'] = this.displaySettings!.toJson();
+    if (displaySettings != null) {
+      data['display_settings'] = displaySettings!.toJson();
     }
-    data['product_model'] = this.productModel;
-    data['item_data_as_object'] = this.itemData;
-    data['slug'] = this.slug;
+    data['product_model'] = productModel;
+    data['item_data_as_object'] = itemData;
+    data['slug'] = slug;
 
     return data;
   }

@@ -11,10 +11,10 @@ class DialogService {
   late Function(AlertRequest) _showDialogListener;
   late Function(AlertRequest) _showConfirmDialogListener;
 
-  Map<ValueKey, Completer<AlertResponse>?> _dialogCompleterMap = new Map();
-  // Completer<AlertResponse> _dialogCompleter;
+  final Map<ValueKey, Completer<AlertResponse>?> _dialogCompleterMap = {};
 
   late Function(AlertRequest) _bottomSheetListener;
+  late Function(AlertRequest) _drawerListerner;
   late Function(AlertRequest) _displayMessageListener;
 
   void registerDialogListener(Function(AlertRequest) showDialogListener) {
@@ -29,8 +29,18 @@ class DialogService {
     _bottomSheetListener = bottomSheetListener;
   }
 
+  void registerDrawerListener(Function(AlertRequest) drawerListerner) {
+    _drawerListerner = drawerListerner;
+  }
+
   void registerDisplayMessageListener(Function(AlertRequest) displayMessageListener) {
     _displayMessageListener = displayMessageListener;
+  }
+
+  Future<AlertResponse> showDrawer({ValueKey key = const ValueKey("defaultDialogKey"), Widget? child}) {
+    _dialogCompleterMap[key] = Completer<AlertResponse>();
+    _drawerListerner(AlertRequest(contentWidget: child));
+    return _dialogCompleterMap[key]!.future;
   }
 
   Future<AlertResponse> showDialog({ValueKey key = const ValueKey("defaultDialogKey"), String title = 'Message', String? description, String buttonTitle = 'OK'}) {
