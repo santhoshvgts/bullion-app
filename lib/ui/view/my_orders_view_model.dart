@@ -43,18 +43,18 @@ class MyOrdersViewModel extends VGTSBaseViewModel {
     }
   }
 
-  List<Order> ordersListBasedOnStatus(String status) {
-    List<Order> filteredList = [];
+  List<Order>? ordersListBasedOnStatus(String status) {
+    List<Order>? filteredList;
     ordersList?.forEach((element) {
+      filteredList = [];
       if (element.orderSummary?[2].value == status) {
-        filteredList.add(element);
+        filteredList?.add(element);
       }
     });
     return filteredList;
   }
 
   String? getDayCode(String? text) {
-
     for (var day in days) {
       final regexp = RegExp(day, caseSensitive: false);
       text = text?.replaceAll(regexp, day.substring(0, 3));

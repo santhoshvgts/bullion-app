@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../core/res/colors.dart';
-import '../core/res/images.dart';
 import '../core/res/styles.dart';
 
 class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
@@ -57,72 +56,74 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
           ? const Align(
               alignment: Alignment.bottomCenter,
               child: LinearProgressIndicator())
-          : SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: AppColor.iconBG,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          width: 56,
-                          height: 56,
-                          child: const Icon(
-                            Icons.receipt_long_outlined,
-                            size: 32,
-                            color: AppColor.turtleGreen,
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  viewModel.orderDetail?.orderId ?? "",
-                                  style: AppTextStyle.bodyMedium,
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Text(
-                                  viewModel.orderDetail?.orderStatus ?? "",
-                                  style: AppTextStyle.labelMedium
-                                      .copyWith(color: AppColor.cyanBlue),
-                                ),
-                              ],
+          : viewModel.orderDetail == null
+              ? const Center(child: Text("No data available"))
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppColor.iconBG,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              width: 56,
+                              height: 56,
+                              child: const Icon(
+                                Icons.receipt_long_outlined,
+                                size: 32,
+                                color: AppColor.turtleGreen,
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      viewModel.orderDetail?.orderId ?? "",
+                                      style: AppTextStyle.bodyMedium,
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Text(
+                                      viewModel.orderDetail?.orderStatus ?? "",
+                                      style: AppTextStyle.labelMedium
+                                          .copyWith(color: AppColor.cyanBlue),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      getDetailRow("Order Date", viewModel.date ?? ""),
+                      getDetailRow("Shipping Date", "--"),
+                      getDetailRow(
+                        "Payment Method",
+                        viewModel.orderDetail?.paymentMethod?.displayText ?? "",
+                      ),
+                      getDetailRow(
+                        "Address",
+                        viewModel.orderDetail?.shippingAddress?.displayText ??
+                            "",
+                      ),
+                      const Divider(
+                          color: AppColor.secondaryBackground, thickness: 8),
+                      showOrderSummary(viewModel),
+                      showPriceDetails(viewModel),
+                    ],
                   ),
-                  getDetailRow(
-                      "Order Date", viewModel.date ?? ""),
-                  getDetailRow("Shipping Date", "--"),
-                  getDetailRow(
-                    "Payment Method",
-                    viewModel.orderDetail?.paymentMethod?.displayText ?? "",
-                  ),
-                  getDetailRow(
-                    "Address",
-                    viewModel.orderDetail?.shippingAddress?.displayText ?? "",
-                  ),
-                  const Divider(
-                      color: AppColor.secondaryBackground, thickness: 8),
-                  showOrderSummary(viewModel),
-                  showPriceDetails(viewModel),
-                ],
-              ),
-            ),
+                ),
     );
   }
 
@@ -170,6 +171,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                 Flexible(
                   flex: 1,
                   child: Container(
+                    clipBehavior: Clip.hardEdge,
                     height: double.infinity,
                     decoration: const BoxDecoration(
                       color: AppColor.platinumColor,
@@ -178,7 +180,9 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                         bottomLeft: Radius.circular(12),
                       ),
                     ),
-                    child: Image.asset(Images.marketNews),
+                    child: Image.network(viewModel
+                            .orderDetail?.orderLineItems?[0].primaryImageUrl ??
+                        ""),
                   ),
                 ),
                 Flexible(

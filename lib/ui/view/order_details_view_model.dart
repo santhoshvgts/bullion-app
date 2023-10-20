@@ -31,7 +31,7 @@ class OrderDetailsViewModel extends VGTSBaseViewModel {
 
     setBusy(false);
 
-    formatDate();
+    if (_orderDetail != null) formatDate();
   }
 
   Order? get orderDetail => _orderDetail;
