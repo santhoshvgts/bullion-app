@@ -33,8 +33,8 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: AppColor.secondaryBackground,
         appBar: AppBar(
           centerTitle: true,
-          elevation: 1,
-          scrolledUnderElevation: 3,
+          elevation: 0,
+          scrolledUnderElevation: 0,
           titleSpacing: 0,
           title: SearchCardSection(
             rightPadding: 0,
