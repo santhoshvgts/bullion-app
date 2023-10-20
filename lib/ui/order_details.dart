@@ -4,22 +4,21 @@ import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../core/models/module/order.dart';
 import '../core/res/colors.dart';
 import '../core/res/images.dart';
 import '../core/res/styles.dart';
 
 class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
-  final Order order;
+  final String orderID;
 
-  const OrderDetails(this.order, {super.key});
+  const OrderDetails(this.orderID, {super.key});
 
   final String text =
       "In accordance with our Market Loss Policy, this transaction is locked in and may not be cancelled by you if you do not send in your payment, you will be subject to our Market";
 
   @override
   void onViewModelReady(OrderDetailsViewModel viewModel) {
-    viewModel.init(order.orderId!);
+    viewModel.init(orderID);
     super.onViewModelReady(viewModel);
   }
 
@@ -107,7 +106,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                     ),
                   ),
                   getDetailRow(
-                      "Order Date", order.orderSummary?[0].value ?? ""),
+                      "Order Date", viewModel.date ?? ""),
                   getDetailRow("Shipping Date", "--"),
                   getDetailRow(
                     "Payment Method",

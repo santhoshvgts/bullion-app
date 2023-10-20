@@ -35,8 +35,8 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              locator<NavigationService>().pushNamed(Routes.myOrderDetails,
-                  arguments: viewModel.filteredList?[index]);
+              locator<NavigationService>().pushNamed(Routes.myOrderDetails(
+                  viewModel.filteredList?[index].orderId));
             },
             child: Padding(
               padding:

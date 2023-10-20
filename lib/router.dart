@@ -16,7 +16,6 @@ import 'package:bullion/ui/widgets/three_sixty_degree.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'core/models/module/order.dart';
 import 'ui/view/dashboard/dashboard_page.dart';
 
 const String initialRoute = "login";
@@ -57,8 +56,11 @@ class Routes {
   static const String main = "/main";
 
   static String productDesc(id) => "/product/details/$id";
+
   static String productSpec(id) => "/product/specs/$id";
+
   static String productReview(id) => "/product/reviews/$id";
+
   static String productWriteReview(id) => "/product/reviews/add/$id";
 
   static const String addAddress = "/addAddress";
@@ -83,7 +85,8 @@ class Routes {
   static const String orderDetails = "/account/orderDetails";
   static const String myRewards = "/account/myrewards";
   static const String myRewardTransactions = "/account/myrewards/transaction";
-  static const String myOrderDetails = "/account/orderdetails";
+
+  static String myOrderDetails(id) => "/account/my-orders/info/$id";
   static const String myFavorites = "/account/myfavorites";
   static const String myProductAlert = "/account/productalerts";
   static const String myProductPriceAlert = "/account/myproductpricealerts";
@@ -121,7 +124,7 @@ class AppRouter {
 
       case Routes.dashboard:
         return MaterialPageRoute(
-          builder: (_) => DashboardPage(),
+          builder: (_) => const DashboardPage(),
           settings: RouteSettings(
             name: settings.name,
           ),
@@ -316,15 +319,15 @@ class AppRouter {
       //       settings: RouteSettings(name: settings.name),
       //     );
       //
-        case Routes.myOrders:
-          return MaterialPageRoute(
-              builder: (_) => const OrdersPage(),
-              settings: RouteSettings(name: settings.name));
-
-      case Routes.myOrderDetails:
+      case Routes.myOrders:
         return MaterialPageRoute(
-            builder: (_) => OrderDetails(settings.arguments as Order),
-            settings: RouteSettings(name: settings.name, arguments: settings.arguments));
+            builder: (_) => const OrdersPage(),
+            settings: RouteSettings(name: settings.name));
+
+      /*case Routes.myOrderDetails:
+        return MaterialPageRoute(
+            builder: (_) => OrderDetails(settings.arguments as String),
+            settings: RouteSettings(name: settings.name, arguments: settings.arguments));*/
       //   // End Account
     }
 
@@ -371,16 +374,18 @@ class AppRouter {
       // case "market_news":
       //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
 
-      // case "orders":
-      //   if (uri.pathSegments[1] == "success") {
-      //     Map<String, dynamic> data = new Map();
-      //     data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-      //     data['from_success'] = true;
-      //     return MaterialPageRoute(builder: (_) => OrderDetailPage(data), settings: RouteSettings(name: settings.name));
-      //   }
-      //
-      //   // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
-      //   return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
+      case "account":
+        if (uri.pathSegments[1] == "my-orders") {
+          return MaterialPageRoute(
+              builder: (_) =>
+                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+              settings: RouteSettings(name: settings.name));
+        }
+
+        // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
+        return TransparentRoute(
+            builder: (context) =>
+                PageMiddleware(settings.name, settings.arguments));
 
       // case "spot-prices":
       // case "spotprices":
@@ -637,6 +642,7 @@ class RouteUtils {
 extension StringCasingExtension on String {
   String toCapitalized() =>
       length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+
   String toTitleCase() => replaceAll(RegExp(' +'), ' ')
       .split(' ')
       .map((str) => str.toCapitalized())
