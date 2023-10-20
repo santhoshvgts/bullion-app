@@ -12,6 +12,7 @@ import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
 import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/chip_item.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:bullion/ui/widgets/shimmer_effect.dart';
@@ -21,6 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../../../widgets/image_pagination_builder.dart';
 
 class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
   final ProductDetails? setting;
@@ -63,18 +66,16 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                         .productDetails?.overview?.ribbonText?.isNotEmpty ==
                     true)
                   Positioned(
-                    bottom: 0,
+                    top: 10,
+                    left: 10,
                     child: Container(
                       decoration: BoxDecoration(
                         color: viewModel.productDetails!.overview!
                             .ribbonTextBackgroundColor,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
+                        horizontal: 10,
                         vertical: 5,
                       ),
                       child: Text(
@@ -87,33 +88,6 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                       ),
                     ),
                   ),
-                Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child: InkWell(
-                    onTap: () {
-                      locator<NavigationService>().pushNamed(
-                        Routes.threeSixtyPage,
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          color: AppColor.outlineBorder,
-                          width: 0.5,
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Image.asset(
-                        Images.threeSixtyDegree,
-                        width: 25,
-                        height: 25,
-                      ),
-                    ),
-                  ),
-                ),
                 Positioned(
                   top: 10,
                   right: 10,
@@ -133,6 +107,33 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                           ),
                           child: const Icon(
                             CupertinoIcons.heart,
+                            size: 20,
+                            color: AppColor.outlineBorder,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 60,
+                  right: 10,
+                  child: Column(
+                    children: [
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              color: AppColor.outlineBorder,
+                              width: 0.5,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            CupertinoIcons.bell,
                             size: 20,
                             color: AppColor.outlineBorder,
                           ),
@@ -165,7 +166,7 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 20),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 0),
       color: AppColor.white,
       width: double.infinity,
       child: Column(
@@ -233,45 +234,89 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
 
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Container(
-      height: MediaQuery.of(context).size.height / 2,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColor.border, style: BorderStyle.solid),
-      ),
-      child: Swiper(
-        itemBuilder: (BuildContext context, int index) {
-          return InkWell(
-            onTap: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(images, index)));
-            },
-            child: Container(
-              alignment: Alignment.topCenter,
-              padding: const EdgeInsets.all(10),
-              child: NetworkImageLoader(
-                image: images![index],
-                fit: BoxFit.contain,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height / 2,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+                color: AppColor.border, style: BorderStyle.solid, width: 0.5),
+          ),
+          child: Stack(
+            children: [
+              Swiper(
+                itemBuilder: (BuildContext context, int index) {
+                  return InkWell(
+                    onTap: () {
+                      // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(images, index)));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      child: NetworkImageLoader(
+                        image: images![index],
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  );
+                },
+                onIndexChanged: (index) {
+                  viewModel.activeIndex = index;
+                },
+                itemCount: images!.length,
+                loop: false,
+                layout: SwiperLayout.DEFAULT,
+                pagination: const SwiperPagination(
+                  alignment: Alignment.bottomCenter,
+                  builder: DotSwiperPaginationBuilder(
+                    activeSize: 7,
+                    size: 7,
+                    space: 2,
+                    activeColor: AppColor.primary,
+                    color: AppColor.shadowColor,
+                  ),
+                ),
               ),
-            ),
-          );
-        },
-        onIndexChanged: (index) {
-          viewModel.activeIndex = index;
-        },
-        itemCount: images!.length,
-        loop: false,
-        layout: SwiperLayout.DEFAULT,
-        pagination: const SwiperPagination(
-          alignment: Alignment.bottomCenter,
-          builder: DotSwiperPaginationBuilder(
-            activeSize: 7,
-            size: 7,
-            space: 2,
-            activeColor: AppColor.primary,
-            color: AppColor.shadowColor,
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: InkWell(
+                  onTap: () {
+                    locator<NavigationService>()
+                        .pushNamed(Routes.threeSixtyPage);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: AppColor.outlineBorder,
+                        width: 0.5,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.asset(
+                      Images.threeSixtyDegree,
+                      width: 25,
+                      height: 25,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-      ),
+        VerticalSpacing.d10px(),
+        ImagePaginationBuilder(
+          activeBorderColor: AppColor.primary,
+          activeSize: 40,
+          size: 40,
+          images: images,
+          activeIndex: viewModel.activeIndex,
+        )
+      ],
     );
   }
 }
@@ -881,6 +926,8 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(
           child: Column(
@@ -941,24 +988,14 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
             ],
           ),
         ),
-        InkWell(
-          onTap: () {},
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: AppColor.outlineBorder,
-                width: 0.5,
-              ),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              CupertinoIcons.bell,
-              size: 20,
-            ),
-          ),
-        ),
+        Button(
+          "Add To Cart",
+          width: 140,
+          valueKey: const ValueKey("btnAddToCart"),
+          color: AppColor.orange,
+          borderColor: AppColor.orange,
+          onPressed: () {},
+        )
       ],
     );
   }

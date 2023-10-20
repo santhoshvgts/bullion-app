@@ -1,9 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bullion/core/models/spot_price.dart';
+import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/filter_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/chart/spotprice_sparkline.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/spot_price_view_model.dart';
@@ -52,14 +53,17 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
             );
           }
 
-          return _SpotPriceTile(viewModel.spotPriceList![index],
-              graphLoading: viewModel.graphLoading, onPressed: () {
-            //TODO FILTERSERVICE
-            // locator<FilterService>().spotPriceTag = viewModel.spotPriceList![index].metalName;
-            locator<NavigationService>().pushNamed(
-              "${Routes.spotPrice}/${viewModel.spotPriceList![index].metalName}",
-            );
-          });
+          return _SpotPriceTile(
+            viewModel.spotPriceList![index],
+            graphLoading: viewModel.graphLoading,
+            onPressed: () {
+              locator<FilterService>().spotPriceTag =
+                  viewModel.spotPriceList![index].metalName;
+              locator<NavigationService>().pushNamed(
+                "${Routes.spotPrice}/${viewModel.spotPriceList![index].metalName}",
+              );
+            },
+          );
         });
   }
 }

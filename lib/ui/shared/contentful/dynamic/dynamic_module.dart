@@ -1,10 +1,11 @@
-import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
-import 'package:bullion/ui/shared/contentful/dynamic/spot_price/grid/spot_price_grid.dart';
-import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_chart_view.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/spot_price/grid/spot_price_grid.dart';
+import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
+import 'package:flutter/cupertino.dart';
 
 class DynamicModule extends StatelessWidget {
   final ModuleSettings? _setting;
@@ -47,16 +48,16 @@ class DynamicItem extends StatelessWidget {
       case DynamicType.spotPrice:
         return SpotPriceGrid(pageSettings!.spotPriceWithPortfolio);
 
-      // case DynamicType.spotPriceChart:
-      //   return SpotPriceChartView(
-      //     pageSettings!.slug,
-      //     pageSettings!.spotPrice,
-      //     onTimeFilterSelect: (filterValue){
-      //     },
-      //   );
-      //
+      case DynamicType.spotPriceChart:
+        return SpotPriceChartView(
+          pageSettings!.slug,
+          pageSettings!.spotPrice,
+          onTimeFilterSelect: (filterValue) {},
+        );
+
       case DynamicType.productView:
-        return ProductOverviewSection(pageSettings!.productDetails,pageSettings!.slug);
+        return ProductOverviewSection(
+            pageSettings!.productDetails, pageSettings!.slug);
 
       // case DynamicType.productDetail:
       //   return ProductDetailSection(pageSettings!.productDetails);

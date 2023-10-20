@@ -10,6 +10,7 @@ import 'package:bullion/ui/view/main/login/login_page.dart';
 import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
+import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
 import 'package:bullion/ui/widgets/three_sixty_degree.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -373,13 +374,15 @@ class AppRouter {
       //   // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
       //   return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
 
-      // case "spot-prices":
-      // case "spotprices":
-      //   String metalName = "gold";
-      //   if (uri.pathSegments.length > 1) {
-      //     metalName = uri.pathSegments.last.replaceAll('-', ' ').toTitleCase();
-      //   }
-      //   return MaterialPageRoute(builder: (_) => SpotPricePage(metalName,uri.toString()), settings: RouteSettings(name: settings.name));
+      case "spot-prices":
+      case "spotprices":
+        String metalName = "gold";
+        if (uri.pathSegments.length > 1) {
+          metalName = uri.pathSegments.last.replaceAll('-', ' ').toTitleCase();
+        }
+        return MaterialPageRoute(
+            builder: (_) => SpotPriceDetailPage(metalName, uri.toString()),
+            settings: RouteSettings(name: settings.name));
 
       case "product":
         //   if (settings.name!.startsWith("/product/reviews/add/")) {

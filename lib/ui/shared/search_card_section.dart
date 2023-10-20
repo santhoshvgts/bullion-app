@@ -20,13 +20,13 @@ class SearchCardSection extends PreferredSize {
     this.leftPadding,
     this.placeholder,
   }) : super(
-          preferredSize: Size(double.infinity, height ?? 40),
+          preferredSize: Size(double.infinity, height ?? 35),
           child: InkWell(
             onTap: () {
               locator<NavigationService>().pushNamed(Routes.search);
             },
             child: Container(
-              height: height ?? 40,
+              height: height ?? 35,
               margin: EdgeInsets.only(
                 left: leftPadding ?? 15,
                 right: rightPadding ?? 15,
