@@ -57,7 +57,9 @@ class DashboardContentPage extends StatelessWidget {
                                 child: FlexibleSpaceBar(
                                   centerTitle: true,
                                   titlePadding: const EdgeInsets.only(
-                                      top: 10, bottom: 10.0),
+                                    top: 10,
+                                    bottom: 10.0,
+                                  ),
                                   title: SearchCardSection(
                                     rightPadding:
                                         viewModel.titlePaddingHorizontal,

@@ -1,9 +1,10 @@
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 
-class ImagePaginationBuilder extends SwiperPlugin {
+class ImagePaginationBuilder extends StatelessWidget {
+  int activeIndex = 0;
+
   Color? activeBorderColor;
 
   double? activeSize;
@@ -12,11 +13,16 @@ class ImagePaginationBuilder extends SwiperPlugin {
 
   List<String>? images;
 
-  ImagePaginationBuilder(
-      {this.activeBorderColor, this.activeSize, this.size, this.images});
+  ImagePaginationBuilder({
+    this.activeIndex = 0,
+    this.activeBorderColor,
+    this.activeSize,
+    this.size,
+    this.images,
+  });
 
   @override
-  Widget build(BuildContext context, SwiperPluginConfig config) {
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -30,12 +36,12 @@ class ImagePaginationBuilder extends SwiperPlugin {
                     index,
                     InkWell(
                       onTap: () {
-                        config.controller.move(index);
+                        // config.controller.move(index);
                       },
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: index == config.activeIndex
+                                color: index == activeIndex
                                     ? AppColor.primary
                                     : Colors.black.withOpacity(0.2),
                                 width: 1),
@@ -44,10 +50,8 @@ class ImagePaginationBuilder extends SwiperPlugin {
                         child: NetworkImageLoader(
                           image: e,
                           fit: BoxFit.cover,
-                          height:
-                              index == config.activeIndex ? activeSize : size,
-                          width:
-                              index == config.activeIndex ? activeSize : size,
+                          height: index == activeIndex ? activeSize : size,
+                          width: index == activeIndex ? activeSize : size,
                         ),
                       ),
                     ),

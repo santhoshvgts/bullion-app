@@ -4,6 +4,8 @@ import 'package:bullion/helper/firebase_remote_helper.dart';
 import 'package:bullion/helper/update_checker.dart';
 import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/authentication_service.dart';
+import 'package:bullion/services/chart/spotprice_service.dart';
+import 'package:bullion/services/filter_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
@@ -33,6 +35,9 @@ void setupLocator() {
   locator.registerLazySingleton(() => ApiBaseService());
   locator.registerLazySingleton(() => TokenService());
   locator.registerLazySingleton(() => AuthenticationService());
+  locator.registerLazySingleton(() => SpotPriceService());
+
+  locator.registerLazySingleton(() => FilterService());
 
   // locator.registerLazySingleton(() => AuthRepo());
   locator.registerLazySingleton(() => UpdateChecker());
@@ -41,6 +46,5 @@ void setupLocator() {
   // locator.registerLazySingleton(() => LogService());
   locator.registerLazySingleton(() => ToastService());
   locator.registerLazySingleton(() => DeviceService());
-  // locator.registerLazySingleton(() => LocalAuthService());
   // locator.registerLazySingleton(() => NetworkService());
 }

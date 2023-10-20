@@ -1,5 +1,5 @@
 import 'package:bullion/core/models/base_model.dart';
-import 'package:bullion/core/models/chart_data.dart';
+import 'package:bullion/core/models/chart/chart_data.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -114,7 +114,12 @@ class SpotPrice extends BaseModel {
   }
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is SpotPrice && runtimeType == other.runtimeType && metalName == other.metalName && metalId == other.metalId;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SpotPrice &&
+          runtimeType == other.runtimeType &&
+          metalName == other.metalName &&
+          metalId == other.metalId;
 
   @override
   int get hashCode => metalName.hashCode ^ metalId.hashCode;
