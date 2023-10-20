@@ -1,12 +1,23 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/product_item.dart';
+import 'package:bullion/core/models/module/product_listing/filter_module.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
+import 'package:bullion/core/res/spacing.dart';
+import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/services/api_request/category_api.dart';
+
 import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/services/shared/api_base_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/shared/contentful/product/product_module.dart';
+
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:bullion/ui/shared/filter/filter_drawer.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../locator.dart';
@@ -31,17 +42,15 @@ class ContentViewModel extends VGTSBaseViewModel {
 
   ModuleSettings? productListingModule;
 
-  ProductModel get productModel =>
-      ProductModel.fromJson(productListingModule!.productModel);
+  ProductModel get productModel => ProductModel.fromJson(productListingModule!.productModel);
+
+  List<Facets>? get filterData => productModel.facets;
 
   String? get productListingModuleTitle {
     return productModel.totalCountText;
   }
 
-  List<ModuleSettings?>? get modules =>
-      _pageSetting == null || sortFilterLoading
-          ? []
-          : _pageSetting!.moduleSetting;
+  List<ModuleSettings?>? get modules => _pageSetting == null || sortFilterLoading ? [] : _pageSetting!.moduleSetting;
 
   bool get sortFilterLoading => _sortFilterLoading;
 
@@ -59,12 +68,8 @@ class ContentViewModel extends VGTSBaseViewModel {
 
   String _path = '';
 
-  ContentViewModel(String path, Function(PageSettings?)? onPageFetched,
-      PageSettings? initialValue, Function(bool name)? onLoading) {
-    locator<EventBusService>()
-        .eventBus
-        .registerTo<RefreshDataEvent>()
-        .listen((event) async {
+  ContentViewModel(String path, Function(PageSettings?)? onPageFetched, PageSettings? initialValue, Function(bool name)? onLoading) {
+    locator<EventBusService>().eventBus.registerTo<RefreshDataEvent>().listen((event) async {
       if (event.name == RefreshType.homeRefresh) {
         fetchContent(_path, refresh: true);
       }
@@ -75,8 +80,7 @@ class ContentViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  init(String path, Function(PageSettings?)? onPageFetched,
-      PageSettings? initialValue, Function(bool name)? onLoading) async {
+  init(String path, Function(PageSettings?)? onPageFetched, PageSettings? initialValue, Function(bool name)? onLoading) async {
     scrollController.addListener(paginationFunction);
 
     _path = path;
@@ -109,13 +113,11 @@ class ContentViewModel extends VGTSBaseViewModel {
     this.onLoading(false);
   }
 
-  Future<PageSettings?> fetchContent(String path,
-      {bool refresh = false}) async {
+  Future<PageSettings?> fetchContent(String path, {bool refresh = false}) async {
     setBusy(true);
     notifyListeners();
 
-    PageSettings? pageSettingData =
-        await request<PageSettings>(PageRequest.fetch(path: path));
+    PageSettings? pageSettingData = await request<PageSettings>(PageRequest.fetch(path: path));
     notifyListeners();
 
     onPageFetched(pageSettingData);
@@ -126,9 +128,7 @@ class ContentViewModel extends VGTSBaseViewModel {
     // }
 
     _pageSetting = pageSettingData;
-    productListingModule = modules!.singleWhere(
-        (element) => element!.moduleType == ModuleType.productList,
-        orElse: () => null);
+    productListingModule = modules!.singleWhere((element) => element!.moduleType == ModuleType.productList, orElse: () => null);
 
     setBusy(false);
     notifyListeners();
@@ -144,10 +144,7 @@ class ContentViewModel extends VGTSBaseViewModel {
     listenAndToggleSortSection();
 
     // Checking the scroll reached the end
-    if (scrollController.position.pixels <
-            (scrollController.position.maxScrollExtent -
-                (scrollController.position.pixels.toString().length * 50)) ||
-        paginationLoading) {
+    if (scrollController.position.pixels < (scrollController.position.maxScrollExtent - (scrollController.position.pixels.toString().length * 50)) || paginationLoading) {
       return null;
     }
 
@@ -157,8 +154,7 @@ class ContentViewModel extends VGTSBaseViewModel {
         return null;
       }
 
-      ProductModel data =
-          ProductModel.fromJson(productListingModule!.productModel);
+      ProductModel data = ProductModel.fromJson(productListingModule!.productModel);
 
       if (!data.hasNextPage!) {
         return null;
@@ -183,9 +179,7 @@ class ContentViewModel extends VGTSBaseViewModel {
     setBusy(true);
     notifyListeners();
 
-    ModuleSettings? data =
-        (await request<PageSettings>(PageRequest.paginate(path: url)))
-            ?.productListingModule;
+    ModuleSettings? data = (await request<PageSettings>(PageRequest.paginate(path: url)))?.productListingModule;
 
     setBusy(false);
     notifyListeners();
@@ -196,9 +190,7 @@ class ContentViewModel extends VGTSBaseViewModel {
     ProductModel productModel = ProductModel.fromJson(data?.productModel);
 
     // get the list of product already exists in product module
-    List<ProductOverview> productList =
-        ProductModel.fromJson(productListingModule?.productModel).products ??
-            [];
+    List<ProductOverview> productList = ProductModel.fromJson(productListingModule?.productModel).products ?? [];
 
     // insert existing products to new product list
     productModel.products?.insertAll(0, productList);
@@ -210,9 +202,7 @@ class ContentViewModel extends VGTSBaseViewModel {
 
   findAndReplaceModuleSetting(ModuleSettings? moduleSettings) async {
     // find the index of the product module
-    int index = modules?.indexWhere(
-            (element) => element?.moduleType == ModuleType.productList) ??
-        0;
+    int index = modules?.indexWhere((element) => element?.moduleType == ModuleType.productList) ?? 0;
 
     // Remove and replace the module settings
     _pageSetting?.moduleSetting?.removeAt(index);
@@ -245,57 +235,49 @@ class ContentViewModel extends VGTSBaseViewModel {
     // notifyListeners();
   }
 
-  onSortPressed() async {
-    // ProductModel productModel = ProductModel.fromJson(productListingModule?.productModel);
-    //
-    // locator<AnalyticsService>().logScreenView("/list-sort", className: "list-sort");
-    //
-    // AlertResponse alertResponse = await locator<DialogService>().showBottomSheet(
-    //     title: "Sort By",
-    //     iconWidget: const Icon(Icons.sort),
-    //     child: SortBottomSheet(productModel.sortOptions)
-    // );
-    //
-    // if (alertResponse.status == true) {
-    //   setBusy(true);
-    //   notifyListeners();
-    //
-    //   ModuleSettings? data = await categoryApi!.filterProducts(alertResponse.data);
-    //   locator<AnalyticsService>().logScreenView(alertResponse.data);
-    //   findAndReplaceModuleSetting(data);
-    //
-    //   setBusy(false);
-    //   notifyListeners();
-    // }
+  onSortPressed(String value) async {
+    setBusy(true);
+    notifyListeners();
+
+    ModuleSettings? data = await request<ModuleSettings>(CategoryApi.filterProducts(value));
+    locator<AnalyticsService>().logScreenView(value);
+    findAndReplaceModuleSetting(data);
+
+    setBusy(false);
+    notifyListeners();
+    locator<AnalyticsService>().logScreenView("/list-sort", className: "list-sort");
   }
 
   onFilterPressed() async {
-    // ProductModel productModel = ProductModel.fromJson(productListingModule?.productModel);
-    //
-    // FilterBottomSheetController controller = new FilterBottomSheetController();
-    //
-    // locator<AnalyticsService>().logScreenView("/list-filter", className: "list-filter");
-    //
-    // await locator<DialogService>().showBottomSheet(
-    //     showActionBar: false,
-    //     child: FilterBottomSheet(productModel, controller: controller, onSelect: (String? url) async {
-    //       setBusy(true);
-    //       notifyListeners();
-    //
-    //       ModuleSettings? data = await categoryApi!.filterProducts(url ?? '');
-    //
-    //       print("log URL ${url}");
-    //       locator<AnalyticsService>().logScreenView(url);
-    //
-    //       findAndReplaceModuleSetting(data);
-    //
-    //       controller.onDataChange!(ProductModel.fromJson(data?.productModel));
-    //
-    //       setBusy(false);
-    //       notifyListeners();
-    //     },
-    //   )
-    // );
+    FilterDrawerController controller = FilterDrawerController();
+    ProductModel productModel = ProductModel.fromJson(productListingModule?.productModel);
+
+    await locator<DialogService>().showDrawer(
+        child: FilterDrawer(
+      productModel: productModel,
+      controller: controller,
+      onSelect: (String? url) async {
+        setBusy(true);
+        notifyListeners();
+
+        ModuleSettings? data = await request<ModuleSettings>(CategoryApi.filterProducts(url ?? ''));
+
+        print("log URL $url");
+
+        print("Params URL ${Uri.parse(url!).queryParameters}");
+
+        locator<AnalyticsService>().logScreenView(url);
+
+        findAndReplaceModuleSetting(data);
+
+        if (data != null) {
+          controller.onDataChange!(ProductModel.fromJson(data.productModel));
+        }
+
+        setBusy(false);
+        notifyListeners();
+      },
+    ));
   }
 
   listenAndToggleSortSection() {
@@ -303,11 +285,9 @@ class ContentViewModel extends VGTSBaseViewModel {
       return;
     }
 
-    RenderBox? box =
-        sortFilterWidgetKey.currentContext?.findRenderObject() as RenderBox?;
+    RenderBox? box = sortFilterWidgetKey.currentContext?.findRenderObject() as RenderBox?;
     if (box != null) {
-      Offset position =
-          box.localToGlobal(Offset.zero); //this is global position
+      Offset position = box.localToGlobal(Offset.zero); //this is global position
       double y = position.dy;
 
       if (y < 119 && !showSortAppBarSection) {

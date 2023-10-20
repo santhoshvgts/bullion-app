@@ -3,6 +3,7 @@ import 'package:bullion/core/models/auth/forgot_password.dart';
 import 'package:bullion/core/models/auth/token.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/models/chart/spot_price.dart';
+import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/redirection.dart';
 import 'package:bullion/core/models/module/search_module.dart';
@@ -75,6 +76,9 @@ class BaseModel extends BaseObject {
 
       case SpotPrice:
         return SpotPrice() as T;
+
+      case ModuleSettings:
+        return ModuleSettings() as T;
 
       case SearchResult:
         return SearchResult() as T;
