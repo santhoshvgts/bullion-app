@@ -3,11 +3,13 @@ import 'package:bullion/core/models/auth/forgot_password.dart';
 import 'package:bullion/core/models/auth/token.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
+import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/redirection.dart';
 import 'package:bullion/core/models/module/search_module.dart';
-import 'package:bullion/core/models/spot_price.dart';
 import 'package:vgts_plugin/form/base_object.dart';
+
+import 'module/order.dart';
 
 class BaseModel extends BaseObject {
   BaseModel();
@@ -56,6 +58,9 @@ class BaseModel extends BaseObject {
 
       case User:
         return User() as T;
+
+      case Order:
+        return Order() as T;
 
       case ForgotPasswordResult:
         return ForgotPasswordResult() as T;

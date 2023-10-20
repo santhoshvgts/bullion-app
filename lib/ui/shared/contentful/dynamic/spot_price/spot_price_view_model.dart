@@ -1,9 +1,8 @@
-import 'package:bullion/core/models/spot_price.dart';
+import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/services/api_request/spot_price_request.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 
 class SpotPriceViewModel extends VGTSBaseViewModel {
-
   List<SpotPrice>? _spotPriceList;
 
   List<SpotPrice>? get spotPriceList => _spotPriceList ?? <SpotPrice>[];
@@ -27,8 +26,8 @@ class SpotPriceViewModel extends VGTSBaseViewModel {
     notifyListeners();
 
     graphLoading = true;
-    _spotPriceList = await requestList<SpotPrice>(SpotPriceRequest.fetchSpotPriceDayChart());
+    _spotPriceList =
+        await requestList<SpotPrice>(SpotPriceRequest.fetchSpotPriceDayChart());
     graphLoading = false;
   }
-
 }

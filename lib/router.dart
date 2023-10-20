@@ -2,6 +2,7 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/ui/order_details.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
 import 'package:bullion/ui/view/main/forgot_password/forgot_password_page.dart';
@@ -10,6 +11,8 @@ import 'package:bullion/ui/view/main/login/login_page.dart';
 import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
+import 'package:bullion/ui/view/settings/orders_page.dart';
+import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
 import 'package:bullion/ui/widgets/three_sixty_degree.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,8 +57,11 @@ class Routes {
   static const String main = "/main";
 
   static String productDesc(id) => "/product/details/$id";
+
   static String productSpec(id) => "/product/specs/$id";
+
   static String productReview(id) => "/product/reviews/$id";
+
   static String productWriteReview(id) => "/product/reviews/add/$id";
 
   static const String addAddress = "/addAddress";
@@ -77,9 +83,11 @@ class Routes {
   static const String myAddressBook = "/account/addressbook";
   static const String myPortfolio = "/account/portfolio";
   static const String myOrders = "/account/orders";
+  static const String orderDetails = "/account/orderDetails";
   static const String myRewards = "/account/myrewards";
   static const String myRewardTransactions = "/account/myrewards/transaction";
-  static const String myOrderDetails = "/account/orderdetails";
+
+  static String myOrderDetails(id) => "/account/my-orders/info/$id";
   static const String myFavorites = "/account/myfavorites";
   static const String myProductAlert = "/account/productalerts";
   static const String myProductPriceAlert = "/account/myproductpricealerts";
@@ -117,7 +125,7 @@ class AppRouter {
 
       case Routes.dashboard:
         return MaterialPageRoute(
-          builder: (_) => DashboardPage(),
+          builder: (_) => const DashboardPage(),
           settings: RouteSettings(
             name: settings.name,
           ),
@@ -312,10 +320,15 @@ class AppRouter {
       //       settings: RouteSettings(name: settings.name),
       //     );
       //
-      //   case Routes.myOrders:
-      //     return MaterialPageRoute(
-      //         builder: (_) => OrderListPage(),
-      //         settings: RouteSettings(name: settings.name));
+      case Routes.myOrders:
+        return MaterialPageRoute(
+            builder: (_) => const OrdersPage(),
+            settings: RouteSettings(name: settings.name));
+
+      /*case Routes.myOrderDetails:
+        return MaterialPageRoute(
+            builder: (_) => OrderDetails(settings.arguments as String),
+            settings: RouteSettings(name: settings.name, arguments: settings.arguments));*/
       //   // End Account
     }
 
@@ -359,27 +372,22 @@ class AppRouter {
                   path: settings.name,
                 ));
 
-      // case "market_news":
-      //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
+        // case "market_news":
+        //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
+        // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
+        return TransparentRoute(
+            builder: (context) =>
+                PageMiddleware(settings.name, settings.arguments));
 
-      // case "orders":
-      //   if (uri.pathSegments[1] == "success") {
-      //     Map<String, dynamic> data = new Map();
-      //     data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-      //     data['from_success'] = true;
-      //     return MaterialPageRoute(builder: (_) => OrderDetailPage(data), settings: RouteSettings(name: settings.name));
-      //   }
-      //
-      //   // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
-      //   return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
-
-      // case "spot-prices":
-      // case "spotprices":
-      //   String metalName = "gold";
-      //   if (uri.pathSegments.length > 1) {
-      //     metalName = uri.pathSegments.last.replaceAll('-', ' ').toTitleCase();
-      //   }
-      //   return MaterialPageRoute(builder: (_) => SpotPricePage(metalName,uri.toString()), settings: RouteSettings(name: settings.name));
+      case "spot-prices":
+      case "spotprices":
+        String metalName = "gold";
+        if (uri.pathSegments.length > 1) {
+          metalName = uri.pathSegments.last.replaceAll('-', ' ').toTitleCase();
+        }
+        return MaterialPageRoute(
+            builder: (_) => SpotPriceDetailPage(metalName, uri.toString()),
+            settings: RouteSettings(name: settings.name));
 
       case "product":
         //   if (settings.name!.startsWith("/product/reviews/add/")) {
@@ -434,12 +442,15 @@ class AppRouter {
     if (uri.pathSegments.length > 1) {
       switch (uri.pathSegments[1].toLowerCase()) {
         // Order Details
-        //   case "orderdetails":
-        //     Map<String, dynamic> data = new Map();
-        //     data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-        //     data['from_success'] = false;
-        //     return MaterialPageRoute(builder: (_) => OrderDetailPage(data), settings: RouteSettings(name: settings.name));
-        //
+        case "my-orders":
+          Map<String, dynamic> data = new Map();
+          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
+          data['from_success'] = false;
+          return MaterialPageRoute(
+              builder: (_) =>
+                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+              settings: RouteSettings(name: settings.name));
+
         //   case "resetpassword":
         //     return MaterialPageRoute(
         //       builder: (_) =>
@@ -628,6 +639,7 @@ class RouteUtils {
 extension StringCasingExtension on String {
   String toCapitalized() =>
       length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+
   String toTitleCase() => replaceAll(RegExp(' +'), ' ')
       .split(' ')
       .map((str) => str.toCapitalized())

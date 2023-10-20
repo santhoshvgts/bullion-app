@@ -68,7 +68,7 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
               const Padding(padding: EdgeInsets.only(top: 10)),
               Linkify(
                 onOpen: (link) async {
-                  launchUrl(link.url);
+                  launchAnUrl(link.url);
                 },
                 linkifiers: const [
                   PhoneNumberLinkifier(),

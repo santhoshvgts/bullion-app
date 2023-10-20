@@ -2,7 +2,6 @@ import 'package:bullion/core/models/module/redirection.dart';
 import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/helper/url_launcher.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
@@ -32,7 +31,7 @@ class PageMiddlewareViewModel extends VGTSBaseViewModel {
 
     navigationService.pop();
     if (redirection!.openInNewWindow!) {
-      launchUrl(redirection!.targetUrl!);
+      launchAnUrl(redirection!.targetUrl!);
       locator<AnalyticsService>().logScreenView(redirection!.targetUrl, className: "launch_url");
     } else {
       ApmexWebView.open(redirection!.targetUrl);

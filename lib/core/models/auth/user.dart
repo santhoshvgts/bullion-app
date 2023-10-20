@@ -22,7 +22,14 @@ class User extends BaseModel {
 
   String get fullName => "${firstName ?? '${lastName!}'}";
 
-  User({this.userId, this.firstName, this.lastName, this.email, this.postedDate});
+  User(
+      {this.userId,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.postedDate});
+
+  User fromJson(json) => User.fromJson(json);
 
   User.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -31,11 +38,14 @@ class User extends BaseModel {
     email = json['email'];
     postedDate = json['posted_date'];
     applyBullionUrl = json['apply_for_bullion_card_url'];
-    formattedRewardBalanceInCurrency = json['formatted_reward_balance_in_currency'];
+    formattedRewardBalanceInCurrency =
+        json['formatted_reward_balance_in_currency'];
     showBullionCard = json['show_bullion_card'] ?? false;
     showclubStatus = json['show_club_status'] ?? false;
     isBullionCardMember = json['is_bullion_card_member'] ?? false;
-    isGuestAccount = json['is_guest_account'] is String ? json['is_guest_account'] == "true" : json['is_guest_account'];
+    isGuestAccount = json['is_guest_account'] is String
+        ? json['is_guest_account'] == "true"
+        : json['is_guest_account'];
 
     welcomeMessage = json['welcome_message'];
     clubStatus = json['club_status'];
@@ -52,7 +62,8 @@ class User extends BaseModel {
     data['email'] = this.email;
     data['posted_date'] = this.postedDate;
     data['is_guest_account'] = this.isGuestAccount;
-    data['formatted_reward_balance_in_currency'] = this.formattedRewardBalanceInCurrency;
+    data['formatted_reward_balance_in_currency'] =
+        this.formattedRewardBalanceInCurrency;
     data['apply_for_bullion_card_url'] = this.applyBullionUrl;
     data['show_bullion_card'] = this.showBullionCard;
     data['show_club_status'] = this.showclubStatus;
