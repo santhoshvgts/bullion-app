@@ -45,12 +45,14 @@ class MyOrdersViewModel extends VGTSBaseViewModel {
 
   List<Order>? ordersListBasedOnStatus(String status) {
     List<Order>? filteredList;
-    ordersList?.forEach((element) {
+    if(ordersList != null) {
       filteredList = [];
+      ordersList?.forEach((element) {
       if (element.orderSummary?[2].value == status) {
         filteredList?.add(element);
       }
     });
+    }
     return filteredList;
   }
 
