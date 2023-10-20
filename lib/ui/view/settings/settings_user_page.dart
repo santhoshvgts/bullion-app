@@ -1,3 +1,4 @@
+import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/ui/view/settings/settings_user_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,12 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   }
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      SettingsUserViewModel viewModel, Widget? child) {
+  Widget viewBuilder(
+    BuildContext context,
+    AppLocalizations locale,
+    SettingsUserViewModel viewModel,
+    Widget? child,
+  ) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.primary,
@@ -344,58 +349,16 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           ],
         ),
         Positioned(
-            top: 16,
-            left: 0,
-            right: 0,
-            child: Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Sign in to do more with your account',
-                        style: AppTextStyle.titleMedium),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    getTextsWithBullets([
-                      'Easily manage your orders',
-                      'Customize your profile',
-                      'Track your portfolio and rewards',
-                    ]),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Button("Sign in or Create Account",
-                        width: double.infinity,
-                        color: AppColor.primary,
-                        height: 42,
-                        borderColor: AppColor.primary,
-                        valueKey: const Key("btnSignInCreate"), onPressed: () {
-                      //viewModel.addProduct(viewModel);
-                    })
-                  ],
-                ),
-              ),
-            )),
-        Positioned(
-            top: 264,
-            left: 0,
-            right: 0,
-            child: Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              height: 96,
-              child: Container(
+          top: 16,
+          left: 0,
+          right: 0,
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  boxShadow: AppStyle.elevatedCardShadow,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(
@@ -403,38 +366,85 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
-                        children: [
-                          Icon(Icons.list),
-                          SizedBox(width: 8),
-                          Text('Order History',
-                              style: AppTextStyle.titleMedium),
-                        ],
+                      const Text(
+                        'Sign in to do more with your account',
+                        style: AppTextStyle.titleMedium,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text('Track your order status',
-                              style: AppTextStyle.bodyMedium
-                                  .copyWith(color: AppColor.navyBlue40)),
-                          Button("Track Order",
-                              width: 104,
-                              color: Colors.white,
-                              textStyle: AppTextStyle.titleSmall,
-                              height: 32,
-                              borderColor: AppColor.primary,
-                              valueKey: const Key("btnSignInCreate"),
-                              onPressed: () {
-                            //viewModel.addProduct(viewModel);
-                          })
-                        ],
+                      const SizedBox(
+                        height: 16,
                       ),
+                      getTextsWithBullets([
+                        'Easily manage your orders',
+                        'Customize your profile',
+                        'Track your portfolio and rewards',
+                      ]),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Button(
+                        "Sign in or Create Account",
+                        width: double.infinity,
+                        color: AppColor.primary,
+                        height: 42,
+                        borderColor: AppColor.primary,
+                        valueKey: const Key("btnSignInCreate"),
+                        onPressed: () {},
+                      )
                     ],
                   ),
                 ),
               ),
-            ))
+              VerticalSpacing.d15px(),
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                height: 96,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: AppStyle.elevatedCardShadow,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          children: [
+                            Icon(Icons.list),
+                            SizedBox(width: 8),
+                            Text('Order History',
+                                style: AppTextStyle.titleMedium),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Track your order status',
+                                style: AppTextStyle.bodyMedium
+                                    .copyWith(color: AppColor.navyBlue40)),
+                            Button("Track Order",
+                                width: 104,
+                                color: Colors.white,
+                                textStyle: AppTextStyle.titleSmall,
+                                height: 32,
+                                borderColor: AppColor.primary,
+                                valueKey: const Key("btnSignInCreate"),
+                                onPressed: () {
+                              //viewModel.addProduct(viewModel);
+                            })
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ],
     );
   }
