@@ -8,6 +8,8 @@ import 'package:bullion/core/models/module/redirection.dart';
 import 'package:bullion/core/models/module/search_module.dart';
 import 'package:vgts_plugin/form/base_object.dart';
 
+import 'module/order.dart';
+
 class BaseModel extends BaseObject {
   BaseModel();
 
@@ -55,6 +57,9 @@ class BaseModel extends BaseObject {
 
       case User:
         return User() as T;
+
+      case Order:
+        return Order() as T;
 
       case ForgotPasswordResult:
         return ForgotPasswordResult() as T;

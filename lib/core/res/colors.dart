@@ -67,7 +67,15 @@ class AppColor {
   static const Color navyBlue40 = Color(0x6614203C);
   static const Color mercury = Color(0xffE6E6E6);
   static const Color clearBlue = Color(0xff1B84FF);
+  static const Color cyanBlue = Color(0xff2D81E3);
   static const Color platinumColor = Color(0xffe2e2e2);
+  static const Color snowDrift = Color(0xffF9F9F9);
+  static const Color iconBG = Color(0xffF5F5F5);
+  static const Color turtleGreen = Color(0xff429283);
+  static const Color redOrange = Color(0xffFF3B30);
+  static const Color concord = Color(0xff7C7C7C);
+  static const Color orangePeel = Color(0xffFF9800);
+  static const Color eggSour = Color(0xffFFF3E0);
 
   static Color metalColor(String metalName) {
     switch (metalName.toLowerCase()) {

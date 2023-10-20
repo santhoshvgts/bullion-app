@@ -106,7 +106,7 @@ class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
                 uri.path + (uri.hasQuery ? "?${uri.query}" : ""),
               );
             } else {
-              launchUrl(navigationDelegate.url);
+              launchAnUrl(navigationDelegate.url);
             }
 
             return NavigationDecision.prevent;

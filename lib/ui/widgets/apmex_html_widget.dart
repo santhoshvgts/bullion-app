@@ -27,7 +27,7 @@ class ApmexHtmlWidget extends StatelessWidget {
             Uri.parse(url).path,
           );
         } else {
-          launchUrl(url.trim());
+          launchAnUrl(url.trim());
         }
         return true;
       },
