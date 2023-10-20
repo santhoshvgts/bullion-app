@@ -34,15 +34,15 @@ class _MainPageState extends State<MainPage> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 1,
+          scrolledUnderElevation: 3,
           titleSpacing: 0,
           title: SearchCardSection(
             rightPadding: 0,
             leftPadding: 0,
             placeholder: title,
           ),
-          // title: Text(title ?? "" , textAlign: TextAlign.center, style: AppTextStyle.titleLarge.copyWith(fontSize: 16),),
-          actions: [
-            const CartButton.light(),
+          actions: const [
+            CartButton.light(),
           ],
         ),
         body: ContentWrapper(

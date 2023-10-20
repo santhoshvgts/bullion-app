@@ -4,7 +4,6 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/shared/cart/cart_button.dart';
 import 'package:bullion/ui/shared/contentful/banner/banner_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/dynamic_module.dart';
-import 'package:bullion/ui/shared/contentful/dynamic/product/bottom_action_card.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
 import 'package:bullion/ui/shared/contentful/product/product_module.dart';
 import 'package:bullion/ui/shared/contentful/standard/standard_module.dart';
@@ -43,12 +42,13 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
           child: Scaffold(
             backgroundColor: AppColor.white,
             appBar: AppBar(
-              elevation: 1,
+              elevation: 0,
               titleSpacing: 0,
               centerTitle: true,
               title: SearchCardSection(
-                leftPadding: 0,
                 rightPadding: 0,
+                leftPadding: 0,
+                placeholder: "Search Bullion.com",
               ),
               actions: const [CartButton.light()],
             ),
@@ -77,7 +77,9 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                                     child: Column(children: [
                                       if (viewModel.isBusy)
                                         ProductOverviewSection(
-                                            viewModel.productDetail, "")
+                                          viewModel.productDetail,
+                                          "",
+                                        )
                                       else
                                         ...viewModel.modules?.map((module) {
                                               switch (module?.moduleType) {
@@ -106,7 +108,7 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                                   ),
                                 ),
                               ),
-                              BottomActionCard(viewModel.productDetail)
+                              // BottomActionCard(viewModel.productDetail)
                             ],
                           )
                         else

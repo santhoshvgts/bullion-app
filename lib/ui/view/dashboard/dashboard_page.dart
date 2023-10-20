@@ -11,64 +11,69 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
   const DashboardPage({super.key});
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      DashboardViewModel viewModel, Widget? child) {
+  Widget viewBuilder(
+    BuildContext context,
+    AppLocalizations locale,
+    DashboardViewModel viewModel,
+    Widget? child,
+  ) {
     return Scaffold(
-        body: PersistentTabView(
-      context,
-      controller: viewModel.bottomNavController,
-      screens: viewModel.pages,
-      items: [
-        _PersistentBottomNav(
-            inactiveIcon: const Icon(CupertinoIcons.home),
-            icon: const Icon(CupertinoIcons.house_fill),
-            title: "Home",
-            routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-              initialRoute: "/pages/home",
-            )),
-        _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.bag_fill),
-            inactiveIcon: const Icon(CupertinoIcons.bag),
-            title: "Shop",
-            routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-              initialRoute: "/pages/shop",
-            )),
-        _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.chart_bar_fill),
-            inactiveIcon: const Icon(CupertinoIcons.chart_bar),
-            title: "Charts",
-            routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-              initialRoute: "/pages/spot-price",
-            )),
-        _PersistentBottomNav(
-            inactiveIcon: const Icon(CupertinoIcons.tag),
-            icon: const Icon(CupertinoIcons.tag_solid),
-            title: "Deals",
-            routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-              initialRoute: "/pages/deals",
-            )),
-        _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.person_fill),
-            inactiveIcon: const Icon(CupertinoIcons.person),
-            title: "Accounts",
-            routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-              initialRoute: "/pages/accounts",
-            )),
-      ],
-      padding: const NavBarPadding.all(4),
-      confineInSafeArea: true,
-      hideNavigationBarWhenKeyboardShows: true,
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all,
-      decoration: NavBarDecoration(boxShadow: AppStyle.topShadow),
-      screenTransitionAnimation: const ScreenTransitionAnimation(
-        // Screen transition animation on change of selected tab.
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
+      body: PersistentTabView(
+        context,
+        controller: viewModel.bottomNavController,
+        screens: viewModel.pages,
+        items: [
+          _PersistentBottomNav(
+              inactiveIcon: const Icon(CupertinoIcons.home),
+              icon: const Icon(CupertinoIcons.house_fill),
+              title: "Home",
+              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+                initialRoute: "/pages/home",
+              )),
+          _PersistentBottomNav(
+              icon: const Icon(CupertinoIcons.bag_fill),
+              inactiveIcon: const Icon(CupertinoIcons.bag),
+              title: "Shop",
+              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+                initialRoute: "/pages/shop",
+              )),
+          _PersistentBottomNav(
+              icon: const Icon(CupertinoIcons.chart_bar_fill),
+              inactiveIcon: const Icon(CupertinoIcons.chart_bar),
+              title: "Charts",
+              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+                initialRoute: "/pages/spot-price",
+              )),
+          _PersistentBottomNav(
+              inactiveIcon: const Icon(CupertinoIcons.tag),
+              icon: const Icon(CupertinoIcons.tag_solid),
+              title: "Deals",
+              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+                initialRoute: "/pages/deals",
+              )),
+          _PersistentBottomNav(
+              icon: const Icon(CupertinoIcons.person_fill),
+              inactiveIcon: const Icon(CupertinoIcons.person),
+              title: "Accounts",
+              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+                initialRoute: "/pages/accounts",
+              )),
+        ],
+        padding: const NavBarPadding.all(4),
+        confineInSafeArea: true,
+        hideNavigationBarWhenKeyboardShows: true,
+        popAllScreensOnTapOfSelectedTab: true,
+        popActionScreens: PopActionScreensType.all,
+        decoration: NavBarDecoration(boxShadow: AppStyle.topShadow),
+        screenTransitionAnimation: const ScreenTransitionAnimation(
+          // Screen transition animation on change of selected tab.
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+        ),
+        navBarStyle: NavBarStyle.simple,
       ),
-      navBarStyle: NavBarStyle.simple,
-    ));
+    );
   }
 
   @override
