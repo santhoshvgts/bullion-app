@@ -23,11 +23,6 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
   }
 
   @override
-  void onViewModelReady(MyOrdersViewModel viewModel) {
-    super.onViewModelReady(viewModel);
-  }
-
-  @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale,
       MyOrdersViewModel viewModel, Widget? child) {
     return viewModel.filteredList == null

@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:bullion/router.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'services/shared/dialog_service.dart';
-import 'services/shared/navigator_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'core/res/styles.dart';
 import 'helper/dialog_manager.dart';
 import 'helper/logger.dart';
 import 'locator.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'services/shared/dialog_service.dart';
+import 'services/shared/navigator_service.dart';
 
 Future<void> main() async {
   runZonedGuarded(
@@ -74,16 +76,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       DeviceOrientation.portraitDown,
     ]);
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Platform.isIOS ? Brightness.light : Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness:
+            Platform.isIOS ? Brightness.light : Brightness.dark));
 
     return MaterialApp(
       title: "Bullion",
       theme: AppStyle.appTheme,
       builder: _setupDialogManager,
-      initialRoute: '/',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
+      initialRoute: '/',
       navigatorKey: navigationService.navigatorKey,
       navigatorObservers: [
         RouteObserver(),

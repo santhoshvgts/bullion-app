@@ -1,5 +1,7 @@
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/dashboard/dashboard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,35 +24,40 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
         context,
         controller: viewModel.bottomNavController,
         screens: viewModel.pages,
+        key: locator<NavigationService>().tabBarKey,
         items: [
           _PersistentBottomNav(
-              inactiveIcon: const Icon(CupertinoIcons.home),
-              icon: const Icon(CupertinoIcons.house_fill),
-              title: "Home",
-              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-                initialRoute: "/pages/home",
-              )),
+            inactiveIcon: const Icon(CupertinoIcons.home),
+            icon: const Icon(CupertinoIcons.house_fill),
+            title: "Home",
+            routeAndNavigatorSettings: RouteAndNavigatorSettings(
+              initialRoute: "/pages/home",
+            ),
+          ),
           _PersistentBottomNav(
-              icon: const Icon(CupertinoIcons.bag_fill),
-              inactiveIcon: const Icon(CupertinoIcons.bag),
-              title: "Shop",
-              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-                initialRoute: "/pages/shop",
-              )),
+            icon: const Icon(CupertinoIcons.bag_fill),
+            inactiveIcon: const Icon(CupertinoIcons.bag),
+            title: "Shop",
+            routeAndNavigatorSettings: RouteAndNavigatorSettings(
+              initialRoute: "/pages/shop",
+            ),
+          ),
           _PersistentBottomNav(
-              icon: const Icon(CupertinoIcons.chart_bar_fill),
-              inactiveIcon: const Icon(CupertinoIcons.chart_bar),
-              title: "Charts",
-              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-                initialRoute: "/pages/spot-price",
-              )),
+            icon: const Icon(CupertinoIcons.chart_bar_fill),
+            inactiveIcon: const Icon(CupertinoIcons.chart_bar),
+            title: "Charts",
+            routeAndNavigatorSettings: RouteAndNavigatorSettings(
+              initialRoute: "/pages/spot-price",
+            ),
+          ),
           _PersistentBottomNav(
-              inactiveIcon: const Icon(CupertinoIcons.tag),
-              icon: const Icon(CupertinoIcons.tag_solid),
-              title: "Deals",
-              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-                initialRoute: "/pages/deals",
-              )),
+            inactiveIcon: const Icon(CupertinoIcons.tag),
+            icon: const Icon(CupertinoIcons.tag_solid),
+            title: "Deals",
+            routeAndNavigatorSettings: RouteAndNavigatorSettings(
+              initialRoute: "/pages/deals",
+            ),
+          ),
           _PersistentBottomNav(
               icon: const Icon(CupertinoIcons.person_fill),
               inactiveIcon: const Icon(CupertinoIcons.person),

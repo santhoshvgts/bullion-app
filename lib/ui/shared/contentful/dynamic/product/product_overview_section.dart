@@ -166,7 +166,7 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 0),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 10),
       color: AppColor.white,
       width: double.infinity,
       child: Column(

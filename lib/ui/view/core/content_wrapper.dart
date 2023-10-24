@@ -176,9 +176,9 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-          color: AppColor.white,
-          boxShadow:
-              viewModel.showSortAppBarSection ? AppStyle.cardShadow : null),
+        color: AppColor.white,
+        boxShadow: viewModel.showSortAppBarSection ? AppStyle.cardShadow : null,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
