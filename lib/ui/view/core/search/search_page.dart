@@ -2,6 +2,7 @@ import 'package:bullion/core/models/module/search_module.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/ui/shared/cart/cart_button.dart';
 import 'package:bullion/ui/view/core/content_wrapper.dart';
 import 'package:bullion/ui/view/core/search/search_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -31,37 +32,39 @@ class SearchPage extends VGTSBuilderWidget<SearchViewModel> {
         elevation: 1,
         title: Row(
           children: [
-            // IconButton(
-            //   icon: Icon(
-            //     Platform.isIOS ? Icons.arrow_back_ios : Icons.arrow_back,
-            //     color: AppColor.text,
-            //   ),
-            //   onPressed: () => Navigator.pop(context),
-            // ),
             Expanded(
               child: Container(
-                  height: 40,
-                  margin: const EdgeInsets.only(right: 15),
+                  height: 35,
                   padding: const EdgeInsets.only(left: 10.0),
                   decoration: BoxDecoration(
-                    color: AppColor.secondaryBackground,
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Colors.black12),
+                    color: AppColor.secondaryBackground,
+                    border: Border.all(color: Colors.black12, width: 0.25),
                   ),
                   child: Row(
                     children: [
-                      const Icon(CupertinoIcons.search, size: 22),
+                      const Icon(
+                        CupertinoIcons.search,
+                        size: 22,
+                      ),
                       HorizontalSpacing.d10px(),
                       Expanded(
                           child: TextField(
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Search Product Name, Mint, Gold, Silver',
-                          hintStyle: AppTextStyle.labelMedium.copyWith(
-                            fontSize: 16,
-                            color: AppColor.secondaryText,
+                          hintText: 'Search Product and Deals',
+                          hintStyle: AppTextStyle.bodyMedium.copyWith(
+                            color: AppColor.text,
+                            fontFamily: AppTextStyle.fontFamily,
                           ),
-                          contentPadding: const EdgeInsets.only(bottom: 13.0),
+                          contentPadding: const EdgeInsets.only(
+                            bottom: 14,
+                            right: 10,
+                          ),
+                        ),
+                        style: AppTextStyle.bodyMedium.copyWith(
+                          color: AppColor.text,
+                          fontFamily: AppTextStyle.fontFamily,
                         ),
                         controller:
                             viewModel.searchController.textEditingController,
@@ -74,27 +77,27 @@ class SearchPage extends VGTSBuilderWidget<SearchViewModel> {
                         onSubmitted: (val) {
                           FocusScope.of(context).requestFocus(FocusNode());
                           if (val != "") {
-                            //TODO: SEARCH RESULT ANALYTICS
-                            // locator<AnalyticsService>().logSearchResult(val);
                             viewModel.navigate("/search?q=${val}");
                           }
                         },
                       )),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.clear,
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          viewModel.searchController.clear();
-                          viewModel.notifyListeners();
-                        },
-                      )
+                      if (viewModel.searchController.text.isNotEmpty)
+                        IconButton(
+                          icon: const Icon(
+                            Icons.clear,
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            viewModel.searchController.clear();
+                            viewModel.notifyListeners();
+                          },
+                        )
                     ],
                   )),
             ),
           ],
         ),
+        actions: const [CartButton.light()],
       ),
       body: TapOutsideUnFocus(
         child: viewModel.searchController.text.isNotEmpty
@@ -103,19 +106,20 @@ class SearchPage extends VGTSBuilderWidget<SearchViewModel> {
                 height: double.infinity,
                 child: viewModel.searchList?.isNotEmpty == true
                     ? SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: viewModel.searchList!
-                            .asMap()
-                            .map((index, item) {
-                              return MapEntry(index, _Item(item));
-                            })
-                            .values
-                            .toList(),
-                      ))
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: viewModel.searchList!
+                              .asMap()
+                              .map((index, item) {
+                                return MapEntry(index, _Item(item));
+                              })
+                              .values
+                              .toList(),
+                        ))
                     : Container(),
               )
-            : ContentWrapper("/search/default"),
+            : const ContentWrapper("/search/default"),
       ),
     );
   }
@@ -133,10 +137,9 @@ class _Item extends ViewModelWidget<SearchViewModel> {
           padding: const EdgeInsets.only(
             left: 20,
             right: 15,
-            top: 4,
-            bottom: 4,
+            top: 5,
+            bottom: 5,
           ),
-          color: AppColor.white,
           child: Row(
             children: [
               Expanded(
@@ -145,14 +148,15 @@ class _Item extends ViewModelWidget<SearchViewModel> {
                   onTap: () => viewModel.navigate(_item.targetUrl!),
                   child: RichText(
                     text: TextSpan(
-                        children: viewModel.highlightOccurrences(
-                          _item.name,
-                          viewModel.searchController.text,
-                        ),
-                        style: AppTextStyle.bodyMedium.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        )),
+                      children: viewModel.highlightOccurrences(
+                        _item.name,
+                        viewModel.searchController.text,
+                      ),
+                      style: AppTextStyle.bodyMedium.copyWith(
+                        fontFamily: AppTextStyle.fontFamily,
+                        color: AppColor.text,
+                      ),
+                    ),
                   ),
                 ),
               ),
