@@ -37,8 +37,12 @@ class OrderDetailsViewModel extends VGTSBaseViewModel {
   Order? get orderDetail => _orderDetail;
 
   void formatDate() {
-    var inputFormat = DateFormat('M/d/y h:m:s a');
-    DateTime dateTime = inputFormat.parse(_orderDetail!.formattedPostedDate!);
-    _date = DateFormat.yMMMd().format(dateTime);
+    DateFormat dateFormat = DateFormat('M/d/y h:m:s a');
+    DateTime dateTime = dateFormat.parse(_orderDetail!.formattedPostedDate!);
+
+    DateFormat outputDateFormat = DateFormat('MMM d, y h:mm a');
+    _date = outputDateFormat.format(dateTime);
+
+    //_date = DateFormat.yMMMd().format(dateTime);
   }
 }
