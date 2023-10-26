@@ -1,5 +1,6 @@
 import 'package:bullion/ui/view/order_details_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/apmex_html_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -248,6 +249,57 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
     );
   }
 
+  List<Widget> showOrderSummaryPairs(OrderDetailsViewModel viewModel) {
+    List<Widget>? widgets = [], widgetsTwo = [];
+    viewModel.orderDetail?.orderTotalSummary?.forEach((element) {
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(top: 8, bottom: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(element.key!,
+                style:
+                    AppTextStyle.bodyMedium.copyWith(color: AppColor.concord)),
+            Text(element.value!, style: AppTextStyle.bodyMedium)
+          ],
+        ),
+      ));
+    });
+
+    widgetsTwo.add(Flexible(
+      flex: 7,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Column(
+          children: widgets,
+        ),
+      ),
+    ));
+    widgetsTwo.add(Flexible(
+      flex: 3,
+      child: Column(
+        children: [
+          const Divider(
+            thickness: 1,
+            color: AppColor.platinumColor,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("You Pay",
+                  style: AppTextStyle.titleMedium
+                      .copyWith(color: AppColor.turtleGreen)),
+              Text(viewModel.orderDetail!.formattedOrderTotal.toString(),
+                  style: AppTextStyle.titleMedium
+                      .copyWith(color: AppColor.turtleGreen)),
+            ],
+          ),
+        ],
+      ),
+    ));
+    return widgetsTwo;
+  }
+
   Widget showTransactionDetails(String key, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -284,63 +336,8 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Card Total",
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.concord)),
-                        const Text("\$ 130.00", style: AppTextStyle.bodyMedium)
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Shipping, Handling & Insurance",
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.concord)),
-                        Text("Free",
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.turtleGreen)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Promo code Savings",
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.concord)),
-                        Text("-\$ 1.00",
-                            style: AppTextStyle.bodyMedium
-                                .copyWith(color: AppColor.turtleGreen)),
-                      ],
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    color: AppColor.platinumColor,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("You Pay",
-                          style: AppTextStyle.titleMedium
-                              .copyWith(color: AppColor.turtleGreen)),
-                      Text("\$ 129.00",
-                          style: AppTextStyle.titleMedium
-                              .copyWith(color: AppColor.turtleGreen)),
-                    ],
-                  ),
-                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: showOrderSummaryPairs(viewModel),
               ),
             ),
           ),
@@ -370,14 +367,19 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
           const SizedBox(
             height: 16,
           ),
-          showTransactionDetails(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child:
+                ApmexHtmlWidget(viewModel.orderDetail?.paymentInstructions?[0]),
+          ),
+          /*showTransactionDetails(
               "Payment Method", "Bank Wire (No ACH Accepted)"),
           showTransactionDetails("Beneficiary",
               "APMEX - Clearing Account ,226 Dean A. McGee Avenue Oklahoma City, OK 73102"),
           showTransactionDetails("Beneficiary Account Number",
               "7792990008 Bank of Oklahoma : 215 State StMuskogee, OK 74401SWIFT BAOKUS44"),
           showTransactionDetails("ABA Routing Number", "103 900 036"),
-          showTransactionDetails("Ref", "Lfs asd / 7161760"),
+          showTransactionDetails("Ref", "Lfs asd / 7161760"),*/
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             //height: 168,
