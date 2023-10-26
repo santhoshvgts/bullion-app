@@ -112,7 +112,7 @@ class FilterDrawer extends VGTSBuilderWidget<FilterDrawerViewModel> {
                                 return MapEntry(
                                   index,
                                   Container(
-                                    padding: const EdgeInsets.only(left: 15.0, right: 10.0, bottom: 14.0, top: 10),
+                                    padding: const EdgeInsets.only(left: 10.0, right: 20.0, top: 5),
                                     child: _BuildRow(
                                       item,
                                       onSelect: (item) async {
@@ -177,28 +177,32 @@ class _BuildRow extends VGTSWidget<FilterDrawerViewModel> {
 
   @override
   Widget widget(BuildContext context, AppLocalizations locale, FilterDrawerViewModel viewModel) {
-    return Row(
-      children: <Widget>[
-        Checkbox(
-          value: _item.isSelected,
-          activeColor: _item.isSelected! ? AppColor.primary : Colors.black12,
-          //   checkColor: _item.isSelected! ? AppColor.primary : Colors.black12,
-          onChanged: (bool? value) => onSelect!(_item),
-        ),
-        Expanded(
-            child: Text(
-          _item.displayName ?? '',
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        )),
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Text('(${(_item.count ?? '').toString()})'),
+    return InkWell(
+      onTap: () => onSelect!(_item),
+      splashColor:AppColor.primary.withOpacity(0.2) ,
+      
+      child: Row(
+        children: <Widget>[
+          Checkbox(
+            value: _item.isSelected,
+            activeColor: _item.isSelected! ? AppColor.primary : Colors.black12,
+            onChanged: (bool? value) =>  onSelect!(_item),
           ),
-        ),
-        HorizontalSpacing.custom(value: 10),
-      ],
+          Expanded(
+              child: Text(
+            _item.displayName ?? '',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          )),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text('(${(_item.count ?? '').toString()})'),
+            ),
+          ),
+          
+        ],
+      ),
     );
   }
 }
