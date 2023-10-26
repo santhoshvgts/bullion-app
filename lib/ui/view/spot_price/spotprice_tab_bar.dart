@@ -6,7 +6,7 @@ import '../../../../../../core/res/spacing.dart';
 import '../../../../../../core/res/styles.dart';
 
 class SpotPriceTabBar extends StatefulWidget {
-  final List<SpotPrice>? tabList;
+  final List<SpotPrice> tabList;
   final int? initialIndex;
   final ScrollController controller;
   final Function(int index, String name) onChange;
@@ -26,10 +26,10 @@ class _TabBarState extends State<SpotPriceTabBar> {
   void initState() {
     setState(() {
       if (widget.initialIndex != null) {
-        Future.delayed(Duration(milliseconds: 110)).then((value) {
+        Future.delayed(const Duration(milliseconds: 110)).then((value) {
           widget.controller.animateTo(
             widget.initialIndex! * 100,
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.fastOutSlowIn,
           );
         });
@@ -46,36 +46,34 @@ class _TabBarState extends State<SpotPriceTabBar> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         controller: widget.controller,
-        padding: EdgeInsets.only(left: 15.0, right: 10.0, top: 5, bottom: 5),
         child: Row(
-            children: widget.tabList!
-                .asMap()
-                .map(
-                  (index, item) {
-                    return MapEntry(
-                        index,
-                        item.metalName == 'Portfolio'
-                            ? Container()
-                            : InkWell(
-                                radius: 20,
-                                onTap: () {
-                                  setState(() {
-                                    widget.onChange(
-                                        index, item.targetUrl ?? '');
-                                  });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: _SpotPriceStripCard(item,
-                                      isSelected: widget.initialIndex == index
-                                          ? true
-                                          : false),
-                                ),
-                              ));
-                  },
-                )
-                .values
-                .toList()),
+          children: widget.tabList
+              .asMap()
+              .map(
+                (index, item) {
+                  return MapEntry(
+                    index,
+                    item.metalName == 'Portfolio'
+                        ? Container()
+                        : InkWell(
+                            radius: 20,
+                            onTap: () {
+                              setState(() {
+                                widget.onChange(index, item.targetUrl ?? '');
+                              });
+                            },
+                            child: _SpotPriceStripCard(
+                              item,
+                              isSelected:
+                                  widget.initialIndex == index ? true : false,
+                            ),
+                          ),
+                  );
+                },
+              )
+              .values
+              .toList(),
+        ),
       ),
     );
   }
@@ -91,28 +89,42 @@ class _SpotPriceStripCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: isSelected ? data.color.withOpacity(0.2) : AppColor.white,
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          border: Border.all(color: data.color, width: 1.5)),
-      padding: EdgeInsets.only(bottom: 7, left: 8.0, right: 8.0, top: 7.0),
-      child: Row(
+        // border: isSelected ? Border.all(color: data.color, width: 1.5) : null,
+        // borderRadius: BorderRadius.circular(8),
+        // color: isSelected ? data.color.withOpacity(0.2) : AppColor.white,
+        border: isSelected
+            ? Border(
+                bottom: BorderSide(color: data.color, width: 2.5),
+              )
+            : null,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HorizontalSpacing.d5px(),
-          Text(data.metalName!,
-              textScaleFactor: 1,
-              style: AppTextStyle.labelSmall
-                  .copyWith(fontWeight: FontWeight.w600)),
-          HorizontalSpacing.d5px(),
-          Text(data.formattedAsk!,
-              textScaleFactor: 1,
-              style: AppTextStyle.labelSmall
-                  .copyWith(fontWeight: FontWeight.w600)),
-          HorizontalSpacing.d5px(),
-          Text("${data.change! < 0 ? "-" : "+"}" + "${data.formattedChange}",
-              textScaleFactor: 1,
-              style: AppTextStyle.labelSmall.copyWith(
+          Text(
+            data.metalName!,
+            textScaleFactor: 1,
+            style: AppTextStyle.titleSmall,
+          ),
+          VerticalSpacing.d5px(),
+          Row(
+            children: [
+              Text(
+                data.formattedAsk!,
+                textScaleFactor: 1,
+                style: AppTextStyle.bodySmall.copyWith(),
+              ),
+              HorizontalSpacing.d5px(),
+              Text(
+                (data.change! < 0 ? "-" : "+") + "${data.formattedChange}",
+                textScaleFactor: 1,
+                style: AppTextStyle.bodySmall.copyWith(
                   color: data.change! < 0 ? AppColor.red : AppColor.green,
-                  fontWeight: FontWeight.w600)),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
