@@ -5,6 +5,7 @@ import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CartItemCard extends StatelessWidget {
@@ -23,7 +24,8 @@ class CartItemCard extends StatelessWidget {
       children: [
         Container(
           color: AppColor.white,
-          padding: EdgeInsets.only(left: 15, top: 15, bottom: 15, right: 15),
+          padding:
+              const EdgeInsets.only(left: 15, top: 15, bottom: 15, right: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,11 +36,19 @@ class CartItemCard extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    NetworkImageLoader(
-                      image: _item.primaryImageUrl,
-                      fit: BoxFit.cover,
-                      width: 70,
-                      height: 70,
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: AppColor.divider),
+                      ),
+                      padding: const EdgeInsets.all(5),
+                      child: NetworkImageLoader(
+                        image: _item.primaryImageUrl,
+                        fit: BoxFit.cover,
+                        width: 90,
+                        height: 90,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                     ),
                     HorizontalSpacing.d10px(),
                     Expanded(
@@ -65,6 +75,74 @@ class CartItemCard extends StatelessWidget {
                             style: AppTextStyle.titleSmall,
                             textScaleFactor: 1,
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: AppColor.secondaryBackground,
+                                  border: Border.all(
+                                      color: Colors.black12, width: 0.25),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        _item.loading = true;
+                                        onDecrease!(_item);
+                                      },
+                                      icon: const Icon(
+                                        CupertinoIcons.minus_circle,
+                                        size: 22,
+                                        color: AppColor.primary,
+                                      ),
+                                    ),
+                                    HorizontalSpacing.d10px(),
+                                    Container(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 2.0, right: 5),
+                                      width: 35,
+                                      child: Text(
+                                        _item.qtyController.text,
+                                        style: AppTextStyle.bodyMedium.copyWith(
+                                          color: AppColor.text,
+                                          fontFamily: AppTextStyle.fontFamily,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                        textScaleFactor: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        _item.loading = true;
+                                        onIncrease!(_item);
+                                      },
+                                      icon: const Icon(
+                                        CupertinoIcons.add_circled,
+                                        size: 22,
+                                        color: AppColor.primary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  _item.loading = true;
+                                  onRemove!(_item);
+                                },
+                                icon: const Icon(
+                                  CupertinoIcons.delete,
+                                  color: AppColor.red,
+                                  size: 22,
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),
@@ -74,7 +152,7 @@ class CartItemCard extends StatelessWidget {
               if (_item.offers != null)
                 ..._item.offers!.map((offer) {
                   return Padding(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     child: Text(
                       offer,
                       textScaleFactor: 1,
@@ -147,24 +225,12 @@ class CartItemCard extends StatelessWidget {
                   //     }
                   //   },
                   // ),
-                  TextButton(
-                      child: Text(
-                        "Remove",
-                        textScaleFactor: 1,
-                        style: AppTextStyle.bodyLarge.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      onPressed: () {
-                        _item.loading = true;
-                        onRemove!(_item);
-                      })
                 ],
               ),
               if (_item.warnings != null)
                 ..._item.warnings!.map((warning) {
                   return Padding(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     child: Text(
                       warning,
                       textScaleFactor: 1,
@@ -184,7 +250,7 @@ class CartItemCard extends StatelessWidget {
               right: 0,
               child: Container(
                 color: AppColor.white.withOpacity(0.5),
-                child: Center(
+                child: const Center(
                   child: CircularProgressIndicator(
                     strokeWidth: 1,
                     valueColor: AlwaysStoppedAnimation(AppColor.primary),

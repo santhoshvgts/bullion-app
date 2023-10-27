@@ -72,7 +72,7 @@ class CartViewModel extends VGTSBaseViewModel {
   }
 
   init() async {
-    _cart = await _cartService!.getCart();
+    _cart = await _cartService.getCart();
     notifyListeners();
 
     setBusy(true);
@@ -89,7 +89,7 @@ class CartViewModel extends VGTSBaseViewModel {
     if (isBusy) return;
 
     setBusy(true);
-    _cart = await _cartService!.modifyItem(product.productId, qty);
+    _cart = await _cartService.modifyItem(product.productId, qty);
     setBusy(true);
 
     locator<AnalyticsService>().logAddToCart(
@@ -109,7 +109,7 @@ class CartViewModel extends VGTSBaseViewModel {
 
     setBusy(true);
 
-    _cart = await _cartService!.removeItemFromCart(product.productId);
+    _cart = await _cartService.removeItemFromCart(product.productId);
 
     //TODO Analytics
     // locator<AnalyticsService>().removeFromCart(
@@ -131,7 +131,7 @@ class CartViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     PageSettings? settings =
-        await _cartService!.applyCoupon(promoCodeController.text);
+        await _cartService.applyCoupon(promoCodeController.text);
 
     if (settings?.isSuccess == false) {
       _couponInlineMessage = settings?.displayMessage;
@@ -154,7 +154,7 @@ class CartViewModel extends VGTSBaseViewModel {
     String? displayType = displayMessage.messageDisplayType;
 
     if (displayType == MessageDisplayType.SnackBar) {
-      toastService!.showWidget(
+      toastService.showWidget(
           child: Container(
         padding: const EdgeInsets.all(10.0),
         width: double.infinity,
@@ -221,14 +221,14 @@ class CartViewModel extends VGTSBaseViewModel {
     }
 
     if (displayType == MessageDisplayType.BottomSheet) {
-      await dialogService!.showBottomSheet(
+      await dialogService.showBottomSheet(
           title: displayMessage.title == null ? '' : displayMessage.title,
           child: DisplayMessageBottomSheet(displayMessage));
       return;
     }
 
     if (displayType == MessageDisplayType.AlertBox) {
-      await dialogService!.displayMessage(
+      await dialogService.displayMessage(
           title: displayMessage.title == null ? '' : displayMessage.title,
           child: DisplayMessageBottomSheet(displayMessage));
       return;
@@ -255,7 +255,7 @@ class CartViewModel extends VGTSBaseViewModel {
   }
 
   refresh() async {
-    _cart = await _cartService!.getCart(refresh: true);
+    _cart = await _cartService.getCart(refresh: true);
 
     locator<AnalyticsService>().logEvent('view_cart', {
       'currency': 'USD',
