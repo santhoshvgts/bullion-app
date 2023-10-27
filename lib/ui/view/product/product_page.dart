@@ -84,8 +84,10 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                                         ...viewModel.modules?.map((module) {
                                               switch (module?.moduleType) {
                                                 case ModuleType.dynamic:
-                                                  return DynamicModule(module,
-                                                      viewModel.pageSetting);
+                                                  return DynamicModule(
+                                                    module,
+                                                    viewModel.pageSetting,
+                                                  );
 
                                                 case ModuleType.standard:
                                                   return StandardModule(module);

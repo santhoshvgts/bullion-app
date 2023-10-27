@@ -7,12 +7,12 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/auth_request.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/api_model/error_response_exception.dart';
-import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/shared/preference_service.dart';
 import 'package:bullion/services/token_service.dart';
 
 import 'shared/analytics_service.dart';
+import 'shared/dialog_service.dart';
 
 class AuthenticationService {
   final ApiBaseService _apiBaseService = locator<ApiBaseService>();
@@ -38,7 +38,8 @@ class AuthenticationService {
 
   void _setUser(AuthResponse authResult) {
     if ((authResult.token != null) && (authResult.user != null)) {
-      _tokenService.setTokens(authResult.token!.authToken, authResult.token!.refreshToken);
+      _tokenService.setTokens(
+          authResult.token!.authToken, authResult.token!.refreshToken);
       userController.add(authResult.user);
       _user = authResult.user;
       _analyticsService.setUserId(_user!.userId);
@@ -67,7 +68,8 @@ class AuthenticationService {
 
   Future<AuthResponse?> login(String email, String password) async {
     try {
-      var authResult = await _apiBaseService.request<AuthResponse>(AuthRequest.login(email, password));
+      var authResult = await _apiBaseService
+          .request<AuthResponse>(AuthRequest.login(email, password));
       _setUser(authResult);
       _analyticsService.loglogin();
 
@@ -126,7 +128,8 @@ class AuthenticationService {
 
   Future<AuthResponse?> registerAsGuest(String email) async {
     try {
-      var authResult = await _apiBaseService.request<AuthResponse>(AuthRequest.registerAsGuest(email));
+      var authResult = await _apiBaseService
+          .request<AuthResponse>(AuthRequest.registerAsGuest(email));
       _setUser(authResult);
 
       return authResult;
@@ -143,7 +146,8 @@ class AuthenticationService {
     String oldPassword,
   ) async {
     try {
-      var authResult = await _apiBaseService.request<AuthResponse>(AuthRequest.resetPassword(key, email, newPassword, oldPassword));
+      var authResult = await _apiBaseService.request<AuthResponse>(
+          AuthRequest.resetPassword(key, email, newPassword, oldPassword));
       _setUser(authResult);
       _analyticsService.loglogin();
 
@@ -156,7 +160,8 @@ class AuthenticationService {
 
   Future<AuthResponse?> guestToAccount(String password, bool emailOptIn) async {
     try {
-      var authResult = await _apiBaseService.request<AuthResponse>(AuthRequest.guestToAccount(password, emailOptIn));
+      var authResult = await _apiBaseService.request<AuthResponse>(
+          AuthRequest.guestToAccount(password, emailOptIn));
       _setUser(authResult);
       _analyticsService.logSignUp();
 

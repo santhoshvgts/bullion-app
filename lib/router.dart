@@ -5,6 +5,7 @@ import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
+import 'package:bullion/ui/view/core/search/search_page.dart';
 import 'package:bullion/ui/view/main/forgot_password/forgot_password_page.dart';
 import 'package:bullion/ui/view/main/intro/intro_page.dart';
 import 'package:bullion/ui/view/main/login/login_page.dart';
@@ -203,13 +204,13 @@ class AppRouter {
       //   case Routes.main:
       //     return MaterialPageRoute(builder: (context) => MainPage(path: settings.name));
       //
-      //   case Routes.search:
-      //     return MaterialPageRoute(
-      //       builder: (_) => SearchPage(),
-      //       settings: RouteSettings(
-      //         name: settings.name,
-      //       ),
-      //     );
+      case Routes.search:
+        return MaterialPageRoute(
+          builder: (_) => const SearchPage(),
+          settings: RouteSettings(
+            name: settings.name,
+          ),
+        );
       //
       //   case Routes.myFavorites:
       //     return MaterialPageRoute(
@@ -360,11 +361,16 @@ class AppRouter {
 
     switch (uri.pathSegments.first) {
       case "category":
+      case "search":
         return MaterialPageRoute(
             builder: (context) => MainPage(path: settings.name));
 
       // case "search":
-      //   return MaterialPageRoute(builder: (context) => SearchResultPage(settings.name,));
+      //   return MaterialPageRoute(
+      //     builder: (context) => SearchResultPage(
+      //       settings.name,
+      //     ),
+      //   );
 
       case "pages":
         return MaterialPageRoute(
@@ -372,16 +378,16 @@ class AppRouter {
                   path: settings.name,
                 ));
 
-        // case "market_news":
-        //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
+      // case "market_news":
+      //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
 
-        /*case "account":
+      case "account":
         if (uri.pathSegments[1] == "my-orders") {
           return MaterialPageRoute(
               builder: (_) =>
                   OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
               settings: RouteSettings(name: settings.name));
-        }*/
+        }
 
         // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
         return TransparentRoute(
@@ -460,12 +466,15 @@ class AppRouter {
               settings: RouteSettings(name: settings.name));
 
         // Order Details
-        //   case "orderdetails":
-        //     Map<String, dynamic> data = new Map();
-        //     data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-        //     data['from_success'] = false;
-        //     return MaterialPageRoute(builder: (_) => OrderDetailPage(data), settings: RouteSettings(name: settings.name));
-        //
+        case "my-orders":
+          Map<String, dynamic> data = new Map();
+          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
+          data['from_success'] = false;
+          return MaterialPageRoute(
+              builder: (_) =>
+                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+              settings: RouteSettings(name: settings.name));
+
         //   case "resetpassword":
         //     return MaterialPageRoute(
         //       builder: (_) =>

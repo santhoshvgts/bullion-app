@@ -36,7 +36,8 @@ class AppStyle {
   ];
 
   static final List<BoxShadow> elevatedCardShadow = [
-    const BoxShadow(color: Colors.black12, offset: Offset(0, 2), blurRadius: 10),
+    const BoxShadow(
+        color: Colors.black12, offset: Offset(0, 2), blurRadius: 10),
   ];
 
   // static final List<BoxShadow> dealsShadow = [
@@ -49,7 +50,7 @@ class AppStyle {
         color: Colors.black12,
         spreadRadius: 0.1,
         blurRadius: 2,
-        offset: Offset(0, -2)),
+        offset: Offset(0, -1)),
   ];
 
   static final List<BoxShadow> chipShadow = [

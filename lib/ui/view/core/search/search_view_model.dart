@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bullion/core/models/module/search_module.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/router.dart';
@@ -11,21 +13,31 @@ class SearchViewModel extends VGTSBaseViewModel {
     const ValueKey("txtSearch"),
   );
 
+  Timer? _timer;
+
   List<SearchResult>? _searchList;
 
   List<SearchResult>? get searchList => _searchList;
 
   void onChange(String data) {
-    Future(() async {
+    if (_timer?.isActive ?? false) {
+      _timer?.cancel();
+    }
+    _timer = Timer(const Duration(milliseconds: 200), () async {
       _searchList =
           await requestList<SearchResult>(PageRequest.search(text: data));
       notifyListeners();
     });
+
+    // Future(() async {
+    //
+    // });
   }
 
   navigate(String targetUrl) {
-    FocusScope.of(navigationService.navigatorKey.currentContext!)
-        .requestFocus(FocusNode());
+    FocusScope.of(navigationService.navigatorKey.currentContext!).requestFocus(
+      FocusNode(),
+    );
     navigationService.pushAndPopUntil(
       targetUrl,
       removeRouteName: Routes.dashboard,
@@ -66,8 +78,10 @@ class SearchViewModel extends VGTSBaseViewModel {
           match.start,
           match.end,
         ),
-        style: AppTextStyle.bodyMedium
-            .copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+        style: AppTextStyle.bodyMedium.copyWith(
+          fontWeight: FontWeight.w600,
+          fontFamily: AppTextStyle.fontFamily,
+        ),
       ));
 
       if (i == matches.length - 1 && match.end != name.length) {
@@ -79,5 +93,11 @@ class SearchViewModel extends VGTSBaseViewModel {
       lastMatchEnd = match.end;
     }
     return children;
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }

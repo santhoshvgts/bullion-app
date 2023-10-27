@@ -1,8 +1,10 @@
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bullion/core/constants/alignment.dart';
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
+import 'package:bullion/core/models/module/selected_item_list.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/ui/shared/contentful/banner/banner_ui_container.dart';
@@ -33,8 +35,9 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
   final Function(bool onload)? onLoading;
   final String? metalName;
 
-  ContentWrapper(this.path,
-      {this.controller,
+  const ContentWrapper(this.path,
+      {super.key,
+      this.controller,
       this.initialValue,
       this.onPageFetched,
       this.enableController = true,
@@ -144,7 +147,6 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                       ]),
                     ),
                   ),
-
                   if (viewModel.showSortAppBarSection)
                     Positioned(
                         top: 0,
@@ -154,16 +156,6 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 15),
                         )),
-
-                  // if(viewModel.productListingModule != null)
-                  //   SortFilterSection(
-                  //     ProductModel.fromJson(viewModel.productListingModule.productModel),
-                  //     onChange: (url) async {
-                  //       ProductModel productModel = await viewModel.productListingModule.productModuleController.filter(url);
-                  //       viewModel.findAndReplaceModuleSetting(productModel);
-                  //       return productModel;
-                  //     },
-                  //   )
                 ],
               ),
             ),
@@ -184,87 +176,114 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-          color: AppColor.white,
-          boxShadow:
-              viewModel.showSortAppBarSection ? AppStyle.cardShadow : null),
+        color: AppColor.white,
+        boxShadow: viewModel.showSortAppBarSection ? AppStyle.cardShadow : null,
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (viewModel.productListingModuleTitle != null)
-            AutoSizeText(viewModel.productListingModuleTitle!,
-                textScaleFactor: 1,
-                textAlign: UIAlignment.textAlign(viewModel
-                    .productListingModule!.displaySettings!.titleAlignment),
-                style: AppTextStyle.titleSmall.copyWith(color: AppColor.title)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              InkWell(
-                onTap: () => viewModel.onSortPressed(),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.sort,
-                      ),
-                      HorizontalSpacing.d10px(),
-                      Text(
-                        "Sort",
-                        textScaleFactor: 1,
-                        style: AppTextStyle.titleSmall
-                            .copyWith(color: AppColor.title),
-                      )
-                    ],
-                  ),
-                ),
+          InkWell(
+            onTap: () => viewModel.onFilterPressed(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(color: AppColor.border, width: 1),
               ),
-              InkWell(
-                onTap: () => viewModel.onFilterPressed(),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  margin: const EdgeInsets.only(left: 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 7,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(
                     children: [
-                      Stack(
-                        children: [
-                          const Icon(
-                            Icons.filter_list_alt,
-                          ),
-                          if (viewModel.productModel.selectedFacetsCount! > 0)
-                            Positioned(
-                              right: 0,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    color: AppColor.primary,
-                                    shape: BoxShape.circle),
-                                width: 10,
-                                height: 10,
-                              ),
-                            )
-                        ],
+                      Image.asset(
+                        Images.filter_icon,
+                        height: 16,
                       ),
-                      HorizontalSpacing.d10px(),
-                      Text(
-                        "Filter" +
-                            (viewModel.productModel.selectedFacetsCount! > 0
-                                ? " (${viewModel.productModel.selectedFacetsCount})"
-                                : ""),
-                        textScaleFactor: 1,
-                        style: AppTextStyle.titleSmall
-                            .copyWith(color: AppColor.title),
-                      )
+                      if (viewModel.productModel.selectedFacetsCount! > 0)
+                        Positioned(
+                          right: 0,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: AppColor.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            width: 10,
+                            height: 10,
+                          ),
+                        )
                     ],
                   ),
-                ),
-              )
-            ],
+                  HorizontalSpacing.d10px(),
+                  Text(
+                    "Filter${viewModel.productModel.selectedFacetsCount! > 0 ? " (${viewModel.productModel.selectedFacetsCount})" : ""}",
+                    textScaleFactor: 1,
+                    style: AppTextStyle.titleSmall,
+                  )
+                ],
+              ),
+            ),
           ),
+
+          HorizontalSpacing.d10px(),
+
+          PopupMenuButton<SelectedItemList>(
+            elevation: 0,
+            color: AppColor.scaffoldBackground,
+            onSelected: (value) => viewModel.onSortPressed(value.value ?? ''),
+            itemBuilder: (BuildContext context) =>
+                viewModel.productModel.sortOptions!
+                    .map(
+                      (e) => PopupMenuItem(
+                        value: e,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Text(
+                            e.text ?? '',
+                            style: AppTextStyle.bodyLarge,
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(color: AppColor.border, width: 1),
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 7,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.sort_sharp,
+                    size: 20,
+                  ),
+                  HorizontalSpacing.d5px(),
+                  const Text(
+                    "Sort",
+                    textScaleFactor: 1,
+                    style: AppTextStyle.titleSmall,
+                  )
+                ],
+              ),
+            ),
+          ),
+
+          // if (viewModel.productListingModuleTitle != null)
+          //   AutoSizeText(viewModel.productListingModuleTitle!,
+          //       textScaleFactor: 1,
+          //       textAlign: UIAlignment.textAlign(viewModel
+          //           .productListingModule!.displaySettings!.titleAlignment),
+          //       style: AppTextStyle.titleSmall.copyWith(color: AppColor.title)),
         ],
       ),
     );

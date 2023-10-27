@@ -155,7 +155,18 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
           else
             _VolumePricing(),
           if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
-            _CoinGradeSpecification()
+            _CoinGradeSpecification(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Button(
+              "Add To Cart",
+              width: double.infinity,
+              valueKey: const ValueKey("btnAddToCart"),
+              color: AppColor.orange,
+              borderColor: AppColor.orange,
+              onPressed: () {},
+            ),
+          ),
         ],
       ),
     );
@@ -166,7 +177,7 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 0),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 10),
       color: AppColor.white,
       width: double.infinity,
       child: Column(
@@ -428,18 +439,22 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text("Volume Discount Pricing",
-                      textScaleFactor: 1, style: AppTextStyle.titleLarge),
+                  const Text(
+                    "Volume Discount Pricing",
+                    textScaleFactor: 1,
+                    style: AppTextStyle.titleMedium,
+                  ),
                   HorizontalSpacing.d5px(),
                   InkWell(
-                      onTap: () {},
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 3.0),
-                        child: Icon(
-                          Icons.info_outline,
-                          size: 20,
-                        ),
-                      ))
+                    onTap: () {},
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 3.0),
+                      child: Icon(
+                        Icons.info_outline,
+                        size: 20,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -451,13 +466,15 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 child: Wrap(
                   spacing: 7,
                   children: [
-                    ...viewModel.productDetails?.volumePricing?.map((e) {
+                    ...viewModel.productDetails?.volumePricing?.first
+                            ?.productPricesByPaymentType
+                            ?.map((e) {
                           return ChipItem(
-                            text: e.tier ?? '-',
+                            text: e.name ?? '-',
                             onTap: () {
-                              viewModel.selectedVolumePricing = e;
+                              viewModel.selectedPaymentType = e;
                             },
-                            isSelected: viewModel.selectedVolumePricing == e,
+                            isSelected: viewModel.selectedPaymentType == e,
                           );
                         }).toList() ??
                         []
@@ -465,38 +482,76 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 ),
               ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColor.primary.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: AppColor.primary),
-              ),
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              width: double.infinity,
-              child: ListView.separated(
-                primary: false,
-                shrinkWrap: true,
-                itemCount: viewModel.selectedVolumePricing
-                        ?.productPricesByPaymentType?.length ??
-                    0,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                separatorBuilder: (context, index) {
-                  return AppStyle.customDivider;
-                },
-                itemBuilder: (context, index) {
-                  ProductPricesByPaymentType? pricing = viewModel
-                      .selectedVolumePricing
-                      ?.productPricesByPaymentType?[index];
 
-                  return _VolumeDiscountCard(
-                    title: pricing?.name ?? '-',
-                    price: pricing?.formattedPrice ?? "-",
-                    strikeThrough:
-                        viewModel.selectedVolumePricing!.strikeThroughEnabled!,
-                  );
-                },
+            Container(
+              alignment: Alignment.centerLeft,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.only(
+                    left: 15, right: 15, top: 10, bottom: 15),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...viewModel.productDetails?.volumePricing
+                            ?.map((volumePricing) {
+                          ProductPricesByPaymentType? pricing = volumePricing
+                              ?.productPricesByPaymentType
+                              ?.firstWhere((element) =>
+                                  element.name ==
+                                  viewModel.selectedPaymentType?.name);
+
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: _VolumeDiscountCard(
+                              title: volumePricing?.tier ?? '-',
+                              price: pricing?.formattedPrice ?? "-",
+                              strikeThrough: viewModel
+                                  .selectedVolumePricing!.strikeThroughEnabled!,
+                              selected: viewModel.selectedVolumePricing ==
+                                  volumePricing,
+                              onTap: () {
+                                viewModel.selectedVolumePricing = volumePricing;
+                              },
+                            ),
+                          );
+                        }).toList() ??
+                        []
+                  ],
+                ),
               ),
             ),
+
+            // Container(
+            //   margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            //   width: double.infinity,
+            //   height: 100,
+            //   child: ListView.separated(
+            //     primary: false,
+            //     shrinkWrap: true,
+            //     itemCount: viewModel.productDetails?.volumePricing?.length ?? 0,
+            //     padding: const EdgeInsets.symmetric(vertical: 10),
+            //     scrollDirection: Axis.horizontal,
+            //     separatorBuilder: (context, index) {
+            //       return Container();
+            //     },
+            //     itemBuilder: (context, index) {
+            //       VolumePricing? volumePricing =
+            //           viewModel.productDetails?.volumePricing?[index];
+            //
+            //       ProductPricesByPaymentType? pricing = volumePricing
+            //           ?.productPricesByPaymentType
+            //           ?.firstWhere((element) =>
+            //               element.name == viewModel.selectedPaymentType?.name);
+            //
+            //       return _VolumeDiscountCard(
+            //         title: volumePricing?.tier ?? '-',
+            //         price: pricing?.formattedPrice ?? "-",
+            //         strikeThrough:
+            //             viewModel.selectedVolumePricing!.strikeThroughEnabled!,
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ));
   }
@@ -508,38 +563,64 @@ class _VolumeDiscountCard extends StatelessWidget {
   String? offerText;
   bool strikeThrough;
 
+  bool selected;
+  Function onTap;
+
   _VolumeDiscountCard({
     required this.title,
     required this.price,
     required this.strikeThrough,
+    required this.onTap,
     this.offerText,
+    this.selected = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      width: double.infinity,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: AppTextStyle.bodyMedium.copyWith(
-                fontWeight: FontWeight.w500,
-                decoration: strikeThrough ? TextDecoration.lineThrough : null),
+    return InkWell(
+      onTap: () {
+        onTap();
+      },
+      borderRadius: BorderRadius.circular(5),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: BoxDecoration(
+          color:AppColor.primary.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color:  AppColor.primary ,
           ),
-          VerticalSpacing.d5px(),
-          Text(
-            price,
-            style: AppTextStyle.bodyMedium.copyWith(
-                fontWeight: FontWeight.w500,
-                decoration: strikeThrough ? TextDecoration.lineThrough : null),
-            textAlign: TextAlign.center,
-          ),
-          // if (offerText?.isNotEmpty == true) Text(offerText!),
-        ],
+        ),
+        width: MediaQuery.of(context).size.width / 3.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Qty",
+              style: AppTextStyle.bodySmall.copyWith(
+                  decoration:
+                      strikeThrough ? TextDecoration.lineThrough : null),
+            ),
+
+            Text(
+              title,
+              style: AppTextStyle.bodyMedium.copyWith(
+                  fontWeight: FontWeight.w500,
+                  decoration:
+                      strikeThrough ? TextDecoration.lineThrough : null),
+            ),
+            VerticalSpacing.d5px(),
+            Text(
+              price,
+              style: AppTextStyle.bodyLarge.copyWith(
+                  fontWeight: FontWeight.w500,
+                  decoration:
+                      strikeThrough ? TextDecoration.lineThrough : null),
+              textAlign: TextAlign.center,
+            ),
+            // if (offerText?.isNotEmpty == true) Text(offerText!),
+          ],
+        ),
       ),
     );
   }
