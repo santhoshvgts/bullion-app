@@ -9,6 +9,7 @@ class OrderDetailsViewModel extends VGTSBaseViewModel {
   Order? _orderDetail;
   bool _isExpanded = false;
   String? _date;
+  late ScrollController _scrollController;
 
   bool get isExpanded => _isExpanded;
 
@@ -20,7 +21,13 @@ class OrderDetailsViewModel extends VGTSBaseViewModel {
   }
 
   init(String orderID) {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
     getOrderDetails(orderID);
+  }
+
+  _onScroll() {
+    notifyListeners();
   }
 
   getOrderDetails(String orderID) async {
@@ -35,6 +42,8 @@ class OrderDetailsViewModel extends VGTSBaseViewModel {
   }
 
   Order? get orderDetail => _orderDetail;
+
+  ScrollController get scrollController => _scrollController;
 
   void formatDate() {
     DateFormat dateFormat = DateFormat('M/d/y h:m:s a');
