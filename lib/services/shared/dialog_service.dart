@@ -15,6 +15,7 @@ class DialogService {
 
   late Function(AlertRequest) _bottomSheetListener;
   late Function(AlertRequest) _drawerListerner;
+  late Function(AlertRequest) _loaderListerner;
   late Function(AlertRequest) _displayMessageListener;
 
   void registerDialogListener(Function(AlertRequest) showDialogListener) {
@@ -33,6 +34,10 @@ class DialogService {
     _drawerListerner = drawerListerner;
   }
 
+  void registerLoaderListener(Function(AlertRequest) loaderListerner) {
+    _loaderListerner = loaderListerner;
+  }
+
   void registerDisplayMessageListener(Function(AlertRequest) displayMessageListener) {
     _displayMessageListener = displayMessageListener;
   }
@@ -40,6 +45,12 @@ class DialogService {
   Future<AlertResponse> showDrawer({ValueKey key = const ValueKey("defaultDialogKey"), Widget? child}) {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
     _drawerListerner(AlertRequest(contentWidget: child));
+    return _dialogCompleterMap[key]!.future;
+  }
+
+  Future<AlertResponse> showLoader({ValueKey key = const ValueKey("defaultDialogKey"), bool? isBusy}) {
+    _dialogCompleterMap[key] = Completer<AlertResponse>();
+    _loaderListerner(AlertRequest(isDismissible: isBusy));
     return _dialogCompleterMap[key]!.future;
   }
 

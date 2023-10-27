@@ -3,10 +3,12 @@
 import 'package:bullion/core/models/alert/alert_request.dart';
 import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:flutter/material.dart';
+import 'package:gif_view/gif_view.dart';
 
 class DialogManager extends StatefulWidget {
   final Widget? child;
@@ -28,6 +30,7 @@ class _DialogManagerState extends State<DialogManager> {
     _dialogService!.registerBottomSheetListener(_bottomSheet);
     _dialogService!.registerDisplayMessageListener(_showDisplayMessageDialog);
     _dialogService!.registerDrawerListener(_showCustomDrawer);
+    _dialogService!.registerLoaderListener(_showCustomloader);
   }
 
   @override
@@ -210,6 +213,37 @@ class _DialogManagerState extends State<DialogManager> {
                       width: MediaQuery.of(context).size.width * 0.75, // 30% of screen width
                       color: AppColor.scaffoldBackground,
                       child: request.contentWidget)));
+        });
+  }
+
+  void _showCustomloader(AlertRequest request) {
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionDuration: const Duration(milliseconds: 300),
+        pageBuilder: (BuildContext buildContext, Animation animation, Animation secondaryAnimation) {
+          return Center(
+            child: Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                padding: const EdgeInsets.all(10),
+                child: SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: GifView.asset(
+                    Gif.appBullLogo,
+                    height: 30,
+                    width: 30,
+                    frameRate: 30, // default is 15 FPS
+                  ),
+                )),
+          );
         });
   }
 

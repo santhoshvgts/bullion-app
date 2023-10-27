@@ -2,7 +2,6 @@
 
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
-import 'package:bullion/core/models/module/selected_item_list.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
@@ -231,25 +230,9 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
 
           HorizontalSpacing.d10px(),
 
-          PopupMenuButton<SelectedItemList>(
-            elevation: 0,
-            color: AppColor.scaffoldBackground,
-            onSelected: (value) => viewModel.onSortPressed(value.value ?? ''),
-            itemBuilder: (BuildContext context) =>
-                viewModel.productModel.sortOptions!
-                    .map(
-                      (e) => PopupMenuItem(
-                        value: e,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text(
-                            e.text ?? '',
-                            style: AppTextStyle.bodyLarge,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
+          HorizontalSpacing.d10px(),
+          InkWell(
+            onTap: () => viewModel.onSortPressed(),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -277,13 +260,6 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
               ),
             ),
           ),
-
-          // if (viewModel.productListingModuleTitle != null)
-          //   AutoSizeText(viewModel.productListingModuleTitle!,
-          //       textScaleFactor: 1,
-          //       textAlign: UIAlignment.textAlign(viewModel
-          //           .productListingModule!.displaySettings!.titleAlignment),
-          //       style: AppTextStyle.titleSmall.copyWith(color: AppColor.title)),
         ],
       ),
     );

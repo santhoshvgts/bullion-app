@@ -383,8 +383,17 @@ class AppRouter {
                   path: settings.name,
                 ));
 
-        // case "market_news":
-        //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
+      // case "market_news":
+      //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
+
+      case "account":
+        if (uri.pathSegments[1] == "my-orders") {
+          return MaterialPageRoute(
+              builder: (_) =>
+                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+              settings: RouteSettings(name: settings.name));
+        }
+
         // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
         return TransparentRoute(
             builder: (context) =>
@@ -452,6 +461,15 @@ class AppRouter {
     Uri uri = Uri.parse(settings.name!);
     if (uri.pathSegments.length > 1) {
       switch (uri.pathSegments[1].toLowerCase()) {
+        case "my-orders":
+          Map<String, dynamic> data = {};
+          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
+          data['from_success'] = false;
+          return MaterialPageRoute(
+              builder: (_) =>
+                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+              settings: RouteSettings(name: settings.name));
+
         // Order Details
         case "my-orders":
           Map<String, dynamic> data = new Map();
