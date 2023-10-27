@@ -12,6 +12,8 @@ import '../core/res/styles.dart';
 
 class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
   final String orderID;
+  static const double _expandedHeight = 100;
+  static const double _scrollOffset = 36;
 
   const OrderDetails(this.orderID, {super.key});
 
@@ -68,12 +70,12 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                   Navigator.of(context).maybePop();
                 },
               ),
-              expandedHeight: 100,
+              expandedHeight: _expandedHeight,
               pinned: true,
               flexibleSpace: LayoutBuilder(
                 builder: (context, constraints) {
                   return FlexibleSpaceBar(
-                    title: viewModel.scrollController.offset > 40
+                    title: viewModel.scrollController.offset > _scrollOffset
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,18 +89,24 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                         : const Text(
                             "",
                           ),
-                    background: const Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
-                          child: Text(
-                            "Order Details",
-                            style: AppTextStyle.titleLarge,
+                    background: Visibility(
+                      visible:
+                          viewModel.scrollController.offset < _scrollOffset,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 16.0, bottom: 8.0),
+                            child: Text(
+                              "Order Details",
+                              style: AppTextStyle.titleLarge
+                                  .copyWith(color: AppColor.text),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },
