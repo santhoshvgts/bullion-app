@@ -154,30 +154,35 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                             indent: 16,
                                             endIndent: 16,
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 16.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Text(
-                                                  "Payment Method",
-                                                  style:
-                                                      AppTextStyle.labelSmall,
-                                                ),
-                                                Text(
-                                                  viewModel
-                                                          .filteredList?[index]
-                                                          .orderSummary?[3]
-                                                          .value ??
-                                                      "",
-                                                  style:
-                                                      AppTextStyle.labelLarge,
-                                                )
-                                              ],
+                                          Flexible(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 16.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    "Payment Method",
+                                                    style:
+                                                        AppTextStyle.labelSmall,
+                                                  ),
+                                                  Text(
+                                                    viewModel
+                                                            .filteredList?[
+                                                                index]
+                                                            .orderSummary?[3]
+                                                            .value ??
+                                                        "",
+                                                    style:
+                                                        AppTextStyle.labelLarge,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           )
                                         ],
