@@ -1,6 +1,7 @@
 class Images {
   static const String appLogoWhite = "assets/images/app_logo_white.png";
   static const String appLogo = "assets/images/app_logo.png";
+  static const String appBullLogo = "assets/images/bull_logo.png";
   static const String googleIcon = "assets/images/google_icon.png";
   static const String facebookIcon = "assets/images/facebook_icon.png";
 
@@ -47,8 +48,7 @@ class Images {
   static const String trending_down = "assets/images/trending_down.png";
 
   // MARKET NEWS
-  static const String market_news_banner =
-      "assets/images/market_news_banner.png";
+  static const String market_news_banner = "assets/images/market_news_banner.png";
 
   //DEALS
   static const String deals_coin = "assets/images/deals_coin.png";
@@ -66,31 +66,25 @@ class Images {
   static const String iconEmptyAddress = "assets/images/icon_empty_address.png";
   static const String iconEmptyReview = "assets/images/icon_empty_review.png";
   static const String iconEmptyOrders = "assets/images/icon_empty_orders.png";
-  static const String iconEmptyPortfolio =
-      "assets/images/icon_empty_portfolio.png";
-  static const String iconEmptyNotification =
-      "assets/images/icon_empty_notification.png";
+  static const String iconEmptyPortfolio = "assets/images/icon_empty_portfolio.png";
+  static const String iconEmptyNotification = "assets/images/icon_empty_notification.png";
 
   static const String iconFavBottom = "assets/images/icon_fav_bottom.png";
-  static const String iconPriceAlertBottom =
-      "assets/images/icon_price_alert_bottom.png";
+  static const String iconPriceAlertBottom = "assets/images/icon_price_alert_bottom.png";
   static const String iconAlertBottom = "assets/images/icon_alert_bottom.png";
   static const String iconCartBottom = "assets/images/icon_cart_bottom.png";
 
   static const String priceAlertIcon = "assets/images/v2/price_alert_icon.png";
   static const String favoriteIcon = "assets/images/v2/favorite_icon.png";
-  static const String favoriteIconFilled =
-      "assets/images/v2/favorite_icon_filled.png";
+  static const String favoriteIconFilled = "assets/images/v2/favorite_icon_filled.png";
   static const String cartIcon = "assets/images/v2/cart_icon.png";
   static const String userIcon = "assets/images/v2/user_icon.png";
 
   static const String iconTruckOrder = "assets/images/v2/icon_truck_order.png";
 
   static const String prefScreenHome = "assets/images/v2/pref_screen_home.png";
-  static const String prefScreenSpotPrice =
-      "assets/images/v2/pref_screen_spot_price.png";
-  static const String prefScreenDeals =
-      "assets/images/v2/pref_screen_deals.png";
+  static const String prefScreenSpotPrice = "assets/images/v2/pref_screen_spot_price.png";
+  static const String prefScreenDeals = "assets/images/v2/pref_screen_deals.png";
 
   static const String intro1 = "assets/images/v2/intro/intro_1.jpg";
   static const String intro2 = "assets/images/v2/intro/intro_2.jpg";
@@ -100,13 +94,10 @@ class Images {
   static const String introBg = "assets/images/v2/intro/intro_bg.jpg";
 
   static const String bullionCard = "assets/images/v2/bullion-card.jpeg";
-  static const String bullionCardPortrait =
-      "assets/images/v2/bullion_card_portrait.png";
-  static const String bullionCardFull =
-      "assets/images/v2/bullion_card_full.png";
+  static const String bullionCardPortrait = "assets/images/v2/bullion_card_portrait.png";
+  static const String bullionCardFull = "assets/images/v2/bullion_card_full.png";
   static const String bullionBgFrame = "assets/images/v2/bullion_bg_frame.png";
-  static const String bullionBgEllipse =
-      "assets/images/v2/bullion_bg_ellipse.png";
+  static const String bullionBgEllipse = "assets/images/v2/bullion_bg_ellipse.png";
 
   static const String bullionReward = "assets/images/v2/reward.png";
 
@@ -131,4 +122,8 @@ class Images {
   static const String sell = "assets/images/v2/settings/sell.png";
   static const String settings = "assets/images/v2/settings/settings.png";
   static const String support = "assets/images/v2/settings/support.png";
+}
+
+class Gif {
+  static const String appBullLogo = "assets/gif/bull_logo.gif";
 }

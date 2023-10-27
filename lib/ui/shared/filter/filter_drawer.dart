@@ -38,143 +38,128 @@ class FilterDrawer extends VGTSBuilderWidget<FilterDrawerViewModel> {
   }) : super(key: key);
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      FilterDrawerViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, FilterDrawerViewModel viewModel, Widget? child) {
     return SafeArea(
       child: Material(
         color: AppColor.scaffoldBackground,
-        child: viewModel.isBusy
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: AppColor.primary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            VerticalSpacing.d10px(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                HorizontalSpacing.d10px(),
+                const Expanded(
+                  child: Text(
+                    'All Filters',
+                    style: AppTextStyle.titleLarge,
+                  ),
                 ),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  VerticalSpacing.d10px(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                IconButton(
+                  onPressed: () => locator<DialogService>().dialogComplete(AlertResponse(status: true)),
+                  icon: const Icon(
+                    CupertinoIcons.clear,
+                    size: 20,
+                  ),
+                )
+              ],
+            ),
+            AppStyle.customDivider,
+            VerticalSpacing.d5px(),
+            Expanded(
+              child: ListView.separated(
+                itemCount: viewModel.filterData?.length ?? 0,
+                separatorBuilder: (context, index) {
+                  return AppStyle.customDivider;
+                },
+                itemBuilder: (context, index) {
+                  return Column(
                     children: [
-                      HorizontalSpacing.d10px(),
-                      const Expanded(
-                        child: Text(
-                          'All Filters',
-                          style: AppTextStyle.titleLarge,
+                      Theme(
+                        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                        child: CustomExpansionTile(
+                          initiallyExpanded: false,
+                          onExpansionChanged: (value) => viewModel.onFilterSectionChange(index),
+                          trailing: const Padding(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Icon(Icons.arrow_drop_down_rounded, size: 30, color: Colors.black38),
+                          ),
+                          title: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 15,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  viewModel.filterData?[index].displayName ?? '',
+                                  style: AppTextStyle.titleSmall.copyWith(color: viewModel.filterData![index].hasSelectedItems! ? AppColor.primary : AppColor.text),
+                                ),
+                                HorizontalSpacing.d5px(),
+                                viewModel.filterData![index].hasSelectedItems!
+                                    ? Text(
+                                        '(${viewModel.selectedFilterItemCount?[index]})',
+                                        style: AppTextStyle.titleSmall.copyWith(color: AppColor.primary),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ],
+                            ),
+                          ),
+                          children: viewModel.productModel.facets![index].items!
+                              .asMap()
+                              .map((index, item) {
+                                return MapEntry(
+                                  index,
+                                  Container(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 20.0, top: 5),
+                                    child: _BuildRow(
+                                      item,
+                                      onSelect: (item) async {
+                                        locator<DialogService>().showLoader();
+                                        await onSelect!(item.targetUrl);
+                                        locator<DialogService>().dialogComplete(AlertResponse(status: true));
+                                      },
+                                    ),
+                                  ),
+                                );
+                              })
+                              .values
+                              .toList(),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          CupertinoIcons.clear,
-                          size: 20,
-                        ),
-                      )
                     ],
-                  ),
-                  AppStyle.customDivider,
-                  VerticalSpacing.d5px(),
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: viewModel.filterData?.length ?? 0,
-                      separatorBuilder: (context, index) {
-                        return AppStyle.customDivider;
-                      },
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Theme(
-                              data: Theme.of(context)
-                                  .copyWith(dividerColor: Colors.transparent),
-                              child: CustomExpansionTile(
-                                title: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 15,
-                                  ),
-                                  child: Text(
-                                    viewModel.filterData?[index].displayName ??
-                                        '',
-                                  ),
-                                ),
-                                children: viewModel.selectedFacet!.items!
-                                    .asMap()
-                                    .map((index, item) {
-                                      return MapEntry(
-                                        index,
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                              left: 15.0,
-                                              right: 10.0,
-                                              bottom: 14.0,
-                                              top: 10),
-                                          child: _BuildRow(
-                                            item,
-                                            onSelect: (item) async {
-                                              viewModel.setBusy(true);
-                                              await onSelect!(item.targetUrl);
-                                              viewModel.setBusy(false);
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    })
-                                    .values
-                                    .toList(),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      border: AppStyle.divider,
-                      color: Colors.white,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Button.outline(
-                            "Reset",
-                            width: double.infinity,
-                            height: 35,
-                            textStyle: AppTextStyle.titleSmall.copyWith(
-                              color: AppColor.primary,
-                            ),
-                            valueKey: const ValueKey("btnReset"),
-                            onPressed: () async {
-                              locator<DialogService>()
-                                  .dialogComplete(AlertResponse(status: true));
-                              viewModel.setBusy(true);
-                              await onSelect!(
-                                viewModel.productModel.resetFilterUrl,
-                              );
-
-                              viewModel.setBusy(false);
-                            },
-                          ),
-                        ),
-                        HorizontalSpacing.d10px(),
-                        Expanded(
-                          child: Button(
-                            "Save",
-                            width: double.infinity,
-                            height: 35,
-                            valueKey: const ValueKey("btnReset"),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 10,
+              ),
+              decoration: BoxDecoration(
+                border: AppStyle.divider,
+                color: Colors.white,
+              ),
+              child: Button.outline(
+                "Reset",
+                width: double.infinity,
+                height: 35,
+                textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.primary),
+                valueKey: const ValueKey("btnReset"),
+                onPressed: () async {
+                  locator<DialogService>().dialogComplete(AlertResponse(status: true));
+                  locator<DialogService>().showLoader();
+                  await onSelect!(
+                    viewModel.productModel.resetFilterUrl,
+                  );
+                  locator<DialogService>().dialogComplete(AlertResponse(status: true));
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -191,24 +176,33 @@ class _BuildRow extends VGTSWidget<FilterDrawerViewModel> {
   const _BuildRow(this._item, {this.onSelect});
 
   @override
-  Widget widget(BuildContext context, AppLocalizations locale,
-      FilterDrawerViewModel viewModel) {
-    return Row(
-      children: <Widget>[
-        Checkbox(
-          value: _item.isSelected,
-          checkColor: _item.isSelected! ? AppColor.primary : Colors.black12,
-          onChanged: (bool? value) => onSelect!(_item),
-        ),
-        Text(_item.displayName ?? ''),
-        Expanded(
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: Text('(${(_item.count ?? '').toString()})'),
+  Widget widget(BuildContext context, AppLocalizations locale, FilterDrawerViewModel viewModel) {
+    return InkWell(
+      onTap: () => onSelect!(_item),
+      splashColor:AppColor.primary.withOpacity(0.2) ,
+      
+      child: Row(
+        children: <Widget>[
+          Checkbox(
+            value: _item.isSelected,
+            activeColor: _item.isSelected! ? AppColor.primary : Colors.black12,
+            onChanged: (bool? value) =>  onSelect!(_item),
           ),
-        ),
-        HorizontalSpacing.custom(value: 10),
-      ],
+          Expanded(
+              child: Text(
+            _item.displayName ?? '',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          )),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Text('(${(_item.count ?? '').toString()})'),
+            ),
+          ),
+          
+        ],
+      ),
     );
   }
 }
