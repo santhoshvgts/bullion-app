@@ -2,6 +2,8 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_detail/product_price.dart';
 import 'package:bullion/core/models/module/product_detail/volume_prcing.dart';
 import 'package:bullion/core/models/module/product_item.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 
 class ProductDetailViewModel extends VGTSBaseViewModel {
@@ -54,5 +56,10 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
     _slug = slug;
 
     notifyListeners();
+  }
+
+  addToCart() {
+    locator<CartService>()
+        .addItemToCart(_productDetails!.overview!.productId, 1);
   }
 }

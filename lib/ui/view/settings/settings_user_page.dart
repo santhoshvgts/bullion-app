@@ -388,7 +388,9 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         height: 42,
                         borderColor: AppColor.primary,
                         valueKey: const Key("btnSignInCreate"),
-                        onPressed: () {},
+                        onPressed: () {
+                          // locator<NavigationService>().pushNamed(Routes.login);
+                        },
                       )
                     ],
                   ),

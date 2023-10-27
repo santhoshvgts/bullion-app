@@ -6,18 +6,35 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import '../settings/settings_user_page.dart';
 
 class DashboardViewModel extends VGTSBaseViewModel {
-  final PersistentTabController bottomNavController =
-      PersistentTabController(initialIndex: 0);
+  final PersistentTabController bottomNavController = PersistentTabController(
+    initialIndex: 0,
+  );
+
+  var pageNames = [
+    '/pages/home',
+    '/pages/deals',
+    '/spot-prices',
+    '/pages/deals',
+    '/settings'
+  ];
 
   final List<Widget> pages = [
     const DashboardContentPage(
-        key: PageStorageKey('Home'), path: "/pages/home"),
+      key: PageStorageKey('Home'),
+      path: "/pages/home",
+    ),
     const DashboardContentPage(
-        key: PageStorageKey('Shop'), path: "/pages/shop"),
+      key: PageStorageKey('Shop'),
+      path: "/pages/shop",
+    ),
     const DashboardContentPage(
-        key: PageStorageKey('Charts'), path: "/spot-prices"),
+      key: PageStorageKey('Charts'),
+      path: "/spot-prices",
+    ),
     const DashboardContentPage(
-        key: PageStorageKey('Spot Price'), path: "/pages/deals"),
+      key: PageStorageKey('Spot Price'),
+      path: "/pages/deals",
+    ),
     const SettingsUserPage()
   ];
 }

@@ -123,6 +123,9 @@ class Button extends StatelessWidget {
             : MaterialButton(
                 key: valueKey,
                 onPressed: disabled || loading ? null : onPressed,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: loading
                     ? const SizedBox(

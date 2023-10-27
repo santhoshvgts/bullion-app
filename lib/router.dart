@@ -1,8 +1,10 @@
+import 'package:bullion/core/models/module/cart/display_message.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
+import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
 import 'package:bullion/ui/view/core/search/search_page.dart';
@@ -155,11 +157,14 @@ class AppRouter {
 
       // Cart
       //
-      //   case Routes.viewCart:
-      //     return MaterialPageRoute(
-      //         builder: (_) => CartPage(redirectDisplayMessage: settings.arguments as DisplayMessage?,),
-      //         settings: RouteSettings(name: settings.name));
-      //
+      case Routes.viewCart:
+        return MaterialPageRoute(
+          builder: (_) => CartPage(
+            redirectDisplayMessage: settings.arguments as DisplayMessage?,
+          ),
+          settings: RouteSettings(name: settings.name),
+        );
+
       //   case Routes.reviewCart:
       //     return MaterialPageRoute(
       //         builder: (_) => ReviewOrderPage(
