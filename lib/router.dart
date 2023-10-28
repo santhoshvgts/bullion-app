@@ -386,18 +386,18 @@ class AppRouter {
       // case "market_news":
       //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
 
-      case "account":
-        if (uri.pathSegments[1] == "my-orders") {
-          return MaterialPageRoute(
-              builder: (_) =>
-                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
-              settings: RouteSettings(name: settings.name));
-        }
-
-        // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
-        return TransparentRoute(
-            builder: (context) =>
-                PageMiddleware(settings.name, settings.arguments));
+      // case "account":
+      //   if (uri.pathSegments[1] == "my-orders") {
+      //     return MaterialPageRoute(
+      //         builder: (_) =>
+      //             OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+      //         settings: RouteSettings(name: settings.name));
+      //   }
+      //
+      //   // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
+      //   return TransparentRoute(
+      //       builder: (context) =>
+      //           PageMiddleware(settings.name, settings.arguments));
 
       case "spot-prices":
       case "spotprices":
@@ -581,8 +581,7 @@ class TransparentRoute extends PageRoute<void> {
   TransparentRoute({
     required this.builder,
     RouteSettings? settings,
-  })  : assert(builder != null),
-        super(settings: settings, fullscreenDialog: false);
+  }) : super(settings: settings, fullscreenDialog: false);
 
   final WidgetBuilder builder;
 
