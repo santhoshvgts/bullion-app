@@ -45,7 +45,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
       body: SingleChildScrollView(
           child: viewModel.isAuthenticated
               ? getAccountDetailsWidget(viewModel)
-              : getAccountWidget()),
+              : getAccountWidget(viewModel)),
     );
   }
 
@@ -148,7 +148,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               ),
             ),
             const SizedBox(height: 24),
-            getFooterSection(),
+            getFooterSection(isAuthenticated: viewModel.isAuthenticated),
           ],
         ),
         if (viewModel.isAuthenticated)
@@ -264,10 +264,10 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getFooterSection() {
+  Widget getFooterSection({bool isAuthenticated = false}) {
     return Container(
       color: AppColor.accountBg,
-      height: 500,
+      height: 516,
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.only(left: 16.0),
@@ -320,6 +320,20 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   style: AppTextStyle.bodyMedium
                       .copyWith(color: AppColor.navyBlue40)),
             ),
+            Visibility(
+              visible: isAuthenticated,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: InkWell(
+                  onTap: () {
+                    locator<AuthenticationService>().logout("");
+                  },
+                  child: Text('Logout',
+                      style: AppTextStyle.bodyMedium
+                          .copyWith(color: AppColor.navyBlue40)),
+                ),
+              ),
+            ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 48.0),
@@ -334,7 +348,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getAccountWidget() {
+  Widget getAccountWidget(SettingsUserViewModel viewModel) {
     return Stack(
       children: [
         Column(
@@ -388,7 +402,9 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         height: 42,
                         borderColor: AppColor.primary,
                         valueKey: const Key("btnSignInCreate"),
-                        onPressed: () {},
+                        onPressed: () {
+                          viewModel.showIntroScreen();
+                        },
                       )
                     ],
                   ),

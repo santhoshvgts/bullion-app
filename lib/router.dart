@@ -381,6 +381,7 @@ class AppRouter {
       // case "market_news":
       //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
 
+/*
       case "account":
         if (uri.pathSegments[1] == "my-orders") {
           return MaterialPageRoute(
@@ -393,6 +394,7 @@ class AppRouter {
         return TransparentRoute(
             builder: (context) =>
                 PageMiddleware(settings.name, settings.arguments));
+*/
 
       case "spot-prices":
       case "spotprices":
@@ -458,16 +460,6 @@ class AppRouter {
       switch (uri.pathSegments[1].toLowerCase()) {
         case "my-orders":
           Map<String, dynamic> data = {};
-          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-          data['from_success'] = false;
-          return MaterialPageRoute(
-              builder: (_) =>
-                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
-              settings: RouteSettings(name: settings.name));
-
-        // Order Details
-        case "my-orders":
-          Map<String, dynamic> data = new Map();
           data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
           data['from_success'] = false;
           return MaterialPageRoute(

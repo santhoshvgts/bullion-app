@@ -1,4 +1,5 @@
 import '../../../locator.dart';
+import '../../../router.dart';
 import '../../../services/authentication_service.dart';
 import '../vgts_base_view_model.dart';
 
@@ -27,5 +28,9 @@ class SettingsUserViewModel extends VGTSBaseViewModel {
     notifyListeners();
 
     //setState(ViewState.Idle);
+  }
+
+  showIntroScreen() {
+    navigationService.popAllAndPushNamed(Routes.login);
   }
 }
