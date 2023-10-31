@@ -31,6 +31,6 @@ class SettingsUserViewModel extends VGTSBaseViewModel {
   }
 
   showIntroScreen() {
-    navigationService.popAllAndPushNamed(Routes.login);
+    navigationService.pushNamed(Routes.login, arguments: {"fromMain" : false});
   }
 }

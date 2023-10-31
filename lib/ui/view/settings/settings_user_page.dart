@@ -44,8 +44,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
       ),
       body: SingleChildScrollView(
           child: viewModel.isAuthenticated
-              ? getAccountDetailsWidget(viewModel)
-              : getAccountWidget(viewModel)),
+              ? getAccountDetailsWidget(viewModel, context)
+              : getAccountWidget(viewModel, context)),
     );
   }
 
@@ -54,7 +54,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     return SettingsUserViewModel();
   }
 
-  Widget getAccountDetailsWidget(SettingsUserViewModel viewModel) {
+  Widget getAccountDetailsWidget(
+      SettingsUserViewModel viewModel, BuildContext context) {
     return Stack(
       children: [
         Column(
@@ -148,7 +149,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               ),
             ),
             const SizedBox(height: 24),
-            getFooterSection(isAuthenticated: viewModel.isAuthenticated),
+            getFooterSection(context,
+                isAuthenticated: viewModel.isAuthenticated),
           ],
         ),
         if (viewModel.isAuthenticated)
@@ -264,7 +266,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getFooterSection({bool isAuthenticated = false}) {
+  Widget getFooterSection(BuildContext context,
+      {bool isAuthenticated = false}) {
     return Container(
       color: AppColor.accountBg,
       height: 516,
@@ -326,7 +329,27 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 padding: const EdgeInsets.only(top: 16.0),
                 child: InkWell(
                   onTap: () {
-                    locator<AuthenticationService>().logout("");
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: const Text('Logout'),
+                        content: const Text("Do you want to logout?"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              locator<AuthenticationService>().logout("");
+                              Navigator.pop(context, 'OK');
+                            },
+                            child: const Text('Logout'),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   child: Text('Logout',
                       style: AppTextStyle.bodyMedium
@@ -348,7 +371,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getAccountWidget(SettingsUserViewModel viewModel) {
+  Widget getAccountWidget(
+      SettingsUserViewModel viewModel, BuildContext context) {
     return Stack(
       children: [
         Column(
@@ -359,7 +383,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               width: double.infinity,
             ),
             const SizedBox(height: 64),
-            getFooterSection()
+            getFooterSection(context)
           ],
         ),
         Positioned(
