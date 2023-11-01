@@ -73,41 +73,30 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
               expandedHeight: _expandedHeight,
               pinned: true,
               flexibleSpace: LayoutBuilder(
-                builder: (context, constraints) {
-                  return FlexibleSpaceBar(
-                    title: viewModel.scrollController.offset > _scrollOffset
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                                Text(
-                                  "Order Details",
-                                  style: AppTextStyle.titleLarge
-                                      .copyWith(color: AppColor.text),
-                                ),
-                              ])
-                        : const Text(
-                            "",
-                          ),
-                    background: Visibility(
-                      visible:
-                          viewModel.scrollController.offset < _scrollOffset,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 16.0, bottom: 8.0),
-                            child: Text(
-                              "Order Details",
-                              style: AppTextStyle.titleLarge
-                                  .copyWith(color: AppColor.text),
-                            ),
-                          ),
-                        ],
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  double percent = ((constraints.maxHeight - kToolbarHeight) *
+                      100 /
+                      (10 - kToolbarHeight));
+                  double dx = 0;
+
+                  dx = 100 + percent;
+
+                  //To reduce the space between start to end
+                  dx = (dx * 64) / 100;
+
+                  return Stack(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: kToolbarHeight / 4, left: 16),
+                        child: Transform.translate(
+                          offset: Offset(
+                              dx, constraints.maxHeight - kToolbarHeight),
+                          child: const Text("Order Details",
+                              style: AppTextStyle.titleLarge),
+                        ),
                       ),
-                    ),
+                    ],
                   );
                 },
               ),
