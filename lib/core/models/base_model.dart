@@ -7,6 +7,7 @@ import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/redirection.dart';
 import 'package:bullion/core/models/module/search_module.dart';
+import 'package:bullion/core/models/user_address.dart';
 import 'package:vgts_plugin/form/base_object.dart';
 
 import 'module/order.dart';
@@ -82,6 +83,9 @@ class BaseModel extends BaseObject {
 
       case SearchResult:
         return SearchResult() as T;
+
+      case UserAddress:
+        return UserAddress() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }

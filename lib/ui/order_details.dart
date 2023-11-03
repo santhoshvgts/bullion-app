@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bullion/ui/view/order_details_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import '../core/res/styles.dart';
 class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
   final String orderID;
   static const double _expandedHeight = 100;
-  static const double _scrollOffset = 36;
+  //static const double _scrollOffset = 36;
 
   const OrderDetails(this.orderID, {super.key});
 
@@ -72,34 +73,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
               ),
               expandedHeight: _expandedHeight,
               pinned: true,
-              flexibleSpace: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  double percent = ((constraints.maxHeight - kToolbarHeight) *
-                      100 /
-                      (10 - kToolbarHeight));
-                  double dx = 0;
-
-                  dx = 100 + percent;
-
-                  //To reduce the space between start to end
-                  dx = (dx * 64) / 100;
-
-                  return Stack(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: kToolbarHeight / 4, left: 16),
-                        child: Transform.translate(
-                          offset: Offset(
-                              dx, constraints.maxHeight - kToolbarHeight),
-                          child: const Text("Order Details",
-                              style: AppTextStyle.titleLarge),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+              flexibleSpace: const AnimatedFlexibleSpace(title: "Order Details"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy

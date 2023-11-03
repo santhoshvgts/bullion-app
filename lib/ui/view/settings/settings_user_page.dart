@@ -246,9 +246,14 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
-                      getTextsLayout(
-                        const Icon(Icons.pin_drop_outlined),
-                        "Addresses",
+                      InkWell(
+                        onTap: () {
+                          locator<NavigationService>().pushNamed(Routes.address);
+                        },
+                        child: getTextsLayout(
+                          const Icon(Icons.pin_drop_outlined),
+                          "Addresses",
+                        ),
                       ),
                       const Divider(
                         color: AppColor.platinumColor,
