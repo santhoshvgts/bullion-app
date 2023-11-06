@@ -77,6 +77,7 @@ class AppColor {
   static const Color orangePeel = Color(0xffFF9800);
   static const Color eggSour = Color(0xffFFF3E0);
   static const Color mintGreen = Color(0xff31BF65);
+  static const Color sherwoodGreen = Color(0xff00372E);
 
   static Color metalColor(String metalName) {
     switch (metalName.toLowerCase()) {

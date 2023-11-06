@@ -2,11 +2,15 @@ import 'dart:io';
 
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
+import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/res/styles.dart';
+import '../../../locator.dart';
+import '../../../router.dart';
+import '../../../services/shared/navigator_service.dart';
 import '../vgts_builder_widget.dart';
 import 'address_view_model.dart';
 
@@ -35,6 +39,20 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                 Navigator.of(context).maybePop();
               },
             ),
+            actions: <Widget>[
+              Button(
+                "Add Address",
+                valueKey: const Key("addAddress"),
+                onPressed: () {
+                    locator<NavigationService>().pushNamed(Routes.addEditAddress);
+                },
+                iconWidget: Icon(Icons.add, color: AppColor.cyanBlue),
+                color: AppColor.white,
+                borderColor: AppColor.white,
+                textStyle:
+                    AppTextStyle.titleSmall.copyWith(color: AppColor.cyanBlue),
+              )
+            ],
             expandedHeight: 100,
             pinned: true,
             flexibleSpace: const AnimatedFlexibleSpace(title: "Address"),
@@ -160,6 +178,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
             ),
             const SizedBox(height: 4),
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Row(

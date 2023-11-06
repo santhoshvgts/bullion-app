@@ -12,6 +12,7 @@ import 'package:bullion/ui/view/main/login/login_page.dart';
 import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
+import 'package:bullion/ui/view/settings/add_edit_address_page.dart';
 import 'package:bullion/ui/view/settings/address_page.dart';
 import 'package:bullion/ui/view/settings/orders_page.dart';
 import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
@@ -87,6 +88,7 @@ class Routes {
   static const String myOrders = "/account/orders";
   static const String orderDetails = "/account/orderDetails";
   static const String address = "/account/address";
+  static const String addEditAddress = "/account/addEditAddress";
   static const String myRewards = "/account/myrewards";
   static const String myRewardTransactions = "/account/myrewards/transaction";
 
@@ -295,6 +297,11 @@ class AppRouter {
         case Routes.address:
           return MaterialPageRoute(
               builder: (_) => AddressPage(),
+              settings: RouteSettings(name: settings.name));
+
+        case Routes.addEditAddress:
+          return MaterialPageRoute(
+              builder: (_) => AddEditAddressPage(),
               settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myPortfolio:
