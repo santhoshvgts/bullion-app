@@ -28,43 +28,75 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
       SpotPriceViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      SpotPriceViewModel viewModel, Widget? child) {
-    return GridView.builder(
-        primary: false,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.spotPriceList!.isEmpty
-            ? 4
-            : viewModel.spotPriceList!.length,
-        padding: const EdgeInsets.only(left: 15, right: 15, top: 2, bottom: 15),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, mainAxisSpacing: 15, crossAxisSpacing: 15),
-        itemBuilder: (context, index) {
-          if (viewModel.spotPriceList!.isEmpty) {
-            return Container(
-              decoration: BoxDecoration(
-                  color: AppColor.white,
-                  boxShadow: AppStyle.mildCardShadow,
-                  borderRadius: const BorderRadius.all(Radius.circular(10))),
-              width: double.infinity,
-              child: ShimmerEffect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10))),
-            );
-          }
+  Widget viewBuilder(
+    BuildContext context,
+    AppLocalizations locale,
+    SpotPriceViewModel viewModel,
+    Widget? child,
+  ) {
+    return Container(
+      color: AppColor.primary,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+            child: Text(
+              "Live Spot Price",
+              textScaleFactor: 1,
+              style: AppTextStyle.titleLarge.copyWith(color: AppColor.white),
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 15),
+            child: Text(
+              "Our charts show the real-time spot prices, as well as historical spot prices in various time frames. Investors use this data to make purchasing and investing decisions.",
+              textScaleFactor: 1,
+              style: AppTextStyle.bodySmall.copyWith(color: AppColor.white),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          GridView.builder(
+              primary: false,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: viewModel.spotPriceList!.isEmpty
+                  ? 4
+                  : viewModel.spotPriceList!.length,
+              padding: const EdgeInsets.only(
+                  left: 15, right: 15, top: 2, bottom: 15),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, mainAxisSpacing: 15, crossAxisSpacing: 15),
+              itemBuilder: (context, index) {
+                if (viewModel.spotPriceList!.isEmpty) {
+                  return Container(
+                    decoration: BoxDecoration(
+                        color: AppColor.white,
+                        boxShadow: AppStyle.mildCardShadow,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10))),
+                    width: double.infinity,
+                    child: ShimmerEffect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10))),
+                  );
+                }
 
-          return _SpotPriceTile(
-            viewModel.spotPriceList![index],
-            graphLoading: viewModel.graphLoading,
-            onPressed: () {
-              locator<FilterService>().spotPriceTag =
-                  viewModel.spotPriceList![index].metalName;
-              locator<NavigationService>().pushNamed(
-                "${Routes.spotPrice}/${viewModel.spotPriceList![index].metalName}",
-              );
-            },
-          );
-        });
+                return _SpotPriceTile(
+                  viewModel.spotPriceList![index],
+                  graphLoading: viewModel.graphLoading,
+                  onPressed: () {
+                    locator<FilterService>().spotPriceTag =
+                        viewModel.spotPriceList![index].metalName;
+                    locator<NavigationService>().pushNamed(
+                      "${Routes.spotPrice}/${viewModel.spotPriceList![index].metalName}",
+                    );
+                  },
+                );
+              }),
+        ],
+      ),
+    );
   }
 }
 

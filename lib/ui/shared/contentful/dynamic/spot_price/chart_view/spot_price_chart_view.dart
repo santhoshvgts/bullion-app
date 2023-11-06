@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/area_chart_widget.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_chart_view_model.dart';
@@ -56,58 +57,125 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
                   ),
                 ),
 
-                Container(
-                  alignment: Alignment.center,
-                  height: 55,
-                  color: AppColor.metalColor(
-                          viewModel.spotPriceChartData?.metalName ?? '')
-                      .withOpacity(0.2),
-                  margin: const EdgeInsets.symmetric(horizontal: 0),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    primary: false,
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    itemCount: viewModel.spotPriceTimeRangeFilters.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {
-                          viewModel.setSelectedTimePeriod(index);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: index == viewModel.spotTimeRangeSelectedIndex
-                                ? viewModel.spotPriceChartData!.color
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 7,
-                            horizontal:
-                                index == viewModel.spotTimeRangeSelectedIndex
-                                    ? 15
-                                    : 10,
-                          ),
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Text(
-                            viewModel
-                                .spotPriceTimeRangeFilters[index].displayName,
-                            textScaleFactor: 1,
-                            style: TextStyle(
-                              color:
-                                  index == viewModel.spotTimeRangeSelectedIndex
-                                      ? AppColor.white
-                                      : AppColor.text,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                VerticalSpacing.d20px(),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      ...viewModel.spotPriceTimeRangeFilters
+                          .asMap()
+                          .map((index, e) {
+                            return MapEntry(
+                              index,
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    viewModel.setSelectedTimePeriod(index);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: index ==
+                                              viewModel
+                                                  .spotTimeRangeSelectedIndex
+                                          ? AppColor.secondaryMetalColor(
+                                              viewModel.spotPriceChartData
+                                                      ?.metalName ??
+                                                  '')
+                                          : AppColor.secondaryBackground,
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 8,
+                                    ),
+                                    margin: index <
+                                            viewModel.spotPriceTimeRangeFilters
+                                                    .length -
+                                                1
+                                        ? const EdgeInsets.only(right: 5)
+                                        : null,
+                                    child: Text(
+                                      viewModel.spotPriceTimeRangeFilters[index]
+                                          .displayName,
+                                      textScaleFactor: 1,
+                                      style: AppTextStyle.labelMedium.copyWith(
+                                        color: index ==
+                                                viewModel
+                                                    .spotTimeRangeSelectedIndex
+                                            ? AppColor.white
+                                            : AppColor.text,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          })
+                          .values
+                          .toList()
+                    ],
                   ),
                 ),
+
+                VerticalSpacing.d10px(),
+
+                // Container(
+                //   alignment: Alignment.center,
+                //   height: 55,
+                //   decoration: BoxDecoration(
+                //     color: AppColor.metalColor(
+                //             viewModel.spotPriceChartData?.metalName ?? '')
+                //         .withOpacity(0.2),
+                //   ),
+                //   margin: const EdgeInsets.symmetric(horizontal: 0),
+                //   child: ListView.builder(
+                //     scrollDirection: Axis.horizontal,
+                //     shrinkWrap: true,
+                //     primary: false,
+                //     padding: const EdgeInsets.only(top: 10, bottom: 10),
+                //     itemCount: viewModel.spotPriceTimeRangeFilters.length,
+                //     itemBuilder: (BuildContext context, int index) {
+                //       return InkWell(
+                //         onTap: () {
+                //           viewModel.setSelectedTimePeriod(index);
+                //         },
+                //         child: Container(
+                //           decoration: BoxDecoration(
+                //             color: index == viewModel.spotTimeRangeSelectedIndex
+                //                 ? viewModel.spotPriceChartData!.color
+                //                 : Colors.transparent,
+                //             borderRadius: BorderRadius.circular(20),
+                //           ),
+                //           alignment: Alignment.center,
+                //           padding: EdgeInsets.symmetric(
+                //             vertical: 7,
+                //             horizontal:
+                //                 index == viewModel.spotTimeRangeSelectedIndex
+                //                     ? 15
+                //                     : 10,
+                //           ),
+                //           margin: const EdgeInsets.symmetric(horizontal: 5),
+                //           child: Text(
+                //             viewModel
+                //                 .spotPriceTimeRangeFilters[index].displayName,
+                //             textScaleFactor: 1,
+                //             style: TextStyle(
+                //               color:
+                //                   index == viewModel.spotTimeRangeSelectedIndex
+                //                       ? AppColor.white
+                //                       : AppColor.text,
+                //               fontWeight: FontWeight.bold,
+                //               fontSize: 13,
+                //             ),
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
               ],
             ),
 
