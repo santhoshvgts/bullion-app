@@ -13,7 +13,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
   bool? _isDefaultAddress = false;
   AddressType _selectedAddressType = AddressType.home;
 
-  UserAddress? userAddressResult;
+  UserAddress? userAddressResult, editUserAddress;
 
   GlobalKey<FormState> addEditAddressGlobalKey = GlobalKey<FormState>();
 
@@ -28,7 +28,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       NameFormFieldController(const Key("txtCompany"), required: false);
   PhoneFormFieldController phoneFormFieldController = PhoneFormFieldController(
       const Key("numContact"),
-      required: true,
+      required: true, maxLength: 11,
       requiredText: "Phone number can't be empty");
   NumberFormFieldController pinFormFieldController = NumberFormFieldController(
       const Key("numPin"),
@@ -51,7 +51,21 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
   TextFormFieldController buildingFormFieldController =
       TextFormFieldController(const Key("txtBuilding"));
 
-  init() {}
+  init(UserAddress? editUserAddress) {
+    this.editUserAddress = editUserAddress;
+    if(editUserAddress != null) {
+      firstNameFormFieldController.text = editUserAddress.firstName ?? "";
+      lastNameFormFieldController.text = editUserAddress.lastName ?? "";
+      companyFormFieldController.text = editUserAddress.company ?? "";
+      streetFormFieldController.text = editUserAddress.add1 ?? "";
+      cityFormFieldController.text = editUserAddress.city ?? "";
+      countryFormFieldController.text = editUserAddress.country ?? "";
+      stateFormFieldController.text = editUserAddress.state ?? "";
+      pinFormFieldController.text = editUserAddress.zip ?? "";
+      phoneFormFieldController.text = editUserAddress.primaryPhone?.trimRight() ?? "";
+      _isDefaultAddress = editUserAddress.isDefault;
+    }
+  }
 
   void selectDefaultAddress() {
     _isDefaultAddress = !isDefaultAddress!;
@@ -63,7 +77,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     UserAddress userAddress = UserAddress();
-    userAddress.id = 0;
+    editUserAddress != null ? userAddress.id = editUserAddress?.id : userAddress.id = 0;
     userAddress.isValidated = true;
     userAddress.overrideValidation = false;
 

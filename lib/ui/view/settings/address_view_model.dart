@@ -6,6 +6,7 @@ import '../vgts_base_view_model.dart';
 class AddressViewModel extends VGTSBaseViewModel {
   List<UserAddress>? _userAddressList;
   UserAddress? _defaultAddress;
+  bool _hasNoData = false;
 
   init() {
     getAddressData();
@@ -18,6 +19,8 @@ class AddressViewModel extends VGTSBaseViewModel {
         await requestList<UserAddress>(AddressRequest.getAddress());
 
     if (_userAddressList != null) getDefaultAddress();
+    if ((_userAddressList == null || _userAddressList!.isEmpty) &&
+        _defaultAddress == null) _hasNoData = true;
 
     setBusy(false);
   }
@@ -47,4 +50,6 @@ class AddressViewModel extends VGTSBaseViewModel {
   List<UserAddress>? get userAddressList => _userAddressList;
 
   UserAddress? get defaultAddress => _defaultAddress;
+
+  bool get hasNoData => _hasNoData;
 }

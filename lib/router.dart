@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
@@ -296,12 +297,12 @@ class AppRouter {
       //
         case Routes.address:
           return MaterialPageRoute(
-              builder: (_) => AddressPage(),
+              builder: (_) => const AddressPage(),
               settings: RouteSettings(name: settings.name));
 
         case Routes.addEditAddress:
           return MaterialPageRoute(
-              builder: (_) => AddEditAddressPage(),
+              builder: (_) => AddEditAddressPage(userAddress: settings.arguments as UserAddress?),
               settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myPortfolio:

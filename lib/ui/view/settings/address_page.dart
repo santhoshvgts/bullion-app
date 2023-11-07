@@ -62,7 +62,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                 ? const Align(
                     alignment: Alignment.bottomCenter,
                     child: LinearProgressIndicator())
-                : viewModel.userAddress == null
+                : viewModel.hasNoData
                     ? const Center(child: Text("No data available"))
                     : SingleChildScrollView(
                         child: Padding(
@@ -70,29 +70,41 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Text(
-                                  "Default Address",
-                                  style: AppTextStyle.titleSmall
-                                      .copyWith(color: AppColor.primaryText),
-                                ),
-                              ),
-                              getAddressLayout(viewModel, 0, context,
-                                  isDefault: true),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Text(
-                                  "Other Address",
-                                  style: AppTextStyle.titleSmall
-                                      .copyWith(color: AppColor.primaryText),
-                                ),
-                              ),
+                              if(viewModel.defaultAddress != null)
                               Column(
-                                  children:
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Text(
+                                      "Default Address",
+                                      style: AppTextStyle.titleSmall
+                                          .copyWith(color: AppColor.primaryText),
+                                    ),
+                                  ),
+                                  getAddressLayout(viewModel, 0, context,
+                                      isDefault: true),
+                                ],
+                              ),
+                              if(viewModel.userAddress != null && viewModel.userAddress!.isNotEmpty)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Text(
+                                      "Other Address",
+                                      style: AppTextStyle.titleSmall
+                                          .copyWith(color: AppColor.primaryText),
+                                    ),
+                                  ),
+                                  Column(
+                                      children:
                                       getAddressLayoutList(viewModel, context))
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -201,6 +213,8 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                           ),
                           TextButton(
                             onPressed: () {
+                              isDefault ? viewModel.deleteAddress(
+                                  viewModel.defaultAddress!.id!) :
                               viewModel.deleteAddress(
                                   viewModel.userAddress![index].id!);
                               Navigator.pop(context, 'OK');
@@ -231,21 +245,26 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                 const SizedBox(
                   width: 16,
                 ),
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 4.0),
-                      child: Icon(
-                        Icons.edit,
-                        color: AppColor.cyanBlue,
+                InkWell(
+                  onTap: () {
+                    locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: isDefault ? viewModel.defaultAddress : viewModel.userAddress![index]);
+                  },
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(right: 4.0),
+                        child: Icon(
+                          Icons.edit,
+                          color: AppColor.cyanBlue,
+                        ),
                       ),
-                    ),
-                    Text(
-                      "Edit",
-                      style: AppTextStyle.titleSmall
-                          .copyWith(color: AppColor.cyanBlue),
-                    )
-                  ],
+                      Text(
+                        "Edit",
+                        style: AppTextStyle.titleSmall
+                            .copyWith(color: AppColor.cyanBlue),
+                      )
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   width: 16,

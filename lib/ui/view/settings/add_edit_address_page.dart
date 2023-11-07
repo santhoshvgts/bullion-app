@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
@@ -14,11 +15,13 @@ import '../../widgets/animated_flexible_space.dart';
 import 'add_edit_address_view_model.dart';
 
 class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
-  const AddEditAddressPage({super.key});
+  final UserAddress? userAddress;
+
+  const AddEditAddressPage({super.key, this.userAddress});
 
   @override
   void onViewModelReady(AddEditAddressViewModel viewModel) {
-    viewModel.init();
+    viewModel.init(userAddress);
     super.onViewModelReady(viewModel);
   }
 
@@ -41,7 +44,8 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
               ),
               expandedHeight: 100,
               pinned: true,
-              flexibleSpace: const AnimatedFlexibleSpace(title: "Add Address"),
+              flexibleSpace: AnimatedFlexibleSpace(
+                  title: userAddress != null ? "Edit Address" : "Add Address"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy
@@ -228,7 +232,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                               InkWell(
                                 onTap: () {
                                   FocusManager.instance.primaryFocus!.unfocus();
-                                  //viewModel.selectDefaultAddress();
+                                  viewModel.selectDefaultAddress();
                                 },
                                 child: Row(
                                   children: [
@@ -271,7 +275,8 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                       .validate()) {
                     bool result = await viewModel.submitAddress();
                     if (result) {
-                      Util.showSnackBar(context, "Added successfully");
+                      Util.showSnackBar(context, "Submitted successfully");
+                      Navigator.of(context).pop();
                     }
                   } else {
                     Util.showSnackBar(context, "Fill all the required fields");
