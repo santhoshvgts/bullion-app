@@ -14,9 +14,10 @@ class AddressViewModel extends VGTSBaseViewModel {
   void getAddressData() async {
     setBusy(true);
 
-    _userAddressList = await requestList<UserAddress>(AddressRequest.getAddress());
+    _userAddressList =
+        await requestList<UserAddress>(AddressRequest.getAddress());
 
-    if(_userAddressList != null) getDefaultAddress();
+    if (_userAddressList != null) getDefaultAddress();
 
     setBusy(false);
   }
@@ -24,12 +25,23 @@ class AddressViewModel extends VGTSBaseViewModel {
   List<UserAddress>? get userAddress => _userAddressList;
 
   void getDefaultAddress() {
-    for(int i = 0; i < _userAddressList!.length; i++) {
+    for (int i = 0; i < _userAddressList!.length; i++) {
       if (_userAddressList![i].isDefault == true) {
         _defaultAddress = _userAddressList![i];
         _userAddressList?.removeAt(i);
       }
     }
+  }
+
+  void deleteAddress(int addressId) async {
+    setBusy(true);
+
+    _userAddressList =
+        await requestList<UserAddress>(AddressRequest.deleteAddress(addressId));
+
+    if (_userAddressList != null) getDefaultAddress();
+
+    setBusy(false);
   }
 
   List<UserAddress>? get userAddressList => _userAddressList;

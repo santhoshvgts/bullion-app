@@ -44,7 +44,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                 "Add Address",
                 valueKey: const Key("addAddress"),
                 onPressed: () {
-                    locator<NavigationService>().pushNamed(Routes.addEditAddress);
+                  locator<NavigationService>().pushNamed(Routes.addEditAddress);
                 },
                 iconWidget: Icon(Icons.add, color: AppColor.cyanBlue),
                 color: AppColor.white,
@@ -79,7 +79,8 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                                       .copyWith(color: AppColor.primaryText),
                                 ),
                               ),
-                              getAddressLayout(viewModel, 0, isDefault: true),
+                              getAddressLayout(viewModel, 0, context,
+                                  isDefault: true),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8.0),
@@ -89,7 +90,9 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                                       .copyWith(color: AppColor.primaryText),
                                 ),
                               ),
-                              Column(children: getAddressLayoutList(viewModel))
+                              Column(
+                                  children:
+                                      getAddressLayoutList(viewModel, context))
                             ],
                           ),
                         ),
@@ -105,7 +108,8 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
     return AddressViewModel();
   }
 
-  Widget getAddressLayout(AddressViewModel viewModel, int index,
+  Widget getAddressLayout(
+      AddressViewModel viewModel, int index, BuildContext context,
       {bool isDefault = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -146,7 +150,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                 isDefault
-                    ? viewModel.defaultAddress!.name
+                    ? viewModel.defaultAddress?.name ?? ""
                     : viewModel.userAddress?[index].name ?? "",
                 style: AppTextStyle.titleSmall,
               ),
@@ -155,7 +159,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
                 isDefault
-                    ? viewModel.defaultAddress!.formattedFullAddress
+                    ? viewModel.defaultAddress?.formattedFullAddress ?? ""
                     : viewModel.userAddress?[index].formattedFullAddress ?? "",
                 style: AppTextStyle.titleSmall
                     .copyWith(color: AppColor.primaryText),
@@ -168,7 +172,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                   child: Icon(Icons.phone_outlined, size: 20),
                 ),
                 Text(isDefault
-                    ? viewModel.defaultAddress!.primaryPhone ?? ""
+                    ? viewModel.defaultAddress?.primaryPhone ?? ""
                     : viewModel.userAddress?[index].primaryPhone ?? ""),
               ],
             ),
@@ -181,21 +185,48 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 4.0),
-                      child: Icon(
-                        Icons.delete,
-                        color: AppColor.redOrange,
+                InkWell(
+                  onTap: () {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: const Text('Delete'),
+                        content:
+                            const Text("Do you want to delete this Address?"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              viewModel.deleteAddress(
+                                  viewModel.userAddress![index].id!);
+                              Navigator.pop(context, 'OK');
+                            },
+                            child: const Text('Delete'),
+                          ),
+                        ],
                       ),
-                    ),
-                    Text(
-                      "Delete",
-                      style: AppTextStyle.titleSmall
-                          .copyWith(color: AppColor.redOrange),
-                    )
-                  ],
+                    );
+                  },
+                  child: Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(right: 4.0),
+                        child: Icon(
+                          Icons.delete,
+                          color: AppColor.redOrange,
+                        ),
+                      ),
+                      Text(
+                        "Delete",
+                        style: AppTextStyle.titleSmall
+                            .copyWith(color: AppColor.redOrange),
+                      )
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   width: 16,
@@ -235,10 +266,11 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
     );
   }
 
-  List<Widget> getAddressLayoutList(AddressViewModel viewModel) {
+  List<Widget> getAddressLayoutList(
+      AddressViewModel viewModel, BuildContext context) {
     List<Widget> widgets = [];
     for (int i = 0; i < viewModel.userAddress!.length; i++) {
-      widgets.add(getAddressLayout(viewModel, i));
+      widgets.add(getAddressLayout(viewModel, i, context));
     }
     return widgets;
   }
