@@ -40,9 +40,9 @@ class SpotPriceSparkLineView extends StatelessWidget {
           : Sparkline(
               data: d,
               lineWidth: 1,
-              lineColor: AppColor.opacityMetalColor(metalName!),
+              lineColor: AppColor.opacityColor(metalName!),
               fillColor:
-                  AppColor.opacityMetalColor(metalName!).withOpacity(0.2),
+                  AppColor.opacityMetalColor(metalName!).withOpacity(0.1),
               fillMode: FillMode.below,
             ),
     );

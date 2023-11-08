@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class CartItem {
@@ -22,8 +21,10 @@ class CartItem {
   bool enabled = true;
 
   TextEditingController get qtyController {
-    TextEditingController textEditingController = TextEditingController(text: quantity.toString());
-    textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: quantity.toString().length));
+    TextEditingController textEditingController =
+        TextEditingController(text: quantity.toString());
+    textEditingController.selection = TextSelection.fromPosition(
+        TextPosition(offset: quantity.toString().length));
     return textEditingController;
   }
 
@@ -31,20 +32,20 @@ class CartItem {
 
   CartItem(
       {this.productId,
-        this.primaryImageUrl,
-        this.productName,
-        this.targetUrl,
-        this.unitPrice,
-        this.formattedUnitPrice,
-        this.subTotal,
-        this.formattedSubTotal,
-        this.quantity,
-        this.warnings,
-        this.offers,
-        this.isTaxable,
-        this.tax,
-        this.formattedTax,
-        this.showTax});
+      this.primaryImageUrl,
+      this.productName,
+      this.targetUrl,
+      this.unitPrice,
+      this.formattedUnitPrice,
+      this.subTotal,
+      this.formattedSubTotal,
+      this.quantity,
+      this.warnings,
+      this.offers,
+      this.isTaxable,
+      this.tax,
+      this.formattedTax,
+      this.showTax});
 
   CartItem.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
@@ -97,4 +98,3 @@ class CartItem {
     return data;
   }
 }
-

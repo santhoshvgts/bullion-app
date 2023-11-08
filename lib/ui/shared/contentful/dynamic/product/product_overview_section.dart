@@ -162,8 +162,8 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
               "Add To Cart",
               width: double.infinity,
               valueKey: const ValueKey("btnAddToCart"),
-              color: AppColor.orange,
-              borderColor: AppColor.orange,
+              color: AppColor.secondary,
+              borderColor: AppColor.secondary,
               onPressed: () {
                 viewModel.addToCart();
               },
@@ -1075,8 +1075,8 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
           "Add To Cart",
           width: 140,
           valueKey: const ValueKey("btnAddToCart"),
-          color: AppColor.orange,
-          borderColor: AppColor.orange,
+          color: AppColor.secondary,
+          borderColor: AppColor.secondary,
           onPressed: () {
             viewModel.addToCart();
           },

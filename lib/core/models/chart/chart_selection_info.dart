@@ -17,6 +17,9 @@ class ChartSelectionInfoModel {
   IconData? changeIcon;
   double? changePct = 0.0;
 
+  String get chartToolTipDate =>
+      DateFormat("hh:mm a, dd MMM").format(dateFormat.parse(formatedDate!));
+
   ChartSelectionInfoModel(
       {this.formatedPrice,
       this.formatedChange,

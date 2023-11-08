@@ -90,7 +90,7 @@ class CartViewModel extends VGTSBaseViewModel {
 
     setBusy(true);
     _cart = await _cartService.modifyItem(product.productId, qty);
-    setBusy(true);
+    setBusy(false);
 
     locator<AnalyticsService>().logAddToCart(
         itemId: product.productId.toString(),

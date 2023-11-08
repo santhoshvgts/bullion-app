@@ -1,8 +1,6 @@
 import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../../core/res/colors.dart';
-import '../../../../../../core/res/spacing.dart';
 import '../../../../../../core/res/styles.dart';
 
 class SpotPriceTabBar extends StatefulWidget {
@@ -11,11 +9,13 @@ class SpotPriceTabBar extends StatefulWidget {
   final ScrollController controller;
   final Function(int index, String name) onChange;
 
-  SpotPriceTabBar(
-      {required this.tabList,
-      required this.initialIndex,
-      required this.onChange,
-      required this.controller});
+  const SpotPriceTabBar({
+    super.key,
+    required this.tabList,
+    required this.initialIndex,
+    required this.onChange,
+    required this.controller,
+  });
 
   @override
   _TabBarState createState() => _TabBarState();
@@ -42,7 +42,7 @@ class _TabBarState extends State<SpotPriceTabBar> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      alignment: Alignment.topCenter,
+      alignment: Alignment.centerLeft,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         controller: widget.controller,
@@ -83,7 +83,7 @@ class _SpotPriceStripCard extends StatelessWidget {
   final SpotPrice data;
   final bool isSelected;
 
-  _SpotPriceStripCard(this.data, {this.isSelected = false});
+  const _SpotPriceStripCard(this.data, {this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +94,14 @@ class _SpotPriceStripCard extends StatelessWidget {
         // color: isSelected ? data.color.withOpacity(0.2) : AppColor.white,
         border: isSelected
             ? Border(
-                bottom: BorderSide(color: data.color, width: 2.5),
+                bottom: BorderSide(
+                  color: data.color,
+                  width: 2.5,
+                ),
               )
             : null,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -107,24 +110,24 @@ class _SpotPriceStripCard extends StatelessWidget {
             textScaleFactor: 1,
             style: AppTextStyle.titleSmall,
           ),
-          VerticalSpacing.d5px(),
-          Row(
-            children: [
-              Text(
-                data.formattedAsk!,
-                textScaleFactor: 1,
-                style: AppTextStyle.bodySmall.copyWith(),
-              ),
-              HorizontalSpacing.d5px(),
-              Text(
-                (data.change! < 0 ? "-" : "+") + "${data.formattedChange}",
-                textScaleFactor: 1,
-                style: AppTextStyle.bodySmall.copyWith(
-                  color: data.change! < 0 ? AppColor.red : AppColor.green,
-                ),
-              ),
-            ],
-          ),
+          // VerticalSpacing.d5px(),
+          // Row(
+          //   children: [
+          //     Text(
+          //       data.formattedAsk!,
+          //       textScaleFactor: 1,
+          //       style: AppTextStyle.bodySmall.copyWith(),
+          //     ),
+          //     HorizontalSpacing.d5px(),
+          //     Text(
+          //       (data.change! < 0 ? "-" : "+") + "${data.formattedChange}",
+          //       textScaleFactor: 1,
+          //       style: AppTextStyle.bodySmall.copyWith(
+          //         color: data.change! < 0 ? AppColor.red : AppColor.green,
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

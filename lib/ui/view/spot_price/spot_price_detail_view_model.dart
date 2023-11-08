@@ -28,6 +28,10 @@ class SpotPriceDetailViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
+  SpotPrice? get selectedSpotPrice {
+    return _spotPriceList?[_selectedIndex ?? 0];
+  }
+
   String? get metalName {
     if (_selectedIndex != null) {
       return _spotPriceList![_selectedIndex!].title;
@@ -66,4 +70,6 @@ class SpotPriceDetailViewModel extends VGTSBaseViewModel {
     }
     setBusy(false);
   }
+
+  onChangeMetal(int index) {}
 }

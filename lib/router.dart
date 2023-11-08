@@ -161,6 +161,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => CartPage(
             redirectDisplayMessage: settings.arguments as DisplayMessage?,
+            fromMain: false,
           ),
           settings: RouteSettings(name: settings.name),
         );
