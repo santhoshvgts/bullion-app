@@ -78,7 +78,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                                     child: EditTextField(
                                       "First Name",
                                       viewModel.firstNameFormFieldController,
-                                      key: const Key("txtName"),
+                                      key: const Key("txtFirstName"),
                                     ),
                                   ),
                                   const SizedBox(
@@ -88,7 +88,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                                     child: EditTextField(
                                       "Last Name",
                                       viewModel.lastNameFormFieldController,
-                                      key: const Key("txtName"),
+                                      key: const Key("txtLastName"),
                                     ),
                                   )
                                   /*Expanded(
@@ -137,10 +137,18 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                                     width: 16.0,
                                   ),
                                   Expanded(
-                                    child: EditTextField(
-                                      "Country",
-                                      viewModel.countryFormFieldController,
-                                      key: const Key("txtName"),
+                                    child: InkWell(
+                                      onTap: () {
+                                        viewModel.showCountries();
+                                      },
+                                      child: EditTextField(
+                                        "Country",
+                                        viewModel.countryFormFieldController,
+                                        key: const Key("txtCountry"),
+                                        suffixIcon:
+                                            const Icon(Icons.arrow_drop_down),
+                                        enabled: false,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -150,10 +158,17 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: EditTextField(
-                                      "State",
-                                      viewModel.stateFormFieldController,
-                                      key: const Key("txtCity"),
+                                    child: InkWell(
+                                      onTap: viewModel.stateEnable ? null : () => viewModel.showStates(),
+                                      child: EditTextField(
+                                        "State",
+                                        viewModel.stateFormFieldController,
+                                        key: const Key("txtCity"),
+                                        suffixIcon: viewModel.stateEnable
+                                            ? Container()
+                                            : const Icon(Icons.arrow_drop_down),
+                                        enabled: viewModel.stateEnable,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(
@@ -163,7 +178,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                                     child: EditTextField(
                                       "Pin code",
                                       viewModel.pinFormFieldController,
-                                      key: const Key("txtName"),
+                                      key: const Key("txtPincode"),
                                     ),
                                   ),
                                 ],
@@ -172,7 +187,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                               EditTextField(
                                 "Contact Number",
                                 viewModel.phoneFormFieldController,
-                                key: const Key("txtName"),
+                                key: const Key("txtContact"),
                               ),
                               const SizedBox(height: 16.0),
 

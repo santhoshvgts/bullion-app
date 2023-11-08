@@ -17,4 +17,15 @@ class AddressRequest {
     return RequestSettings("/address/save", RequestMethod.POST,
         params: json, authenticated: true);
   }
+
+  static RequestSettings getAvailableCountries() {
+    return RequestSettings("/address/add", RequestMethod.GET,
+        params: null, authenticated: true);
+  }
+
+  static RequestSettings getAvailableStates(String country) {
+    return RequestSettings(
+        "/address/states?country=$country", RequestMethod.GET,
+        params: null, authenticated: true);
+  }
 }

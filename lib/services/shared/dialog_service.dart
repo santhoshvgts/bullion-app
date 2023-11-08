@@ -21,7 +21,8 @@ class DialogService {
     _showDialogListener = showDialogListener;
   }
 
-  void registerConfirmDialogListener(Function(AlertRequest) showConfirmDialogListener) {
+  void registerConfirmDialogListener(
+      Function(AlertRequest) showConfirmDialogListener) {
     _showConfirmDialogListener = showConfirmDialogListener;
   }
 
@@ -33,26 +34,40 @@ class DialogService {
     _drawerListerner = drawerListerner;
   }
 
-  void registerDisplayMessageListener(Function(AlertRequest) displayMessageListener) {
+  void registerDisplayMessageListener(
+      Function(AlertRequest) displayMessageListener) {
     _displayMessageListener = displayMessageListener;
   }
 
-  Future<AlertResponse> showDrawer({ValueKey key = const ValueKey("defaultDialogKey"), Widget? child}) {
+  Future<AlertResponse> showDrawer(
+      {ValueKey key = const ValueKey("defaultDialogKey"), Widget? child}) {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
     _drawerListerner(AlertRequest(contentWidget: child));
     return _dialogCompleterMap[key]!.future;
   }
 
-  Future<AlertResponse> showDialog({ValueKey key = const ValueKey("defaultDialogKey"), String title = 'Message', String? description, String buttonTitle = 'OK'}) {
+  Future<AlertResponse> showDialog(
+      {ValueKey key = const ValueKey("defaultDialogKey"),
+      String title = 'Message',
+      String? description,
+      String buttonTitle = 'OK'}) {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
-    _showDialogListener(AlertRequest(description: description, buttonTitle: buttonTitle, title: title));
+    _showDialogListener(AlertRequest(
+        description: description, buttonTitle: buttonTitle, title: title));
 
     return _dialogCompleterMap[key]!.future;
   }
 
-  Future<AlertResponse> showConfirmationDialog({ValueKey key = const ValueKey("defaultDialogKey"), String? title, String? description, String? buttonTitle}) {
+  Future<AlertResponse> showConfirmationDialog(
+      {ValueKey key = const ValueKey("defaultDialogKey"),
+      String? title,
+      String? description,
+      String? buttonTitle}) {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
-    _showConfirmDialogListener(AlertRequest(description: description, buttonTitle: buttonTitle ?? 'Confirm', title: title));
+    _showConfirmDialogListener(AlertRequest(
+        description: description,
+        buttonTitle: buttonTitle ?? 'Confirm',
+        title: title));
 
     return _dialogCompleterMap[key]!.future;
   }
@@ -83,13 +98,23 @@ class DialogService {
     return _dialogCompleterMap[key]!.future;
   }
 
-  Future<AlertResponse> displayMessage({ValueKey key = const ValueKey("defaultDialogKey"), String? title, Widget? iconWidget, Widget? child, bool showActionBar = true}) {
+  Future<AlertResponse> displayMessage(
+      {ValueKey key = const ValueKey("defaultDialogKey"),
+      String? title,
+      Widget? iconWidget,
+      Widget? child,
+      bool showActionBar = true}) {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
-    _displayMessageListener(AlertRequest(title: title, iconWidget: iconWidget, contentWidget: child, showActionBar: showActionBar));
+    _displayMessageListener(AlertRequest(
+        title: title,
+        iconWidget: iconWidget,
+        contentWidget: child,
+        showActionBar: showActionBar));
     return _dialogCompleterMap[key]!.future;
   }
 
-  void dialogComplete(AlertResponse? alertResponse, {ValueKey key = const ValueKey("defaultDialogKey")}) {
+  void dialogComplete(AlertResponse? alertResponse,
+      {ValueKey key = const ValueKey("defaultDialogKey")}) {
     if (_dialogCompleterMap[key] == null) {
       _dialogNavigationKey.currentState!.pop(alertResponse);
       return;
@@ -100,7 +125,8 @@ class DialogService {
     _dialogCompleterMap[key] = null;
   }
 
-  void dialogMaybeComplete(AlertResponse? alertResponse, {ValueKey key = const ValueKey("defaultDialogKey")}) {
+  void dialogMaybeComplete(AlertResponse? alertResponse,
+      {ValueKey key = const ValueKey("defaultDialogKey")}) {
     if (_dialogCompleterMap[key] == null) {
       _dialogNavigationKey.currentState!.maybePop(alertResponse);
       return;

@@ -1,19 +1,27 @@
 import 'package:bullion/core/models/user_address.dart';
-import 'package:bullion/ui/view/settings/add_edit_address_page.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
+import '../../../core/models/alert/alert_response.dart';
+import '../../../core/models/module/checkout/shipping_address.dart';
+import '../../../core/models/module/selected_item_list.dart';
+import '../../../locator.dart';
 import '../../../services/api_request/address_request.dart';
+import '../../../services/shared/dialog_service.dart';
+import 'bottom_sheets/select_country_state_bottomsheet.dart';
 
 class AddEditAddressViewModel extends VGTSBaseViewModel {
   FormFieldController addressFormController =
       FormFieldController(const Key("addressFormKey"));
 
   bool? _isDefaultAddress = false;
-  AddressType _selectedAddressType = AddressType.home;
+  bool _stateEnable = false;
+
+  //AddressType _selectedAddressType = AddressType.home;
 
   UserAddress? userAddressResult, editUserAddress;
+  ShippingAddress? _shippingAddress;
 
   GlobalKey<FormState> addEditAddressGlobalKey = GlobalKey<FormState>();
 
@@ -28,7 +36,8 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       NameFormFieldController(const Key("txtCompany"), required: false);
   PhoneFormFieldController phoneFormFieldController = PhoneFormFieldController(
       const Key("numContact"),
-      required: true, maxLength: 11,
+      required: true,
+      maxLength: 11,
       requiredText: "Phone number can't be empty");
   NumberFormFieldController pinFormFieldController = NumberFormFieldController(
       const Key("numPin"),
@@ -51,9 +60,13 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
   TextFormFieldController buildingFormFieldController =
       TextFormFieldController(const Key("txtBuilding"));
 
+  TextEditingController searchController = TextEditingController();
+
+  FocusNode searchFocus = FocusNode();
+
   init(UserAddress? editUserAddress) {
     this.editUserAddress = editUserAddress;
-    if(editUserAddress != null) {
+    if (editUserAddress != null) {
       firstNameFormFieldController.text = editUserAddress.firstName ?? "";
       lastNameFormFieldController.text = editUserAddress.lastName ?? "";
       companyFormFieldController.text = editUserAddress.company ?? "";
@@ -62,22 +75,47 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       countryFormFieldController.text = editUserAddress.country ?? "";
       stateFormFieldController.text = editUserAddress.state ?? "";
       pinFormFieldController.text = editUserAddress.zip ?? "";
-      phoneFormFieldController.text = editUserAddress.primaryPhone?.trimRight() ?? "";
+      phoneFormFieldController.text =
+          editUserAddress.primaryPhone?.trimRight() ?? "";
       _isDefaultAddress = editUserAddress.isDefault;
+    } else {
+      initAddress();
     }
   }
 
   void selectDefaultAddress() {
     _isDefaultAddress = !isDefaultAddress!;
-    debugPrint("isDefaultAddress: $isDefaultAddress");
     notifyListeners();
+  }
+
+  void initAddress() async {
+    setBusy(true);
+
+    _shippingAddress =
+        await request<ShippingAddress>(AddressRequest.getAvailableCountries());
+
+    List<SelectedItemList> country = _shippingAddress!.availableCountries!
+        .where((element) => element.selected == true)
+        .toList();
+    if (country.isNotEmpty) countryFormFieldController.text = country[0].text!;
+
+    List<SelectedItemList> state = _shippingAddress!.availableStates!
+        .where((element) => element.selected == true)
+        .toList();
+    if (state.isNotEmpty) stateFormFieldController.text = state[0].text!;
+
+    firstNameFormFieldController.focusNode.requestFocus();
+
+    setBusy(false);
   }
 
   Future<bool> submitAddress() async {
     setBusy(true);
 
     UserAddress userAddress = UserAddress();
-    editUserAddress != null ? userAddress.id = editUserAddress?.id : userAddress.id = 0;
+    editUserAddress != null
+        ? userAddress.id = editUserAddress?.id
+        : userAddress.id = 0;
     userAddress.isValidated = true;
     userAddress.overrideValidation = false;
 
@@ -103,12 +141,80 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     }
   }
 
-  AddressType get selectedAddressType => _selectedAddressType;
+  /*AddressType get selectedAddressType => _selectedAddressType;
 
   set selectedAddressType(AddressType value) {
     _selectedAddressType = value;
     notifyListeners();
-  }
+  }*/
 
   bool? get isDefaultAddress => _isDefaultAddress;
+
+  void showCountries() async {
+    searchController.clear();
+    AlertResponse response = await locator<DialogService>().showBottomSheet(
+        title: "Select Country",
+        child: SelectCountryStateBottomSheet(_shippingAddress, true),
+        showActionBar: true);
+
+    if (response.data != null) {
+      setBusy(true);
+
+      countryFormFieldController.text = response.data.text;
+      stateFormFieldController.clear();
+
+      shippingAddress?.availableStates = await requestList<SelectedItemList>(
+          AddressRequest.getAvailableStates(response.data.value));
+
+      if (shippingAddress!.availableStates!.isEmpty) {
+        _stateEnable = true;
+        stateFormFieldController.focusNode.requestFocus();
+      } else {
+        _stateEnable = false;
+        notifyListeners();
+        showStates();
+      }
+
+      setBusy(false);
+    }
+    notifyListeners();
+  }
+
+  void showStates() async {
+    searchController.clear();
+    AlertResponse response = await locator<DialogService>().showBottomSheet(
+        title: "Select State",
+        child: SelectCountryStateBottomSheet(_shippingAddress, false),
+        showActionBar: true);
+
+    if (response.data != null) {
+      stateFormFieldController.text = response.data.text;
+      pinFormFieldController.focusNode.requestFocus();
+    }
+    notifyListeners();
+  }
+
+  List<SelectedItemList>? get countryList => _shippingAddress == null
+      ? []
+      : searchController.text.isEmpty
+          ? _shippingAddress!.availableCountries
+          : _shippingAddress!.availableCountries!
+              .where((i) => i.text!
+                  .toLowerCase()
+                  .contains(searchController.text.toLowerCase()))
+              .toList();
+
+  List<SelectedItemList>? get stateList => _shippingAddress == null
+      ? []
+      : searchController.text.isEmpty
+          ? _shippingAddress!.availableStates
+          : _shippingAddress!.availableStates!
+              .where((i) => i.text!
+                  .toLowerCase()
+                  .contains(searchController.text.toLowerCase()))
+              .toList();
+
+  ShippingAddress? get shippingAddress => _shippingAddress;
+
+  bool get stateEnable => _stateEnable;
 }

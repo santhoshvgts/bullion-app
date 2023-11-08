@@ -1,4 +1,3 @@
-
 import 'package:bullion/core/models/base_model.dart';
 
 class SelectedItemList extends BaseModel {
@@ -7,6 +6,9 @@ class SelectedItemList extends BaseModel {
   bool? selected;
 
   SelectedItemList({this.value, this.text, this.selected});
+
+  @override
+  SelectedItemList fromJson(json) => SelectedItemList.fromJson(json);
 
   SelectedItemList.fromJson(Map<String, dynamic> json) {
     value = json['value'];
