@@ -251,7 +251,9 @@ class CartViewModel extends VGTSBaseViewModel {
     //     .pushNamed(
     //       Routes.checkout,
     //     )!
-    //     .then((value) => init());
+    //     .then(
+    //       (value) => init(),
+    //     );
   }
 
   refresh() async {

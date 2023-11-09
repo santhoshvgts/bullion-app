@@ -40,470 +40,260 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     _buildContext = context;
     return ViewModelBuilder<CartViewModel>.reactive(
-        onViewModelReady: (viewModel) {
-          _cartViewModel = viewModel;
-          viewModel.init();
+      onViewModelReady: (viewModel) {
+        _cartViewModel = viewModel;
+        viewModel.init();
 
-          WidgetsBinding.instance.addObserver(this);
-          Future.delayed(const Duration(milliseconds: 300), () {
-            viewModel.displayMessage(redirectDisplayMessage);
-          });
-        },
-        onDispose: (viewModel) {
-          WidgetsBinding.instance.removeObserver(this);
-        },
-        builder: (context, viewModel, child) {
-          return PageWillPop(
-            child: Scaffold(
-              key: viewModel.scaffoldKey,
-              backgroundColor: AppColor.secondaryBackground,
-              appBar: AppBar(
-                elevation: 0,
-                title: Text(
-                  "Shopping Cart",
-                  textScaleFactor: 1,
-                  style: AppTextStyle.titleMedium.copyWith(
-                      color: AppColor.text,
-                      fontFamily: AppTextStyle.fontFamily),
-                ),
+        WidgetsBinding.instance.addObserver(this);
+        Future.delayed(const Duration(milliseconds: 300), () {
+          viewModel.displayMessage(redirectDisplayMessage);
+        });
+      },
+      onDispose: (viewModel) {
+        WidgetsBinding.instance.removeObserver(this);
+      },
+      builder: (context, viewModel, child) {
+        return PageWillPop(
+          child: Scaffold(
+            key: viewModel.scaffoldKey,
+            backgroundColor: viewModel.cartItems?.isEmpty == true
+                ? AppColor.white
+                : AppColor.secondaryBackground,
+            appBar: AppBar(
+              elevation: 0,
+              title: Text(
+                "Shopping Cart",
+                textScaleFactor: 1,
+                style: AppTextStyle.titleMedium.copyWith(
+                    color: AppColor.text, fontFamily: AppTextStyle.fontFamily),
               ),
-              body: viewModel.cart == null
-                  ? Container()
-                  : TapOutsideUnFocus(
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            child: viewModel.isBusy
-                                ? const SizedBox(
-                                    height: 2,
-                                    child: LinearProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation(
-                                        AppColor.primary,
-                                      ),
+            ),
+            body: viewModel.cart == null
+                ? Container()
+                : TapOutsideUnFocus(
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          child: viewModel.isBusy
+                              ? const SizedBox(
+                                  height: 2,
+                                  child: LinearProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation(
+                                      AppColor.primary,
                                     ),
-                                  )
-                                : Container(),
-                          ),
-                          Positioned.fill(
-                            child: SizedBox(
-                              height: MediaQuery.of(context).size.height,
-                              child: RefreshIndicator(
-                                onRefresh: () async {
-                                  return await viewModel.refresh();
-                                },
-                                child: SingleChildScrollView(
-                                  padding: EdgeInsets.zero,
-                                  child: Column(
-                                    children: [
-                                      if (redirectDisplayMessage
-                                              ?.messageDisplayType ==
-                                          MessageDisplayType.Inline)
-                                        InlineBlockSection(
-                                            redirectDisplayMessage),
-                                      if (viewModel.shoppingCart?.errors !=
-                                          null)
-                                        _ErrorNotes(),
-                                      if (viewModel.inlineMessage != null)
-                                        InlineBlockSection(
-                                            viewModel.inlineMessage),
-                                      if (viewModel.totalItems == 0)
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              1.5,
-                                          padding: const EdgeInsets.all(20),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                Images.cartIcon,
-                                                color: const Color(0xff83919B),
-                                                width: 100,
-                                              ),
-                                              VerticalSpacing.d30px(),
-                                              const Text(
-                                                "Your cart is currently empty.",
-                                                textScaleFactor: 1,
-                                                textAlign: TextAlign.center,
-                                                style: AppTextStyle.titleLarge,
-                                              ),
-                                              VerticalSpacing.d30px(),
-                                              Button(
-                                                "Continue Shopping",
-                                                width: 200,
-                                                valueKey:
-                                                    const Key("btnShopNow"),
-                                                onPressed: () {
-                                                  locator<NavigationService>()
-                                                      .pop();
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      else
-                                        ListView.separated(
-                                          itemCount:
-                                              viewModel.cartItems?.length ?? 0,
-                                          shrinkWrap: true,
-                                          primary: false,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 15,
-                                            vertical: 15,
-                                          ),
-                                          separatorBuilder: (context, index) {
-                                            return const SizedBox(
-                                              height: 10,
-                                            );
-                                          },
-                                          itemBuilder: (context, index) {
-                                            return CartItemCard(
-                                              viewModel.cartItems![index],
-                                              onIncrease: (CartItem item) {
-                                                viewModel.modifyItemQty(
-                                                    item, item.quantity! + 1);
-                                              },
-                                              onDecrease: (CartItem item) {
-                                                viewModel.modifyItemQty(
-                                                    item, item.quantity! - 1);
-                                              },
-                                              onRemove: (CartItem item) {
-                                                viewModel.removeItem(item);
-                                              },
-                                              onValueChange: (
-                                                CartItem item,
-                                                int qty,
-                                              ) {
-                                                viewModel.cartItems![index]
-                                                    .quantity = qty;
-                                                viewModel.modifyItemQty(
-                                                    item, qty);
-                                              },
-                                            );
-                                          },
-                                        ),
-                                      if (viewModel.shoppingCart!.warnings !=
-                                          null)
-                                        ...viewModel.shoppingCart!.warnings!
-                                            .map((warning) {
-                                          return WarningCard(warning);
-                                        }).toList(),
-                                      if (viewModel.shoppingCart!
-                                              .showPotentialSavings! &&
-                                          viewModel.totalItems! > 0)
-                                        _PotentialSavings(),
-                                      if (viewModel.totalItems! > 0)
-                                        _PromoCodeSection(),
-                                      if (viewModel.totalItems! > 0)
-                                        _OrderSummary(),
-                                      if (viewModel.modules != null)
-                                        ...viewModel.modules!.map((module) {
-                                          switch (module!.moduleType) {
-                                            case ModuleType.standard:
-                                              return StandardModule(module);
-
-                                            case ModuleType.product:
-                                            case ModuleType.productList:
-                                              return ProductModule(
-                                                module,
-                                              );
-
-                                            case ModuleType.banner:
-                                              return BannerModule(module);
-
-                                            default:
-                                              return Container();
-                                          }
-                                        }).toList(),
-                                    ],
                                   ),
+                                )
+                              : Container(),
+                        ),
+                        Positioned.fill(
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height,
+                            child: RefreshIndicator(
+                              onRefresh: () async {
+                                return await viewModel.refresh();
+                              },
+                              child: SingleChildScrollView(
+                                padding: EdgeInsets.zero,
+                                child: Column(
+                                  children: [
+                                    if (redirectDisplayMessage
+                                            ?.messageDisplayType ==
+                                        MessageDisplayType.Inline)
+                                      InlineBlockSection(
+                                          redirectDisplayMessage!),
+                                    if (viewModel.shoppingCart?.errors != null)
+                                      _ErrorNotes(),
+                                    if (viewModel.inlineMessage != null)
+                                      InlineBlockSection(
+                                          viewModel.inlineMessage!),
+                                    if (viewModel.totalItems == 0)
+                                      Container(
+                                        width: double.infinity,
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                1.5,
+                                        padding: const EdgeInsets.all(20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              Images.cartIcon,
+                                              width: 150,
+                                            ),
+                                            VerticalSpacing.d30px(),
+                                            const Text(
+                                              "Your Cart is Empty",
+                                              textScaleFactor: 1,
+                                              textAlign: TextAlign.center,
+                                              style: AppTextStyle.titleLarge,
+                                            ),
+                                            VerticalSpacing.d10px(),
+                                            const Text(
+                                              "Browse our wide selection of products and add your favorites to the cart.",
+                                              textScaleFactor: 1,
+                                              textAlign: TextAlign.center,
+                                              style: AppTextStyle.bodySmall,
+                                            ),
+                                            VerticalSpacing.d30px(),
+                                            Button(
+                                              "Continue Shopping",
+                                              width: 200,
+                                              valueKey: const Key("btnShopNow"),
+                                              onPressed: () {
+                                                locator<NavigationService>()
+                                                    .pop();
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    else
+                                      ListView.separated(
+                                        itemCount:
+                                            viewModel.cartItems?.length ?? 0,
+                                        shrinkWrap: true,
+                                        primary: false,
+                                        padding: const EdgeInsets.all(15),
+                                        separatorBuilder: (context, index) {
+                                          return const SizedBox(
+                                            height: 10,
+                                          );
+                                        },
+                                        itemBuilder: (context, index) {
+                                          return CartItemCard(
+                                            viewModel.cartItems![index],
+                                            onIncrease: (CartItem item) {
+                                              viewModel.modifyItemQty(
+                                                  item, item.quantity! + 1);
+                                            },
+                                            onDecrease: (CartItem item) {
+                                              viewModel.modifyItemQty(
+                                                  item, item.quantity! - 1);
+                                            },
+                                            onRemove: (CartItem item) {
+                                              viewModel.removeItem(item);
+                                            },
+                                            onValueChange: (
+                                              CartItem item,
+                                              int qty,
+                                            ) {
+                                              viewModel.cartItems![index]
+                                                  .quantity = qty;
+                                              viewModel.modifyItemQty(
+                                                item,
+                                                qty,
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    if (viewModel.shoppingCart!.warnings !=
+                                        null)
+                                      ...viewModel.shoppingCart!.warnings!
+                                          .map((warning) {
+                                        return WarningCard(warning);
+                                      }).toList(),
+                                    if (viewModel.shoppingCart!
+                                            .showPotentialSavings! &&
+                                        viewModel.totalItems! > 0)
+                                      _PotentialSavings(),
+                                    if (viewModel.totalItems! > 0)
+                                      _PromoCodeSection(),
+                                    if (viewModel.totalItems! > 0)
+                                      _OrderSummary(),
+                                    if (viewModel.modules != null)
+                                      ...viewModel.modules!.map((module) {
+                                        switch (module!.moduleType) {
+                                          case ModuleType.standard:
+                                            return StandardModule(module);
+
+                                          case ModuleType.product:
+                                          case ModuleType.productList:
+                                            return ProductModule(
+                                              module,
+                                            );
+
+                                          case ModuleType.banner:
+                                            return BannerModule(module);
+
+                                          default:
+                                            return Container();
+                                        }
+                                      }).toList(),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+            bottomNavigationBar: viewModel.totalItems! > 0
+                ? SafeArea(
+                    child: Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        boxShadow: AppStyle.topShadow,
+                        color: AppColor.white,
+                      ),
+                      child: Wrap(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${viewModel.totalItems.toString()} ${viewModel.totalItems! > 1 ? "Items" : "Item"}",
+                                        textScaleFactor: 1,
+                                        style: AppTextStyle.labelMedium,
+                                      ),
+                                      Text(
+                                        viewModel.shoppingCart
+                                                ?.formattedOrderTotal
+                                                .toString() ??
+                                            "",
+                                        textScaleFactor: 1,
+                                        style: AppTextStyle.titleMedium,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Button(
+                                    "Checkout",
+                                    valueKey: const Key("CheckoutBtn"),
+                                    color: AppColor.secondary,
+                                    borderColor: AppColor.secondary,
+                                    onPressed: () =>
+                                        viewModel.onCheckoutClick(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
-              bottomNavigationBar: viewModel.totalItems! > 0
-                  ? SafeArea(
-                      child: Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          boxShadow: AppStyle.topShadow,
-                          color: AppColor.white,
-                        ),
-                        child: Wrap(
-                          children: [
-                            SizedBox(
-                              width: double.infinity,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${viewModel.totalItems.toString()} ${viewModel.totalItems! > 1 ? "Items" : "Item"}",
-                                          textScaleFactor: 1,
-                                          style: AppTextStyle.labelMedium,
-                                        ),
-                                        Text(
-                                          viewModel.shoppingCart
-                                                  ?.formattedOrderTotal
-                                                  .toString() ??
-                                              "",
-                                          textScaleFactor: 1,
-                                          style: AppTextStyle.titleMedium,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Button(
-                                      "Checkout",
-                                      valueKey: const Key("CheckoutBtn"),
-                                      color: AppColor.secondary,
-                                      borderColor: AppColor.secondary,
-                                      onPressed: () =>
-                                          viewModel.onCheckoutClick(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  : null,
-            ),
-          );
-
-          // return PageWillPop(
-          //   child: Scaffold(
-          //     key: viewModel.scaffoldKey,
-          //     appBar: AppBar(
-          //       title: viewModel.cartItems!.isEmpty
-          //           ? const Text(
-          //               "Your Cart is Empty",
-          //               style: AppTextStyle.titleSmall,
-          //               textScaleFactor: 1,
-          //             )
-          //           :
-          //           Column(
-          //               children: [
-          //                 Text(
-          //                   viewModel.shoppingCart!.formattedOrderTotal
-          //                       .toString(),
-          //                   textScaleFactor: 1,
-          //                   style: AppTextStyle.titleLarge,
-          //                 ),
-          //                 Text(
-          //                   "${viewModel.totalItems.toString()} ${viewModel.totalItems! > 1 ? "Items" : "Item"}",
-          //                   textScaleFactor: 1,
-          //                   style:
-          //                       AppTextStyle.bodyLarge.copyWith(fontSize: 12),
-          //                 ),
-          //               ],
-          //             ),
-          //       centerTitle: true,
-          //     ),
-          //     body: viewModel.cart == null
-          //         ? Container()
-          //         : TapOutsideUnFocus(
-          //             child: Container(
-          //               color: AppColor.secondaryBackground,
-          //               child: Stack(
-          //                 children: [
-          //                   Container(
-          //                     height: MediaQuery.of(context).size.height,
-          //                     child: RefreshIndicator(
-          //                       onRefresh: () async {
-          //                         return await viewModel.refresh();
-          //                       },
-          //                       child: SingleChildScrollView(
-          //                         child: Column(
-          //                           children: [
-          //                             viewModel.isBusy
-          //                                 ? const SizedBox(
-          //                                     height: 2,
-          //                                     child: LinearProgressIndicator(
-          //                                       valueColor:
-          //                                           AlwaysStoppedAnimation(
-          //                                               AppColor.primary),
-          //                                     ))
-          //                                 : Container(),
-          //                             if (redirectDisplayMessage != null)
-          //                               if (redirectDisplayMessage!
-          //                                       .messageDisplayType ==
-          //                                   MessageDisplayType.Inline)
-          //                                 InlineBlockSection(
-          //                                     redirectDisplayMessage),
-          //                             if (viewModel.shoppingCart!.errors !=
-          //                                 null)
-          //                               _ErrorNotes(),
-          //                             if (viewModel.inlineMessage != null)
-          //                               InlineBlockSection(
-          //                                   viewModel.inlineMessage),
-          //                             if (viewModel.totalItems == 0)
-          //                               Container(
-          //                                 height: MediaQuery.of(context)
-          //                                         .size
-          //                                         .height /
-          //                                     1.5,
-          //                                 padding: const EdgeInsets.all(20),
-          //                                 child: Column(
-          //                                   crossAxisAlignment:
-          //                                       CrossAxisAlignment.center,
-          //                                   mainAxisAlignment:
-          //                                       MainAxisAlignment.center,
-          //                                   children: [
-          //                                     Image.asset(
-          //                                       Images.cartIcon,
-          //                                       color: const Color(0xff83919B),
-          //                                       width: 100,
-          //                                     ),
-          //
-          //                                     VerticalSpacing.d30px(),
-          //
-          //                                     const Text(
-          //                                       "Your cart is currently empty.",
-          //                                       textScaleFactor: 1,
-          //                                       textAlign: TextAlign.center,
-          //                                       style: AppTextStyle.titleLarge,
-          //                                     ),
-          //
-          //                                     // VerticalSpacing.d15px(),
-          //                                     //
-          //                                     // Text("Never forget your favorite products. Add them to your Favorite today.", textAlign: TextAlign.center, textScaleFactor: 1, style: AppTextStyle.body,),
-          //                                     //
-          //                                     VerticalSpacing.d30px(),
-          //
-          //                                     Button("Continue Shopping",
-          //                                         width: 200,
-          //                                         valueKey:
-          //                                             const Key("btnShopNow"),
-          //                                         onPressed: () {
-          //                                       locator<NavigationService>()
-          //                                           .pop();
-          //                                     })
-          //                                   ],
-          //                                 ),
-          //                               )
-          //                             else
-          //                               Container(
-          //                                 color: AppColor.white,
-          //                                 child: ListView.separated(
-          //                                   itemCount:
-          //                                       viewModel.cartItems!.length,
-          //                                   shrinkWrap: true,
-          //                                   primary: false,
-          //                                   separatorBuilder: (context, index) {
-          //                                     return Container(
-          //                                         height: 1,
-          //                                         child:
-          //                                             AppStyle.customDivider);
-          //                                   },
-          //                                   itemBuilder: (context, index) {
-          //                                     return CartItemCard(
-          //                                       viewModel.cartItems![index],
-          //                                       onIncrease: (CartItem item) {
-          //                                         viewModel.modifyItemQty(
-          //                                             item, item.quantity! + 1);
-          //                                       },
-          //                                       onDecrease: (CartItem item) {
-          //                                         viewModel.modifyItemQty(
-          //                                             item, item.quantity! - 1);
-          //                                       },
-          //                                       onRemove: (CartItem item) {
-          //                                         viewModel.removeItem(item);
-          //                                       },
-          //                                       onValueChange:
-          //                                           (CartItem item, int qty) {
-          //                                         viewModel.cartItems![index]
-          //                                             .quantity = qty;
-          //                                         viewModel.modifyItemQty(
-          //                                             item, qty);
-          //                                       },
-          //                                     );
-          //                                   },
-          //                                 ),
-          //                               ),
-          //                             if (viewModel.totalItems! > 0)
-          //                               VerticalSpacing.d10px(),
-          //                             if (viewModel.totalItems! > 0)
-          //                               _PromoCodeSection(),
-          //                             if (viewModel.shoppingCart!.warnings !=
-          //                                 null)
-          //                               ...viewModel.shoppingCart!.warnings!
-          //                                   .map((warning) {
-          //                                 return WarningCard(warning);
-          //                               }).toList(),
-          //                             if (viewModel.shoppingCart!
-          //                                     .showPotentialSavings! &&
-          //                                 viewModel.totalItems! > 0)
-          //                               _PotentialSavings(),
-          //                             if (viewModel.totalItems! > 0)
-          //                               _OrderSummary(),
-          //                             if (viewModel.modules != null)
-          //                               ...viewModel.modules!.map((module) {
-          //                                 switch (module!.moduleType) {
-          //                                   case ModuleType.standard:
-          //                                     return StandardModule(module);
-          //
-          //                                   case ModuleType.product:
-          //                                   case ModuleType.productList:
-          //                                     return ProductModule(
-          //                                       module,
-          //                                     );
-          //
-          //                                   case ModuleType.banner:
-          //                                     return BannerModule(module);
-          //
-          //                                   default:
-          //                                     return Container();
-          //                                 }
-          //                               }).toList(),
-          //                           ],
-          //                         ),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //           ),
-          //     bottomNavigationBar: viewModel.totalItems! > 0
-          //         ? SafeArea(
-          //             child: Container(
-          //               padding: const EdgeInsets.all(15),
-          //               decoration: BoxDecoration(
-          //                   boxShadow: AppStyle.topShadow,
-          //                   color: AppColor.white),
-          //               child: Button(
-          //                 "Checkout",
-          //                 valueKey: const Key("CheckoutBtn"),
-          //                 color: AppColor.orange,
-          //                 borderColor: AppColor.orange,
-          //                 width: double.infinity,
-          //                 onPressed: () => viewModel.onCheckoutClick(),
-          //               ),
-          //             ),
-          //           )
-          //         : null,
-          //   ),
-          // );
-        },
-        viewModelBuilder: () => CartViewModel());
+                  )
+                : null,
+          ),
+        );
+      },
+      viewModelBuilder: () => CartViewModel(),
+    );
   }
 
   @override
@@ -532,29 +322,37 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
 class _PotentialSavings extends ViewModelWidget<CartViewModel> {
   @override
   Widget build(BuildContext context, CartViewModel viewModel) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: const Color(0xffFAF3DD),
-      ),
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Potential Savings",
-            textScaleFactor: 1,
-            style: AppTextStyle.titleLarge.copyWith(fontSize: 16),
+    return Padding(
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15, top: 0),
+      child: DottedBorder(
+        color: const Color(0xff19A672),
+        padding: EdgeInsets.zero,
+        borderType: BorderType.RRect,
+        radius: const Radius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          decoration: BoxDecoration(
+            color: const Color(0xff19A672).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
           ),
-          VerticalSpacing.d10px(),
-          Text(
-            viewModel.shoppingCart!.potentialSavings!,
-            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary),
-            textScaleFactor: 1,
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Potential Savings",
+                textScaleFactor: 1,
+                style: AppTextStyle.titleSmall,
+              ),
+              VerticalSpacing.d5px(),
+              Text(
+                viewModel.shoppingCart!.potentialSavings!,
+                style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),
+                textScaleFactor: 1,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -650,7 +448,7 @@ class _OrderSummary extends ViewModelWidget<CartViewModel> {
                 itemCount: viewModel.shoppingCart!.orderTotalSummary!.length,
                 primary: false,
                 shrinkWrap: true,
-                padding: EdgeInsets.only(top: 2),
+                padding: const EdgeInsets.only(top: 2),
                 separatorBuilder: (context, index) {
                   return AppStyle.dottedDivider;
                 },

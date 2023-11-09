@@ -187,10 +187,7 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
         children: [
           Text(
             viewModel.productDetails?.overview?.name ?? "-",
-            style: AppTextStyle.titleMedium.copyWith(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
+            style: AppTextStyle.titleMedium,
             textScaleFactor: 1,
           ),
           VerticalSpacing.d10px(),
@@ -255,7 +252,10 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-                color: AppColor.border, style: BorderStyle.solid, width: 0.5),
+              color: AppColor.border,
+              style: BorderStyle.solid,
+              width: 0.5,
+            ),
           ),
           child: Stack(
             children: [
@@ -281,16 +281,16 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
                 itemCount: images!.length,
                 loop: false,
                 layout: SwiperLayout.DEFAULT,
-                pagination: const SwiperPagination(
-                  alignment: Alignment.bottomCenter,
-                  builder: DotSwiperPaginationBuilder(
-                    activeSize: 7,
-                    size: 7,
-                    space: 2,
-                    activeColor: AppColor.primary,
-                    color: AppColor.shadowColor,
-                  ),
-                ),
+                // pagination: const SwiperPagination(
+                //   alignment: Alignment.bottomCenter,
+                //   builder: DotSwiperPaginationBuilder(
+                //     activeSize: 7,
+                //     size: 7,
+                //     space: 2,
+                //     activeColor: AppColor.primary,
+                //     color: AppColor.shadowColor,
+                //   ),
+                // ),
               ),
               Positioned(
                 bottom: 10,
