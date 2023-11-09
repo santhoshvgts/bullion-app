@@ -301,15 +301,16 @@ class AppRouter {
       //         builder: (_) => ChangePasswordPage(),
       //         settings: RouteSettings(name: settings.name));
       //
-        case Routes.address:
-          return MaterialPageRoute(
-              builder: (_) => const AddressPage(),
-              settings: RouteSettings(name: settings.name));
+      case Routes.address:
+        return MaterialPageRoute(
+            builder: (_) => const AddressPage(),
+            settings: RouteSettings(name: settings.name));
 
-        case Routes.addEditAddress:
-          return MaterialPageRoute(
-              builder: (_) => AddEditAddressPage(userAddress: settings.arguments as UserAddress?),
-              settings: RouteSettings(name: settings.name));
+      case Routes.addEditAddress:
+        return MaterialPageRoute(
+            builder: (_) => AddEditAddressPage(
+                userAddress: settings.arguments as UserAddress?),
+            settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myPortfolio:
       //     return MaterialPageRoute(

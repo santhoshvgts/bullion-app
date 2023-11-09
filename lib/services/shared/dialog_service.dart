@@ -58,7 +58,6 @@ class DialogService {
     return _dialogCompleterMap[key]!.future;
   }
 
-
   Future<AlertResponse> showDialog(
       {ValueKey key = const ValueKey("defaultDialogKey"),
       String title = 'Message',
