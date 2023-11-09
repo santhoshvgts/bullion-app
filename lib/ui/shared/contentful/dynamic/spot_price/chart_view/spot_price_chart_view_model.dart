@@ -12,11 +12,10 @@ import 'package:bullion/ui/view/vgts_base_view_model.dart';
 class SpotPriceChartViewModel extends VGTSBaseViewModel {
   bool? _mounted;
   SpotPrice? _spotPriceChartData;
-  // final myState = new charts.UserManagedState<DateTime>();
 
   String? tag;
 
-  SpotPriceService? _spotPriceService = locator<SpotPriceService>();
+  final SpotPriceService _spotPriceService = locator<SpotPriceService>();
 
   late List<SpotPriceTimeRangeFilter> spotPriceTimeRangeFilters;
   ChartSelectionInfoModel? chartSelectionInfoModel;
@@ -25,6 +24,7 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
 
   StreamController<ChartSelectionInfoModel?> trackedSpotController =
       StreamController<ChartSelectionInfoModel?>.broadcast();
+
   int spotTimeRangeSelectedIndex = 0;
 
   SpotPrice? get spotPriceChartData => _spotPriceChartData;
@@ -41,6 +41,9 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
     _spotPriceChartData = value;
     notifyListeners();
   }
+
+  SpotPriceTimeRangeFilter get selectedFilterValue =>
+      spotPriceTimeRangeFilters[spotTimeRangeSelectedIndex];
 
   init(String? slug, dynamic spotPrice) async {
     setBusy(true);
@@ -86,12 +89,9 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
 
   onTrackballTouchUp() {
     //need to force a new instance for the stream builder to build
-
-    // chartSelectionInfoModel =
-    //     ChartSelectionInfoModel.fromSpotPrice(_spotPriceChartData!);
-    // trackedSpotController.add(chartSelectionInfoModel);
-    // myState.selectionModels[charts.SelectionModelType.info] =
-    //     new charts.UserManagedSelectionModel();
+    chartSelectionInfoModel =
+        ChartSelectionInfoModel.fromSpotPrice(_spotPriceChartData!);
+    trackedSpotController.add(chartSelectionInfoModel);
     //
     // if (_mounted != null && !_mounted!) {
     //   notifyListeners();
@@ -102,7 +102,7 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
     //spotPriceMetal = value;
     chartSelectionInfoModel =
         ChartSelectionInfoModel.fromSelection(value, time);
-    trackedSpotController.add(chartSelectionInfoModel);
+    // trackedSpotController.add(chartSelectionInfoModel);
   }
 
   void disposeModel() {

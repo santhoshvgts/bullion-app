@@ -15,6 +15,7 @@ class DialogService {
 
   late Function(AlertRequest) _bottomSheetListener;
   late Function(AlertRequest) _drawerListerner;
+  late Function(AlertRequest) _loaderListerner;
   late Function(AlertRequest) _displayMessageListener;
 
   void registerDialogListener(Function(AlertRequest) showDialogListener) {
@@ -34,6 +35,10 @@ class DialogService {
     _drawerListerner = drawerListerner;
   }
 
+  void registerLoaderListener(Function(AlertRequest) loaderListerner) {
+    _loaderListerner = loaderListerner;
+  }
+
   void registerDisplayMessageListener(
       Function(AlertRequest) displayMessageListener) {
     _displayMessageListener = displayMessageListener;
@@ -46,6 +51,14 @@ class DialogService {
     return _dialogCompleterMap[key]!.future;
   }
 
+  Future<AlertResponse> showLoader(
+      {ValueKey key = const ValueKey("defaultDialogKey"), bool? isBusy}) {
+    _dialogCompleterMap[key] = Completer<AlertResponse>();
+    _loaderListerner(AlertRequest(isDismissible: isBusy));
+    return _dialogCompleterMap[key]!.future;
+  }
+
+
   Future<AlertResponse> showDialog(
       {ValueKey key = const ValueKey("defaultDialogKey"),
       String title = 'Message',
@@ -54,15 +67,14 @@ class DialogService {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
     _showDialogListener(AlertRequest(
         description: description, buttonTitle: buttonTitle, title: title));
-
     return _dialogCompleterMap[key]!.future;
   }
 
   Future<AlertResponse> showConfirmationDialog(
       {ValueKey key = const ValueKey("defaultDialogKey"),
-      String? title,
+      String? title = "Message",
       String? description,
-      String? buttonTitle}) {
+      String? buttonTitle = 'OK'}) {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
     _showConfirmDialogListener(AlertRequest(
         description: description,
@@ -72,19 +84,21 @@ class DialogService {
     return _dialogCompleterMap[key]!.future;
   }
 
-  Future<AlertResponse> showBottomSheet(
-      {ValueKey key = const ValueKey("defaultDialogKey"),
-      String? title,
-      Widget? iconWidget,
-      Widget? child,
-      bool showActionBar = true,
-      bool isDismissible = true,
-      bool showCloseIcon = true,
-      bool enableDrag = true,
-      bool showDivider = true,
-      Alignment? headerAlignment}) {
+  Future<AlertResponse> showBottomSheet({
+    ValueKey key = const ValueKey("defaultDialogKey"),
+    String? title,
+    Widget? iconWidget,
+    Widget? child,
+    bool showActionBar = true,
+    bool isDismissible = true,
+    bool showCloseIcon = true,
+    bool enableDrag = true,
+    bool showDivider = true,
+    Alignment? headerAlignment,
+  }) {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
-    _bottomSheetListener(AlertRequest(
+    _bottomSheetListener(
+      AlertRequest(
         title: title,
         iconWidget: iconWidget,
         contentWidget: child,
@@ -93,7 +107,9 @@ class DialogService {
         isDismissible: isDismissible,
         enableDrag: enableDrag,
         showDivider: showDivider,
-        headerAlignment: headerAlignment));
+        headerAlignment: headerAlignment,
+      ),
+    );
 
     return _dialogCompleterMap[key]!.future;
   }

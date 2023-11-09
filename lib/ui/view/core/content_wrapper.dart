@@ -2,7 +2,6 @@
 
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
-import 'package:bullion/core/models/module/selected_item_list.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
@@ -35,14 +34,19 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
   final Function(bool onload)? onLoading;
   final String? metalName;
 
-  const ContentWrapper(this.path,
-      {super.key,
-      this.controller,
-      this.initialValue,
-      this.onPageFetched,
-      this.enableController = true,
-      this.onLoading,
-      this.metalName});
+  final LoadingStyle loadingStyle;
+
+  const ContentWrapper(
+    this.path, {
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onPageFetched,
+    this.enableController = true,
+    this.onLoading,
+    this.loadingStyle = LoadingStyle.DEFAULT,
+    this.metalName,
+  });
 
   @override
   bool get reactive => true;
@@ -131,7 +135,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                                         []
                                   ],
                                 )
-                              : LoadingData(),
+                              : LoadingData(loadingStyle: loadingStyle),
                         ),
                         if (viewModel.paginationLoading)
                           Container(
@@ -228,28 +232,10 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
               ),
             ),
           ),
-
           HorizontalSpacing.d10px(),
-
-          PopupMenuButton<SelectedItemList>(
-            elevation: 0,
-            color: AppColor.scaffoldBackground,
-            onSelected: (value) => viewModel.onSortPressed(value.value ?? ''),
-            itemBuilder: (BuildContext context) =>
-                viewModel.productModel.sortOptions!
-                    .map(
-                      (e) => PopupMenuItem(
-                        value: e,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text(
-                            e.text ?? '',
-                            style: AppTextStyle.bodyLarge,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
+          HorizontalSpacing.d10px(),
+          InkWell(
+            onTap: () => viewModel.onSortPressed(),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -277,13 +263,6 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
               ),
             ),
           ),
-
-          // if (viewModel.productListingModuleTitle != null)
-          //   AutoSizeText(viewModel.productListingModuleTitle!,
-          //       textScaleFactor: 1,
-          //       textAlign: UIAlignment.textAlign(viewModel
-          //           .productListingModule!.displaySettings!.titleAlignment),
-          //       style: AppTextStyle.titleSmall.copyWith(color: AppColor.title)),
         ],
       ),
     );

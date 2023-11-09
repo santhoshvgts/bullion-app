@@ -7,6 +7,8 @@ class FilterDrawerViewModel extends VGTSBaseViewModel {
   ProductModel productModel;
   FilterDrawerController? controller;
 
+  int index = 0;
+
   String? selectedFacetName;
 
   @override
@@ -17,10 +19,10 @@ class FilterDrawerViewModel extends VGTSBaseViewModel {
     return super.onInit();
   }
 
-
   Facets? get selectedFacet => filterData?.singleWhere((element) => element.facetName == selectedFacetName);
 
   List<Facets>? get filterData => productModel.facets;
+  //int? get selectedvalue =>  selectedvalue.sin
 
   FilterDrawerViewModel(this.productModel, this.controller) {
     onFilterSectionChange(0);
@@ -29,6 +31,22 @@ class FilterDrawerViewModel extends VGTSBaseViewModel {
   void onFilterSectionChange(int index) {
     selectedFacetName = filterData?.isEmpty == true ? '' : filterData?[index].facetName;
     notifyListeners();
+  }
+
+  List<int>? get selectedFilterItemCount => calculateSelectedCounts();
+
+  List<int> calculateSelectedCounts() {
+    List<int> selectedCounts = [];
+    for (var element in productModel.facets!) {
+      int sum = 0;
+      for (var item in element.items!) {
+        if (item.isSelected == true) {
+          sum++;
+        }
+      }
+      selectedCounts.add(sum);
+    }
+    return selectedCounts;
   }
 
   onDataChange(ProductModel productModel) {

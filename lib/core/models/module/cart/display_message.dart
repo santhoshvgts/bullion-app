@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:bullion/core/constants/display_type.dart';
-import 'package:bullion/core/res/colors.dart';
+import 'package:flutter/material.dart';
 
 class DisplayMessage {
   String? title;
@@ -10,13 +9,13 @@ class DisplayMessage {
   String? messageDisplayType;
 
   Color get color {
-    switch(messageType){
+    switch (messageType) {
       case MessageType.error:
-        return Color(0xFFC30000);
+        return const Color(0xFFC30000);
       case MessageType.info:
         return Colors.blue;
       case MessageType.success:
-        return Colors.green;
+        return const Color(0xff19A672);
       case MessageType.warning:
         return Colors.orange;
       default:
@@ -25,17 +24,16 @@ class DisplayMessage {
   }
 
   Color get textColor {
-    switch(messageType){
+    switch (messageType) {
       case MessageType.error:
-        return Color(0xFFC30000);
+        return const Color(0xFFC30000);
       default:
         return Colors.black;
     }
   }
 
-
   IconData get icon {
-    switch(messageType){
+    switch (messageType) {
       case MessageType.error:
         return Icons.highlight_remove_outlined;
       case MessageType.info:
@@ -51,15 +49,15 @@ class DisplayMessage {
 
   DisplayMessage(
       {this.title,
-        this.message,
-        this.subText,
-        this.messageType,
-        this.messageDisplayType});
+      this.message,
+      this.subText,
+      this.messageType,
+      this.messageDisplayType});
 
   DisplayMessage.fromJson(Map<String, dynamic> json) {
-    title  = json['title'];
+    title = json['title'];
     message = json['message'];
-    subText  = json['sub_text'];
+    subText = json['sub_text'];
     messageType = json['message_type'];
     messageDisplayType = json['message_display_type'];
   }

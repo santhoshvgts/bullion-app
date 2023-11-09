@@ -23,8 +23,18 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
       body: PersistentTabView(
         context,
         controller: viewModel.bottomNavController,
-        screens: viewModel.pages,
-        key: locator<NavigationService>().tabBarKey,
+        screens: [
+          ...viewModel.pages
+              .asMap()
+              .map((index, e) {
+                return MapEntry(
+                  index,
+                  e,
+                );
+              })
+              .values
+              .toList()
+        ],
         items: [
           _PersistentBottomNav(
             inactiveIcon: const Icon(CupertinoIcons.home),
@@ -32,14 +42,16 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             title: "Home",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/home",
+              navigatorKey: locator<NavigationService>().getBottomKeyByIndex(0),
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.bag_fill),
-            inactiveIcon: const Icon(CupertinoIcons.bag),
-            title: "Shop",
+            icon: const Icon(CupertinoIcons.tag_solid),
+            inactiveIcon: const Icon(CupertinoIcons.tag),
+            title: "Deals",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
-              initialRoute: "/pages/shop",
+              initialRoute: "/pages/deals",
+              navigatorKey: locator<NavigationService>().getBottomKeyByIndex(1),
             ),
           ),
           _PersistentBottomNav(
@@ -48,23 +60,27 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             title: "Charts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/spot-price",
+              navigatorKey: locator<NavigationService>().getBottomKeyByIndex(2),
             ),
           ),
           _PersistentBottomNav(
-            inactiveIcon: const Icon(CupertinoIcons.tag),
-            icon: const Icon(CupertinoIcons.tag_solid),
-            title: "Deals",
+            inactiveIcon: const Icon(CupertinoIcons.cart),
+            icon: const Icon(CupertinoIcons.cart_fill),
+            title: "Cart",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
-              initialRoute: "/pages/deals",
+              initialRoute: "/cart/viewCart",
+              navigatorKey: locator<NavigationService>().getBottomKeyByIndex(3),
             ),
           ),
           _PersistentBottomNav(
-              icon: const Icon(CupertinoIcons.person_fill),
-              inactiveIcon: const Icon(CupertinoIcons.person),
-              title: "Accounts",
-              routeAndNavigatorSettings: const RouteAndNavigatorSettings(
-                initialRoute: "/pages/accounts",
-              )),
+            icon: const Icon(CupertinoIcons.person_fill),
+            inactiveIcon: const Icon(CupertinoIcons.person),
+            title: "Accounts",
+            routeAndNavigatorSettings: RouteAndNavigatorSettings(
+              initialRoute: "/pages/accounts",
+              navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),
+            ),
+          ),
         ],
         padding: const NavBarPadding.all(4),
         confineInSafeArea: true,
