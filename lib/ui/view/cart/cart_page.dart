@@ -339,15 +339,17 @@ class _PotentialSavings extends ViewModelWidget<CartViewModel> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Potential Savings",
                 textScaleFactor: 1,
-                style: AppTextStyle.titleSmall,
+                style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),
+                // style: AppTextStyle.titleSmall,
               ),
               VerticalSpacing.d5px(),
               Text(
                 viewModel.shoppingCart!.potentialSavings!,
-                style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),
+                // style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),
+                style: AppTextStyle.titleSmall,
                 textScaleFactor: 1,
               ),
             ],

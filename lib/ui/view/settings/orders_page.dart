@@ -79,10 +79,14 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                                   left: 16,
                                 ),
                                 child: Transform.translate(
-                                  offset: Offset(dx,
-                                      constraints.maxHeight - kToolbarHeight),
-                                  child: const Text("My Orders",
-                                      style: AppTextStyle.titleLarge),
+                                  offset: Offset(
+                                    dx,
+                                    constraints.maxHeight - kToolbarHeight,
+                                  ),
+                                  child: const Text(
+                                    "My Orders",
+                                    style: AppTextStyle.titleLarge,
+                                  ),
                                 ),
                               ),
                             ],
