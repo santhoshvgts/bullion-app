@@ -46,11 +46,11 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.bag_fill),
-            inactiveIcon: const Icon(CupertinoIcons.bag),
-            title: "Shop",
+            icon: const Icon(CupertinoIcons.tag_solid),
+            inactiveIcon: const Icon(CupertinoIcons.tag),
+            title: "Deals",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
-              initialRoute: "/pages/shop",
+              initialRoute: "/pages/deals",
               navigatorKey: locator<NavigationService>().getBottomKeyByIndex(1),
             ),
           ),
@@ -64,11 +64,11 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            inactiveIcon: const Icon(CupertinoIcons.tag),
-            icon: const Icon(CupertinoIcons.tag_solid),
-            title: "Deals",
+            inactiveIcon: const Icon(CupertinoIcons.cart),
+            icon: const Icon(CupertinoIcons.cart_fill),
+            title: "Cart",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
-              initialRoute: "/pages/deals",
+              initialRoute: "/cart/viewCart",
               navigatorKey: locator<NavigationService>().getBottomKeyByIndex(3),
             ),
           ),

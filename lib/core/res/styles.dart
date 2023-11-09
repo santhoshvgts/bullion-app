@@ -1,5 +1,6 @@
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/fontsize.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 
 class AppStyle {
@@ -66,6 +67,13 @@ class AppStyle {
   static const Widget customDivider = Divider(
     color: AppColor.divider,
     thickness: 0.3,
+  );
+
+  static const Widget dottedDivider = DottedLine(
+    dashGapLength: 2,
+    dashLength: 3,
+    lineThickness: 0.5,
+    dashColor: AppColor.outline,
   );
 }
 

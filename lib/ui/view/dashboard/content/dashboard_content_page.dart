@@ -14,11 +14,11 @@ import 'package:stacked/stacked.dart';
 class DashboardContentPage extends StatelessWidget {
   final String? path;
 
-  const DashboardContentPage({key, this.path}) : super(key: key);
+  DashboardContentPage({key, this.path}) : super(key: key);
 
   // final double _searchBarHeight = 35;
-  final double _appBarCollapsedHeight = kToolbarHeight;
-  final double _appBarExpandedHeight = 70 + 35; // 115
+  // final double _appBarCollapsedHeight = kToolbarHeight;
+  double? _appBarExtendedHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -35,45 +35,56 @@ class DashboardContentPage extends StatelessWidget {
                 body: AnnotatedRegion<SystemUiOverlayStyle>(
                   value: SystemUiOverlayStyle.dark,
                   child: NestedScrollView(
-                      controller: viewModel.scrollController,
                       headerSliverBuilder: (context, innerBoxIsScrolled) {
                         return <Widget>[
                           SliverLayoutBuilder(builder: (context, constraints) {
                             return SliverAppBar(
                               backgroundColor: AppColor.white,
                               titleSpacing: 0,
-                              toolbarHeight: _appBarCollapsedHeight,
-                              collapsedHeight: _appBarCollapsedHeight,
-                              expandedHeight: _appBarExpandedHeight,
+                              expandedHeight: 105,
                               floating: false,
                               pinned: true,
                               forceElevated: true,
                               elevation: 1,
                               shadowColor: AppColor.secondaryBackground,
                               flexibleSpace: FlexibleSpaceBar.createSettings(
-                                currentExtent: _appBarCollapsedHeight,
-                                minExtent: _appBarCollapsedHeight,
+                                currentExtent: 60,
+                                minExtent: 60,
                                 toolbarOpacity: 1.0,
-                                child: FlexibleSpaceBar(
-                                  centerTitle: true,
-                                  titlePadding: const EdgeInsets.only(
-                                    top: 10,
-                                    bottom: 10.0,
-                                  ),
-                                  title: SearchCardSection(
-                                    rightPadding:
-                                        viewModel.titlePaddingHorizontal,
-                                  ),
-                                  background: AppBar(
-                                    backgroundColor: AppColor.white,
-                                    centerTitle: false,
-                                    elevation: 1,
-                                    shadowColor: AppColor.secondaryBackground,
-                                    title: Image.asset(
-                                      Images.appLogo,
-                                      height: 20,
-                                    ),
-                                  ),
+                                child: LayoutBuilder(
+                                  builder: (
+                                    context,
+                                    constraints,
+                                  ) {
+                                    _appBarExtendedHeight ??=
+                                        80 - constraints.biggest.height;
+
+                                    return FlexibleSpaceBar(
+                                      centerTitle: true,
+                                      titlePadding: const EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 10.0,
+                                      ),
+                                      title: SearchCardSection(
+                                        rightPadding: 45 -
+                                            ((15 - 45) *
+                                                ((constraints.biggest.height -
+                                                        80) /
+                                                    _appBarExtendedHeight!)),
+                                      ),
+                                      background: AppBar(
+                                        backgroundColor: AppColor.white,
+                                        centerTitle: false,
+                                        elevation: 1,
+                                        shadowColor:
+                                            AppColor.secondaryBackground,
+                                        title: Image.asset(
+                                          Images.appLogo,
+                                          height: 20,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                               actions: const [

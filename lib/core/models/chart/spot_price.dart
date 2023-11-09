@@ -25,6 +25,9 @@ class SpotPrice extends BaseModel {
   String? formattedPerKiloChange;
   List<ChartData>? chartData;
 
+  Color get changeColor => change! < 0 ? AppColor.red : AppColor.green;
+  String get formmatedChangePercentage => "${changePct}%";
+
   bool get canChangeWatchList {
     return [1, 2, 3, 4].contains(metalId) == false && metalName != "Portfolio";
   }

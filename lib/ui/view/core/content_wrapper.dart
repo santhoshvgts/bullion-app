@@ -34,14 +34,19 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
   final Function(bool onload)? onLoading;
   final String? metalName;
 
-  const ContentWrapper(this.path,
-      {super.key,
-      this.controller,
-      this.initialValue,
-      this.onPageFetched,
-      this.enableController = true,
-      this.onLoading,
-      this.metalName});
+  final LoadingStyle loadingStyle;
+
+  const ContentWrapper(
+    this.path, {
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onPageFetched,
+    this.enableController = true,
+    this.onLoading,
+    this.loadingStyle = LoadingStyle.DEFAULT,
+    this.metalName,
+  });
 
   @override
   bool get reactive => true;
@@ -130,7 +135,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                                         []
                                   ],
                                 )
-                              : LoadingData(),
+                              : LoadingData(loadingStyle: loadingStyle),
                         ),
                         if (viewModel.paginationLoading)
                           Container(
@@ -227,9 +232,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
               ),
             ),
           ),
-
           HorizontalSpacing.d10px(),
-
           HorizontalSpacing.d10px(),
           InkWell(
             onTap: () => viewModel.onSortPressed(),

@@ -6,7 +6,7 @@ class AppColor {
 
   static const Color indicatorColor = Color(0xFFB8F5D4);
   static const Color primaryDark = Color(0xFF002539);
-  static const Color secondary = Color(0xFF006936);
+  static const Color secondary = Color(0xFFf25d0d);
   static const Color accent = Color(0xFF000000);
   static const Color divider = Color(0x2B495A14);
   static const Color border = Color(0xffDADADA);
@@ -49,7 +49,7 @@ class AppColor {
   static const Color green = Color(0xFF0F8110);
   static const Color red = Color(0xFFCD3737);
   static const Color offerText = Color(0xFF24A186);
-  static const Color orange = Color(0xFFf98d29);
+  static const Color warning = Color(0xffFF3B30);
   static const Color blue = Color(0xFF005f9b);
 
   static const Color dealsRed = Color(0xFFC30000);
@@ -131,15 +131,15 @@ class AppColor {
   static Color opacityColor(String metalName) {
     switch (metalName.toLowerCase()) {
       case "gold":
-        return const Color(0xffFDF1D0);
+        return const Color(0xffFFDB7F);
       case "silver":
-        return const Color(0xffE4E4E4);
+        return const Color(0xffC9C9C9);
       case "platinum":
-        return const Color(0xffF9DEE1);
+        return const Color(0xffFEAAB3);
       case "palladium":
-        return const Color(0xffDED7F0);
+        return const Color(0xffCAB9E8);
       default:
-        return const Color(0xffFDF1D0);
+        return const Color(0xffFFDB7F);
     }
   }
 }
