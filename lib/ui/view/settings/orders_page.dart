@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/enums/order_status.dart';
-import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
 import 'orders_view_model.dart';
 
@@ -53,46 +52,43 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                     ),
                     expandedHeight: _expandedHeight,
                     pinned: true,
-                    flexibleSpace: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return FlexibleSpaceBar(
-                          title: viewModel.scrollController.offset >
-                                  _scrollOffset
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 48.0),
-                                        child: Text(
-                                          "My Orders",
-                                          style: AppTextStyle.titleLarge
-                                              .copyWith(color: AppColor.text),
-                                        ),
-                                      ),
-                                    ])
-                              : const Text(""),
-                          background: Visibility(
-                            visible: viewModel.scrollController.offset <
-                                _scrollOffset,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
-                                  child: Text(
-                                    "My Orders",
-                                    style: AppTextStyle.titleLarge
-                                        .copyWith(color: AppColor.text),
-                                  ),
+                    flexibleSpace: Padding(
+                      padding: const EdgeInsets.only(bottom: kTextTabBarHeight),
+                      child: LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          double percent =
+                              (((constraints.maxHeight - 56) - kToolbarHeight) *
+                                  100 /
+                                  (10 - kToolbarHeight));
+                          double dx = 0;
+
+                          dx = -13 + percent;
+                          /*if (constraints.maxHeight == 100) {
+                            dx = 0;
+                          }*/
+
+                          //To reduce the space between start to end
+                          dx = (dx * 64) / 100;
+
+                          return Stack(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  top: kToolbarHeight / 4,
+                                  left: 16,
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                                child: Transform.translate(
+                                  offset: Offset(dx,
+                                      constraints.maxHeight - kToolbarHeight),
+                                  child: const Text("My Orders",
+                                      style: AppTextStyle.titleLarge),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                     bottom: TabBar(
                       controller: _tabController,

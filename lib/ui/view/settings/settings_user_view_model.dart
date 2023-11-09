@@ -1,5 +1,8 @@
+import '../../../core/constants/module_type.dart';
 import '../../../locator.dart';
+import '../../../router.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/shared/eventbus_service.dart';
 import '../vgts_base_view_model.dart';
 
 class SettingsUserViewModel extends VGTSBaseViewModel {
@@ -11,9 +14,23 @@ class SettingsUserViewModel extends VGTSBaseViewModel {
   }
 
   void init() {
+    locator<EventBusService>()
+        .eventBus
+        .registerTo<RefreshDataEvent>()
+        .listen((event) async {
+      if (event.name == RefreshType.accountRefresh) {
+        initialize();
+      }
+    });
+
+    initialize();
+    notifyListeners();
+  }
+
+  void initialize() {
     _isAuthenticated = locator<AuthenticationService>().isAuthenticated;
     //_pageNo = 1 ;
-
+    notifyListeners();
   }
 
   bool get isAuthenticated => _isAuthenticated;
@@ -27,5 +44,9 @@ class SettingsUserViewModel extends VGTSBaseViewModel {
     notifyListeners();
 
     //setState(ViewState.Idle);
+  }
+
+  showIntroScreen() {
+    navigationService.pushNamed(Routes.login, arguments: {"fromMain": false});
   }
 }

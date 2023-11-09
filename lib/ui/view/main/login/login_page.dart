@@ -34,16 +34,19 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
         height: 85,
         child: Column(
           children: [
-            InkWell(
-              key: const Key("btnContinueAsGuest"),
-              onTap: () => viewModel.continueWithoutLogin(),
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: Text("Explore as Guest",
-                    textScaleFactor: 1,
-                    style: AppTextStyle.titleSmall
-                        .copyWith(color: AppColor.primary)),
+            Visibility(
+              visible: fromMain,
+              child: InkWell(
+                key: const Key("btnContinueAsGuest"),
+                onTap: () => viewModel.continueWithoutLogin(),
+                child: Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: Text("Explore as Guest",
+                      textScaleFactor: 1,
+                      style: AppTextStyle.titleSmall
+                          .copyWith(color: AppColor.primary)),
+                ),
               ),
             ),
             VerticalSpacing.custom(value: 16),

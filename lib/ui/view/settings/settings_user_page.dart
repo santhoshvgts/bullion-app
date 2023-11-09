@@ -44,8 +44,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
       ),
       body: SingleChildScrollView(
           child: viewModel.isAuthenticated
-              ? getAccountDetailsWidget(viewModel)
-              : getAccountWidget()),
+              ? getAccountDetailsWidget(viewModel, context)
+              : getAccountWidget(viewModel, context)),
     );
   }
 
@@ -54,7 +54,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     return SettingsUserViewModel();
   }
 
-  Widget getAccountDetailsWidget(SettingsUserViewModel viewModel) {
+  Widget getAccountDetailsWidget(
+      SettingsUserViewModel viewModel, BuildContext context) {
     return Stack(
       children: [
         Column(
@@ -148,7 +149,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               ),
             ),
             const SizedBox(height: 24),
-            getFooterSection(),
+            getFooterSection(context,
+                isAuthenticated: viewModel.isAuthenticated),
           ],
         ),
         if (viewModel.isAuthenticated)
@@ -244,9 +246,15 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
-                      getTextsLayout(
-                        const Icon(Icons.pin_drop_outlined),
-                        "Addresses",
+                      InkWell(
+                        onTap: () {
+                          locator<NavigationService>()
+                              .pushNamed(Routes.address);
+                        },
+                        child: getTextsLayout(
+                          const Icon(Icons.pin_drop_outlined),
+                          "Addresses",
+                        ),
                       ),
                       const Divider(
                         color: AppColor.platinumColor,
@@ -264,10 +272,11 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getFooterSection() {
+  Widget getFooterSection(BuildContext context,
+      {bool isAuthenticated = false}) {
     return Container(
       color: AppColor.accountBg,
-      height: 500,
+      height: 516,
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.only(left: 16.0),
@@ -320,6 +329,40 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   style: AppTextStyle.bodyMedium
                       .copyWith(color: AppColor.navyBlue40)),
             ),
+            Visibility(
+              visible: isAuthenticated,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: InkWell(
+                  onTap: () {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: const Text('Logout'),
+                        content: const Text("Do you want to logout?"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              locator<AuthenticationService>().logout("");
+                              Navigator.pop(context, 'OK');
+                            },
+                            child: const Text('Logout'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Text('Logout',
+                      style: AppTextStyle.bodyMedium
+                          .copyWith(color: AppColor.navyBlue40)),
+                ),
+              ),
+            ),
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 48.0),
@@ -334,7 +377,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getAccountWidget() {
+  Widget getAccountWidget(
+      SettingsUserViewModel viewModel, BuildContext context) {
     return Stack(
       children: [
         Column(
@@ -345,7 +389,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               width: double.infinity,
             ),
             const SizedBox(height: 64),
-            getFooterSection()
+            getFooterSection(context)
           ],
         ),
         Positioned(
@@ -389,7 +433,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         borderColor: AppColor.primary,
                         valueKey: const Key("btnSignInCreate"),
                         onPressed: () {
-                          // locator<NavigationService>().pushNamed(Routes.login);
+                          viewModel.showIntroScreen();
                         },
                       )
                     ],

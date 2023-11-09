@@ -28,6 +28,7 @@ class BannerType {
 }
 
 class RefreshType {
+  static const accountRefresh = "account_refresh_event";
   static const productRefresh = "product_refresh_event";
   static const homeRefresh = "home_refresh_event";
 }

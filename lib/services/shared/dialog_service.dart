@@ -66,15 +66,14 @@ class DialogService {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
     _showDialogListener(AlertRequest(
         description: description, buttonTitle: buttonTitle, title: title));
-
     return _dialogCompleterMap[key]!.future;
   }
 
   Future<AlertResponse> showConfirmationDialog(
       {ValueKey key = const ValueKey("defaultDialogKey"),
-      String? title,
+      String? title = "Message",
       String? description,
-      String? buttonTitle}) {
+      String? buttonTitle = 'OK'}) {
     _dialogCompleterMap[key] = Completer<AlertResponse>();
     _showConfirmDialogListener(AlertRequest(
         description: description,

@@ -46,7 +46,7 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
               style: AppTextStyle.titleLarge,
             ),*/
                       const SizedBox(
-                        height: 16.0,
+                        height: 12.0,
                       ),
                       Container(
                         height: 160,
@@ -57,12 +57,13 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                         child: Column(
                           children: [
                             Flexible(
-                              flex: 3,
+                              flex: 6,
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Row(
                                   children: [
-                                    Container(
+                                    //Receipt icon with decoration
+                                    /*Container(
                                       decoration: BoxDecoration(
                                         color: AppColor.iconBG,
                                         borderRadius: BorderRadius.circular(8),
@@ -74,45 +75,41 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                         size: 32,
                                         color: AppColor.turtleGreen,
                                       ),
-                                    ),
+                                    ),*/
                                     Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              viewModel.filteredList?[index]
-                                                      .orderId ??
-                                                  "",
-                                              style: AppTextStyle.bodyMedium,
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              viewModel.filteredList?[index]
-                                                      .orderSummary?[2].value ??
-                                                  "",
-                                              style: AppTextStyle.labelMedium
-                                                  .copyWith(
-                                                      color: AppColor.cyanBlue),
-                                            ),
-                                          ],
-                                        ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            viewModel.filteredList?[index]
+                                                    .orderId ??
+                                                "",
+                                            style: AppTextStyle.bodyLarge,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Text(
+                                            viewModel.filteredList?[index]
+                                                    .orderSummary?[2].value ??
+                                                "",
+                                            style: AppTextStyle.labelMedium
+                                                .copyWith(
+                                                    color: AppColor.cyanBlue),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const Icon(Icons.arrow_forward_ios)
+                                    const Icon(Icons.arrow_forward_ios, size: 20,)
                                   ],
                                 ),
                               ),
                             ),
                             Flexible(
-                              flex: 2,
+                              flex: 5,
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: AppColor.snowDrift,
