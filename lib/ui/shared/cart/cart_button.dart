@@ -37,7 +37,8 @@ class CartButton extends VGTSBuilderWidget<CartButtonViewModel> {
       CartButtonViewModel viewModel, Widget? child) {
     return IconButton(
       onPressed: () {
-        locator<NavigationService>().pushNamed(Routes.viewCart);
+        locator<NavigationService>().pushNamed(Routes.checkout);
+        //locator<NavigationService>().pushNamed(Routes.viewCart);
       },
       padding: EdgeInsets.zero,
       icon: Stack(

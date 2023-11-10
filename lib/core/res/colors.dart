@@ -111,20 +111,20 @@ class AppColor {
     switch (metalName.toLowerCase()) {
       case "gold":
         return const MaterialColor(
-            0xFFF4BB40, {200: const Color.fromRGBO(244, 187, 64, .3)}).shade200;
+            0xFFF4BB40, {200:  Color.fromRGBO(244, 187, 64, .3)}).shade200;
       case "silver":
         return const MaterialColor(
-                0xFF797979, {600: const Color.fromRGBO(121, 121, 121, .7)})
+                0xFF797979, {600:  Color.fromRGBO(121, 121, 121, .7)})
             .shade600;
       case "platinum":
         return const MaterialColor(
-            0xFFEA616B, {700: const Color.fromRGBO(234, 97, 107, .8)}).shade700;
+            0xFFEA616B, {700:  Color.fromRGBO(234, 97, 107, .8)}).shade700;
       case "palladium":
         return const MaterialColor(
-            0xFF5F38B7, {600: const Color.fromRGBO(95, 56, 183, .7)}).shade600;
+            0xFF5F38B7, {600:  Color.fromRGBO(95, 56, 183, .7)}).shade600;
       default:
         return const MaterialColor(
-            0xFF5F38B7, {200: const Color.fromRGBO(95, 56, 183, .3)}).shade200;
+            0xFF5F38B7, {200:  Color.fromRGBO(95, 56, 183, .3)}).shade200;
     }
   }
 

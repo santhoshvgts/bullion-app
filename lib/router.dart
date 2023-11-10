@@ -3,6 +3,7 @@ import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
+import 'package:bullion/ui/view/checkout/checkout_page.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
 import 'package:bullion/ui/view/core/search/search_page.dart';
@@ -16,6 +17,7 @@ import 'package:bullion/ui/view/settings/orders_page.dart';
 import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
 import 'package:bullion/ui/widgets/three_sixty_degree.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'ui/view/dashboard/dashboard_page.dart';
@@ -108,7 +110,9 @@ class Routes {
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    print("Route ${settings.name}");
+    if (kDebugMode) {
+      print("Route ${settings.name}");
+    }
     locator<AnalyticsService>().logScreenView(settings.name);
 
     switch (settings.name) {
@@ -174,10 +178,10 @@ class AppRouter {
       //         ),
       //         settings: RouteSettings(name: settings.name));
       //
-      //   case Routes.checkout:
-      //     return MaterialPageRoute(
-      //         builder: (_) => CheckoutPage(),
-      //         settings: RouteSettings(name: settings.name));
+        case Routes.checkout:
+          return MaterialPageRoute(
+              builder: (_) => const CheckoutPage(),
+              settings: RouteSettings(name: settings.name));
       //
       //   case Routes.checkoutAddress:
       //     return MaterialPageRoute(
@@ -381,9 +385,9 @@ class AppRouter {
         // case "market_news":
         //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
         // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
-        return TransparentRoute(
-            builder: (context) =>
-                PageMiddleware(settings.name, settings.arguments));
+        // return TransparentRoute(
+        //     builder: (context) =>
+        //         PageMiddleware(settings.name, settings.arguments));
 
       case "spot-prices":
       case "spotprices":
@@ -449,7 +453,7 @@ class AppRouter {
       switch (uri.pathSegments[1].toLowerCase()) {
         // Order Details
         case "my-orders":
-          Map<String, dynamic> data = new Map();
+          Map<String, dynamic> data = {};
           data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
           data['from_success'] = false;
           return MaterialPageRoute(
@@ -558,8 +562,7 @@ class TransparentRoute extends PageRoute<void> {
   TransparentRoute({
     required this.builder,
     RouteSettings? settings,
-  })  : assert(builder != null),
-        super(settings: settings, fullscreenDialog: false);
+  })  : super(settings: settings, fullscreenDialog: false);
 
   final WidgetBuilder builder;
 
