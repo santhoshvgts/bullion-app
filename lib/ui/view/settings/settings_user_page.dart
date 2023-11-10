@@ -248,7 +248,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                       ),
                       InkWell(
                         onTap: () {
-                          locator<NavigationService>().pushNamed(Routes.address);
+                          locator<NavigationService>()
+                              .pushNamed(Routes.address);
                         },
                         child: getTextsLayout(
                           const Icon(Icons.pin_drop_outlined),

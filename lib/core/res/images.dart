@@ -1,6 +1,7 @@
 class Images {
   static const String appLogoWhite = "assets/images/app_logo_white.png";
   static const String appLogo = "assets/images/app_logo.png";
+  static const String appBullLogo = "assets/images/bull_logo.png";
   static const String googleIcon = "assets/images/google_icon.png";
   static const String facebookIcon = "assets/images/facebook_icon.png";
 
@@ -9,6 +10,9 @@ class Images {
   static const String marketNews = "assets/images/market-news.png";
   static const String priceAlerts = "assets/images/price-alerts.png";
   static const String vaultDeals = "assets/images/vault-deals.png";
+
+  static const String discountOffers = "assets/images/discount.png";
+  static const String warning = "assets/images/warning.png";
 
   // Product Detail Screen
   static const String threeSixtyDegree = "assets/images/360-degrees.png";
@@ -81,7 +85,7 @@ class Images {
   static const String favoriteIcon = "assets/images/v2/favorite_icon.png";
   static const String favoriteIconFilled =
       "assets/images/v2/favorite_icon_filled.png";
-  static const String cartIcon = "assets/images/v2/cart_icon.png";
+  static const String cartIcon = "assets/images/cart_icon.png";
   static const String userIcon = "assets/images/v2/user_icon.png";
 
   static const String iconTruckOrder = "assets/images/v2/icon_truck_order.png";
@@ -131,4 +135,8 @@ class Images {
   static const String sell = "assets/images/v2/settings/sell.png";
   static const String settings = "assets/images/v2/settings/settings.png";
   static const String support = "assets/images/v2/settings/support.png";
+}
+
+class Gif {
+  static const String appBullLogo = "assets/gif/bull_logo.gif";
 }

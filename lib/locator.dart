@@ -6,6 +6,7 @@ import 'package:bullion/services/api/google_place_api.dart';
 import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/chart/spotprice_service.dart';
+import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/filter_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
@@ -38,6 +39,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => AuthenticationService());
   locator.registerLazySingleton(() => SpotPriceService());
 
+  locator.registerLazySingleton(() => CartService());
   locator.registerLazySingleton(() => FilterService());
 
   // locator.registerLazySingleton(() => AuthRepo());

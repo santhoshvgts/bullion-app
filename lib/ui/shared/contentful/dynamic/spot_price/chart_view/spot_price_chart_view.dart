@@ -4,10 +4,12 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/area_chart_widget.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_chart_view_model.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_header.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
-import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../../../../core/models/chart/chart_selection_info.dart';
 
 class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
   final String? slug;
@@ -22,19 +24,34 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
   }
 
   @override
-  SpotPriceChartViewModel viewModelBuilder(BuildContext context) =>
+  SpotPriceChartViewModel viewModelBuilder(
+    BuildContext context,
+  ) =>
       SpotPriceChartViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      SpotPriceChartViewModel viewModel, Widget? child) {
+  Widget viewBuilder(
+    BuildContext context,
+    AppLocalizations locale,
+    SpotPriceChartViewModel viewModel,
+    Widget? child,
+  ) {
     return SafeArea(
       child: Container(
         color: AppColor.white,
         margin: const EdgeInsets.all(0),
         child: Column(
           children: <Widget>[
-            const Padding(padding: EdgeInsets.only(top: 10)),
+            StreamBuilder(
+              stream: viewModel.trackedSpotController.stream,
+              initialData: viewModel.chartSelectionInfoModel,
+              builder: (context, snapshot) {
+                return SpotPriceHeader(
+                  viewModel.spotPriceChartData!,
+                  snapshot.data as ChartSelectionInfoModel,
+                );
+              },
+            ),
 
             // BODY CONTENT
             Column(
@@ -46,6 +63,7 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
                   child: Container(
                     width: double.infinity,
                     alignment: Alignment.center,
+                    padding: const EdgeInsets.only(right: 10),
                     child: AreaChartWidget(
                       viewModel.spotPriceChartData!.chartData,
                       viewModel
@@ -121,94 +139,8 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
                 ),
 
                 VerticalSpacing.d10px(),
-
-                // Container(
-                //   alignment: Alignment.center,
-                //   height: 55,
-                //   decoration: BoxDecoration(
-                //     color: AppColor.metalColor(
-                //             viewModel.spotPriceChartData?.metalName ?? '')
-                //         .withOpacity(0.2),
-                //   ),
-                //   margin: const EdgeInsets.symmetric(horizontal: 0),
-                //   child: ListView.builder(
-                //     scrollDirection: Axis.horizontal,
-                //     shrinkWrap: true,
-                //     primary: false,
-                //     padding: const EdgeInsets.only(top: 10, bottom: 10),
-                //     itemCount: viewModel.spotPriceTimeRangeFilters.length,
-                //     itemBuilder: (BuildContext context, int index) {
-                //       return InkWell(
-                //         onTap: () {
-                //           viewModel.setSelectedTimePeriod(index);
-                //         },
-                //         child: Container(
-                //           decoration: BoxDecoration(
-                //             color: index == viewModel.spotTimeRangeSelectedIndex
-                //                 ? viewModel.spotPriceChartData!.color
-                //                 : Colors.transparent,
-                //             borderRadius: BorderRadius.circular(20),
-                //           ),
-                //           alignment: Alignment.center,
-                //           padding: EdgeInsets.symmetric(
-                //             vertical: 7,
-                //             horizontal:
-                //                 index == viewModel.spotTimeRangeSelectedIndex
-                //                     ? 15
-                //                     : 10,
-                //           ),
-                //           margin: const EdgeInsets.symmetric(horizontal: 5),
-                //           child: Text(
-                //             viewModel
-                //                 .spotPriceTimeRangeFilters[index].displayName,
-                //             textScaleFactor: 1,
-                //             style: TextStyle(
-                //               color:
-                //                   index == viewModel.spotTimeRangeSelectedIndex
-                //                       ? AppColor.white
-                //                       : AppColor.text,
-                //               fontWeight: FontWeight.bold,
-                //               fontSize: 13,
-                //             ),
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
               ],
             ),
-
-            if (viewModel.spotPriceChartData!.metalId! >= 1 &&
-                viewModel.spotPriceChartData!.metalId! <= 4)
-              Container(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
-                child: Button.outline('Create Spot Price Alert',
-                    textStyle: AppTextStyle.titleLarge
-                        .copyWith(color: AppColor.secondary),
-                    borderColor: AppColor.secondary,
-                    valueKey: const Key('btnShopNow'),
-                    width: double.infinity,
-                    onPressed: () => viewModel.onCreateSpotPriceClick()),
-              ),
-
-            if (viewModel.spotPriceChartData!.metalId! >= 1 &&
-                viewModel.spotPriceChartData!.metalId! <= 4)
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 7),
-                color: AppColor.secondaryBackground,
-                margin: const EdgeInsets.only(top: 15),
-                child: Row(
-                  children: <Widget>[
-                    _buildSubItem("Bid Price",
-                        viewModel.spotPriceChartData!.formattedBid),
-                    Expanded(child: Container()),
-                    _buildSubItem("Ask Price",
-                        viewModel.spotPriceChartData!.formattedAsk),
-                  ],
-                ),
-              ),
 
             if (viewModel.spotPriceChartData!.metalId! >= 1 &&
                 viewModel.spotPriceChartData!.metalId! <= 4)
@@ -234,7 +166,7 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
           ),
           const Padding(padding: EdgeInsets.only(left: 5)),
           Text(
-            value == null ? "" : value,
+            value ?? "",
             textScaleFactor: 1,
             style: const TextStyle(
                 fontSize: 14,
@@ -259,19 +191,46 @@ class _SpotPriceBreakUp extends StatelessWidget {
   Widget build(BuildContext context) {
     SpotPrice spotPrice = viewModel.spotPriceChartData!;
 
-    return Column(
-      children: <Widget>[
-        _BreakUpItem("Per Ounce", spotPrice.formattedAsk,
-            spotPrice.formattedChange, spotPrice.change),
-        _BreakUpItem("Per Gram", spotPrice.formattedPerGramAsk,
-            spotPrice.formattedPerGramChange, spotPrice.change),
-        _BreakUpItem(
-          "Per Kilo",
-          spotPrice.formattedPerKiloAsk,
-          spotPrice.formattedPerKiloChange,
-          spotPrice.change,
-        ),
-      ],
+    return Container(
+      color: AppColor.secondaryBackground,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          // Text(
+          //   "${spotPrice.metalName} Spot Prices (${viewModel.selectedFilterValue.displayName})",
+          //   textScaleFactor: 1,
+          //   style: AppTextStyle.titleMedium,
+          // ),
+          // VerticalSpacing.d5px(),
+          // Text(
+          //   "${spotPrice.formattedLastUpdated}",
+          //   textScaleFactor: 1,
+          //   style: AppTextStyle.bodySmall,
+          // ),
+          // VerticalSpacing.d15px(),
+          _BreakUpItem(
+            "Per Ounce",
+            spotPrice.formattedAsk,
+            spotPrice.formattedChange,
+            spotPrice.change,
+          ),
+          VerticalSpacing.d10px(),
+          _BreakUpItem(
+            "Per Gram",
+            spotPrice.formattedPerGramAsk,
+            spotPrice.formattedPerGramChange,
+            spotPrice.change,
+          ),
+          VerticalSpacing.d10px(),
+          _BreakUpItem(
+            "Per Kilo",
+            spotPrice.formattedPerKiloAsk,
+            spotPrice.formattedPerKiloChange,
+            spotPrice.change,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -288,47 +247,96 @@ class _BreakUpItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      decoration: BoxDecoration(
+        color: AppColor.white,
+        borderRadius: BorderRadius.circular(8),
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: AppColor.divider))),
       child: Row(
-        children: <Widget>[
+        children: [
           Expanded(
-            child: Text(
-              itemKey,
-              textScaleFactor: 1,
-              style: AppTextStyle.titleSmall
-                  .copyWith(fontWeight: FontWeight.normal, fontSize: 16),
-            ),
-          ),
-          const Padding(padding: EdgeInsets.only(left: 10)),
-          Expanded(
-            child: Text(
-              value!,
-              textScaleFactor: 1,
-              style: AppTextStyle.titleSmall,
-            ),
-          ),
-          const Padding(padding: EdgeInsets.only(left: 10)),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  "${changeValue! < 0 ? "-" : "+"} ${formattedChange!}",
+                  itemKey,
                   textScaleFactor: 1,
-                  style: AppTextStyle.titleSmall.copyWith(
-                      color: changeValue! < 0 ? AppColor.red : AppColor.green),
+                  style: AppTextStyle.labelMedium.copyWith(
+                    color: AppColor.secondaryText,
+                  ),
                 ),
-
-                // Padding(padding: EdgeInsets.only(left: 5)),
-
-                // Icon(changeValue < 0 ? Icons.arrow_drop_down : Icons.arrow_drop_up, color: changeValue < 0 ? AppColor.red : AppColor.green,),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      value!,
+                      textScaleFactor: 1,
+                      style: AppTextStyle.titleMedium,
+                    ),
+                    Text(
+                      "${formattedChange!}",
+                      textScaleFactor: 1,
+                      style: AppTextStyle.titleMedium.copyWith(
+                          color:
+                              changeValue! < 0 ? AppColor.red : AppColor.green),
+                    ),
+                  ],
+                ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MetalChipItem extends StatelessWidget {
+  SpotPrice item;
+
+  _MetalChipItem(this.item);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: AppColor.metalColor(item.metalName!),
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      margin: EdgeInsets.only(right: 10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            item.metalName ?? '',
+            textScaleFactor: 1,
+            style: AppTextStyle.bodySmall,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            textBaseline: TextBaseline.alphabetic,
+            children: <Widget>[
+              Text(
+                item.formmatedChangePercentage,
+                textScaleFactor: 1,
+                style: AppTextStyle.labelSmall.copyWith(
+                  color: item.changeColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                item.formattedChange!,
+                textScaleFactor: 1,
+                style: AppTextStyle.labelSmall.copyWith(
+                  color: item.changeColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           )
         ],
       ),

@@ -1,9 +1,11 @@
+import 'package:bullion/core/models/module/cart/display_message.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
+import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
 import 'package:bullion/ui/view/core/search/search_page.dart';
@@ -160,11 +162,15 @@ class AppRouter {
 
       // Cart
       //
-      //   case Routes.viewCart:
-      //     return MaterialPageRoute(
-      //         builder: (_) => CartPage(redirectDisplayMessage: settings.arguments as DisplayMessage?,),
-      //         settings: RouteSettings(name: settings.name));
-      //
+      case Routes.viewCart:
+        return MaterialPageRoute(
+          builder: (_) => CartPage(
+            redirectDisplayMessage: settings.arguments as DisplayMessage?,
+            fromMain: false,
+          ),
+          settings: RouteSettings(name: settings.name),
+        );
+
       //   case Routes.reviewCart:
       //     return MaterialPageRoute(
       //         builder: (_) => ReviewOrderPage(
@@ -295,15 +301,16 @@ class AppRouter {
       //         builder: (_) => ChangePasswordPage(),
       //         settings: RouteSettings(name: settings.name));
       //
-        case Routes.address:
-          return MaterialPageRoute(
-              builder: (_) => const AddressPage(),
-              settings: RouteSettings(name: settings.name));
+      case Routes.address:
+        return MaterialPageRoute(
+            builder: (_) => const AddressPage(),
+            settings: RouteSettings(name: settings.name));
 
-        case Routes.addEditAddress:
-          return MaterialPageRoute(
-              builder: (_) => AddEditAddressPage(userAddress: settings.arguments as UserAddress?),
-              settings: RouteSettings(name: settings.name));
+      case Routes.addEditAddress:
+        return MaterialPageRoute(
+            builder: (_) => AddEditAddressPage(
+                userAddress: settings.arguments as UserAddress?),
+            settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myPortfolio:
       //     return MaterialPageRoute(
@@ -391,20 +398,18 @@ class AppRouter {
       // case "market_news":
       //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
 
-/*
-      case "account":
-        if (uri.pathSegments[1] == "my-orders") {
-          return MaterialPageRoute(
-              builder: (_) =>
-                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
-              settings: RouteSettings(name: settings.name));
-        }
-
-        // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
-        return TransparentRoute(
-            builder: (context) =>
-                PageMiddleware(settings.name, settings.arguments));
-*/
+      // case "account":
+      //   if (uri.pathSegments[1] == "my-orders") {
+      //     return MaterialPageRoute(
+      //         builder: (_) =>
+      //             OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+      //         settings: RouteSettings(name: settings.name));
+      //   }
+      //
+      //   // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
+      //   return TransparentRoute(
+      //       builder: (context) =>
+      //           PageMiddleware(settings.name, settings.arguments));
 
       case "spot-prices":
       case "spotprices":
@@ -578,8 +583,7 @@ class TransparentRoute extends PageRoute<void> {
   TransparentRoute({
     required this.builder,
     RouteSettings? settings,
-  })  : assert(builder != null),
-        super(settings: settings, fullscreenDialog: false);
+  }) : super(settings: settings, fullscreenDialog: false);
 
   final WidgetBuilder builder;
 

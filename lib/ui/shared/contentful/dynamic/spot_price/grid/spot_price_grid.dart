@@ -128,8 +128,9 @@ class _SpotPriceTile extends StatelessWidget {
                   Text(
                     data.metalName!,
                     textScaleFactor: 1,
-                    style: AppTextStyle.titleMedium.copyWith(
-                        color: data.color, fontWeight: FontWeight.w600),
+                    style: AppTextStyle.titleSmall.copyWith(
+                      color: data.color,
+                    ),
                   ),
                   const Padding(padding: EdgeInsets.only(top: 5)),
                   Text(data.formattedAsk!,
@@ -137,41 +138,43 @@ class _SpotPriceTile extends StatelessWidget {
                       style: AppTextStyle.headlineSmall.copyWith(fontSize: 20)),
                   const Padding(padding: EdgeInsets.only(top: 5)),
                   Container(
-                    padding: const EdgeInsets.only(
-                        left: 10, right: 10, top: 2.5, bottom: 5),
+                    // padding: const EdgeInsets.only(
+                    //     left: 10, right: 10, top: 2.5, bottom: 5),
                     decoration: BoxDecoration(
-                        color: data.change! < 0
-                            ? AppColor.red.withOpacity(0.1)
-                            : AppColor.green.withOpacity(0.1),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(25))),
+                      // color: data.change! < 0
+                      //     ? AppColor.red.withOpacity(0.1)
+                      //     : AppColor.green.withOpacity(0.1),
+                      borderRadius: const BorderRadius.all(Radius.circular(25)),
+                    ),
                     child: AutoSizeText(
-                        "${data.change! < 0 ? "-" : "+"} ${data.formattedChange}  (${data.changePct! > 0 ? "+" : ""}${data.changePct}%)",
-                        textScaleFactor: 1,
-                        style: AppTextStyle.labelMedium.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: data.change! < 0
-                                ? AppColor.red
-                                : AppColor.green)),
+                      "${data.formattedChange} (${data.changePct! > 0 ? "+" : ""}${data.changePct}%)",
+                      textScaleFactor: 1,
+                      style: AppTextStyle.labelMedium.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color:
+                              data.change! < 0 ? AppColor.red : AppColor.green),
+                    ),
                   ),
                 ],
               ),
             ),
             Flexible(
-                child: ClipRRect(
-              borderRadius: const BorderRadius.only(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
-              child: SizedBox(
-                height: double.infinity,
-                width: double.infinity,
-                child: SpotPriceSparkLineView(
-                  data.metalName,
-                  data.chartData,
-                  loading: graphLoading,
+                  bottomRight: Radius.circular(10),
+                ),
+                child: SizedBox(
+                  height: double.infinity,
+                  width: double.infinity,
+                  child: SpotPriceSparkLineView(
+                    data.metalName,
+                    data.chartData,
+                    loading: graphLoading,
+                  ),
                 ),
               ),
-            )),
+            ),
             graphLoading!
                 ? Container(
                     height: 1,
@@ -179,7 +182,8 @@ class _SpotPriceTile extends StatelessWidget {
                     child: LinearProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(
                           AppColor.secondaryText.withOpacity(0.3)),
-                    ))
+                    ),
+                  )
                 : Container()
           ],
         ),
