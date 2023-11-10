@@ -28,4 +28,17 @@ class AddressRequest {
         "/address/states?country=$country", RequestMethod.GET,
         params: null, authenticated: true);
   }
+
+  static RequestSettings getPredictions(String text) {
+    return RequestSettings(
+        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${Uri.encodeFull(text)}&key=" + "AIzaSyDxqYW2eJzvalZCIm73-pjbSjIliZF1xjo", RequestMethod.GET,
+        params: null, authenticated: false);
+  }
+
+  static RequestSettings getPlaceInfoFromPlaceId(String placeId) {
+    return RequestSettings(
+        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=" +
+            "AIzaSyDxqYW2eJzvalZCIm73-pjbSjIliZF1xjo", RequestMethod.GET,
+        params: null, authenticated: false);
+  }
 }

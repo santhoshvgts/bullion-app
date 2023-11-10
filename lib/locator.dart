@@ -2,6 +2,7 @@
 
 import 'package:bullion/helper/firebase_remote_helper.dart';
 import 'package:bullion/helper/update_checker.dart';
+import 'package:bullion/services/api/google_place_api.dart';
 import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/chart/spotprice_service.dart';
@@ -47,4 +48,5 @@ void setupLocator() {
   locator.registerLazySingleton(() => ToastService());
   locator.registerLazySingleton(() => DeviceService());
   // locator.registerLazySingleton(() => NetworkService());
+  locator.registerLazySingleton(() => GooglePlaceApi());
 }

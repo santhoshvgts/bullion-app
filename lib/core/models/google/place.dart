@@ -1,20 +1,26 @@
-class Place {
+import 'package:bullion/core/models/base_model.dart';
+
+class Place extends BaseModel {
   Result? result;
   String? status;
 
   Place({this.result, this.status});
 
+  @override
+  Place fromJson(json) => Place.fromJson(json);
+
   Place.fromJson(Map<String, dynamic> json) {
-    result = json['result'] != null ? new Result.fromJson(json['result']) : null;
+    result = json['result'] != null ? Result.fromJson(json['result']) : null;
     status = json['status'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (result != null) {
+      data['result'] = result!.toJson();
     }
-    data['status'] = this.status;
+    data['status'] = status;
     return data;
   }
 }
@@ -39,12 +45,12 @@ class Result {
     if (json['address_components'] != null) {
       addressComponents = <AddressComponents>[];
       json['address_components'].forEach((v) {
-        addressComponents!.add(new AddressComponents.fromJson(v));
+        addressComponents!.add(AddressComponents.fromJson(v));
       });
     }
     adrAddress = json['adr_address'];
     formattedAddress = json['formatted_address'];
-    geometry = json['geometry'] != null ? new Geometry.fromJson(json['geometry']) : null;
+    geometry = json['geometry'] != null ? Geometry.fromJson(json['geometry']) : null;
     icon = json['icon'];
     name = json['name'];
     placeId = json['place_id'];
@@ -56,33 +62,36 @@ class Result {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.addressComponents != null) {
-      data['address_components'] = this.addressComponents!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (addressComponents != null) {
+      data['address_components'] = addressComponents!.map((v) => v.toJson()).toList();
     }
-    data['adr_address'] = this.adrAddress;
-    data['formatted_address'] = this.formattedAddress;
-    if (this.geometry != null) {
-      data['geometry'] = this.geometry!.toJson();
+    data['adr_address'] = adrAddress;
+    data['formatted_address'] = formattedAddress;
+    if (geometry != null) {
+      data['geometry'] = geometry!.toJson();
     }
-    data['icon'] = this.icon;
-    data['name'] = this.name;
-    data['place_id'] = this.placeId;
-    data['reference'] = this.reference;
-    data['types'] = this.types;
-    data['url'] = this.url;
-    data['utc_offset'] = this.utcOffset;
-    data['vicinity'] = this.vicinity;
+    data['icon'] = icon;
+    data['name'] = name;
+    data['place_id'] = placeId;
+    data['reference'] = reference;
+    data['types'] = types;
+    data['url'] = url;
+    data['utc_offset'] = utcOffset;
+    data['vicinity'] = vicinity;
     return data;
   }
 }
 
-class AddressComponents {
+class AddressComponents extends BaseModel{
   String? longName;
   String? shortName;
   List<String>? types;
 
   AddressComponents({this.longName, this.shortName, this.types});
+
+  @override
+  AddressComponents fromJson(json) => AddressComponents.fromJson(json);
 
   AddressComponents.fromJson(Map<String, dynamic> json) {
     longName = json['long_name'];
@@ -91,10 +100,10 @@ class AddressComponents {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['long_name'] = this.longName;
-    data['short_name'] = this.shortName;
-    data['types'] = this.types;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['long_name'] = longName;
+    data['short_name'] = shortName;
+    data['types'] = types;
     return data;
   }
 }
@@ -106,17 +115,17 @@ class Geometry {
   Geometry({this.location, this.viewport});
 
   Geometry.fromJson(Map<String, dynamic> json) {
-    location = json['location'] != null ? new Location.fromJson(json['location']) : null;
-    viewport = json['viewport'] != null ? new Viewport.fromJson(json['viewport']) : null;
+    location = json['location'] != null ? Location.fromJson(json['location']) : null;
+    viewport = json['viewport'] != null ? Viewport.fromJson(json['viewport']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.location != null) {
-      data['location'] = this.location!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (location != null) {
+      data['location'] = location!.toJson();
     }
-    if (this.viewport != null) {
-      data['viewport'] = this.viewport!.toJson();
+    if (viewport != null) {
+      data['viewport'] = viewport!.toJson();
     }
     return data;
   }
@@ -134,9 +143,9 @@ class Location {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['lat'] = this.lat;
-    data['lng'] = this.lng;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['lat'] = lat;
+    data['lng'] = lng;
     return data;
   }
 }
@@ -148,17 +157,17 @@ class Viewport {
   Viewport({this.northeast, this.southwest});
 
   Viewport.fromJson(Map<String, dynamic> json) {
-    northeast = json['northeast'] != null ? new Location.fromJson(json['northeast']) : null;
-    southwest = json['southwest'] != null ? new Location.fromJson(json['southwest']) : null;
+    northeast = json['northeast'] != null ? Location.fromJson(json['northeast']) : null;
+    southwest = json['southwest'] != null ? Location.fromJson(json['southwest']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.northeast != null) {
-      data['northeast'] = this.northeast!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (northeast != null) {
+      data['northeast'] = northeast!.toJson();
     }
-    if (this.southwest != null) {
-      data['southwest'] = this.southwest!.toJson();
+    if (southwest != null) {
+      data['southwest'] = southwest!.toJson();
     }
     return data;
   }

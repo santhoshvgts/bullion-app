@@ -329,6 +329,10 @@ class AppTextStyle {
     letterSpacing: 0,
   );
 
+  static final TextStyle errorTextStyle = AppTextStyle.bodySmall.copyWith(
+    color: AppColor.error,
+  );
+
   @Deprecated("Removed")
   static const TextStyle headerWhite = TextStyle(
       fontSize: AppFontSize.dp22,
