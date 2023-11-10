@@ -170,7 +170,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
         showActionBar: true);
 
     if (response.data != null) {
-      //setBusy(true);
+      setBusy(true);
 
       countryFormFieldController.text = response.data.text;
       stateFormFieldController.clear();
@@ -187,7 +187,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
         showStates();
       }
 
-      //setBusy(false);
+      setBusy(false);
     }
     notifyListeners();
   }
@@ -203,11 +203,10 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       stateFormFieldController.text = response.data.text;
       pinFormFieldController.focusNode.requestFocus();
     }
-    //notifyListeners();
   }
 
   onStreetNameSelect(Predictions predictions) async {
-    //setBusy(true);
+    setBusy(true);
 
     streetTextEditingController.text =
         predictions.structuredFormatting!.mainText!;
@@ -261,7 +260,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
 
     pinFormFieldController.text = pinCode;
 
-    //setBusy(false);
+    setBusy(false);
   }
 
   List<SelectedItemList>? get countryList => _shippingAddress == null

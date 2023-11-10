@@ -426,6 +426,9 @@ class StreetAutoCompleteTextField
   viewModelBuilder(BuildContext context) {
     return viewModel;
   }
+
+  @override
+  bool get disposeViewModel => false;
 }
 
 enum AddressType { home, office, others }
