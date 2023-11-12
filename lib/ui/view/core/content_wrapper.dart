@@ -16,6 +16,7 @@ import 'package:bullion/ui/widgets/loading_data.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 class ContentWrapperController {
@@ -202,11 +203,18 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    "Filter${viewModel.productModel.selectedFacetsCount! > 0 ? " (${viewModel.productModel.selectedFacetsCount})" : ""}",
+                    textScaleFactor: 1,
+                    style: AppTextStyle.titleSmall,
+                  ),
+                  HorizontalSpacing.d10px(),
                   Stack(
                     children: [
+                      Icon(FontAwesomeIcons.optinMonster),
                       Image.asset(
                         Images.filter_icon,
-                        height: 16,
+                        height: 11,
                       ),
                       if (viewModel.productModel.selectedFacetsCount! > 0)
                         Positioned(
@@ -222,12 +230,6 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                         )
                     ],
                   ),
-                  HorizontalSpacing.d10px(),
-                  Text(
-                    "Filter${viewModel.productModel.selectedFacetsCount! > 0 ? " (${viewModel.productModel.selectedFacetsCount})" : ""}",
-                    textScaleFactor: 1,
-                    style: AppTextStyle.titleSmall,
-                  )
                 ],
               ),
             ),

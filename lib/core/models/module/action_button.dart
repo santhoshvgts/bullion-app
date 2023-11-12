@@ -1,5 +1,6 @@
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -32,17 +33,21 @@ class ActionButton {
   TextStyle get textStyle {
     switch (_textStyle) {
       case "mini":
-        return TextStyle(
-            fontSize: 12, color: buttonTextColor, fontWeight: FontWeight.w600);
+        return AppTextStyle.labelMedium.copyWith(
+          color: buttonTextColor,
+        );
       case "small":
-        return TextStyle(
-            fontSize: 14, color: buttonTextColor, fontWeight: FontWeight.w600);
+        return AppTextStyle.labelLarge.copyWith(
+          color: buttonTextColor,
+        );
       case "large":
-        return TextStyle(
-            fontSize: 20, color: buttonTextColor, fontWeight: FontWeight.w600);
+        return AppTextStyle.titleMedium.copyWith(
+          color: buttonTextColor,
+        );
       default:
-        return TextStyle(
-            fontSize: 15, color: buttonTextColor, fontWeight: FontWeight.w600);
+        return AppTextStyle.labelLarge.copyWith(
+          color: buttonTextColor,
+        );
     }
   }
 

@@ -112,7 +112,8 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
               body: viewModel.isBusy
                   ? const Align(
                       alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator())
+                      child: LinearProgressIndicator(),
+                    )
                   : SizedBox(
                       height: MediaQuery.of(context).size.height -
                           viewModel.scrollController.offset,
