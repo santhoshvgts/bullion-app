@@ -8,18 +8,22 @@ import '../settings/settings_user_page.dart';
 
 class DashboardViewModel extends VGTSBaseViewModel {
   final PersistentTabController bottomNavController = PersistentTabController(
-    initialIndex: 2,
+    initialIndex: 0,
   );
 
   var pageNames = [
+    '/pages/home',
     '/pages/deals',
     '/spot-prices',
-    '/pages/home',
     '/cart/viewcart',
     '/settings'
   ];
 
   final List<Widget> pages = [
+    DashboardContentPage(
+      key: const PageStorageKey('Home'),
+      path: "/pages/home",
+    ),
     DashboardContentPage(
       key: const PageStorageKey('Spot Price'),
       path: "/pages/deals",
@@ -27,10 +31,6 @@ class DashboardViewModel extends VGTSBaseViewModel {
     DashboardContentPage(
       key: const PageStorageKey('Charts'),
       path: "/spot-prices",
-    ),
-    DashboardContentPage(
-      key: const PageStorageKey('Home'),
-      path: "/pages/home",
     ),
     CartPage(),
     const SettingsUserPage()
