@@ -84,21 +84,39 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         padding: EdgeInsets.only(bottom: 16.0),
                         child: Text('Alerts', style: AppTextStyle.titleMedium),
                       ),
-                      getTextsLayout(
-                          const Icon(Icons.person), "Custom Spot Price"),
+                      InkWell(
+                        onTap: () {
+                          locator<NavigationService>()
+                              .pushNamed(Routes.alerts, arguments: 0);
+                        },
+                        child: getTextsLayout(
+                            const Icon(Icons.person), "Custom Spot Price"),
+                      ),
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
-                      getTextsLayout(
-                        const Icon(Icons.person),
-                        "Alert Me!",
+                      InkWell(
+                        onTap: () {
+                          locator<NavigationService>()
+                              .pushNamed(Routes.alerts, arguments: 1);
+                        },
+                        child: getTextsLayout(
+                          const Icon(Icons.person),
+                          "Alert Me!",
+                        ),
                       ),
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
-                      getTextsLayout(
-                        const Icon(Icons.person),
-                        "Price Alert",
+                      InkWell(
+                        onTap: () {
+                          locator<NavigationService>()
+                              .pushNamed(Routes.alerts, arguments: 2);
+                        },
+                        child: getTextsLayout(
+                          const Icon(Icons.person),
+                          "Price Alert",
+                        ),
                       ),
                     ],
                   ),
