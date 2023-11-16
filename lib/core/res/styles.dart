@@ -26,7 +26,7 @@ class AppStyle {
       shadowColor: AppColor.shadowColor,
       iconTheme: const IconThemeData().copyWith(color: AppColor.primaryDark),
       systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: AppColor.secondaryBackground,
+        statusBarColor: AppColor.white,
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
       ),

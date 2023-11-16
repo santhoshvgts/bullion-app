@@ -2,6 +2,7 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/ui/view/settings/settings_user_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/res/colors.dart';
@@ -34,6 +35,11 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
         backgroundColor: AppColor.primary,
         automaticallyImplyLeading: false,
         elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: AppColor.primary,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ),
         title: Text(
           viewModel.isAuthenticated
               ? "Hi, ${locator<AuthenticationService>().getUser?.firstName ?? ""}"
