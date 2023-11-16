@@ -146,11 +146,8 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
         AddressRequest.addAddress(userAddress.toJson()));
 
     setBusy(false);
-    if (userAddressResult != null) {
-      return true;
-    } else {
-      return false;
-    }
+
+    return userAddressResult != null;
   }
 
   /*AddressType get selectedAddressType => _selectedAddressType;

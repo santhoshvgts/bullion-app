@@ -17,7 +17,7 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
 
   @override
   void onViewModelReady(CreateAlertsViewModel viewModel) {
-    //viewModel.init();
+    viewModel.init();
     super.onViewModelReady(viewModel);
   }
 
@@ -47,8 +47,8 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                 ? const Align(
                     alignment: Alignment.bottomCenter,
                     child: LinearProgressIndicator())
-                /*: viewModel.userAddress == null
-                    ? const Center(child: Text("No data available"))*/
+                : viewModel.operatorsResponse == null
+                    ? const Center(child: Text("No data available"))
                 : SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -104,13 +104,13 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                           Wrap(
                             spacing: 8.0,
                             children: List<Widget>.generate(
-                              viewModel.optionsList.length,
+                              viewModel.operatorsResponse!.operators!.length,
                               (int index) {
                                 return ChoiceChip(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(24),
                                   ),
-                                  label: Text(viewModel.optionsList[index]),
+                                  label: Text(viewModel.operatorsResponse!.operators![index].description!),
                                   labelStyle: AppTextStyle.bodyMedium
                                       .copyWith(color: AppColor.primaryText),
                                   selected:
@@ -138,9 +138,14 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
               "Create",
               valueKey: const Key("btnCreate"),
               borderRadius: BorderRadius.circular(8),
-              onPressed: () {
+              onPressed: () async {
                 if (viewModel.customSpotPriceGlobalKey.currentState!
                     .validate()) {
+                      bool result = await viewModel.createMarketAlert();
+                      if (result) {
+                        Util.showSnackBar(context, "Submitted successfully");
+                        Navigator.of(context).pop();
+                      }
                 } else {
                   Util.showSnackBar(context, "Fill all the required fields");
                 }
