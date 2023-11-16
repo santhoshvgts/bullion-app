@@ -51,6 +51,7 @@ class AppColor {
   static const Color offerText = Color(0xFF24A186);
   static const Color warning = Color(0xffFF3B30);
   static const Color blue = Color(0xFF005f9b);
+  static const Color info = Color(0xFFFF9800);
 
   static const Color dealsRed = Color(0xFFC30000);
   static const Color black20 = Color(0xFF344456);
@@ -64,7 +65,10 @@ class AppColor {
   static const Color bullionProgressBg = Color(0xffADAAA7);
 
   static const Color accountBg = Color(0x0D006936);
+
+  @deprecated // Use secondaryTextColor instead
   static const Color navyBlue40 = Color(0x6614203C);
+
   static const Color mercury = Color(0xffE6E6E6);
   static const Color clearBlue = Color(0xff1B84FF);
   static const Color cyanBlue = Color(0xff2D81E3);

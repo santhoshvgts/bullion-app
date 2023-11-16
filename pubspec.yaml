@@ -20,11 +20,11 @@ dependencies:
   stacked_themes: ^0.3.12
 
   #Firebase
-  firebase_core: ^2.15.1
-  firebase_analytics: ^10.4.5
-  firebase_crashlytics: ^3.3.5
-  firebase_dynamic_links: ^5.3.5
-  firebase_remote_config: ^4.2.5
+  firebase_core: ^2.21.0
+  firebase_analytics: ^10.6.3
+  firebase_crashlytics: ^3.4.3
+  firebase_dynamic_links: ^5.4.3
+  firebase_remote_config: ^4.3.3
 
   #Http
   http: ^1.1.0
@@ -37,7 +37,6 @@ dependencies:
   dotted_border: ^2.1.0
   dotted_line: ^3.2.2
 
-
   #chart
   chart_sparkline: ^1.0.13
   syncfusion_flutter_charts: ^20.4.44
@@ -48,6 +47,7 @@ dependencies:
 
   #Utils
   font_awesome_flutter: ^10.5.0
+  feather_icons: ^1.2.0
   url_launcher: ^6.1.14
   uuid: ^4.0.0
   flutter_styled_toast: ^2.2.1

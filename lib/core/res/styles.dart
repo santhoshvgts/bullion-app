@@ -2,6 +2,7 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/fontsize.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppStyle {
   static final ThemeData appTheme = ThemeData(
@@ -16,14 +17,20 @@ class AppStyle {
       color: AppColor.primary,
     ),
     appBarTheme: const AppBarTheme().copyWith(
-        color: AppColor.scaffoldBackground,
-        elevation: 0.5,
-        scrolledUnderElevation: 1,
-        centerTitle: true,
-        titleTextStyle: AppTextStyle.titleLarge,
-        surfaceTintColor: AppColor.white,
-        shadowColor: AppColor.shadowColor,
-        iconTheme: const IconThemeData().copyWith(color: AppColor.primaryDark)),
+      color: AppColor.scaffoldBackground,
+      elevation: 0.5,
+      scrolledUnderElevation: 1,
+      centerTitle: true,
+      titleTextStyle: AppTextStyle.titleLarge,
+      surfaceTintColor: AppColor.white,
+      shadowColor: AppColor.shadowColor,
+      iconTheme: const IconThemeData().copyWith(color: AppColor.primaryDark),
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarColor: AppColor.secondaryBackground,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+    ),
     fontFamily: "Poppins",
     scaffoldBackgroundColor: AppColor.scaffoldBackground,
   );
@@ -336,77 +343,4 @@ class AppTextStyle {
     height: 16 / 12,
     letterSpacing: 0,
   );
-
-  static final TextStyle errorTextStyle = AppTextStyle.bodySmall.copyWith(
-    color: AppColor.error,
-  );
-
-  @Deprecated("Removed")
-  static const TextStyle headerWhite = TextStyle(
-      fontSize: AppFontSize.dp22,
-      fontWeight: FontWeight.w600,
-      color: Colors.white,
-      fontFamily: AppTextStyle.fontFamily);
-
-  @Deprecated("Removed")
-  static const TextStyle titleMed = TextStyle(
-      fontSize: AppFontSize.dp16,
-      fontWeight: FontWeight.w500,
-      color: AppColor.text,
-      fontFamily: AppTextStyle.fontFamily);
-
-  @Deprecated("Removed")
-  static const TextStyle titleMed18 = TextStyle(
-      fontSize: AppFontSize.dp18,
-      fontWeight: FontWeight.w500,
-      color: AppColor.text,
-      fontFamily: AppTextStyle.fontFamily);
-  @Deprecated("Removed")
-  static const TextStyle buttonOutlineSemi = TextStyle(
-      fontSize: AppFontSize.dp12,
-      fontWeight: FontWeight.w600,
-      color: AppColor.primaryText,
-      fontFamily: AppTextStyle.fontFamily);
-  @Deprecated("Removed")
-  static const TextStyle subTitleReg = TextStyle(
-      fontSize: AppFontSize.dp14,
-      fontWeight: FontWeight.w400,
-      color: AppColor.navyBlue40,
-      fontFamily: AppTextStyle.fontFamily);
-  @Deprecated("Removed")
-  static const TextStyle subTitleRegOpaque = TextStyle(
-      fontSize: AppFontSize.dp14,
-      fontWeight: FontWeight.w400,
-      color: AppColor.text,
-      fontFamily: AppTextStyle.fontFamily);
-  @Deprecated("Removed")
-  static const TextStyle privacySubTitle = TextStyle(
-      fontSize: AppFontSize.dp14,
-      fontWeight: FontWeight.w500,
-      color: AppColor.navyBlue40,
-      fontFamily: AppTextStyle.fontFamily);
-  @Deprecated("Removed")
-  static const TextStyle privacyValue = TextStyle(
-      fontSize: AppFontSize.dp14,
-      fontWeight: FontWeight.w500,
-      color: AppColor.secondary,
-      fontFamily: AppTextStyle.fontFamily);
-  @Deprecated("Removed")
-  static const TextStyle privacySubTitleBold = TextStyle(
-      fontSize: AppFontSize.dp14,
-      fontWeight: FontWeight.w600,
-      color: AppColor.navyBlue40,
-      fontFamily: AppTextStyle.fontFamily);
-  @Deprecated("Removed")
-  static const TextStyle version = TextStyle(
-      fontSize: AppFontSize.dp12,
-      fontWeight: FontWeight.w500,
-      color: AppColor.navyBlue40,
-      fontFamily: AppTextStyle.fontFamily);
-  @Deprecated("Removed")
-  static const TextStyle email = TextStyle(
-      fontSize: AppFontSize.dp14,
-      fontWeight: FontWeight.w500,
-      color: AppColor.mercury,
-      fontFamily: AppTextStyle.fontFamily);
 }

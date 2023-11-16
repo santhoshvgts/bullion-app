@@ -37,15 +37,18 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
         title: Text(
           viewModel.isAuthenticated
               ? "Hi, ${locator<AuthenticationService>().getUser?.firstName ?? ""}"
-              : "Account",
-          style: AppTextStyle.titleLarge,
+              : "Account Settings",
+          style: AppTextStyle.titleLarge.copyWith(
+            fontFamily: AppTextStyle.fontFamily,
+          ),
           textScaleFactor: 1,
         ),
       ),
       body: SingleChildScrollView(
-          child: viewModel.isAuthenticated
-              ? getAccountDetailsWidget(viewModel, context)
-              : getAccountWidget(viewModel, context)),
+        child: viewModel.isAuthenticated
+            ? getAccountDetailsWidget(viewModel, context)
+            : getAccountWidget(viewModel, context),
+      ),
     );
   }
 
@@ -62,10 +65,10 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           children: [
             Container(
               color: AppColor.primary,
-              height: 316,
+              height: 280,
               width: double.infinity,
             ),
-            const SizedBox(height: 112),
+            VerticalSpacing.custom(value: 115),
             Container(
               width: double.infinity,
               margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -123,9 +126,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 24,
-            ),
+            VerticalSpacing.d15px(),
             Container(
               width: double.infinity,
               margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -166,135 +167,91 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            VerticalSpacing.d15px(),
             getFooterSection(context,
                 isAuthenticated: viewModel.isAuthenticated),
           ],
         ),
         if (viewModel.isAuthenticated)
           Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Text(
-                locator<AuthenticationService>().getUser?.email ?? "",
-                style:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.mercury),
-                textAlign: TextAlign.center,
-              )),
-        Positioned(
-            top: 32,
+            top: 0,
             left: 0,
             right: 0,
+            child: Text(
+              locator<AuthenticationService>().getUser?.email ?? "",
+              style: AppTextStyle.bodyMedium.copyWith(color: AppColor.mercury),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        Positioned(
+          top: 32,
+          left: 0,
+          right: 0,
+          child: _buildOrderSection(),
+        ),
+        Positioned(
+          top: 140,
+          left: 0,
+          right: 0,
+          child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              height: 116,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: AppStyle.cardShadow,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: InkWell(
-                  onTap: () {
-                    locator<NavigationService>().pushNamed(Routes.myOrders);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Row(
-                          children: [
-                            Icon(Icons.list),
-                            SizedBox(width: 8),
-                            Text('Order History',
-                                style: AppTextStyle.titleMedium),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                  'Track your order status or view your order history and receipts',
-                                  style: AppTextStyle.bodyMedium
-                                      .copyWith(color: AppColor.navyBlue40)),
-                            ),
-                          ],
-                        ),
-                      ],
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: AppStyle.elevatedCardShadow,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 16.0),
+                      child: Text('Manage Account',
+                          style: AppTextStyle.titleMedium),
                     ),
-                  ),
+                    getTextsLayout(
+                      const Icon(Icons.person),
+                      "Personal Info",
+                      "Profile, Change Email and password",
+                    ),
+                    const Divider(
+                      color: AppColor.platinumColor,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        locator<NavigationService>().pushNamed(Routes.address);
+                      },
+                      child: getTextsLayout(
+                        const Icon(Icons.pin_drop_outlined),
+                        "Addresses",
+                      ),
+                    ),
+                    const Divider(
+                      color: AppColor.platinumColor,
+                    ),
+                    getTextsLayout(
+                      const Icon(Icons.favorite_border),
+                      "Favorites",
+                    ),
+                  ],
                 ),
               ),
-            )),
-        Positioned(
-            top: 168,
-            left: 0,
-            right: 0,
-            child: Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: AppStyle.elevatedCardShadow,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 16.0),
-                        child: Text('Manage Account',
-                            style: AppTextStyle.titleMedium),
-                      ),
-                      getTextsLayout(
-                        const Icon(Icons.person),
-                        "Personal Info",
-                        "Profile, Change Email and password",
-                      ),
-                      const Divider(
-                        color: AppColor.platinumColor,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          locator<NavigationService>()
-                              .pushNamed(Routes.address);
-                        },
-                        child: getTextsLayout(
-                          const Icon(Icons.pin_drop_outlined),
-                          "Addresses",
-                        ),
-                      ),
-                      const Divider(
-                        color: AppColor.platinumColor,
-                      ),
-                      getTextsLayout(
-                        const Icon(Icons.favorite_border),
-                        "Favorites",
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ))
+            ),
+          ),
+        )
       ],
     );
   }
 
-  Widget getFooterSection(BuildContext context,
-      {bool isAuthenticated = false}) {
+  Widget getFooterSection(
+    BuildContext context, {
+    bool isAuthenticated = false,
+  }) {
     return Container(
       color: AppColor.accountBg,
-      height: 516,
       width: double.infinity,
       child: Padding(
         padding: const EdgeInsets.only(left: 16.0),
@@ -309,19 +266,19 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               padding: const EdgeInsets.only(top: 16.0),
               child: Text('Visit Bullion.com',
                   style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.navyBlue40)),
+                      .copyWith(color: AppColor.secondaryText)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Text("User Agreements",
                   style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.navyBlue40)),
+                      .copyWith(color: AppColor.secondaryText)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
               child: Text('Privacy Policy',
                   style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.navyBlue40)),
+                      .copyWith(color: AppColor.secondaryText)),
             ),
             const Padding(
               padding: EdgeInsets.only(top: 24.0),
@@ -339,13 +296,13 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               padding: const EdgeInsets.only(top: 8.0),
               child: Text('Monday - Thursday | 8 a.m - 8 p.m(EST)',
                   style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.navyBlue40)),
+                      .copyWith(color: AppColor.secondaryText)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text('Friday | 8 a.m - 6 p.m(EST)',
                   style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.navyBlue40)),
+                      .copyWith(color: AppColor.secondaryText)),
             ),
             Visibility(
               visible: isAuthenticated,
@@ -377,17 +334,15 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   },
                   child: Text('Logout',
                       style: AppTextStyle.bodyMedium
-                          .copyWith(color: AppColor.navyBlue40)),
+                          .copyWith(color: AppColor.secondaryText)),
                 ),
               ),
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 48.0),
-                child: Text('Version 1.0.3 (10)',
-                    style: AppTextStyle.bodySmall
-                        .copyWith(color: AppColor.navyBlue40)),
-              ),
+            Padding(
+              padding: const EdgeInsets.only(top: 48.0, bottom: 15),
+              child: Text('App Version - 1.0.3 (10)',
+                  style: AppTextStyle.bodySmall
+                      .copyWith(color: AppColor.secondaryText)),
             )
           ],
         ),
@@ -396,14 +351,16 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   }
 
   Widget getAccountWidget(
-      SettingsUserViewModel viewModel, BuildContext context) {
+    SettingsUserViewModel viewModel,
+    BuildContext context,
+  ) {
     return Stack(
       children: [
         Column(
           children: [
             Container(
               color: AppColor.primary,
-              height: 312,
+              height: 280,
               width: double.infinity,
             ),
             const SizedBox(height: 64),
@@ -411,7 +368,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           ],
         ),
         Positioned(
-          top: 16,
+          top: 5,
           left: 0,
           right: 0,
           child: Column(
@@ -459,57 +416,69 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 ),
               ),
               VerticalSpacing.d15px(),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                height: 96,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: AppStyle.elevatedCardShadow,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Row(
-                          children: [
-                            Icon(Icons.list),
-                            SizedBox(width: 8),
-                            Text('Order History',
-                                style: AppTextStyle.titleMedium),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text('Track your order status',
-                                style: AppTextStyle.bodyMedium
-                                    .copyWith(color: AppColor.navyBlue40)),
-                            Button("Track Order",
-                                width: 104,
-                                color: Colors.white,
-                                textStyle: AppTextStyle.titleSmall,
-                                height: 32,
-                                borderColor: AppColor.primary,
-                                valueKey: const Key("btnSignInCreate"),
-                                onPressed: () {
-                              //viewModel.addProduct(viewModel);
-                            })
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
+              _buildOrderSection(),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildOrderSection() {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: AppStyle.elevatedCardShadow,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.list),
+                  SizedBox(width: 8),
+                  Text(
+                    'Order History',
+                    style: AppTextStyle.titleMedium,
+                  ),
+                ],
+              ),
+              VerticalSpacing.custom(value: 7),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Track your order status or view your order history and receipts",
+                      style: AppTextStyle.bodySmall
+                          .copyWith(color: AppColor.secondaryText),
+                    ),
+                  ),
+                  Button(
+                    "Track Order",
+                    width: 104,
+                    color: Colors.white,
+                    textStyle: AppTextStyle.titleSmall,
+                    height: 32,
+                    borderColor: AppColor.primary,
+                    valueKey: const Key("btnSignInCreate"),
+                    onPressed: () {
+                      locator<NavigationService>().pushNamed(Routes.myOrders);
+                    },
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -518,18 +487,19 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: texts
           .map((text) => Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
+                padding: const EdgeInsets.only(bottom: 7.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('\u2022'),
                     const SizedBox(width: 8),
                     Expanded(
-                        child: Text(
-                      text,
-                      style: AppTextStyle.bodyMedium
-                          .copyWith(color: AppColor.navyBlue40),
-                    )),
+                      child: Text(
+                        text,
+                        style: AppTextStyle.bodyMedium
+                            .copyWith(color: AppColor.secondaryText),
+                      ),
+                    ),
                   ],
                 ),
               ))
@@ -544,7 +514,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
         children: [
           Text(
             key,
-            style: AppTextStyle.bodyMedium.copyWith(color: AppColor.navyBlue40),
+            style:
+                AppTextStyle.bodyMedium.copyWith(color: AppColor.secondaryText),
           ),
           InkWell(
             onTap: () => launchAnUrl(contactValue.contains('@')
@@ -552,8 +523,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 : "tel:$contactValue"),
             child: Text(
               contactValue,
-              style:
-                  AppTextStyle.bodyMedium.copyWith(color: AppColor.clearBlue),
+              style: AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
             ),
           ),
         ],
@@ -575,9 +545,11 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
             children: [
               Text(text1, style: AppTextStyle.bodyMedium),
               if (text2 != null)
-                Text(text2,
-                    style: AppTextStyle.bodySmall
-                        .copyWith(color: AppColor.navyBlue40)),
+                Text(
+                  text2,
+                  style: AppTextStyle.bodySmall
+                      .copyWith(color: AppColor.secondaryText),
+                ),
             ],
           ),
         ],

@@ -4,6 +4,7 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/dashboard/dashboard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -37,8 +38,8 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
         ],
         items: [
           _PersistentBottomNav(
-            inactiveIcon: const Icon(CupertinoIcons.home),
-            icon: const Icon(CupertinoIcons.house_fill),
+            inactiveIcon: const Icon(FeatherIcons.home),
+            icon: const Icon(FeatherIcons.home),
             title: "Home",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/home",
@@ -46,8 +47,8 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.tag_solid),
-            inactiveIcon: const Icon(CupertinoIcons.tag),
+            icon: const Icon(FeatherIcons.tag),
+            inactiveIcon: const Icon(FeatherIcons.tag),
             title: "Deals",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/deals",
@@ -55,7 +56,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.chart_bar_fill),
+            icon: const Icon(CupertinoIcons.chart_bar),
             inactiveIcon: const Icon(CupertinoIcons.chart_bar),
             title: "Charts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
@@ -65,7 +66,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
           ),
           _PersistentBottomNav(
             inactiveIcon: const Icon(CupertinoIcons.cart),
-            icon: const Icon(CupertinoIcons.cart_fill),
+            icon: const Icon(CupertinoIcons.cart),
             title: "Cart",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/cart/viewCart",
@@ -73,7 +74,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.person_fill),
+            icon: const Icon(CupertinoIcons.person),
             inactiveIcon: const Icon(CupertinoIcons.person),
             title: "Accounts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
@@ -89,7 +90,6 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
         popActionScreens: PopActionScreensType.all,
         decoration: NavBarDecoration(boxShadow: AppStyle.topShadow),
         screenTransitionAnimation: const ScreenTransitionAnimation(
-          // Screen transition animation on change of selected tab.
           animateTabTransition: true,
           curve: Curves.ease,
           duration: Duration(milliseconds: 200),

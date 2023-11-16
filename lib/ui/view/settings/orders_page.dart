@@ -79,10 +79,14 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                                   left: 16,
                                 ),
                                 child: Transform.translate(
-                                  offset: Offset(dx,
-                                      constraints.maxHeight - kToolbarHeight),
-                                  child: const Text("My Orders",
-                                      style: AppTextStyle.titleLarge),
+                                  offset: Offset(
+                                    dx,
+                                    constraints.maxHeight - kToolbarHeight,
+                                  ),
+                                  child: const Text(
+                                    "My Orders",
+                                    style: AppTextStyle.titleLarge,
+                                  ),
                                 ),
                               ),
                             ],
@@ -108,7 +112,8 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
               body: viewModel.isBusy
                   ? const Align(
                       alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator())
+                      child: LinearProgressIndicator(),
+                    )
                   : SizedBox(
                       height: MediaQuery.of(context).size.height -
                           viewModel.scrollController.offset,
