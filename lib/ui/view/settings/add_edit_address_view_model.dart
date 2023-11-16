@@ -1,17 +1,23 @@
 import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
 import '../../../core/models/alert/alert_response.dart';
+import '../../../core/models/google/place.dart';
+import '../../../core/models/google/place_autocomplete.dart';
 import '../../../core/models/module/checkout/shipping_address.dart';
 import '../../../core/models/module/selected_item_list.dart';
 import '../../../locator.dart';
+import '../../../services/api/google_place_api.dart';
 import '../../../services/api_request/address_request.dart';
 import '../../../services/shared/dialog_service.dart';
 import 'bottom_sheets/select_country_state_bottomsheet.dart';
 
 class AddEditAddressViewModel extends VGTSBaseViewModel {
+  GooglePlaceApi? googlePlaceApi = locator<GooglePlaceApi>();
+
   FormFieldController addressFormController =
       FormFieldController(const Key("addressFormKey"));
 
@@ -44,7 +50,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       required: true,
       requiredText: "Pin code can't be empty");
   TextFormFieldController cityFormFieldController = TextFormFieldController(
-      const Key("txtLocality"),
+      const Key("txtCity"),
       required: true,
       requiredText: "City can't be empty");
   TextFormFieldController countryFormFieldController = TextFormFieldController(
@@ -53,24 +59,35 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       requiredText: "Country can't be empty");
   NameFormFieldController stateFormFieldController =
       NameFormFieldController(const Key("txtName"), required: false);
-  TextFormFieldController streetFormFieldController = TextFormFieldController(
-      const Key("txtLocality"),
+
+  /*TextFormFieldController streetFormFieldController = TextFormFieldController(
+      const Key("txtStreet"),
       required: true,
       requiredText: "Street Address can't be empty");
   TextFormFieldController buildingFormFieldController =
-      TextFormFieldController(const Key("txtBuilding"));
+      TextFormFieldController(const Key("txtBuilding"));*/
 
+  bool streetValidate = false;
+
+  TextEditingController streetTextEditingController = TextEditingController();
   TextEditingController searchController = TextEditingController();
 
+  FocusNode streetFocus = FocusNode();
   FocusNode searchFocus = FocusNode();
 
-  init(UserAddress? editUserAddress) {
+  init(UserAddress? editUserAddress) async {
+    setBusy(true);
+
     this.editUserAddress = editUserAddress;
+
+    _shippingAddress =
+        await request<ShippingAddress>(AddressRequest.getAvailableCountries());
+
     if (editUserAddress != null) {
       firstNameFormFieldController.text = editUserAddress.firstName ?? "";
       lastNameFormFieldController.text = editUserAddress.lastName ?? "";
       companyFormFieldController.text = editUserAddress.company ?? "";
-      streetFormFieldController.text = editUserAddress.add1 ?? "";
+      streetTextEditingController.text = editUserAddress.add1 ?? "";
       cityFormFieldController.text = editUserAddress.city ?? "";
       countryFormFieldController.text = editUserAddress.country ?? "";
       stateFormFieldController.text = editUserAddress.state ?? "";
@@ -79,8 +96,10 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
           editUserAddress.primaryPhone?.trimRight() ?? "";
       _isDefaultAddress = editUserAddress.isDefault;
     } else {
-      initAddress();
+      initAddAddress();
     }
+
+    setBusy(false);
   }
 
   void selectDefaultAddress() {
@@ -88,12 +107,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  void initAddress() async {
-    setBusy(true);
-
-    _shippingAddress =
-        await request<ShippingAddress>(AddressRequest.getAvailableCountries());
-
+  void initAddAddress() async {
     List<SelectedItemList> country = _shippingAddress!.availableCountries!
         .where((element) => element.selected == true)
         .toList();
@@ -105,8 +119,6 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     if (state.isNotEmpty) stateFormFieldController.text = state[0].text!;
 
     firstNameFormFieldController.focusNode.requestFocus();
-
-    setBusy(false);
   }
 
   Future<bool> submitAddress() async {
@@ -123,7 +135,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     userAddress.firstName = firstNameFormFieldController.text;
     userAddress.lastName = lastNameFormFieldController.text;
     userAddress.company = companyFormFieldController.text;
-    userAddress.add1 = streetFormFieldController.text;
+    userAddress.add1 = streetTextEditingController.text;
     userAddress.city = cityFormFieldController.text;
     userAddress.country = countryFormFieldController.text;
     userAddress.state = stateFormFieldController.text;
@@ -191,7 +203,64 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       stateFormFieldController.text = response.data.text;
       pinFormFieldController.focusNode.requestFocus();
     }
-    notifyListeners();
+  }
+
+  onStreetNameSelect(Predictions predictions) async {
+    setBusy(true);
+
+    streetTextEditingController.text =
+        predictions.structuredFormatting!.mainText!;
+
+    Place? place =
+        await googlePlaceApi!.getPlaceInfoFromPlaceId(predictions.placeId);
+
+    List<AddressComponents> addressComponent =
+        place!.result!.addressComponents!;
+
+    AddressComponents? city = addressComponent
+        .firstWhereOrNull((element) => element.types!.contains("locality"));
+    cityFormFieldController.text = city == null ? '' : city.longName!;
+
+    AddressComponents? country = addressComponent
+        .firstWhereOrNull((element) => element.types!.contains("country"));
+    if (country != null) {
+      print(country.shortName);
+
+      SelectedItemList? data = _shippingAddress!.availableCountries!
+          .singleWhereOrNull((element) =>
+              element.value == country.shortName ||
+              element.value!.toLowerCase() == country.longName!.toLowerCase());
+      countryFormFieldController.text = data == null ? '' : data.text!;
+
+      AddressComponents? state = addressComponent.firstWhereOrNull(
+          (element) => element.types!.contains("administrative_area_level_1"));
+      if (state != null && data != null) {
+        _shippingAddress!.availableStates =
+            await requestList(AddressRequest.getAvailableStates(data.value!));
+
+        if (_shippingAddress!.availableStates!.isEmpty) {
+          stateFormFieldController.text = state.longName!;
+        } else {
+          SelectedItemList? stateData = _shippingAddress!.availableStates!
+              .singleWhereOrNull((element) => element.value == state.shortName);
+          stateFormFieldController.text =
+              stateData == null ? '' : stateData.text!;
+        }
+      }
+    }
+
+    String? pinCode = '';
+    AddressComponents? pincode = addressComponent
+        .firstWhereOrNull((element) => element.types!.contains("postal_code"));
+    pinCode = pincode == null ? '' : pincode.shortName!;
+
+    AddressComponents? pinCodeSuffix = addressComponent.firstWhereOrNull(
+        (element) => element.types!.contains("postal_code_suffix"));
+    pinCode += pinCodeSuffix == null ? '' : '-${pinCodeSuffix.shortName}';
+
+    pinFormFieldController.text = pinCode;
+
+    setBusy(false);
   }
 
   List<SelectedItemList>? get countryList => _shippingAddress == null
