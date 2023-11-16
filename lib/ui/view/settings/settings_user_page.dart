@@ -85,24 +85,41 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(bottom: 16.0),
-                        child:
-                            Text('Activity', style: AppTextStyle.titleMedium),
+                        child: Text('Alerts', style: AppTextStyle.titleMedium),
                       ),
-                      getTextsLayout(
-                          const Icon(Icons.person), "Search History"),
-                      const Divider(
-                        color: AppColor.platinumColor,
-                      ),
-                      getTextsLayout(
-                        const Icon(Icons.person),
-                        "Recently Viewed",
+                      InkWell(
+                        onTap: () {
+                          locator<NavigationService>()
+                              .pushNamed(Routes.alerts, arguments: 0);
+                        },
+                        child: getTextsLayout(
+                            const Icon(Icons.person), "Custom Spot Price"),
                       ),
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
-                      getTextsLayout(
-                        const Icon(Icons.person),
-                        "Buy Again",
+                      InkWell(
+                        onTap: () {
+                          locator<NavigationService>()
+                              .pushNamed(Routes.alerts, arguments: 1);
+                        },
+                        child: getTextsLayout(
+                          const Icon(Icons.person),
+                          "Alert Me!",
+                        ),
+                      ),
+                      const Divider(
+                        color: AppColor.platinumColor,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          locator<NavigationService>()
+                              .pushNamed(Routes.alerts, arguments: 2);
+                        },
+                        child: getTextsLayout(
+                          const Icon(Icons.person),
+                          "Price Alert",
+                        ),
                       ),
                     ],
                   ),
@@ -126,23 +143,24 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     children: [
                       const Padding(
                         padding: EdgeInsets.only(bottom: 16.0),
-                        child: Text('Alerts', style: AppTextStyle.titleMedium),
+                        child:
+                            Text('Activity', style: AppTextStyle.titleMedium),
                       ),
                       getTextsLayout(
-                          const Icon(Icons.person), "Custom Spot Price"),
+                          const Icon(Icons.person), "Search History"),
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
                       getTextsLayout(
                         const Icon(Icons.person),
-                        "Alert Me!",
+                        "Recently Viewed",
                       ),
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
                       getTextsLayout(
                         const Icon(Icons.person),
-                        "Price Alert",
+                        "Buy Again",
                       ),
                     ],
                   ),

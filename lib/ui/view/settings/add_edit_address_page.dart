@@ -6,8 +6,11 @@ import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
+import '../../../core/models/google/place_autocomplete.dart';
 import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
 import '../../../helper/utils.dart';
@@ -117,11 +120,12 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                                       .copyWith(color: AppColor.turtleGreen),
                                 ),
                               ),
-                              EditTextField(
+                              /*EditTextField(
                                 "Street Address",
                                 viewModel.streetFormFieldController,
                                 key: const Key("txtStreet"),
-                              ),
+                              ),*/
+                              StreetAutoCompleteTextField(viewModel),
                               const SizedBox(height: 16.0),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,11 +163,13 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                                 children: [
                                   Expanded(
                                     child: InkWell(
-                                      onTap: viewModel.stateEnable ? null : () => viewModel.showStates(),
+                                      onTap: viewModel.stateEnable
+                                          ? null
+                                          : () => viewModel.showStates(),
                                       child: EditTextField(
                                         "State",
                                         viewModel.stateFormFieldController,
-                                        key: const Key("txtCity"),
+                                        key: const Key("txtState"),
                                         suffixIcon: viewModel.stateEnable
                                             ? Container()
                                             : const Icon(Icons.arrow_drop_down),
@@ -308,6 +314,122 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
   viewModelBuilder(BuildContext context) {
     return AddEditAddressViewModel();
   }
+}
+
+class StreetAutoCompleteTextField
+    extends VGTSBuilderWidget<AddEditAddressViewModel> {
+  AddEditAddressViewModel viewModel;
+
+  StreetAutoCompleteTextField(this.viewModel, {super.key});
+
+  @override
+  Widget viewBuilder(
+      BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 16),
+        const Text("Street Address",
+            textScaleFactor: 1, style: AppTextStyle.labelMedium),
+        const Padding(
+          padding: EdgeInsets.only(top: 10),
+        ),
+        TypeAheadFormField<Predictions>(
+          key: const Key("txtStreetAddress"),
+          textFieldConfiguration: TextFieldConfiguration(
+            controller: viewModel.streetTextEditingController,
+            focusNode: viewModel.streetFocus,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(RegExp("[ ]{2}")),
+              FilteringTextInputFormatter.deny(RegExp("[.]{2}")),
+              FilteringTextInputFormatter.deny(RegExp("[,]{2}")),
+            ],
+            textCapitalization: TextCapitalization.sentences,
+            decoration: InputDecoration(
+              errorText:
+                  viewModel.streetValidate ? "Required Street Address" : null,
+              errorMaxLines: 2,
+              errorStyle:
+                  AppTextStyle.bodySmall.copyWith(color: AppColor.error),
+              hintStyle: const TextStyle(color: Colors.black54),
+              labelStyle: (viewModel.streetFocus.hasFocus
+                  ? const TextStyle(color: AppColor.primary)
+                  : const TextStyle(color: Colors.black54)),
+              fillColor: AppColor.white,
+              filled: true,
+              contentPadding: const EdgeInsets.only(
+                  top: 16, bottom: 16, left: 12, right: 12),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: const BorderSide(color: Colors.black54),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: const BorderSide(color: Colors.black12),
+              ),
+              disabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: const BorderSide(color: Colors.black12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: const BorderSide(color: AppColor.primary, width: 2),
+              ),
+              prefixStyle: AppTextStyle.bodyMedium,
+            ),
+          ),
+          noItemsFoundBuilder: (context) {
+            return Container(
+              height: 0,
+            );
+          },
+          suggestionsCallback: (pattern) async {
+            List<Predictions>? predictions = await viewModel.googlePlaceApi!
+                .getPredictions(
+                    pattern, viewModel.shippingAddress?.availableCountries);
+            return predictions!;
+          },
+          itemBuilder: (context, Predictions prediction) {
+            return ListTile(
+              title: Text(
+                prediction.structuredFormatting!.mainText!,
+                textScaleFactor: 1,
+                style: AppTextStyle.titleMedium,
+              ),
+              subtitle: Text(
+                prediction.structuredFormatting!.secondaryText == null
+                    ? ""
+                    : prediction.structuredFormatting!.secondaryText!,
+                textScaleFactor: 1,
+                style: AppTextStyle.bodyMedium,
+              ),
+            );
+          },
+          onSuggestionSelected: (Predictions suggestion) {
+            viewModel.onStreetNameSelect(suggestion);
+          },
+          validator: (value) {
+            if (value!.trim().isEmpty) {
+              return "Street address can't be empty";
+            }
+
+            if (value.trim().length < 5) {
+              return "Street address should be more than 4 letters";
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
+  @override
+  viewModelBuilder(BuildContext context) {
+    return viewModel;
+  }
+
+  @override
+  bool get disposeViewModel => false;
 }
 
 enum AddressType { home, office, others }

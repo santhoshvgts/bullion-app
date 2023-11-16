@@ -3,6 +3,8 @@ import 'package:bullion/core/models/auth/forgot_password.dart';
 import 'package:bullion/core/models/auth/token.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/models/chart/spot_price.dart';
+import 'package:bullion/core/models/google/place.dart';
+import 'package:bullion/core/models/google/place_autocomplete.dart';
 import 'package:bullion/core/models/module/checkout/shipping_address.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
@@ -92,8 +94,17 @@ class BaseModel extends BaseObject {
       case ShippingAddress:
         return ShippingAddress() as T;
 
-        case SelectedItemList:
+      case SelectedItemList:
         return SelectedItemList() as T;
+
+      case PlaceAutocomplete:
+        return PlaceAutocomplete() as T;
+
+      case AddressComponents:
+        return AddressComponents() as T;
+
+      case Place:
+        return Place() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }
