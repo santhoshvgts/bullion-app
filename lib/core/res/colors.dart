@@ -51,6 +51,7 @@ class AppColor {
   static const Color offerText = Color(0xFF24A186);
   static const Color warning = Color(0xffFF3B30);
   static const Color blue = Color(0xFF005f9b);
+  static const Color info = Color(0xFFFF9800);
 
   static const Color dealsRed = Color(0xFFC30000);
   static const Color black20 = Color(0xFF344456);

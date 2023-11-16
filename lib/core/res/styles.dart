@@ -2,6 +2,7 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/fontsize.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppStyle {
   static final ThemeData appTheme = ThemeData(
@@ -16,14 +17,20 @@ class AppStyle {
       color: AppColor.primary,
     ),
     appBarTheme: const AppBarTheme().copyWith(
-        color: AppColor.scaffoldBackground,
-        elevation: 0.5,
-        scrolledUnderElevation: 1,
-        centerTitle: true,
-        titleTextStyle: AppTextStyle.titleLarge,
-        surfaceTintColor: AppColor.white,
-        shadowColor: AppColor.shadowColor,
-        iconTheme: const IconThemeData().copyWith(color: AppColor.primaryDark)),
+      color: AppColor.scaffoldBackground,
+      elevation: 0.5,
+      scrolledUnderElevation: 1,
+      centerTitle: true,
+      titleTextStyle: AppTextStyle.titleLarge,
+      surfaceTintColor: AppColor.white,
+      shadowColor: AppColor.shadowColor,
+      iconTheme: const IconThemeData().copyWith(color: AppColor.primaryDark),
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarColor: AppColor.secondaryBackground,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+    ),
     fontFamily: "Poppins",
     scaffoldBackgroundColor: AppColor.scaffoldBackground,
   );
