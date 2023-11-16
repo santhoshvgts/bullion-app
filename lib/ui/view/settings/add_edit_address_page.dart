@@ -349,7 +349,8 @@ class StreetAutoCompleteTextField
               errorText:
                   viewModel.streetValidate ? "Required Street Address" : null,
               errorMaxLines: 2,
-              errorStyle: AppTextStyle.errorTextStyle,
+              errorStyle:
+                  AppTextStyle.bodySmall.copyWith(color: AppColor.error),
               hintStyle: const TextStyle(color: Colors.black54),
               labelStyle: (viewModel.streetFocus.hasFocus
                   ? const TextStyle(color: AppColor.primary)
