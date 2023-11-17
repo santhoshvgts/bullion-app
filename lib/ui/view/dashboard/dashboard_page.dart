@@ -36,6 +36,9 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
               .values
               .toList()
         ],
+        onItemSelected: (index) {
+          // viewModel.notifyListeners();
+        },
         items: [
           _PersistentBottomNav(
             inactiveIcon: const Icon(FeatherIcons.home),

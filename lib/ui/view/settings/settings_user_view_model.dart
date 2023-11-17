@@ -29,7 +29,6 @@ class SettingsUserViewModel extends VGTSBaseViewModel {
 
   void initialize() {
     _isAuthenticated = locator<AuthenticationService>().isAuthenticated;
-    //_pageNo = 1 ;
     notifyListeners();
   }
 
