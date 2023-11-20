@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/alert_add_response_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,27 +10,37 @@ import '../../../../services/shared/navigator_service.dart';
 import '../../../widgets/button.dart';
 import 'custom_spot_price_view_model.dart';
 
-class CustomSpotPricePage extends VGTSBuilderWidget<CustomSpotPriceViewModel> {
-  const CustomSpotPricePage({super.key});
+class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
+  AlertGetResponse? alertResponse;
+
+  CustomSpotPricePage(this.alertResponse, {super.key});
 
   @override
-  CustomSpotPriceViewModel viewModelBuilder(BuildContext context) {
-    return CustomSpotPriceViewModel();
+  void onViewModelReady(AlertsViewModel viewModel) {
+    viewModel.init();
+    super.onViewModelReady(viewModel);
+  }
+
+  @override
+  AlertsViewModel viewModelBuilder(BuildContext context) {
+    return AlertsViewModel();
   }
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      CustomSpotPriceViewModel viewModel, Widget? child) {
-    /*return viewModel.filteredList == null
+      AlertsViewModel viewModel, Widget? child) {
+    return alertResponse?.alertResponseModels == null
         ? const Center(child: Text("No data available"))
-        : Container();*/
-    return Scaffold(
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 16,),
+        : Scaffold(
+            body: alertResponse!.alertResponseModels!.isNotEmpty
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 16,
+                        ),
 /*
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -67,23 +78,26 @@ class CustomSpotPricePage extends VGTSBuilderWidget<CustomSpotPriceViewModel> {
               ]),
             )
 */
-          ],
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Button(
-              color: AppColor.turtleGreen,
-              "Create New Alert",
-              valueKey: const Key("btnCreateAlert"),
-              borderRadius: BorderRadius.circular(24),
-              onPressed: () {
-                locator<NavigationService>().pushNamed(Routes.createAlerts);
-              },
-              disabled: viewModel.isBusy,
-            )),
-      ),
-    );
+                      ],
+                    ),
+                  )
+                : const Center(child: Text("Empty")),
+            bottomNavigationBar: SafeArea(
+              child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Button(
+                    color: AppColor.turtleGreen,
+                    "Create New Alert",
+                    valueKey: const Key("btnCreateAlert"),
+                    borderRadius: BorderRadius.circular(24),
+                    onPressed: () {
+                      locator<NavigationService>()
+                          .pushNamed(Routes.createAlerts);
+                    },
+                    disabled: viewModel.isBusy,
+                  )),
+            ),
+          );
   }
 }

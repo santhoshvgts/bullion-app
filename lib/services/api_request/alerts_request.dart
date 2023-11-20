@@ -10,6 +10,11 @@ class AlertsRequest {
         params: null, authenticated: true);
   }
 
+  static RequestSettings getMarketAlerts() {
+    return RequestSettings(Endpoints.getMarketAlerts, RequestMethod.GET,
+        params: null, authenticated: true);
+  }
+
   static RequestSettings postMarketAlert(double price, int operatorId, int metal) {
     Map<String, dynamic> params = {};
     params['operator_id'] = operatorId;

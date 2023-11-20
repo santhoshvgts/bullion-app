@@ -108,11 +108,14 @@ class BaseModel extends BaseObject {
       case Place:
         return Place() as T;
 
-        case OperatorsResponse:
+      case OperatorsResponse:
         return OperatorsResponse() as T;
 
-        case AlertResponseModel:
+      case AlertResponseModel:
         return AlertResponseModel() as T;
+
+      case AlertGetResponse:
+        return AlertGetResponse() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }

@@ -20,4 +20,5 @@ class Endpoints {
   //Alerts
   static const getMarketAlertOperators = "/market-alerts/operators";
   static const addMarketAlert = "/market-alerts/add";
+  static const getMarketAlerts = "/market-alerts/alerts";
 }

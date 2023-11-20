@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/res/styles.dart';
-import '../orders_view_model.dart';
+import 'custom_spot_price_view_model.dart';
 
 class AlertsPage extends StatefulWidget {
   final int initialIndex;
@@ -20,7 +20,7 @@ class AlertsPage extends StatefulWidget {
 
 class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
   late TabController _tabController;
-  late OrdersViewModel ordersViewModel;
+  late AlertsViewModel alertsViewModel;
   static const double _expandedHeight = 154;
 
   _AlertsPageState();
@@ -36,9 +36,9 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return ViewModelBuilder.reactive(
       onViewModelReady: (viewModel) {
-        ordersViewModel = viewModel;
+        alertsViewModel = viewModel;
       },
-      viewModelBuilder: () => OrdersViewModel(),
+      viewModelBuilder: () => AlertsViewModel(),
       builder: (context, viewModel, child) {
         return Scaffold(
           body: SafeArea(
@@ -118,10 +118,10 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                           viewModel.scrollController.offset,
                       child: TabBarView(
                         controller: _tabController,
-                        children: const [
-                          CustomSpotPricePage(),
-                          AlertMePage(),
-                          PriceAlertPage(),
+                        children: [
+                          CustomSpotPricePage(alertsViewModel.alertResponse),
+                          const AlertMePage(),
+                          const PriceAlertPage(),
                         ],
                       ),
                     ),
