@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
+import 'package:bullion/ui/widgets/loading_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -44,9 +45,9 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
           ),
           SliverToBoxAdapter(
             child: viewModel.isBusy
-                ? const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator())
+                ? LoadingData(
+              loadingStyle: LoadingStyle.LOGO,
+            )
                 : viewModel.operatorsResponse == null
                     ? const Center(child: Text("No data available"))
                 : SingleChildScrollView(
@@ -139,6 +140,7 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
               valueKey: const Key("btnCreate"),
               borderRadius: BorderRadius.circular(8),
               onPressed: () async {
+
                 if (viewModel.customSpotPriceGlobalKey.currentState!
                     .validate()) {
                       bool result = await viewModel.createMarketAlert();

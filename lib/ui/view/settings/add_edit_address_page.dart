@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -38,9 +36,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
           slivers: [
             SliverAppBar(
               leading: IconButton(
-                icon: Platform.isAndroid
-                    ? const Icon(Icons.arrow_back)
-                    : const Icon(Icons.arrow_back_ios),
+                icon: Util.showArrowBackward(),
                 onPressed: () {
                   Navigator.of(context).maybePop();
                 },

@@ -5,6 +5,10 @@ import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
+import '../../../../core/models/alert/alert_response.dart';
+import '../../../../locator.dart';
+import '../../../../services/shared/dialog_service.dart';
+
 class CreateAlertsViewModel extends VGTSBaseViewModel {
   OperatorsResponse? _operatorsResponse;
 
@@ -50,14 +54,17 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
   }
 
   Future<bool> createMarketAlert() async {
-    setBusy(true);
+    //setBusy(true);
+    locator<DialogService>().showLoader();
     AlertResponseModel? alertResponseModel = await request<AlertResponseModel>(
         AlertsRequest.postMarketAlert(
             double.parse(alertPriceFormFieldController.text),
             _operatorsResponse!.operators![_optionsSelectedIndex].id!,
             _metalsSelectedIndex + 1));
 
-    setBusy(false);
+    //setBusy(false);
+    notifyListeners();
+    locator<DialogService>().dialogComplete(AlertResponse(status: true));
 
     return alertResponseModel != null;
   }

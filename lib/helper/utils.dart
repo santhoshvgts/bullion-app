@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bullion/core/res/styles.dart';
 import 'package:collection/collection.dart' show IterableExtension;
@@ -219,5 +220,17 @@ class Util {
     List<String> substr = number.toString().split('.');
     if (substr.length > 0) decimals = int.parse(substr[1]);
     return decimals;
+  }
+
+  static Widget showArrowForward() {
+    return Platform.isAndroid
+        ? const Icon(Icons.arrow_forward)
+        : const Icon(Icons.arrow_forward_ios);
+  }
+
+  static Widget showArrowBackward() {
+    return Platform.isAndroid
+        ? const Icon(Icons.arrow_back)
+        : const Icon(Icons.arrow_back_ios);
   }
 }

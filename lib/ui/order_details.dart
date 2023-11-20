@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bullion/ui/view/order_details_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
@@ -10,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../core/res/colors.dart';
 import '../core/res/styles.dart';
+import '../helper/utils.dart';
 
 class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
   final String orderID;
@@ -64,9 +63,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
           slivers: [
             SliverAppBar(
               leading: IconButton(
-                icon: Platform.isAndroid
-                    ? const Icon(Icons.arrow_back)
-                    : const Icon(Icons.arrow_back_ios),
+                icon: Util.showArrowBackward(),
                 onPressed: () {
                   Navigator.of(context).maybePop();
                 },

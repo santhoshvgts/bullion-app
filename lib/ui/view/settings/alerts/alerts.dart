@@ -100,8 +100,8 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                       isScrollable: true,
                       tabs: const [
                         Tab(text: "Custom Spot Price"),
-                        Tab(text: "Price Alert"),
                         Tab(text: "Alert Me"),
+                        Tab(text: "Price Alert"),
                       ],
                     ),
                     forceElevated: innerBoxIsScrolled,
@@ -120,8 +120,8 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                         controller: _tabController,
                         children: const [
                           CustomSpotPricePage(),
-                          PriceAlertPage(),
                           AlertMePage(),
+                          PriceAlertPage(),
                         ],
                       ),
                     ),

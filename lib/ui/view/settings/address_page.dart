@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -8,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/res/styles.dart';
+import '../../../helper/utils.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
 import '../../../services/shared/navigator_service.dart';
@@ -32,9 +31,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
         slivers: [
           SliverAppBar(
             leading: IconButton(
-              icon: Platform.isAndroid
-                  ? const Icon(Icons.arrow_back)
-                  : const Icon(Icons.arrow_back_ios),
+              icon: Util.showArrowBackward(),
               onPressed: () {
                 Navigator.of(context).maybePop();
               },

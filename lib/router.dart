@@ -239,7 +239,7 @@ class AppRouter {
 
       case Routes.createAlerts:
         return MaterialPageRoute(
-            builder: (_) => CreateAlertsPage(),
+            builder: (_) => const CreateAlertsPage(),
             settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myProductPriceAlert:
