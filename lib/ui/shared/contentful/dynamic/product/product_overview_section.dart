@@ -164,7 +164,9 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
               valueKey: const ValueKey("btnAddToCart"),
               color: AppColor.orange,
               borderColor: AppColor.orange,
-              onPressed: () {},
+              onPressed: () {
+                viewModel.addToCart();
+              },
             ),
           ),
         ],
@@ -585,10 +587,10 @@ class _VolumeDiscountCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color:AppColor.primary.withOpacity(0.05),
+          color: AppColor.primary.withOpacity(0.05),
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color:  AppColor.primary ,
+            color: AppColor.primary,
           ),
         ),
         width: MediaQuery.of(context).size.width / 3.5,
@@ -1075,7 +1077,9 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
           valueKey: const ValueKey("btnAddToCart"),
           color: AppColor.orange,
           borderColor: AppColor.orange,
-          onPressed: () {},
+          onPressed: () {
+            viewModel.addToCart();
+          },
         )
       ],
     );

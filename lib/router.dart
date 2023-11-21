@@ -1,8 +1,10 @@
+import 'package:bullion/core/models/module/cart/display_message.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
+import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/checkout/checkout_page.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
@@ -159,11 +161,14 @@ class AppRouter {
 
       // Cart
       //
-      //   case Routes.viewCart:
-      //     return MaterialPageRoute(
-      //         builder: (_) => CartPage(redirectDisplayMessage: settings.arguments as DisplayMessage?,),
-      //         settings: RouteSettings(name: settings.name));
-      //
+      case Routes.viewCart:
+        return MaterialPageRoute(
+          builder: (_) => CartPage(
+            redirectDisplayMessage: settings.arguments as DisplayMessage?,
+          ),
+          settings: RouteSettings(name: settings.name),
+        );
+
       //   case Routes.reviewCart:
       //     return MaterialPageRoute(
       //         builder: (_) => ReviewOrderPage(
@@ -382,12 +387,21 @@ class AppRouter {
                   path: settings.name,
                 ));
 
-        // case "market_news":
-        //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
-        // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
-        // return TransparentRoute(
-        //     builder: (context) =>
-        //         PageMiddleware(settings.name, settings.arguments));
+      // case "market_news":
+      //   return MaterialPageRoute(builder: (context) => MarketNewsPage(metalName: uri.pathSegments.last));
+
+      // case "account":
+      //   if (uri.pathSegments[1] == "my-orders") {
+      //     return MaterialPageRoute(
+      //         builder: (_) =>
+      //             OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+      //         settings: RouteSettings(name: settings.name));
+      //   }
+      //
+      //   // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
+      //   return TransparentRoute(
+      //       builder: (context) =>
+      //           PageMiddleware(settings.name, settings.arguments));
 
       case "spot-prices":
       case "spotprices":
@@ -451,6 +465,15 @@ class AppRouter {
     Uri uri = Uri.parse(settings.name!);
     if (uri.pathSegments.length > 1) {
       switch (uri.pathSegments[1].toLowerCase()) {
+        case "my-orders":
+          Map<String, dynamic> data = {};
+          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
+          data['from_success'] = false;
+          return MaterialPageRoute(
+              builder: (_) =>
+                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
+              settings: RouteSettings(name: settings.name));
+
         // Order Details
         case "my-orders":
           Map<String, dynamic> data = {};
@@ -562,7 +585,7 @@ class TransparentRoute extends PageRoute<void> {
   TransparentRoute({
     required this.builder,
     RouteSettings? settings,
-  })  : super(settings: settings, fullscreenDialog: false);
+  }) : super(settings: settings, fullscreenDialog: false);
 
   final WidgetBuilder builder;
 
