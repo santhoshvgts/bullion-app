@@ -40,34 +40,30 @@ class DashboardContentPage extends StatelessWidget {
                       ? null
                       : Container(
                           decoration: BoxDecoration(
-                            color: AppColor.primary,
-                            borderRadius: BorderRadius.circular(100),
+                            color: AppColor.black.withOpacity(0.8),
                           ),
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
+                          ),
+                          width: double.infinity,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              Expanded(
+                                child: Text(
+                                  "Sign in for the best experience.",
+                                  textScaleFactor: 1,
+                                  style: AppTextStyle.bodySmall.copyWith(
+                                    color: AppColor.white,
+                                  ),
+                                ),
+                              ),
                               Button(
                                 "Sign In",
                                 width: 90,
-                                height: 35,
-                                textStyle: AppTextStyle.labelMedium.copyWith(
-                                  color: AppColor.white,
-                                ),
-                                valueKey: const ValueKey("btnSignIn"),
-                                onPressed: () {},
-                              ),
-                              const SizedBox(
-                                height: 15,
-                                child: VerticalDivider(
-                                  width: 1,
-                                  thickness: 0.5,
-                                ),
-                              ),
-                              Button(
-                                "Register",
-                                width: 90,
-                                height: 35,
-                                textStyle: AppTextStyle.labelMedium.copyWith(
+                                height: 30,
+                                textStyle: AppTextStyle.bodySmall.copyWith(
                                   color: AppColor.white,
                                 ),
                                 valueKey: const ValueKey("btnSignIn"),
@@ -77,7 +73,7 @@ class DashboardContentPage extends StatelessWidget {
                           ),
                         ),
               floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
+                  FloatingActionButtonLocation.centerDocked,
               body: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: SystemUiOverlayStyle.dark,
                 child: NestedScrollView(

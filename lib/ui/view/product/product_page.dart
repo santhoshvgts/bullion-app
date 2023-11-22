@@ -11,6 +11,7 @@ import 'package:bullion/ui/shared/search_card_section.dart';
 import 'package:bullion/ui/view/product/product_page_viewmodel.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -45,12 +46,13 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
               elevation: 0,
               titleSpacing: 0,
               centerTitle: true,
-              title: SearchCardSection(
-                rightPadding: 0,
-                leftPadding: 0,
-                placeholder: "Search Bullion.com",
-              ),
-              actions: const [CartButton.light()],
+              actions: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(CupertinoIcons.search),
+                ),
+                const CartButton.light()
+              ],
             ),
             body: SafeArea(
               top: false,

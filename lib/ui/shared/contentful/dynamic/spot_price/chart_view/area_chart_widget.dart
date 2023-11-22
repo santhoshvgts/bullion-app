@@ -131,7 +131,7 @@ class AreaChartWidget extends ViewModelWidget<SpotPriceChartViewModel> {
                 labelIntersectAction: AxisLabelIntersectAction.hide,
               ),
               primaryYAxis: NumericAxis(
-                labelPosition: ChartDataLabelPosition.outside,
+                labelPosition: ChartDataLabelPosition.inside,
                 tickPosition: TickPosition.inside,
                 minimum: initialValue,
                 maximum: _maxValue,
