@@ -16,7 +16,6 @@ import 'package:bullion/ui/widgets/loading_data.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 class ContentWrapperController {
@@ -197,44 +196,44 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
               ),
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
-                vertical: 7,
+                vertical: 5,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Filter${viewModel.productModel.selectedFacetsCount! > 0 ? " (${viewModel.productModel.selectedFacetsCount})" : ""}",
+                  Image.asset(
+                    Images.filter_icon,
+                    height: 18,
+                  ),
+                  HorizontalSpacing.d5px(),
+                  const Text(
+                    "Filter",
                     textScaleFactor: 1,
                     style: AppTextStyle.titleSmall,
                   ),
-                  HorizontalSpacing.d10px(),
-                  Stack(
-                    children: [
-                      Icon(FontAwesomeIcons.optinMonster),
-                      Image.asset(
-                        Images.filter_icon,
-                        height: 11,
+                  if (viewModel.productModel.selectedFacetsCount! > 0)
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: AppColor.primary,
+                        shape: BoxShape.circle,
                       ),
-                      if (viewModel.productModel.selectedFacetsCount! > 0)
-                        Positioned(
-                          right: 0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: AppColor.primary,
-                              shape: BoxShape.circle,
-                            ),
-                            width: 10,
-                            height: 10,
-                          ),
-                        )
-                    ],
-                  ),
+                      margin: const EdgeInsets.only(left: 5),
+                      padding: const EdgeInsets.all(5),
+                      child: Text(
+                        viewModel.productModel.selectedFacetsCount!.toString(),
+                        textScaleFactor: 1,
+                        style: AppTextStyle.labelSmall.copyWith(
+                          color: AppColor.white,
+                          fontSize: 10,
+                          fontFamily: AppTextStyle.fontFamily,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
-          HorizontalSpacing.d10px(),
           HorizontalSpacing.d10px(),
           InkWell(
             onTap: () => viewModel.onSortPressed(),
@@ -244,16 +243,17 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(color: AppColor.border, width: 1),
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 7,
+              padding: const EdgeInsets.only(
+                left: 8,
+                top: 5,
+                bottom: 5,
+                right: 15,
               ),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
-                    Icons.sort_sharp,
-                    size: 20,
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 18,
                   ),
                   HorizontalSpacing.d5px(),
                   const Text(

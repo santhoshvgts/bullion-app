@@ -1,7 +1,10 @@
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/ui/view/settings/settings_user_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:feather_icons/feather_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/res/colors.dart';
@@ -34,6 +37,11 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
         backgroundColor: AppColor.primary,
         automaticallyImplyLeading: false,
         elevation: 0,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: AppColor.primary,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.dark,
+        ),
         title: Text(
           viewModel.isAuthenticated
               ? "Hi, ${locator<AuthenticationService>().getUser?.firstName ?? ""}"
@@ -93,7 +101,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                               .pushNamed(Routes.alerts, arguments: 0);
                         },
                         child: getTextsLayout(
-                            const Icon(Icons.person), "Custom Spot Price"),
+                            const Icon(CupertinoIcons.alarm, size: 20),
+                            "Custom Spot Price"),
                       ),
                       const Divider(
                         color: AppColor.platinumColor,
@@ -104,7 +113,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                               .pushNamed(Routes.alerts, arguments: 1);
                         },
                         child: getTextsLayout(
-                          const Icon(Icons.person),
+                          const Icon(CupertinoIcons.bell, size: 20),
                           "Alert Me!",
                         ),
                       ),
@@ -117,7 +126,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                               .pushNamed(Routes.alerts, arguments: 2);
                         },
                         child: getTextsLayout(
-                          const Icon(Icons.person),
+                          const Icon(Icons.attach_money, size: 20),
                           "Price Alert",
                         ),
                       ),
@@ -147,19 +156,21 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                             Text('Activity', style: AppTextStyle.titleMedium),
                       ),
                       getTextsLayout(
-                          const Icon(Icons.person), "Search History"),
+                        const Icon(FeatherIcons.search, size: 20),
+                        "Search History",
+                      ),
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
                       getTextsLayout(
-                        const Icon(Icons.person),
+                        const Icon(FeatherIcons.activity, size: 20),
                         "Recently Viewed",
                       ),
                       const Divider(
                         color: AppColor.platinumColor,
                       ),
                       getTextsLayout(
-                        const Icon(Icons.person),
+                        const Icon(FeatherIcons.shoppingCart, size: 20),
                         "Buy Again",
                       ),
                     ],
@@ -213,7 +224,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                           style: AppTextStyle.titleMedium),
                     ),
                     getTextsLayout(
-                      const Icon(Icons.person),
+                      const Icon(FeatherIcons.user, size: 20),
                       "Personal Info",
                       "Profile, Change Email and password",
                     ),
@@ -225,7 +236,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         locator<NavigationService>().pushNamed(Routes.address);
                       },
                       child: getTextsLayout(
-                        const Icon(Icons.pin_drop_outlined),
+                        const Icon(Icons.pin_drop_outlined, size: 20),
                         "Addresses",
                       ),
                     ),
@@ -233,7 +244,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                       color: AppColor.platinumColor,
                     ),
                     getTextsLayout(
-                      const Icon(Icons.favorite_border),
+                      const Icon(Icons.favorite_border, size: 20),
                       "Favorites",
                     ),
                   ],
