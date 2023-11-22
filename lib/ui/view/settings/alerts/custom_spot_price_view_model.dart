@@ -7,6 +7,13 @@ import '../../../../services/api_request/alerts_request.dart';
 class AlertsViewModel extends VGTSBaseViewModel {
   late ScrollController _scrollController;
 
+  Map<int, String> metalNames = {
+    1: 'Gold',
+    2: 'Silver',
+    3: 'Platinum',
+    4: 'Palladium',
+  };
+
   AlertsViewModel() {
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
@@ -27,6 +34,10 @@ class AlertsViewModel extends VGTSBaseViewModel {
         await request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
 
     setBusy(false);
+  }
+
+  String getMetalName (int? metalID) {
+    return metalNames[metalID] ?? "";
   }
 
   ScrollController get scrollController => _scrollController;

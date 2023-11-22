@@ -10,6 +10,7 @@ import '../../../helper/utils.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
 import '../../../services/shared/navigator_service.dart';
+import '../../widgets/loading_data.dart';
 import '../vgts_builder_widget.dart';
 import 'address_view_model.dart';
 
@@ -56,9 +57,9 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
           ),
           SliverToBoxAdapter(
             child: viewModel.isBusy
-                ? const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator())
+                ? LoadingData(
+              loadingStyle: LoadingStyle.LOGO,
+            )
                 : viewModel.hasNoData
                     ? const Center(child: Text("No data available"))
                     : SingleChildScrollView(
@@ -266,6 +267,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                 const SizedBox(
                   width: 16,
                 ),
+/*
                 Visibility(
                   visible: !isDefault,
                   child: Text(
@@ -274,6 +276,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                         .copyWith(color: AppColor.cyanBlue),
                   ),
                 )
+*/
               ],
             )
           ],

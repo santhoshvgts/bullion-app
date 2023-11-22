@@ -114,6 +114,7 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                               width: 1.0,
                                               color: AppColor.border);
                                         }),
+                                        checkmarkColor: AppColor.turtleGreen,
                                         backgroundColor: Colors.white,
                                         selected: index ==
                                             viewModel.metalsSelectedIndex,
@@ -172,6 +173,7 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                               width: 1.0,
                                               color: AppColor.border);
                                         }),
+                                        checkmarkColor: AppColor.turtleGreen,
                                         backgroundColor: Colors.white,
                                         selected: index ==
                                             viewModel.optionsSelectedIndex,

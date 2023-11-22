@@ -3,6 +3,7 @@ import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
+import 'package:bullion/ui/widgets/loading_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -74,9 +75,9 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy
-                  ? const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator())
+                  ? LoadingData(
+                loadingStyle: LoadingStyle.LOGO,
+              )
                   : viewModel.orderDetail == null
                       ? const Center(child: Text("No data available"))
                       : SingleChildScrollView(

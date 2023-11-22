@@ -44,7 +44,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       const Key("numContact"),
       required: true,
       maxLength: 11,
-      requiredText: "Phone number can't be empty");
+      requiredText: "Contact number can't be empty");
   NumberFormFieldController pinFormFieldController = NumberFormFieldController(
       const Key("numPin"),
       required: true,
@@ -122,7 +122,8 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
   }
 
   Future<bool> submitAddress() async {
-    setBusy(true);
+    //setBusy(true);
+    locator<DialogService>().showLoader();
 
     UserAddress userAddress = UserAddress();
     editUserAddress != null
@@ -145,7 +146,9 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     userAddressResult = await request<UserAddress>(
         AddressRequest.addAddress(userAddress.toJson()));
 
-    setBusy(false);
+    //setBusy(false);
+    notifyListeners();
+    locator<DialogService>().dialogComplete(AlertResponse(status: true));
 
     return userAddressResult != null;
   }

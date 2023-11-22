@@ -13,6 +13,7 @@ import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
 import '../../../helper/utils.dart';
 import '../../widgets/animated_flexible_space.dart';
+import '../../widgets/loading_data.dart';
 import 'add_edit_address_view_model.dart';
 
 class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
@@ -48,9 +49,9 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy
-                  ? const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator())
+                  ? LoadingData(
+                loadingStyle: LoadingStyle.LOGO,
+              )
                   /*: viewModel.userAddress == null
                       ? const Center(child: Text("No data available"))*/
                   : SingleChildScrollView(

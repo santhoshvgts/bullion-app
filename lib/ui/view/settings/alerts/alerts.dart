@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/res/styles.dart';
+import '../../../widgets/loading_data.dart';
 import 'custom_spot_price_view_model.dart';
 
 class AlertsPage extends StatefulWidget {
@@ -110,9 +111,9 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
               },
               controller: viewModel.scrollController,
               body: viewModel.isBusy
-                  ? const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator())
+                  ? LoadingData(
+                loadingStyle: LoadingStyle.LOGO,
+              )
                   : SizedBox(
                       height: MediaQuery.of(context).size.height -
                           viewModel.scrollController.offset,

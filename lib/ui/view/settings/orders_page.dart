@@ -5,6 +5,7 @@ import 'package:stacked/stacked.dart';
 import '../../../core/enums/order_status.dart';
 import '../../../core/res/styles.dart';
 import '../../../helper/utils.dart';
+import '../../widgets/loading_data.dart';
 import 'orders_view_model.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -107,10 +108,9 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
               },
               controller: viewModel.scrollController,
               body: viewModel.isBusy
-                  ? const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator(),
-                    )
+                  ? LoadingData(
+                loadingStyle: LoadingStyle.LOGO,
+              )
                   : SizedBox(
                       height: MediaQuery.of(context).size.height -
                           viewModel.scrollController.offset,

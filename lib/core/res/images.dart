@@ -135,6 +135,8 @@ class Images {
   static const String sell = "assets/images/v2/settings/sell.png";
   static const String settings = "assets/images/v2/settings/settings.png";
   static const String support = "assets/images/v2/settings/support.png";
+
+  static const String gold = "assets/images/gold.png";
 }
 
 class Gif {
