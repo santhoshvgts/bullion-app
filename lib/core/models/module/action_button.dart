@@ -1,8 +1,8 @@
-
-import 'package:flutter/material.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/utils.dart';
+import 'package:flutter/material.dart';
 
 class ActionButton {
   String? labelText;
@@ -15,38 +15,50 @@ class ActionButton {
   String? iconPosition;
   bool? openInNewWindow;
 
-  bool get isOutline =>  style == ActionButtonStyle.btnSecondaryOutline || style == ActionButtonStyle.btnPrimaryOutline;
-  bool get isSecondaryButton =>  style == ActionButtonStyle.btnSecondaryOutline || style == ActionButtonStyle.btnSecondary;
+  bool get isOutline =>
+      style == ActionButtonStyle.btnSecondaryOutline ||
+      style == ActionButtonStyle.btnPrimaryOutline;
+  bool get isSecondaryButton =>
+      style == ActionButtonStyle.btnSecondaryOutline ||
+      style == ActionButtonStyle.btnSecondary;
 
+  Color get buttonColor =>
+      isSecondaryButton ? AppColor.secondary : AppColor.primary;
 
-
-  Color get buttonColor => isSecondaryButton ? AppColor.orange : AppColor.primary;
-
-  Color get labelTextColor => getColorFromString(textColor, fallbackColor: Colors.black);
+  Color get labelTextColor =>
+      getColorFromString(textColor, fallbackColor: Colors.black);
 
   Color get buttonTextColor => isOutline ? buttonColor : Colors.white;
 
   TextStyle get textStyle {
-    switch(_textStyle){
+    switch (_textStyle) {
       case "mini":
-        return TextStyle(fontSize: 12, color: buttonTextColor, fontWeight: FontWeight.w600);
+        return AppTextStyle.labelMedium.copyWith(
+          color: buttonTextColor,
+        );
       case "small":
-        return TextStyle(fontSize: 14, color: buttonTextColor, fontWeight: FontWeight.w600);
+        return AppTextStyle.labelLarge.copyWith(
+          color: buttonTextColor,
+        );
       case "large":
-        return TextStyle(fontSize: 20, color: buttonTextColor, fontWeight: FontWeight.w600);
+        return AppTextStyle.titleMedium.copyWith(
+          color: buttonTextColor,
+        );
       default:
-        return TextStyle(fontSize: 15, color: buttonTextColor, fontWeight: FontWeight.w600);
+        return AppTextStyle.labelLarge.copyWith(
+          color: buttonTextColor,
+        );
     }
   }
 
   ActionButton(
       {this.labelText,
-        this.targetUrl,
-        this.style,
-        this.hasIcon,
-        this.icon,
-        this.iconPosition,
-        this.openInNewWindow});
+      this.targetUrl,
+      this.style,
+      this.hasIcon,
+      this.icon,
+      this.iconPosition,
+      this.openInNewWindow});
 
   ActionButton.fromJson(Map<String, dynamic> json) {
     labelText = json['label_text'];

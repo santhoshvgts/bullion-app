@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bullion/router.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
@@ -75,11 +74,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness:
-            Platform.isIOS ? Brightness.light : Brightness.dark));
 
     return MaterialApp(
       title: "Bullion",

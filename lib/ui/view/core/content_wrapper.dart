@@ -34,14 +34,19 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
   final Function(bool onload)? onLoading;
   final String? metalName;
 
-  const ContentWrapper(this.path,
-      {super.key,
-      this.controller,
-      this.initialValue,
-      this.onPageFetched,
-      this.enableController = true,
-      this.onLoading,
-      this.metalName});
+  final LoadingStyle loadingStyle;
+
+  const ContentWrapper(
+    this.path, {
+    super.key,
+    this.controller,
+    this.initialValue,
+    this.onPageFetched,
+    this.enableController = true,
+    this.onLoading,
+    this.loadingStyle = LoadingStyle.DEFAULT,
+    this.metalName,
+  });
 
   @override
   bool get reactive => true;
@@ -130,7 +135,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                                         []
                                   ],
                                 )
-                              : LoadingData(),
+                              : LoadingData(loadingStyle: loadingStyle),
                         ),
                         if (viewModel.paginationLoading)
                           Container(
@@ -191,45 +196,44 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
               ),
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
-                vertical: 7,
+                vertical: 5,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Stack(
-                    children: [
-                      Image.asset(
-                        Images.filter_icon,
-                        height: 16,
-                      ),
-                      if (viewModel.productModel.selectedFacetsCount! > 0)
-                        Positioned(
-                          right: 0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: AppColor.primary,
-                              shape: BoxShape.circle,
-                            ),
-                            width: 10,
-                            height: 10,
-                          ),
-                        )
-                    ],
+                  Image.asset(
+                    Images.filter_icon,
+                    height: 18,
                   ),
-                  HorizontalSpacing.d10px(),
-                  Text(
-                    "Filter${viewModel.productModel.selectedFacetsCount! > 0 ? " (${viewModel.productModel.selectedFacetsCount})" : ""}",
+                  HorizontalSpacing.d5px(),
+                  const Text(
+                    "Filter",
                     textScaleFactor: 1,
                     style: AppTextStyle.titleSmall,
-                  )
+                  ),
+                  if (viewModel.productModel.selectedFacetsCount! > 0)
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: AppColor.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      margin: const EdgeInsets.only(left: 5),
+                      padding: const EdgeInsets.all(5),
+                      child: Text(
+                        viewModel.productModel.selectedFacetsCount!.toString(),
+                        textScaleFactor: 1,
+                        style: AppTextStyle.labelSmall.copyWith(
+                          color: AppColor.white,
+                          fontSize: 10,
+                          fontFamily: AppTextStyle.fontFamily,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
-
-          HorizontalSpacing.d10px(),
-
           HorizontalSpacing.d10px(),
           InkWell(
             onTap: () => viewModel.onSortPressed(),
@@ -239,16 +243,17 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(color: AppColor.border, width: 1),
               ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 7,
+              padding: const EdgeInsets.only(
+                left: 8,
+                top: 5,
+                bottom: 5,
+                right: 15,
               ),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
-                    Icons.sort_sharp,
-                    size: 20,
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 18,
                   ),
                   HorizontalSpacing.d5px(),
                   const Text(

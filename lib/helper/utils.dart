@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bullion/core/res/styles.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,14 +10,21 @@ import 'package:bullion/core/enums/trade_entry_type.dart';
 import '../locator.dart';
 import '../services/shared/eventbus_service.dart';
 
-Color getColorFromString(String? hexColor, { Color fallbackColor = Colors.transparent }) {
+Color getColorFromString(String? hexColor,
+    {Color fallbackColor = Colors.transparent}) {
   if (hexColor == null || hexColor == "none" || hexColor == "")
     return fallbackColor;
 
   // Convert from RGB: rgb(24,23,23)
-  if (hexColor.contains('rgb(')){
-    List<String> _bgList = hexColor.replaceAll("rgb", '').replaceAll("(", '').replaceAll(")", '').replaceAll(" ", '').split(",");
-    return Color.fromRGBO(int.parse(_bgList[0]), int.parse(_bgList[1]), int.parse(_bgList[2]), 1);
+  if (hexColor.contains('rgb(')) {
+    List<String> _bgList = hexColor
+        .replaceAll("rgb", '')
+        .replaceAll("(", '')
+        .replaceAll(")", '')
+        .replaceAll(" ", '')
+        .split(",");
+    return Color.fromRGBO(
+        int.parse(_bgList[0]), int.parse(_bgList[1]), int.parse(_bgList[2]), 1);
   }
 
   // Convert from Hex Code: #ff2323
@@ -40,12 +48,16 @@ T? getEnumFromString<T>(Iterable<T> values, String value) {
   if (value == null) {
     return null;
   }
-  return values.firstWhereOrNull((type) => type.toString().split(".").last == value);
+  return values
+      .firstWhereOrNull((type) => type.toString().split(".").last == value);
 }
 
 T? cast<T>(x) => x is T ? x : null;
+
 bool isNull(Object? object) => object == null;
+
 bool isNotNull(Object object) => object != null;
+
 bool isNullOrEmpty(String? value) => isNull(value) || value!.isEmpty;
 
 IconData FAIcon(String? name) {
@@ -91,7 +103,8 @@ class QtyAmountInputOutPut {
   final currencyFormatWithOneDecimal = new NumberFormat("#,##0.0", "en_US");
   final currencyFormatNoDecimal = new NumberFormat("#,##0", "en_US");
 
-  QtyAmountInputOutPut({this.input, this.previousValue, this.inputType, this.outputPrecision});
+  QtyAmountInputOutPut(
+      {this.input, this.previousValue, this.inputType, this.outputPrecision});
 
   String getFormattedOutPut() {
     newValue = previousValue;
@@ -179,30 +192,32 @@ class QtyAmountInputOutPut {
       return output + " OZ";
     }
   }
-
 }
 
-
 class Util {
+  static showSnackBar(BuildContext context, String content) {
+    SnackBar snackBar =
+        SnackBar(content: Text(content, style: AppTextStyle.titleSmall));
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   static Future<void> cancelLockEvent() async {
-      locator<EventBusService>().eventBus.fire(DisableLockTimeoutEvent(disable: true));
+    locator<EventBusService>()
+        .eventBus
+        .fire(DisableLockTimeoutEvent(disable: true));
   }
-
 
   static Future<void> enableLockEvent() async {
-      locator<EventBusService>().eventBus.fire(DisableLockTimeoutEvent(disable: false));
+    locator<EventBusService>()
+        .eventBus
+        .fire(DisableLockTimeoutEvent(disable: false));
   }
 
- static int getDecimalPlaces(double? number) {
+  static int getDecimalPlaces(double? number) {
     int decimals = 0;
     List<String> substr = number.toString().split('.');
     if (substr.length > 0) decimals = int.parse(substr[1]);
     return decimals;
   }
 }
-
-
-
-
-

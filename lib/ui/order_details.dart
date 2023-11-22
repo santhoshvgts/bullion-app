@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bullion/ui/view/order_details_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import '../core/res/styles.dart';
 class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
   final String orderID;
   static const double _expandedHeight = 100;
-  static const double _scrollOffset = 36;
+  //static const double _scrollOffset = 36;
 
   const OrderDetails(this.orderID, {super.key});
 
@@ -72,45 +73,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
               ),
               expandedHeight: _expandedHeight,
               pinned: true,
-              flexibleSpace: LayoutBuilder(
-                builder: (context, constraints) {
-                  return FlexibleSpaceBar(
-                    title: viewModel.scrollController.offset > _scrollOffset
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                                Text(
-                                  "Order Details",
-                                  style: AppTextStyle.titleLarge
-                                      .copyWith(color: AppColor.text),
-                                ),
-                              ])
-                        : const Text(
-                            "",
-                          ),
-                    background: Visibility(
-                      visible:
-                          viewModel.scrollController.offset < _scrollOffset,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 16.0, bottom: 8.0),
-                            child: Text(
-                              "Order Details",
-                              style: AppTextStyle.titleLarge
-                                  .copyWith(color: AppColor.text),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+              flexibleSpace: const AnimatedFlexibleSpace(title: "Order Details"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy

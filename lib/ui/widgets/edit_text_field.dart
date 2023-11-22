@@ -135,8 +135,10 @@ class _EditTextFieldState extends State<EditTextField> {
           }
 
           widget.controller.textEditingController.addListener(() {
-            state.reset();
-            state.didChange(widget.controller.text);
+            if(mounted) {
+              state.reset();
+              state.didChange(widget.controller.text);
+            }
           });
 
           return TextField(
@@ -176,7 +178,7 @@ class _EditTextFieldState extends State<EditTextField> {
                 ? [FilteringTextInputFormatter.deny(RegExp('[\\ ]'))]
                 : widget.controller.inputFormatter,
             decoration: InputDecoration(
-              fillColor: !widget.enabled ? AppColor.text : Colors.white,
+              fillColor: !widget.enabled ? AppColor.secondaryBackground : Colors.white,
               filled: true,
               contentPadding: widget.padding ??
                   const EdgeInsets.symmetric(

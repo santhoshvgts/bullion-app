@@ -1,13 +1,13 @@
 import 'package:bullion/core/models/chart/chart_data.dart';
-import 'package:bullion/core/models/chart/chart_selection_info.dart';
+import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/spacing.dart';
+import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_chart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
-import 'spot_price_header.dart';
 
 class AreaChartWidget extends ViewModelWidget<SpotPriceChartViewModel> {
   final List<ChartData>? tsdata;
@@ -101,61 +101,109 @@ class AreaChartWidget extends ViewModelWidget<SpotPriceChartViewModel> {
 
     return Column(
       children: [
-        StreamBuilder(
-          stream: viewModel.trackedSpotController.stream,
-          initialData: viewModel.chartSelectionInfoModel,
-          builder: (BuildContext context, snapshot) {
-            return SpotPriceHeader(snapshot.data as ChartSelectionInfoModel);
-          },
-        ),
+        // StreamBuilder(
+        //   stream: viewModel.trackedSpotController.stream,
+        //   initialData: viewModel.chartSelectionInfoModel,
+        //   builder: (BuildContext context, snapshot) {
+        //     return SpotPriceHeader(,snapshot.data as ChartSelectionInfoModel);
+        //   },
+        // ),
         Listener(
           onPointerUp: (val) {
-            Future.delayed(const Duration(seconds: 1), () {
+            Future.delayed(const Duration(milliseconds: 200), () {
               viewModel.onTrackballTouchUp();
             });
           },
-          child: Container(
-            height: (MediaQuery.of(context).size.height / 2.5).roundToDouble(),
+          child: SizedBox(
+            height: (MediaQuery.of(context).size.height / 2.3).roundToDouble(),
             child: SfCartesianChart(
-                plotAreaBorderWidth: 0,
-                margin: EdgeInsets.zero,
-                primaryXAxis: DateTimeAxis(
-                    majorGridLines: const MajorGridLines(width: 0),
-                    labelIntersectAction: AxisLabelIntersectAction.hide,
-                    isVisible: false),
-                primaryYAxis: NumericAxis(
-                  labelPosition: ChartDataLabelPosition.inside,
-                  tickPosition: TickPosition.inside,
-                  minimum: initialValue,
-                  maximum: _maxValue,
-                  interval: intervalValue,
-                  axisLine: const AxisLine(
-                    width: 0,
-                  ),
-                  majorTickLines: const MajorTickLines(size: 0),
-                  numberFormat: NumberFormat.currency(
-                      symbol: r'$',
-                      decimalDigits:
-                          hasDecimalPlaces(initialValue) || metal == 2 ? 2 : 0),
+              plotAreaBorderWidth: 0,
+              margin: EdgeInsets.zero,
+              primaryXAxis: DateTimeAxis(
+                majorGridLines: const MajorGridLines(
+                  width: 0,
                 ),
-                onTrackballPositionChanging: (TrackballArgs value) {
-                  viewModel.onTrackballPositionChanges(
-                      value.chartPointInfo.chartDataPoint!.x,
-                      value.chartPointInfo.chartDataPoint!.y);
+                edgeLabelPlacement: EdgeLabelPlacement.shift,
+                minorTickLines: const MinorTickLines(width: 0),
+                minorGridLines: const MinorGridLines(width: 0),
+                labelPosition: ChartDataLabelPosition.inside,
+                isVisible: false,
+                labelIntersectAction: AxisLabelIntersectAction.hide,
+              ),
+              primaryYAxis: NumericAxis(
+                labelPosition: ChartDataLabelPosition.inside,
+                tickPosition: TickPosition.inside,
+                minimum: initialValue,
+                maximum: _maxValue,
+                opposedPosition: true,
+                interval: intervalValue,
+                axisLine: const AxisLine(
+                  width: 0,
+                ),
+                majorTickLines: const MajorTickLines(size: 0),
+                majorGridLines: const MajorGridLines(
+                  width: 0.3,
+                ),
+                numberFormat: NumberFormat.currency(
+                  symbol: r'$',
+                  decimalDigits:
+                      hasDecimalPlaces(initialValue) || metal == 2 ? 2 : 0,
+                ),
+              ),
+              onTrackballPositionChanging: (TrackballArgs value) {
+                viewModel.onTrackballPositionChanges(
+                  value.chartPointInfo.chartDataPoint!.x,
+                  value.chartPointInfo.chartDataPoint!.y,
+                );
+              },
+              series: _getDefaultDateTimeSeries(viewModel),
+              trackballBehavior: TrackballBehavior(
+                enable: true,
+                lineDashArray: const [0.2, 0.5],
+                activationMode: ActivationMode.singleTap,
+                tooltipAlignment: ChartAlignment.near,
+                tooltipDisplayMode: TrackballDisplayMode.groupAllPoints,
+                markerSettings: TrackballMarkerSettings(
+                  markerVisibility: TrackballVisibilityMode.visible,
+                  color: viewModel.spotPriceChartData!.color,
+                  borderColor: viewModel.spotPriceChartData!.color,
+                ),
+                builder: (BuildContext context, TrackballDetails details) {
+                  return Container(
+                    padding: const EdgeInsets.all(5.0),
+                    margin: const EdgeInsets.only(top: 10),
+                    decoration: BoxDecoration(
+                      // color: AppColor.opacityColor(
+                      //         viewModel.spotPriceChartData!.metalName!)
+                      //     .withOpacity(0.1),
+                      color: AppColor.secondaryBackground,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(
+                          // color: AppColor.opacityColor(
+                          //     viewModel.spotPriceChartData!.metalName!),
+                          color: AppColor.border,
+                          width: 0.5),
+                    ),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      direction: Axis.vertical,
+                      children: [
+                        Text(
+                          viewModel.chartSelectionInfoModel!.formatedPrice!,
+                          style: AppTextStyle.labelLarge,
+                        ),
+                        HorizontalSpacing.d10px(),
+                        Text(
+                          viewModel.chartSelectionInfoModel!.chartToolTipDate!,
+                          style: AppTextStyle.labelSmall
+                              .copyWith(color: AppColor.secondaryText),
+                        ),
+                      ],
+                    ),
+                  );
                 },
-                series: _getDefaultDateTimeSeries(viewModel),
-                trackballBehavior: TrackballBehavior(
-                  enable: true,
-                  lineDashArray: const [0.2, 0.5],
-                  activationMode: ActivationMode.singleTap,
-                  markerSettings: TrackballMarkerSettings(
-                      markerVisibility: TrackballVisibilityMode.visible,
-                      color: viewModel.spotPriceChartData!.color,
-                      borderColor: viewModel.spotPriceChartData!.color),
-                  builder: (BuildContext context, TrackballDetails details) {
-                    return Container();
-                  },
-                )),
+              ),
+            ),
           ),
         ),
       ],
@@ -196,12 +244,14 @@ class AreaChartWidget extends ViewModelWidget<SpotPriceChartViewModel> {
   }
 
   List<AreaSeries<ChartData, DateTime>> _getDefaultDateTimeSeries(
-      SpotPriceChartViewModel vm) {
+    SpotPriceChartViewModel vm,
+  ) {
     return <AreaSeries<ChartData, DateTime>>[
       AreaSeries<ChartData, DateTime>(
         borderColor: vm.spotPriceChartData!.color,
-        color: vm.spotPriceChartData!.areaColor,
-        borderWidth: 1.2,
+        color: vm.spotPriceChartData!.areaColor.withOpacity(0.04),
+        // color: Colors.transparent,
+        borderWidth: 1.5,
         dataSource: tsdata!,
         xValueMapper: (ChartData data, _) => data.time,
         yValueMapper: (ChartData data, _) => data.price,

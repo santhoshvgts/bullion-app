@@ -87,7 +87,7 @@ class CartViewModel extends VGTSBaseViewModel {
 
     setBusy(true);
     _cart = await _cartService.modifyItem(product.productId, qty);
-    setBusy(true);
+    setBusy(false);
 
     locator<AnalyticsService>().logAddToCart(itemId: product.productId.toString(), itemName: product.productName ?? '', price: product.unitPrice, value: qty * product.unitPrice!, quantity: qty, currency: 'USD', itemCategory: '');
 
@@ -224,7 +224,9 @@ class CartViewModel extends VGTSBaseViewModel {
     //     .pushNamed(
     //       Routes.checkout,
     //     )!
-    //     .then((value) => init());
+    //     .then(
+    //       (value) => init(),
+    //     );
   }
 
   refresh() async {

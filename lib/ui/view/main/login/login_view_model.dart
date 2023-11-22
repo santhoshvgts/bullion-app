@@ -61,6 +61,9 @@ class LoginViewModel extends VGTSBaseViewModel {
         navigationService.pushReplacementNamed(redirectRoute!);
       } else {
         navigationService.pop(returnValue: true);
+        locator<EventBusService>()
+            .eventBus
+            .fire(RefreshDataEvent(RefreshType.accountRefresh));
       }
       preferenceService.setFirstTimeAppOpen(false);
     }
