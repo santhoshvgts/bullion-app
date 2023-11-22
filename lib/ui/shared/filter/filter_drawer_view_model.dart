@@ -22,7 +22,6 @@ class FilterDrawerViewModel extends VGTSBaseViewModel {
   Facets? get selectedFacet => filterData?.singleWhere((element) => element.facetName == selectedFacetName);
 
   List<Facets>? get filterData => productModel.facets;
-  //int? get selectedvalue =>  selectedvalue.sin
 
   FilterDrawerViewModel(this.productModel, this.controller) {
     onFilterSectionChange(0);

@@ -9,9 +9,11 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/router.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +43,9 @@ class CartViewModel extends VGTSBaseViewModel {
 
   ShoppingCart? get shoppingCart => cart == null ? null : cart!.shoppingCart;
 
-  List<CartItem>? get cartItems =>
-      shoppingCart == null ? [] : shoppingCart!.items;
+  List<CartItem>? get cartItems => shoppingCart == null ? [] : shoppingCart!.items;
 
-  List<OrderTotalSummary>? get orderSummary =>
-      shoppingCart == null ? null : shoppingCart!.orderTotalSummary;
+  List<OrderTotalSummary>? get orderSummary => shoppingCart == null ? null : shoppingCart!.orderTotalSummary;
 
   int? get totalItems => shoppingCart == null ? 0 : shoppingCart!.totalItems;
 
@@ -56,10 +56,7 @@ class CartViewModel extends VGTSBaseViewModel {
     if (_cart?.displayMessage == null) {
       return null;
     }
-    return _cart?.displayMessage?.messageDisplayType ==
-            MessageDisplayType.Inline
-        ? _cart?.displayMessage
-        : null;
+    return _cart?.displayMessage?.messageDisplayType == MessageDisplayType.Inline ? _cart?.displayMessage : null;
   }
 
   DisplayMessage? _couponInlineMessage;
@@ -92,14 +89,7 @@ class CartViewModel extends VGTSBaseViewModel {
     _cart = await _cartService.modifyItem(product.productId, qty);
     setBusy(false);
 
-    locator<AnalyticsService>().logAddToCart(
-        itemId: product.productId.toString(),
-        itemName: product.productName ?? '',
-        price: product.unitPrice,
-        value: qty * product.unitPrice!,
-        quantity: qty,
-        currency: 'USD',
-        itemCategory: '');
+    locator<AnalyticsService>().logAddToCart(itemId: product.productId.toString(), itemName: product.productName ?? '', price: product.unitPrice, value: qty * product.unitPrice!, quantity: qty, currency: 'USD', itemCategory: '');
 
     if (_cart?.displayMessage != null) displayMessage(_cart?.displayMessage);
   }
@@ -130,8 +120,7 @@ class CartViewModel extends VGTSBaseViewModel {
   applyCoupon(BuildContext context) async {
     setBusy(true);
 
-    PageSettings? settings =
-        await _cartService.applyCoupon(promoCodeController.text);
+    PageSettings? settings = await _cartService.applyCoupon(promoCodeController.text);
 
     if (settings?.isSuccess == false) {
       _couponInlineMessage = settings?.displayMessage;
@@ -159,10 +148,7 @@ class CartViewModel extends VGTSBaseViewModel {
         padding: const EdgeInsets.all(10.0),
         width: double.infinity,
         margin: EdgeInsets.only(bottom: 60, left: 10, right: 10),
-        decoration: BoxDecoration(
-            color: AppColor.white,
-            boxShadow: AppStyle.cardShadow,
-            borderRadius: BorderRadius.circular(5)),
+        decoration: BoxDecoration(color: AppColor.white, boxShadow: AppStyle.cardShadow, borderRadius: BorderRadius.circular(5)),
         child: Wrap(
           children: [
             Column(
@@ -171,26 +157,16 @@ class CartViewModel extends VGTSBaseViewModel {
                 if (displayMessage.title != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 0),
-                    child: Text(displayMessage.title ?? '',
-                        style: AppTextStyle.titleSmall.copyWith(
-                            fontSize: 16, color: displayMessage.color),
-                        textAlign: TextAlign.start),
+                    child: Text(displayMessage.title ?? '', style: AppTextStyle.titleSmall.copyWith(fontSize: 16, color: displayMessage.color), textAlign: TextAlign.start),
                   ),
                 if (displayMessage.subText != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 0),
-                    child: Text(displayMessage.subText ?? '',
-                        style: AppTextStyle.titleSmall.copyWith(
-                            fontSize: 14, fontWeight: FontWeight.w600),
-                        textAlign: TextAlign.start),
+                    child: Text(displayMessage.subText ?? '', style: AppTextStyle.titleSmall.copyWith(fontSize: 14, fontWeight: FontWeight.w600), textAlign: TextAlign.start),
                   ),
                 VerticalSpacing.d5px(),
                 Container(
-                  decoration: BoxDecoration(
-                      color: AppColor.secondaryBackground,
-                      border: Border(
-                          left: BorderSide(
-                              color: displayMessage.color, width: 2))),
+                  decoration: BoxDecoration(color: AppColor.secondaryBackground, border: Border(left: BorderSide(color: displayMessage.color, width: 2))),
                   padding: EdgeInsets.all(10),
                   child: Row(
                     children: [
@@ -221,22 +197,19 @@ class CartViewModel extends VGTSBaseViewModel {
     }
 
     if (displayType == MessageDisplayType.BottomSheet) {
-      await dialogService.showBottomSheet(
-          title: displayMessage.title == null ? '' : displayMessage.title,
-          child: DisplayMessageBottomSheet(displayMessage));
+      await dialogService.showBottomSheet(title: displayMessage.title == null ? '' : displayMessage.title, child: DisplayMessageBottomSheet(displayMessage));
       return;
     }
 
     if (displayType == MessageDisplayType.AlertBox) {
-      await dialogService.displayMessage(
-          title: displayMessage.title == null ? '' : displayMessage.title,
-          child: DisplayMessageBottomSheet(displayMessage));
+      await dialogService.displayMessage(title: displayMessage.title == null ? '' : displayMessage.title, child: DisplayMessageBottomSheet(displayMessage));
       return;
     }
   }
 
   onCheckoutClick() async {
     // Todo - Authentication Request
+    locator<NavigationService>().pushNamed(Routes.checkout);
 
     // if (!locator<AuthenticationService>().isAuthenticated) {
     //   bool authenticated = await signInRequest(Images.iconCartBottom,
@@ -262,14 +235,7 @@ class CartViewModel extends VGTSBaseViewModel {
     locator<AnalyticsService>().logEvent('view_cart', {
       'currency': 'USD',
       'value': shoppingCart?.orderTotal,
-      'items': shoppingCart?.items
-          ?.map((e) => {
-                'item_id': e.productId,
-                'price': e.unitPrice,
-                'quantity': e.quantity
-              })
-          .toList()
-          .toString()
+      'items': shoppingCart?.items?.map((e) => {'item_id': e.productId, 'price': e.unitPrice, 'quantity': e.quantity}).toList().toString()
     });
 
     if (_cart?.displayMessage != null) displayMessage(_cart?.displayMessage);
