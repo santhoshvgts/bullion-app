@@ -193,10 +193,10 @@ class AppRouter {
       //         ),
       //         settings: RouteSettings(name: settings.name));
       //
-        case Routes.checkout:
-          return MaterialPageRoute(
-              builder: (_) => const CheckoutPage(),
-              settings: RouteSettings(name: settings.name));
+      case Routes.checkout:
+        return MaterialPageRoute(
+            builder: (_) => const CheckoutPage(),
+            settings: RouteSettings(name: settings.name));
       //
       //   case Routes.checkoutAddress:
       //     return MaterialPageRoute(
