@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bullion/core/models/alert_add_response_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
@@ -15,11 +16,13 @@ import '../../../widgets/animated_flexible_space.dart';
 import 'create_alerts_view_model.dart';
 
 class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
-  const CreateAlertsPage({super.key});
+  final AlertResponseModel? alertResponse;
+
+  const CreateAlertsPage({super.key, this.alertResponse});
 
   @override
   void onViewModelReady(CreateAlertsViewModel viewModel) {
-    viewModel.init();
+    viewModel.init(alertResponse);
     super.onViewModelReady(viewModel);
   }
 
@@ -197,13 +200,13 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Button(
                 color: AppColor.turtleGreen,
-                "Create",
+                alertResponse == null ? "Create" : "Update",
                 valueKey: const Key("btnCreate"),
                 borderRadius: BorderRadius.circular(24),
                 onPressed: () async {
                   if (viewModel.customSpotPriceGlobalKey.currentState!
                       .validate()) {
-                    bool result = await viewModel.createMarketAlert();
+                    bool result = await viewModel.createEditMarketAlert();
                     if (result) {
                       Util.showSnackBar(context, "Submitted successfully");
                       Navigator.of(context).pop();
@@ -212,7 +215,7 @@ class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                     Util.showSnackBar(context, "Fill all the required fields");
                   }
                 },
-                disabled: viewModel.isBusy,
+                disabled: viewModel.operatorsResponse == null,
               )),
         ),
       ),

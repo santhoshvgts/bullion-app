@@ -11,6 +11,7 @@ import '../../../../services/shared/dialog_service.dart';
 
 class CreateAlertsViewModel extends VGTSBaseViewModel {
   OperatorsResponse? _operatorsResponse;
+  AlertResponseModel? alertResponseModel;
 
   GlobalKey<FormState> customSpotPriceGlobalKey = GlobalKey<FormState>();
 
@@ -44,23 +45,46 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  void init() async {
+  void init(AlertResponseModel? alertResponseModel) async {
     setBusy(true);
+    this.alertResponseModel = alertResponseModel;
 
     _operatorsResponse =
         await request<OperatorsResponse>(AlertsRequest.getOperators());
 
+    if (alertResponseModel != null && _operatorsResponse != null) {
+      alertPriceFormFieldController.text = alertResponseModel.price.toString();
+      _metalsSelectedIndex = alertResponseModel.metal! - 1;
+
+      for (var i = 0; i < _operatorsResponse!.operators!.length; i++) {
+        if (_operatorsResponse!.operators?[i].id ==
+            alertResponseModel.operatorId) {
+          _optionsSelectedIndex = i;
+          break;
+        }
+      }
+    }
+
     setBusy(false);
   }
 
-  Future<bool> createMarketAlert() async {
+  Future<bool> createEditMarketAlert() async {
     //setBusy(true);
     locator<DialogService>().showLoader();
     AlertResponseModel? alertResponseModel = await request<AlertResponseModel>(
-        AlertsRequest.postMarketAlert(
-            double.parse(alertPriceFormFieldController.text),
-            _operatorsResponse!.operators![_optionsSelectedIndex].id!,
-            _metalsSelectedIndex + 1));
+        this.alertResponseModel != null
+            ? AlertsRequest.createEditMarketAlert(
+                this.alertResponseModel!.id!,
+                double.parse(alertPriceFormFieldController.text),
+                _operatorsResponse!.operators![_optionsSelectedIndex].id!,
+                _metalsSelectedIndex + 1,
+                false)
+            : AlertsRequest.createEditMarketAlert(
+                0,
+                double.parse(alertPriceFormFieldController.text),
+                _operatorsResponse!.operators![_optionsSelectedIndex].id!,
+                _metalsSelectedIndex + 1,
+                true));
 
     //setBusy(false);
     notifyListeners();

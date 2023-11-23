@@ -13,9 +13,9 @@ import '../../../widgets/button.dart';
 import 'custom_spot_price_view_model.dart';
 
 class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
-  AlertGetResponse? alertResponse;
+  final AlertGetResponse? alertResponse;
 
-  CustomSpotPricePage(this.alertResponse, {super.key});
+  const CustomSpotPricePage(this.alertResponse, {super.key});
 
   @override
   void onViewModelReady(AlertsViewModel viewModel) {
@@ -39,7 +39,7 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                     padding: const EdgeInsets.only(
                         left: 16.0, top: 16.0, right: 16.0),
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
+                      //height: MediaQuery.of(context).size.height,
                       child: GridView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           shrinkWrap: true,
@@ -56,7 +56,14 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                             return SizedBox(
                               width: MediaQuery.of(ctx).size.width,
                               child: InkWell(
-                                onTap: () async {},
+                                onTap: () async {
+                                  locator<NavigationService>().pushNamed(
+                                      Routes.editSpotPrice,
+                                      arguments: {
+                                        "alertResponse": alertResponse!
+                                            .alertResponseModels?[gridIndex]
+                                      });
+                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white,

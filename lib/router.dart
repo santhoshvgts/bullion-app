@@ -102,6 +102,7 @@ class Routes {
   static const String myRewardTransactions = "/account/myrewards/transaction";
 
   static String myOrderDetails(id) => "/account/my-orders/info/$id";
+  static const String editSpotPrice = "/account/editSpotPrice";
   static const String myFavorites = "/account/myfavorites";
   static const String myProductAlert = "/account/productalerts";
   static const String myProductPriceAlert = "/account/myproductpricealerts";
@@ -245,6 +246,16 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => const CreateAlertsPage(),
             settings: RouteSettings(name: settings.name));
+
+      case Routes.editSpotPrice:
+        Map? data = settings.arguments as Map?;
+        return MaterialPageRoute(
+          builder: (_) => CreateAlertsPage(
+            alertResponse: data?['alertResponse'],
+          ),
+          settings: RouteSettings(name: settings.name),
+        );
+
       //
       //   case Routes.myProductPriceAlert:
       //     return MaterialPageRoute(
