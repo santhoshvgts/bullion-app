@@ -1,5 +1,6 @@
 import 'package:bullion/core/constants/alignment.dart';
 import 'package:bullion/core/constants/display_style.dart';
+import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/fontsize.dart';
@@ -73,12 +74,14 @@ class ModuleUIContainer extends VGTSBuilderWidget<ModuleUIContainerViewModel> {
             children: [
               if (vm.setting!.hasHeaderSection && !hideHeadSection)
                 _ModuleHeadSection(),
-              if (!vm.setting!.hasHeaderSection &&
-                  vm.setting!.displaySettings!.itemDisplaySettings
-                          .displayType ==
-                      DisplayStyle.standard)
+              if ((!vm.setting!.hasHeaderSection &&
+                      vm.setting!.displaySettings!.itemDisplaySettings
+                              .displayType ==
+                          DisplayStyle.standard) ||
+                  vm.setting?.moduleType == ModuleType.product)
                 VerticalSpacing.custom(
-                    value: vm.displaySetting!.itemDisplaySettings.cardPadding),
+                  value: vm.displaySetting!.itemDisplaySettings.cardPadding,
+                ),
               ...children as Iterable<Widget>
             ],
           ),
@@ -149,6 +152,8 @@ class _ModuleHeadSection extends ViewModelWidget<ModuleUIContainerViewModel> {
                     return ActionButtonItem(
                       settings: e,
                       textColor: viewModel.displaySetting!.textColor,
+                      itemDisplaySettings:
+                          viewModel.displaySetting!.itemDisplaySettings,
                     );
                   }).toList(),
                 ),

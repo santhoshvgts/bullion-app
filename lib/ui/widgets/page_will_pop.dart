@@ -12,7 +12,7 @@ class PageWillPop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!this.allowPop) {
+    if (!allowPop) {
       return WillPopScope(child: child, onWillPop: () => Future.value(false));
     }
 
@@ -21,9 +21,13 @@ class PageWillPop extends StatelessWidget {
     }
 
     return WillPopScope(
-        child: child,
-        onWillPop: () async {
-          return !await locator<DialogService>().dialogNavigationKey.currentState!.maybePop();
-        });
+      child: child,
+      onWillPop: () async {
+        return !await locator<DialogService>()
+            .dialogNavigationKey
+            .currentState!
+            .maybePop();
+      },
+    );
   }
 }

@@ -25,7 +25,7 @@ class DashboardViewModel extends VGTSBaseViewModel {
       path: "/pages/home",
     ),
     DashboardContentPage(
-      key: const PageStorageKey('Spot Price'),
+      key: const PageStorageKey('Deals'),
       path: "/pages/deals",
     ),
     DashboardContentPage(

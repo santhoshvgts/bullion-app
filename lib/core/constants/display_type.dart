@@ -19,6 +19,7 @@ class ActionButtonStyle {
   static const String btnSecondary = "btn-secondary";
   static const String btnPrimaryOutline = "btn-primary-outline";
   static const String btnSecondaryOutline = "btn-secondary-outline";
+  static const String icon = "icon";
 }
 
 class ContentType {
