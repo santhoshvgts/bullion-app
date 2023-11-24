@@ -18,9 +18,14 @@ class Endpoints {
   static const googlePlaceDetails =
       "https://maps.googleapis.com/maps/api/place/details/json?place_id=<placeId>&key=<key>";
 
-  //Alerts
+  //Market Alerts
   static const getMarketAlertOperators = "/market-alerts/operators";
   static const addMarketAlert = "/market-alerts/add";
   static const getMarketAlerts = "/market-alerts/alerts";
   static const editMarketAlert = "/market-alerts/edit";
+  static const removeMarketAlert = "/market-alerts/remove";
+
+  //Product Alerts
+  static const getProductPriceAlerts = "/product-alerts/get-all-product-price-alerts";
+  static const getAlertMeProductAlerts = "/product-alerts/get-all-product-alerts";
 }

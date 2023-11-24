@@ -14,6 +14,16 @@ class AlertsRequest {
         params: null, authenticated: true);
   }
 
+  static RequestSettings getProductPriceAlerts() {
+    return RequestSettings(Endpoints.getProductPriceAlerts, RequestMethod.GET,
+        params: null, authenticated: true);
+  }
+
+  static RequestSettings getAlertMeProductAlerts() {
+    return RequestSettings(Endpoints.getProductPriceAlerts, RequestMethod.GET,
+        params: null, authenticated: true);
+  }
+
   static RequestSettings createEditMarketAlert(
       int id, double price, int operatorId, int metal, bool isCreate) {
     Map<String, dynamic> params = {};
@@ -27,5 +37,11 @@ class AlertsRequest {
         RequestMethod.POST,
         params: params,
         authenticated: true);
+  }
+
+  static RequestSettings removeAlert(alertId) {
+    return RequestSettings(
+        "${Endpoints.removeMarketAlert}?alertId=$alertId", RequestMethod.POST,
+        params: null, authenticated: true);
   }
 }

@@ -1,4 +1,4 @@
-import 'package:bullion/core/models/alert_add_response_model.dart';
+import 'package:bullion/core/models/alert/alert_add_response_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,7 +10,7 @@ import '../../../../locator.dart';
 import '../../../../router.dart';
 import '../../../../services/shared/navigator_service.dart';
 import '../../../widgets/button.dart';
-import 'custom_spot_price_view_model.dart';
+import 'alerts_view_model.dart';
 
 class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
   final AlertGetResponse? alertResponse;
@@ -19,7 +19,7 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
 
   @override
   void onViewModelReady(AlertsViewModel viewModel) {
-    viewModel.init();
+    //viewModel.init();
     super.onViewModelReady(viewModel);
   }
 
@@ -116,6 +116,41 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                                         .metal),
                                                 style:
                                                     AppTextStyle.titleMedium),
+                                          ],
+                                        ),
+                                      ),
+
+                                      Positioned(
+                                        top: 16,
+                                        right: 16,
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                                onTap: () {
+                                                  showDialog<String>(
+                                                    context: context,
+                                                    builder: (BuildContext context) => AlertDialog(
+                                                      backgroundColor: Colors.white,
+                                                      title: const Text('Delete'),
+                                                      content:
+                                                      const Text("Do you want to delete this Alert?"),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                                                          child: const Text('Cancel'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            viewModel.removeAlert(viewModel.alertResponse?.alertResponseModels?[gridIndex].id);
+                                                            Navigator.pop(context, 'OK');
+                                                          },
+                                                          child: const Text('Delete'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                                child: const Icon(Icons.delete_forever, color: AppColor.red, size: 22,))
                                           ],
                                         ),
                                       ),

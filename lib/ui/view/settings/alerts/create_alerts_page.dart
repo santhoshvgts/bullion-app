@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bullion/core/models/alert_add_response_model.dart';
+import 'package:bullion/core/models/alert/alert_add_response_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';

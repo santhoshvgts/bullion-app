@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/alert/alert_operators.dart';
+import 'package:bullion/core/models/alert/product_alert_response_model.dart';
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/core/models/auth/forgot_password.dart';
 import 'package:bullion/core/models/auth/token.dart';
@@ -15,7 +16,7 @@ import 'package:bullion/core/models/module/selected_item_list.dart';
 import 'package:bullion/core/models/user_address.dart';
 import 'package:vgts_plugin/form/base_object.dart';
 
-import 'alert_add_response_model.dart';
+import 'alert/alert_add_response_model.dart';
 import 'module/order.dart';
 
 class BaseModel extends BaseObject {
@@ -116,6 +117,9 @@ class BaseModel extends BaseObject {
 
       case AlertGetResponse:
         return AlertGetResponse() as T;
+
+        case ProductAlert:
+        return ProductAlert() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }

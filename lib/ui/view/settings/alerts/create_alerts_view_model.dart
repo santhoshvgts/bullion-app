@@ -1,5 +1,5 @@
 import 'package:bullion/core/models/alert/alert_operators.dart';
-import 'package:bullion/core/models/alert_add_response_model.dart';
+import 'package:bullion/core/models/alert/alert_add_response_model.dart';
 import 'package:bullion/services/api_request/alerts_request.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';

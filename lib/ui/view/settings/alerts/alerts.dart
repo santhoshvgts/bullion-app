@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:bullion/ui/view/settings/alerts/alert_me_section.dart';
-import 'package:bullion/ui/view/settings/alerts/custom_spot_price_section.dart';
 import 'package:bullion/ui/view/settings/alerts/price_alert_section.dart';
+import 'package:bullion/ui/view/settings/alerts/custom_spot_price_section.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/res/styles.dart';
 import '../../../widgets/loading_data.dart';
-import 'custom_spot_price_view_model.dart';
+import 'alert_me_section.dart';
+import 'alerts_view_model.dart';
 
 class AlertsPage extends StatefulWidget {
   final int initialIndex;
@@ -112,8 +112,8 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
               controller: viewModel.scrollController,
               body: viewModel.isBusy
                   ? LoadingData(
-                loadingStyle: LoadingStyle.LOGO,
-              )
+                      loadingStyle: LoadingStyle.LOGO,
+                    )
                   : SizedBox(
                       height: MediaQuery.of(context).size.height -
                           viewModel.scrollController.offset,
@@ -121,8 +121,8 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                         controller: _tabController,
                         children: [
                           CustomSpotPricePage(alertsViewModel.alertResponse),
-                          const AlertMePage(),
-                          const PriceAlertPage(),
+                          AlertMePage(alertsViewModel.alertMeAlerts),
+                          PriceAlertPage(alertsViewModel.productAlert),
                         ],
                       ),
                     ),
