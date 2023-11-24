@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:bullion/helper/utils.dart';
+import 'package:flutter/material.dart';
 
 class ItemDisplaySettings {
   String displayType = "standard";
@@ -28,7 +28,7 @@ class ItemDisplaySettings {
   String? _itemAlignment = "spaceBetween";
 
   double get cardPadding {
-    switch(cardSize){
+    switch (cardSize) {
       case "mini":
         return 2.0;
       case "small":
@@ -40,18 +40,17 @@ class ItemDisplaySettings {
       default:
         return 0;
     }
-
   }
 
-  int get gridCols => (_gridCols == null || _gridCols == '') ? 2 : int.parse(_gridCols!);
+  int get gridCols =>
+      (_gridCols == null || _gridCols == '') ? 2 : int.parse(_gridCols!);
 
   double? get imageWidth {
-
-    if (_imageWidth == "auto"){
+    if (_imageWidth == "auto") {
       return null;
     }
 
-    if (_imageWidth == null || _imageWidth == ''){
+    if (_imageWidth == null || _imageWidth == '') {
       return double.infinity;
     }
     return double.parse(_imageWidth!);
@@ -61,12 +60,13 @@ class ItemDisplaySettings {
     return imageWidth == double.infinity ? null : imageWidth;
   }
 
-  Color get textColor => getColorFromString(_textColor, fallbackColor: Colors.black);
+  Color get textColor =>
+      getColorFromString(_textColor, fallbackColor: Colors.black);
 
   Color get backgroundColor => getColorFromString(_backgroundColor);
 
   MainAxisAlignment get itemMainAxisAlignment {
-    switch(_itemAlignment){
+    switch (_itemAlignment) {
       case "center":
         return MainAxisAlignment.center;
       default:
@@ -74,12 +74,12 @@ class ItemDisplaySettings {
     }
   }
 
-
   ItemDisplaySettings();
 
   ItemDisplaySettings.fromJson(Map<String, dynamic> json) {
     displayType = json['display_type'] ?? displayType;
-    displayTypeVariation = json['display_type_variation'] ?? displayTypeVariation;
+    displayTypeVariation =
+        json['display_type_variation'] ?? displayTypeVariation;
     displayDirection = json['display_direction'] ?? displayDirection;
     contentAlignment = json['content_alignment'] ?? contentAlignment;
     titleAlignment = json['title_alignment'] ?? titleAlignment;
@@ -96,7 +96,8 @@ class ItemDisplaySettings {
     hasBoxShadow = json['has_box_shadow'] ?? hasBoxShadow;
     hasRoundedCorners = json['has_rounded_corners'] ?? hasRoundedCorners;
     hasBorders = json['has_borders'] ?? hasBorders;
-    hasContentHasBackground = json['has_content_has_background'] ?? hasContentHasBackground;
+    hasContentHasBackground =
+        json['has_content_has_background'] ?? hasContentHasBackground;
     _gridCols = json['grid_cols'] ?? _gridCols;
     wrapItems = json['wrap_items'] ?? wrapItems;
     fullBleed = json['full_bleed'] ?? fullBleed;

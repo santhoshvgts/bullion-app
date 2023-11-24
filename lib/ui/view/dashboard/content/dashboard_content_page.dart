@@ -2,8 +2,10 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/page_storage_service.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/cart/cart_button.dart';
 import 'package:bullion/ui/shared/search_card_section.dart';
 import 'package:bullion/ui/view/core/content_wrapper.dart';
@@ -67,76 +69,90 @@ class DashboardContentPage extends StatelessWidget {
                                   color: AppColor.white,
                                 ),
                                 valueKey: const ValueKey("btnSignIn"),
-                                onPressed: () {},
+                                onPressed: () {
+                                  locator<NavigationService>().pushNamed(
+                                    Routes.login,
+                                    arguments: {"fromMain": false},
+                                  );
+                                },
                               ),
                             ],
                           ),
                         ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
-              body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.dark,
-                child: NestedScrollView(
-                  headerSliverBuilder: (context, innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverLayoutBuilder(builder: (context, constraints) {
-                        return SliverAppBar(
-                          backgroundColor: AppColor.white,
-                          titleSpacing: 0,
-                          expandedHeight: 105,
-                          floating: false,
-                          pinned: true,
-                          forceElevated: true,
-                          elevation: 1,
-                          shadowColor: AppColor.secondaryBackground,
-                          flexibleSpace: FlexibleSpaceBar.createSettings(
-                            currentExtent: 60,
-                            minExtent: 60,
-                            toolbarOpacity: 1.0,
-                            child: LayoutBuilder(
-                              builder: (
-                                context,
-                                constraints,
-                              ) {
-                                _appBarExtendedHeight ??=
-                                    80 - constraints.biggest.height;
+              body: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverLayoutBuilder(builder: (context, constraints) {
+                      return SliverAppBar(
+                        backgroundColor: AppColor.white,
+                        titleSpacing: 0,
+                        expandedHeight: 105,
+                        floating: false,
+                        pinned: true,
+                        forceElevated: true,
+                        elevation: 1,
+                        shadowColor: AppColor.secondaryBackground,
+                        flexibleSpace: FlexibleSpaceBar.createSettings(
+                          currentExtent: 60,
+                          minExtent: 60,
+                          toolbarOpacity: 1.0,
+                          child: LayoutBuilder(
+                            builder: (
+                              context,
+                              constraints,
+                            ) {
+                              _appBarExtendedHeight ??=
+                                  80 - constraints.biggest.height;
 
-                                return FlexibleSpaceBar(
-                                  centerTitle: true,
-                                  titlePadding: const EdgeInsets.only(
-                                    top: 10,
-                                    bottom: 10.0,
+                              return FlexibleSpaceBar(
+                                centerTitle: true,
+                                titlePadding: const EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 10.0,
+                                ),
+                                title: SearchCardSection(
+                                  rightPadding: 45 -
+                                      ((15 - 45) *
+                                          ((constraints.biggest.height - 80) /
+                                              _appBarExtendedHeight!)),
+                                ),
+                                background: AppBar(
+                                  backgroundColor: AppColor.white,
+                                  centerTitle: false,
+                                  elevation: 1,
+                                  shadowColor: AppColor.secondaryBackground,
+                                  title: Image.asset(
+                                    Images.appLogo,
+                                    height: 20,
                                   ),
-                                  title: SearchCardSection(
-                                    rightPadding: 45 -
-                                        ((15 - 45) *
-                                            ((constraints.biggest.height - 80) /
-                                                _appBarExtendedHeight!)),
+                                  systemOverlayStyle:
+                                      const SystemUiOverlayStyle(
+                                    statusBarIconBrightness: Brightness.dark,
+                                    statusBarColor: AppColor.white,
                                   ),
-                                  background: AppBar(
-                                    backgroundColor: AppColor.white,
-                                    centerTitle: false,
-                                    elevation: 1,
-                                    shadowColor: AppColor.secondaryBackground,
-                                    title: Image.asset(
-                                      Images.appLogo,
-                                      height: 20,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                                ),
+                              );
+                            },
                           ),
-                          actions: const [
-                            CartButton.light(),
-                          ],
-                        );
-                      })
-                    ];
-                  },
-                  body: _BodyContent(path ?? '', key!),
-                ),
+                        ),
+                        actions: const [
+                          CartButton.light(),
+                        ],
+                      );
+                    })
+                  ];
+                },
+                body: _BodyContent(path ?? '', key!),
               ),
+            ),
+          );
+        }
+        if (path == '/pages/deals') {
+          return PageWillPop(
+            child: Scaffold(
+              body: _BodyContent(path ?? '', key!),
             ),
           );
         } else {
@@ -168,47 +184,13 @@ class _AppBar extends PreferredSize {
               title: SearchCardSection(
                 rightPadding: 0,
               ),
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarIconBrightness: Brightness.dark,
+                statusBarColor: AppColor.white,
+              ),
               actions: const [CartButton.light()],
             ));
 }
-
-//
-// class SearchComponent extends ViewModelWidget<DashboardContentViewModel> {
-//
-//   @override
-//   Widget build(BuildContext context, DashboardContentViewModel viewModel) {
-//
-//     return InkWell(
-//       onTap: ()=> viewModel.Search(),
-//       child: Container(
-//           height: _searchBarHeight,
-//           margin: EdgeInsets.only(left: 15, right: viewModel.titlePaddingHorizontal),
-//           padding: const EdgeInsets.only(left: 10.0),
-//           decoration: BoxDecoration(
-//               color: AppColor.white,
-//               borderRadius: BorderRadius.circular(50),
-//               border: Border.all(color: Colors.black12)
-//           ),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.start,
-//             children: [
-//
-//               const Icon(CupertinoIcons.search, size: 22,),
-//
-//               HorizontalSpacing.d10px(),
-//
-//               Padding(
-//                 padding: const EdgeInsets.only(bottom:2.0),
-//                 child: Text("Search Products and Deals", style: AppTextStyle.labelMedium.copyWith(fontSize: 16, color: AppColor.secondaryText), textAlign: TextAlign.center,textScaleFactor: 1,),
-//               )
-//
-//             ],
-//           )
-//       ),
-//     );
-//   }
-//
-// }
 
 class _BodyContent extends ViewModelWidget<DashboardContentViewModel> {
   String path;

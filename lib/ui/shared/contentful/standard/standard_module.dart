@@ -8,6 +8,7 @@ import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/standard/item_card/pile_item_card.dart';
 import 'package:bullion/ui/shared/contentful/standard/item_card/standard_item_card.dart';
+import 'package:bullion/ui/shared/contentful/standard/standard_text_style.dart';
 import 'package:bullion/ui/shared/contentful/standard/standard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
@@ -114,11 +115,14 @@ class _ItemCard extends ViewModelWidget<StandardViewModel> {
                         padding: const EdgeInsets.only(top: 10, bottom: 2),
                         child: Text(item.content!,
                             textScaleFactor: 1,
-                            style: AppTextStyle.bodyMedium.copyWith(
-                                fontWeight: FontWeight.w600,
-                                fontSize: AppFontSize.bodyContentByValue(
-                                    viewModel.itemDisplaySettings.titleStyle),
-                                color: viewModel.itemDisplaySettings.textColor),
+                            style: StandardTextStyle.content(
+                                    viewModel.itemDisplaySettings.contentStyle)
+                                .copyWith(
+                                    fontSize: AppFontSize.bodyContentByValue(
+                                        viewModel
+                                            .itemDisplaySettings.titleStyle),
+                                    color: viewModel
+                                        .itemDisplaySettings.textColor),
                             textAlign: UIAlignment.textAlign(viewModel
                                 .itemDisplaySettings.contentAlignment)),
                       ),
@@ -140,7 +144,7 @@ class _ItemCard extends ViewModelWidget<StandardViewModel> {
               .map((index, item) {
                 return MapEntry(
                     index,
-                    Container(
+                    SizedBox(
                       width: viewModel.itemWidth(context),
                       child: StandardItemCard(
                         item,

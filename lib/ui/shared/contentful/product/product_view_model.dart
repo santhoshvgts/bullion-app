@@ -1,5 +1,3 @@
-import 'package:bullion/services/shared/navigator_service.dart';
-import 'package:flutter/material.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/display_settings.dart';
 import 'package:bullion/core/models/module/item_display_settings.dart';
@@ -8,6 +6,8 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class ProductViewModel extends BaseViewModel {
@@ -23,29 +23,37 @@ class ProductViewModel extends BaseViewModel {
 
   List<ProductOverview>? _items;
 
-  ItemDisplaySettings get itemDisplaySettings => settings!.displaySettings!.itemDisplaySettings;
+  ItemDisplaySettings get itemDisplaySettings =>
+      settings!.displaySettings!.itemDisplaySettings;
 
   List<ProductOverview>? get items => _items;
 
-  double get spacing => 10; //itemDisplaySettings.cardPadding;
-  double get runSpacing => 10; //itemDisplaySettings.cardPadding;
+  double get spacing => 0; //itemDisplaySettings.cardPadding;
+  double get runSpacing => 0; //itemDisplaySettings.cardPadding;
 
   double itemWidth(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width.floorToDouble();
 
     double totalSpacing = spacing * (itemDisplaySettings.gridCols - 1);
-    double wrapSpacing = 20;
+    double wrapSpacing = 0;
 
-    double _itemWidth = (screenWidth - (itemDisplaySettings.fullBleed ? 0 : (totalSpacing + wrapSpacing))) / itemDisplaySettings.gridCols;
-    double bleedSpacing = itemDisplaySettings.fullBleed ? 0 : (_itemWidth / 100) * 6;
+    double _itemWidth = (screenWidth -
+            (itemDisplaySettings.fullBleed
+                ? 0
+                : (totalSpacing + wrapSpacing))) /
+        itemDisplaySettings.gridCols;
+    double bleedSpacing =
+        itemDisplaySettings.fullBleed ? 0 : (_itemWidth / 100) * 6;
 
-    _itemWidth = itemDisplaySettings.wrapItems ? _itemWidth : _itemWidth - bleedSpacing;
+    _itemWidth =
+        itemDisplaySettings.wrapItems ? _itemWidth : _itemWidth - bleedSpacing;
     return _itemWidth;
   }
 
   onItemTap(ProductOverview item) {
     notifyListeners();
-    navigationService!.pushNamed(item.targetUrl, arguments: ProductDetails(overview: item));
+    navigationService!
+        .pushNamed(item.targetUrl, arguments: ProductDetails(overview: item));
   }
 
   init(ModuleSettings? settings) {
@@ -54,7 +62,10 @@ class ProductViewModel extends BaseViewModel {
       _productListModule = ProductModel.fromJson(settings?.productModel);
       _items = _productListModule!.products;
     } else {
-      _items = (settings?.productModel as List?)?.map((e) => ProductOverview.fromJson(e)).toList() ?? [];
+      _items = (settings?.productModel as List?)
+              ?.map((e) => ProductOverview.fromJson(e))
+              .toList() ??
+          [];
     }
     notifyListeners();
   }

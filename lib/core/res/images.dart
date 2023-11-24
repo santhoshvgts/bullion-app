@@ -9,6 +9,7 @@ class Images {
   static const String marketAlerts = "assets/images/market_alerts.png";
   static const String marketNews = "assets/images/market-news.png";
   static const String priceAlerts = "assets/images/price-alerts.png";
+  static const String priceComparison = "assets/images/price_comparision.png";
   static const String vaultDeals = "assets/images/vault-deals.png";
 
   static const String discountOffers = "assets/images/discount.png";
