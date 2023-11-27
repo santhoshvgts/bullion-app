@@ -224,7 +224,6 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     AddressComponents? country = addressComponent
         .firstWhereOrNull((element) => element.types!.contains("country"));
     if (country != null) {
-      print(country.shortName);
 
       SelectedItemList? data = _shippingAddress!.availableCountries!
           .singleWhereOrNull((element) =>

@@ -1,36 +1,34 @@
-import 'package:bullion/core/models/alert/product_alert_response_model.dart';
+import 'package:bullion/ui/view/settings/alerts/alerts_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/res/images.dart';
 import '../../../../core/res/styles.dart';
-import 'alert_me_view_model.dart';
 
-class AlertMePage extends VGTSBuilderWidget<AlertMeViewModel> {
-  List<ProductAlert>? alertMeAlerts;
+class AlertMePage extends VGTSBuilderWidget<AlertsViewModel> {
+  //List<ProductAlert>? alertMeAlerts;
+  final AlertsViewModel viewModel;
 
-  AlertMePage(this.alertMeAlerts, {super.key});
+  const AlertMePage(this.viewModel, {super.key});
 
   @override
-  AlertMeViewModel viewModelBuilder(BuildContext context) {
-    return AlertMeViewModel();
+  AlertsViewModel viewModelBuilder(BuildContext context) {
+    return viewModel;
   }
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      AlertMeViewModel viewModel, Widget? child) {
-    /*return viewModel.filteredList == null
-        ? const Center(child: Text("No data available"))
-        : Container();*/
-    return alertMeAlerts == null
+      AlertsViewModel viewModel, Widget? child) {
+    return viewModel.productAlerts == null
         ? const Center(child: Text("No data available"))
         : Scaffold(
-            body: alertMeAlerts!.isNotEmpty
+            body: viewModel.productAlerts!.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(
                         left: 16.0, top: 16.0, right: 16.0),
-                    child: Text(alertMeAlerts?.length.toString() ?? ""),
+                    child:
+                        Text(viewModel.productAlerts?.length.toString() ?? ""),
                   )
                 : Container(
                     width: double.infinity,
@@ -46,15 +44,13 @@ class AlertMePage extends VGTSBuilderWidget<AlertMeViewModel> {
                         ),
                         const SizedBox(height: 32.0),
                         const Text(
-                          "No Alerts found",
-                          textScaleFactor: 1,
+                          "Price alerts are empty",
                           textAlign: TextAlign.center,
                           style: AppTextStyle.titleLarge,
                         ),
                         const SizedBox(height: 16.0),
                         const Text(
-                          "You can manage your product back-in-stock notifications on this page. We will send you an email and/or SMS when the product is available to purchase. Sign up to be notified when a product comes back in-stock by clicking the “Notify Me” button on a product page.",
-                          textScaleFactor: 1,
+                          "Our price notification tool makes it easy to know when a product has reached your ideal price for purchase. You can manage your price alerts on this page. We will send you an email and/or SMS when the product has reached your price alert set price. Sign up to be notified for price alerts by clicking the bell icon on a product page.",
                           textAlign: TextAlign.center,
                           style: AppTextStyle.bodySmall,
                         ),
@@ -63,4 +59,8 @@ class AlertMePage extends VGTSBuilderWidget<AlertMeViewModel> {
                   ),
           );
   }
+
+  @override
+  bool get disposeViewModel => false;
+
 }

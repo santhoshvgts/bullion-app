@@ -39,9 +39,27 @@ class AlertsRequest {
         authenticated: true);
   }
 
-  static RequestSettings removeAlert(alertId) {
+  static RequestSettings removeSpotPriceAlert(alertId) {
     return RequestSettings(
-        "${Endpoints.removeMarketAlert}?alertId=$alertId", RequestMethod.POST,
+        Endpoints.removeSpotPriceAlert.replaceFirst("<alertId>", alertId.toString()),
+        RequestMethod.POST,
+        params: null,
+        authenticated: true);
+  }
+
+  static RequestSettings removeAlertMe(productId) {
+    return RequestSettings(
+        "${Endpoints.removeAlertMe}?productId=$productId", RequestMethod.POST,
         params: null, authenticated: true);
+  }
+
+  static RequestSettings editAlertMe(productId, targetPrice) {
+    return RequestSettings(
+        Endpoints.editAlertMe
+            .replaceFirst("<productId>", productId.toString())
+            .replaceFirst("<targetPrice>", targetPrice.toString()),
+        RequestMethod.POST,
+        params: null,
+        authenticated: true);
   }
 }

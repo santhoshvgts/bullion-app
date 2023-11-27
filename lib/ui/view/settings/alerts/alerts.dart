@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:bullion/ui/view/settings/alerts/price_alert_section.dart';
 import 'package:bullion/ui/view/settings/alerts/custom_spot_price_section.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/res/styles.dart';
+import '../../../../helper/utils.dart';
 import '../../../widgets/loading_data.dart';
 import 'alert_me_section.dart';
 import 'alerts_view_model.dart';
@@ -49,9 +48,7 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                 return <Widget>[
                   SliverAppBar(
                     leading: IconButton(
-                      icon: Platform.isAndroid
-                          ? const Icon(Icons.arrow_back)
-                          : const Icon(Icons.arrow_back_ios),
+                      icon: Util.showArrowBackward(),
                       onPressed: () {
                         Navigator.of(context).maybePop();
                       },
@@ -99,10 +96,11 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                     bottom: TabBar(
                       controller: _tabController,
                       isScrollable: true,
+                      tabAlignment: TabAlignment.start,
                       tabs: const [
                         Tab(text: "Custom Spot Price"),
-                        Tab(text: "Alert Me"),
                         Tab(text: "Price Alert"),
+                        Tab(text: "Alert Me"),
                       ],
                     ),
                     forceElevated: innerBoxIsScrolled,
@@ -120,9 +118,9 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                       child: TabBarView(
                         controller: _tabController,
                         children: [
-                          CustomSpotPricePage(alertsViewModel.alertResponse),
-                          AlertMePage(alertsViewModel.alertMeAlerts),
-                          PriceAlertPage(alertsViewModel.productAlert),
+                          CustomSpotPricePage(viewModel),
+                          PriceAlertPage(viewModel),
+                          AlertMePage(viewModel),
                         ],
                       ),
                     ),

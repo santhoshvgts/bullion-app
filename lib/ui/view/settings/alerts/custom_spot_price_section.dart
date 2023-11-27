@@ -1,4 +1,3 @@
-import 'package:bullion/core/models/alert/alert_add_response_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -13,9 +12,10 @@ import '../../../widgets/button.dart';
 import 'alerts_view_model.dart';
 
 class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
-  final AlertGetResponse? alertResponse;
+  //final AlertGetResponse? viewModelalertResponse;
+  final AlertsViewModel viewModel;
 
-  const CustomSpotPricePage(this.alertResponse, {super.key});
+  const CustomSpotPricePage(this.viewModel, {super.key});
 
   @override
   void onViewModelReady(AlertsViewModel viewModel) {
@@ -25,21 +25,20 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
 
   @override
   AlertsViewModel viewModelBuilder(BuildContext context) {
-    return AlertsViewModel();
+    return viewModel;
   }
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale,
       AlertsViewModel viewModel, Widget? child) {
-    return alertResponse?.alertResponseModels == null
+    return viewModel.alertResponse?.alertResponseModels == null
         ? const Center(child: Text("No data available"))
         : Scaffold(
-            body: alertResponse!.alertResponseModels!.isNotEmpty
+            body: viewModel.alertResponse!.alertResponseModels!.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(
                         left: 16.0, top: 16.0, right: 16.0),
                     child: SizedBox(
-                      //height: MediaQuery.of(context).size.height,
                       child: GridView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           shrinkWrap: true,
@@ -51,7 +50,8 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                   crossAxisSpacing: 12,
                                   mainAxisSpacing: 12,
                                   mainAxisExtent: 160),
-                          itemCount: alertResponse!.alertResponseModels!.length,
+                          itemCount: viewModel
+                              .alertResponse!.alertResponseModels!.length,
                           itemBuilder: (BuildContext ctx, gridIndex) {
                             return SizedBox(
                               width: MediaQuery.of(ctx).size.width,
@@ -60,7 +60,8 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                   locator<NavigationService>().pushNamed(
                                       Routes.editSpotPrice,
                                       arguments: {
-                                        "alertResponse": alertResponse!
+                                        "alertResponse": viewModel
+                                            .alertResponse!
                                             .alertResponseModels?[gridIndex]
                                       });
                                 },
@@ -109,11 +110,11 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                         child: Column(
                                           children: [
                                             Text(
-                                                viewModel.getMetalName(
-                                                    alertResponse!
-                                                        .alertResponseModels![
-                                                            gridIndex]
-                                                        .metal),
+                                                viewModel.getMetalName(viewModel
+                                                    .alertResponse!
+                                                    .alertResponseModels![
+                                                        gridIndex]
+                                                    .metal),
                                                 style:
                                                     AppTextStyle.titleMedium),
                                           ],
@@ -129,28 +130,47 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                                 onTap: () {
                                                   showDialog<String>(
                                                     context: context,
-                                                    builder: (BuildContext context) => AlertDialog(
-                                                      backgroundColor: Colors.white,
-                                                      title: const Text('Delete'),
-                                                      content:
-                                                      const Text("Do you want to delete this Alert?"),
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        AlertDialog(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      title:
+                                                          const Text('Delete'),
+                                                      content: const Text(
+                                                          "Do you want to delete this Alert?"),
                                                       actions: <Widget>[
                                                         TextButton(
-                                                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                                                          child: const Text('Cancel'),
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  'Cancel'),
+                                                          child: const Text(
+                                                              'Cancel'),
                                                         ),
                                                         TextButton(
                                                           onPressed: () {
-                                                            viewModel.removeAlert(viewModel.alertResponse?.alertResponseModels?[gridIndex].id);
-                                                            Navigator.pop(context, 'OK');
+                                                            viewModel.removeSpotPriceAlert(
+                                                                viewModel
+                                                                    .alertResponse
+                                                                    ?.alertResponseModels?[
+                                                                        gridIndex]
+                                                                    .id);
+                                                            Navigator.pop(
+                                                                context, 'OK');
                                                           },
-                                                          child: const Text('Delete'),
+                                                          child: const Text(
+                                                              'Delete'),
                                                         ),
                                                       ],
                                                     ),
                                                   );
                                                 },
-                                                child: const Icon(Icons.delete_forever, color: AppColor.red, size: 22,))
+                                                child: const Icon(
+                                                  Icons.delete_forever,
+                                                  color: AppColor.redOrange,
+                                                  size: 22,
+                                                ))
                                           ],
                                         ),
                                       ),
@@ -167,7 +187,8 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                               padding: const EdgeInsets.only(
                                                   bottom: 4.0),
                                               child: Text(
-                                                alertResponse!
+                                                viewModel
+                                                        .alertResponse!
                                                         .alertResponseModels?[
                                                             gridIndex]
                                                         .operatorName ??
@@ -177,12 +198,14 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                             ),
                                             Row(
                                               children: [
-                                                alertResponse!
+                                                viewModel
+                                                                .alertResponse!
                                                                 .alertResponseModels![
                                                                     gridIndex]
                                                                 .operatorId ==
                                                             5 ||
-                                                        alertResponse!
+                                                        viewModel
+                                                                .alertResponse!
                                                                 .alertResponseModels![
                                                                     gridIndex]
                                                                 .operatorId ==
@@ -197,17 +220,16 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                                       ),
                                                 const SizedBox(width: 2),
                                                 Text(
-                                                    alertResponse!
+                                                    viewModel
+                                                        .alertResponse!
                                                         .alertResponseModels![
                                                             gridIndex]
                                                         .formattedPrice
                                                         .toString(),
-                                                    style: alertResponse!
-                                                                    .alertResponseModels![
-                                                                        gridIndex]
-                                                                    .operatorId ==
+                                                    style: viewModel.alertResponse!.alertResponseModels![gridIndex].operatorId ==
                                                                 5 ||
-                                                            alertResponse!
+                                                            viewModel
+                                                                    .alertResponse!
                                                                     .alertResponseModels![
                                                                         gridIndex]
                                                                     .operatorId ==
@@ -250,14 +272,12 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                         const SizedBox(height: 32.0),
                         const Text(
                           "Spot Price alerts are empty",
-                          textScaleFactor: 1,
                           textAlign: TextAlign.center,
                           style: AppTextStyle.titleLarge,
                         ),
                         const SizedBox(height: 16.0),
                         const Text(
                           "Our spot price notification tool makes it easy to know when the gold, silver, platinum, or palladium spot price has reached a certain price. You can sign up to be alerted on various price thresholds for the same metal type, as well as a variety of metal types. You can manage your spot price alerts on this page. We will send you an email and/or SMS when the spot price goes above or below your requested price.",
-                          textScaleFactor: 1,
                           textAlign: TextAlign.center,
                           style: AppTextStyle.bodySmall,
                         ),
@@ -282,4 +302,7 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
             ),
           );
   }
+
+  @override
+  bool get disposeViewModel => false;
 }

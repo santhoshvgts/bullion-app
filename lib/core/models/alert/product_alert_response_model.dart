@@ -29,7 +29,7 @@ class ProductAlert extends BaseModel {
       formattedYourPrice = json['formatted_your_price'];
       isNew = json['is_new'];
       postedDate = DateTime.parse(json['posted_date']);
-      formattedPostedDate = json['formatted_posted_date'];
+      formattedPostedDate = json['formated_posted_date'];
   }
 }
 
@@ -39,6 +39,7 @@ class ProductOverview {
   String? name;
   bool? showPrice;
   Pricing? pricing;
+  String? primaryImageUrl;
 
   ProductOverview fromJson(json) => ProductOverview.fromJson(json);
 
@@ -48,6 +49,7 @@ class ProductOverview {
      this.name,
      this.showPrice,
      this.pricing,
+    this.primaryImageUrl
   });
 
   ProductOverview.fromJson(Map<String, dynamic> json) {
@@ -56,6 +58,7 @@ class ProductOverview {
       name  = json['name'];
       showPrice  = json['show_price'];
       pricing  = Pricing.fromJson(json['pricing']);
+      primaryImageUrl  = json['primary_image_url'];
   }
 }
 
@@ -71,5 +74,6 @@ class Pricing {
   Pricing.fromJson(Map<String, dynamic> json) {
       productId  = json['product_id'];
       discountText  = json['discount_text'];
+      newPrice  = json['new_price'];
   }
 }
