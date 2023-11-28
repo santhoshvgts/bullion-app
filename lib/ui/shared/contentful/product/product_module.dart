@@ -2,10 +2,12 @@ import 'package:bullion/core/constants/display_direction.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/product/add_to_cart/add_to_cart.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/product/product_text_style.dart';
 import 'package:bullion/ui/shared/contentful/product/product_view_model.dart';
@@ -63,13 +65,33 @@ class ProductModule extends VGTSBuilderWidget<ProductViewModel> {
       children: [
         if (viewModel.settings!.moduleType == ModuleType.productList)
           sortFilterWidget!,
-        if (viewModel.settings!.displaySettings!.itemDisplaySettings
-                .displayDirection ==
-            DisplayDirection.vertical)
+
+        if (viewModel.itemDisplaySettings.displayType == ProductDisplayType.priceComparison)
+          _ProductPriceComparisonDisplay()
+        else if (viewModel.settings!.displaySettings!.itemDisplaySettings.displayDirection == DisplayDirection.vertical)
           _ProductVerticalDisplay()
         else
           _ProductHorizontalDisplay()
       ],
+    );
+  }
+}
+
+class _ProductPriceComparisonDisplay extends ViewModelWidget<ProductViewModel> {
+  @override
+  Widget build(BuildContext context, ProductViewModel viewModel) {
+    return _WrapItemList(
+      wrap: viewModel.itemDisplaySettings.wrapItems,
+      spacing: viewModel.spacing,
+      runSpacing: viewModel.runSpacing,
+      gridCols: viewModel.itemDisplaySettings.gridCols,
+      children: viewModel.items!
+          .asMap()
+          .map((index, item) {
+        return MapEntry(index, _PriceComparisonItemCard(item));
+      })
+          .values
+          .toList(),
     );
   }
 }
@@ -96,6 +118,9 @@ class _ProductVerticalDisplay extends ViewModelWidget<ProductViewModel> {
 class _ProductHorizontalDisplay extends ViewModelWidget<ProductViewModel> {
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
+
+
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       controller: ScrollController(),
@@ -204,8 +229,8 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
       child: Container(
         width: _itemWidth,
         decoration: BoxDecoration(
-          color: Colors.white60,
-          border: Border.all(color: AppColor.border),
+          color: AppColor.secondaryBackground.withOpacity(0.7),
+          border: viewModel.itemDisplaySettings.wrapItems ? null : Border.all(color: AppColor.border),
           borderRadius: BorderRadius.circular(0),
         ),
         child: Column(
@@ -218,16 +243,16 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
                   children: [
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          topRight: Radius.circular(8)),
+                          topLeft: Radius.circular(0),
+                          topRight: Radius.circular(0)),
                       child: Container(
                         color: AppColor.white,
                         padding: const EdgeInsets.all(5),
                         width: _itemWidth,
-                        height: _itemWidth,
+                        height: _itemWidth + 20,
                         child: NetworkImageLoader(
                           image: _item.primaryImageUrl,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitWidth,
                         ),
                       ),
                     ),
@@ -271,10 +296,288 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
                 ),
               ],
             ),
-            Container(
+            Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
               child: _PriceSection(_item, Alignment.centerLeft),
             )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
+  final ProductOverview _item;
+
+  _PriceComparisonItemCard(this._item);
+
+  @override
+  Widget build(BuildContext context, ProductViewModel viewModel) {
+    double _itemWidth = viewModel.itemWidth(context);
+
+    return InkWell(
+      key: Key("actionProduct${_item.productId}"),
+      onTap: () => viewModel.onItemTap(_item),
+      child: Container(
+        width: _itemWidth,
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          border: viewModel.itemDisplaySettings.wrapItems ? null : Border.all(color: AppColor.border),
+          borderRadius: BorderRadius.circular(0),
+        ),
+        margin: const EdgeInsets.only(bottom: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(0),
+                          topRight: Radius.circular(0)),
+                      child: Container(
+                        color: AppColor.white,
+                        padding: const EdgeInsets.all(5),
+                        width: 110,
+                        height: 110,
+                        child: NetworkImageLoader(
+                          image: _item.primaryImageUrl,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
+                    ),
+                    if (_item.ribbonText != null)
+                      Positioned(
+                          top: 0,
+                          left: 0,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                color: _item.ribbonTextBackgroundColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: _item.ribbonTextBackgroundColor,
+                                    offset: const Offset(-0.5, 0),
+                                  ),
+                                ],
+                                borderRadius: const BorderRadius.all(Radius.circular(5))
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+                              child: Text(
+                                _item.ribbonText!,
+                                style: const TextStyle(fontSize: 12, color: AppColor.white),
+                                textScaleFactor: 1,
+                              ),
+                          ),
+                      ),
+                  ],
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _item.name!,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          textScaleFactor: 1,
+                          style: ProductTextStyle.title(2,
+                            color: viewModel.itemDisplaySettings.textColor,
+                          ),
+                        ),
+
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Expanded(child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _PriceSection(_item, Alignment.centerLeft),
+
+                                VerticalSpacing.d5px(),
+
+                                Container(
+                                    decoration: BoxDecoration(
+                                        color: AppColor.green.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(5)
+                                    ),
+                                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                                    child: Text("Lowest Price",  style: AppTextStyle.bodySmall.copyWith(fontSize: 11,color: AppColor.green),)
+                                ),
+
+                              ],
+                            )),
+
+                            VerticalSpacing.d10px(),
+
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Button.mini("Add to Cart",
+                                    width: 100,
+                                    color: AppColor.secondary,
+                                    borderColor: AppColor.secondary,
+                                    valueKey: const Key("btnAddToCart"),
+                                    onPressed: () {
+                                    },
+                                  ),
+                                ),
+                              )
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            VerticalSpacing.d10px(),
+
+            // Container(
+            //   decoration: BoxDecoration(
+            //       color: AppColor.white,
+            //       border: Border.all(
+            //           color: AppColor.border,
+            //       ),
+            //       borderRadius: BorderRadius.circular(5)
+            //   ),
+            //   margin: const EdgeInsets.only(left: 10),
+            //   child: IntrinsicHeight(
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //
+            //         ...["Money Metals","JM Bullion","SD Bullion","Sliver Gold Bull", "Hero Bullion"].map((e) => Column(
+            //           children: [
+            //             Container(
+            //               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            //               margin: const EdgeInsets.only(right: 5),
+            //               width: double.infinity,
+            //               child: Row(
+            //                 children: [
+            //                   Expanded(
+            //                     child: Column(
+            //                       crossAxisAlignment: CrossAxisAlignment.start,
+            //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                       children: [
+            //
+            //                         Text(e, textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+            //                         VerticalSpacing.d5px(),
+            //                         Container(
+            //                             decoration: BoxDecoration(
+            //                                 color: AppColor.red.withOpacity(0.2),
+            //                                 borderRadius: BorderRadius.circular(5)
+            //                             ),
+            //                             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+            //                             child: Text("8.00% High",  style: AppTextStyle.labelSmall.copyWith(color: AppColor.red),)
+            //                         ),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                   Expanded(
+            //                     child: Column(
+            //                       crossAxisAlignment: CrossAxisAlignment.end,
+            //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                       children: [
+            //
+            //                         const Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+            //                         VerticalSpacing.d2px(),
+            //
+            //                         const Text("\$31.85", textScaleFactor: 1, style: AppTextStyle.bodyLarge,),
+            //
+            //                       ],
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //             ),
+            //             const Divider(
+            //               thickness: 0.5,
+            //               height: 0.5,
+            //             ),
+            //           ],
+            //         ),),
+            //
+            //
+            //       ],
+            //     ),
+            //   ),
+            // ),
+
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: AppColor.white,
+                    border: Border.all(
+                        color: AppColor.border,
+                    ),
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                margin: EdgeInsets.only(left: 10),
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      ...["Money Metals","JM Bullion","SD Bullion","Sliver Gold Bull", "Hero Bullion"].map((e) => Row(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 3.5,
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            margin: const EdgeInsets.only(right: 5),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+
+                                Text(e, textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+
+                                VerticalSpacing.custom(value: 25),
+
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+                                    const Text("\$31.85", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+                                    Container(
+                                        decoration: BoxDecoration(
+                                            color: AppColor.red.withOpacity(0.2),
+                                            borderRadius: BorderRadius.circular(5)
+                                        ),
+                                        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                                        child: Text("8.00% High",  style: AppTextStyle.labelSmall.copyWith(color: AppColor.red),)
+                                    ),
+
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          const VerticalDivider(
+                            thickness: 0.5,
+                            width: 0.5,
+                          ),
+                        ],
+                      ),)
+
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
           ],
         ),
       ),
@@ -368,15 +671,11 @@ class _PriceSection extends ViewModelWidget<ProductViewModel> {
                 alignment: alignment,
                 child: Button.outline("AlertMe!®",
                     valueKey: const Key('btnAlert'),
-                    height: viewModel.itemDisplaySettings.displayDirection ==
-                            DisplayDirection.horizontal
-                        ? 30
-                        : 40,
+                    height: 35,
                     width: viewModel.itemDisplaySettings.displayDirection ==
                             DisplayDirection.horizontal
                         ? 100
                         : double.infinity,
-                    borderRadius: BorderRadius.circular(5.0),
                     textStyle: AppTextStyle.titleLarge.copyWith(fontSize: 14),
                     borderColor: AppColor.primaryDark, onPressed: () async {
                   // if (!locator<AuthenticationService>().isAuthenticated){
@@ -421,7 +720,7 @@ class _WrapItemList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (wrap)
+    if (wrap) {
       return Container(
           padding: EdgeInsets.symmetric(horizontal: spacing),
           margin: const EdgeInsets.only(top: 15),
@@ -432,27 +731,23 @@ class _WrapItemList extends StatelessWidget {
                 )
               : Column(
                   children: _buildWrapItems(),
-                ));
-    else {
-      return Container(
+                )
+      );
+    } else {
+      return SizedBox(
         width: double.infinity,
         child: SingleChildScrollView(
             scrollDirection: direction,
             controller: ScrollController(keepScrollOffset: false),
             padding:
-                EdgeInsets.symmetric(horizontal: spacing, vertical: spacing),
+                EdgeInsets.symmetric(horizontal: spacing, vertical: spacing,),
             child: IntrinsicHeight(
               child: Row(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: children
-                      .map(
-                        (e) => Padding(
-                          padding: EdgeInsets.only(right: spacing),
-                          child: e,
-                        ),
-                      )
-                      .toList()),
+                  children: children.map(
+                        (e) => e,
+                      ).toList()),
             )),
       );
     }
@@ -473,11 +768,11 @@ class _WrapItemList extends StatelessWidget {
     List<Widget> items = [];
     List<Widget> childItem = children;
 
-    while (childItem.length > 0) {
+    while (childItem.isNotEmpty) {
       List<Widget> tuple = childItem.take(gridCols!).toList();
 
       tuple.forEach((element) {
-        if (childItem.length > 0) childItem.removeAt(0);
+        if (childItem.isNotEmpty) childItem.removeAt(0);
       });
 
       if (direction == Axis.vertical) {
@@ -500,7 +795,20 @@ class _WrapItemList extends StatelessWidget {
         Widget item = IntrinsicHeight(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: tuple.map((e) => e).toList(),
+            children: tuple.asMap().map((index, e) => MapEntry(
+              index,
+              Row(
+                children: [
+                  e,
+                  if (index % 2 == 0)
+                    const VerticalDivider(
+                      color: AppColor.divider,
+                      thickness: 0.7,
+                      width: 0.7,
+                    )
+                ],
+              ),
+            )).values.toList(),
           ),
         );
         items.add(item);
@@ -518,13 +826,15 @@ class _WrapItemList extends StatelessWidget {
           .toList();
     }
 
-    return items
-        .expand((element) => [
-              element,
-              SizedBox(
-                height: spacing,
-              )
-            ])
-        .toList();
+    return items.expand((element) {
+      return [
+        element,
+        // const Divider(
+        //   color: AppColor.divider,
+        //   thickness: 1,
+        //   height: 1,
+        // )
+      ];
+    }).toList();
   }
 }

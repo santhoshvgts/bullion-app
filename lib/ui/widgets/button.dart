@@ -72,6 +72,25 @@ class Button extends StatelessWidget {
     this.loading = false,
   });
 
+  Button.mini(
+      this.text,{
+        super.key,
+        required this.valueKey,
+        this.textStyle,
+        this.width = 100,
+        this.height = 30,
+        required this.onPressed,
+        this.color = Colors.transparent,
+        this.borderColor = AppColor.primary,
+        this.borderRadius,
+        this.disabled = false,
+        this.iconWidget,
+        this.loading = false,
+      }) {
+    textStyle = AppTextStyle.labelSmall.copyWith(color: AppColor.white);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
