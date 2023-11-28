@@ -25,6 +25,7 @@ class SearchCardSection extends PreferredSize {
             onTap: () {
               locator<NavigationService>().pushNamed(Routes.search);
             },
+            borderRadius: BorderRadius.circular(50),
             child: Container(
               height: height ?? 35,
               margin: EdgeInsets.only(

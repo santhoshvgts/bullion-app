@@ -305,11 +305,10 @@ class ContentViewModel extends VGTSBaseViewModel {
     if (box != null) {
       Offset position = box.localToGlobal(Offset.zero); //this is global position
       double y = position.dy;
-
-      if (y < 119 && !showSortAppBarSection) {
+      if (y < 86 && !showSortAppBarSection) {
         showSortAppBarSection = true;
         notifyListeners();
-      } else if (y > 120 && showSortAppBarSection) {
+      } else if (y > 87 && showSortAppBarSection) {
         showSortAppBarSection = false;
         notifyListeners();
       }

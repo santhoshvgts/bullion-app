@@ -7,6 +7,13 @@ class DisplayType {
   static const String promoText = "promo-text";
 }
 
+
+class ProductDisplayType {
+  static const String standard = "standard";
+  static const String priceComparison = "product-price-comparison";
+}
+
+
 class ActionButtonStyle {
   // link
   // btn-primary

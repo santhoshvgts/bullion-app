@@ -28,14 +28,14 @@ class ProductViewModel extends BaseViewModel {
 
   List<ProductOverview>? get items => _items;
 
-  double get spacing => 0; //itemDisplaySettings.cardPadding;
-  double get runSpacing => 0; //itemDisplaySettings.cardPadding;
+  double get spacing => 10;
+  double get runSpacing => 10;
 
   double itemWidth(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width.floorToDouble();
 
     double totalSpacing = spacing * (itemDisplaySettings.gridCols - 1);
-    double wrapSpacing = 0;
+    double wrapSpacing =  12;
 
     double _itemWidth = (screenWidth -
             (itemDisplaySettings.fullBleed

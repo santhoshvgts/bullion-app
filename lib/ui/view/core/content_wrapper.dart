@@ -88,10 +88,8 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                       child: Column(children: [
                         AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
-                          transitionBuilder:
-                              (Widget child, Animation<double> animation) {
-                            return FadeTransition(
-                                opacity: animation, child: child);
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return FadeTransition(opacity: animation, child: child);
                           },
                           child: viewModel.modules?.isNotEmpty == true
                               ? Column(
@@ -111,19 +109,16 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                                             case ModuleType.product:
                                             case ModuleType.productList:
                                               return ProductModule(module,
-                                                  controller: viewModel
-                                                      .productModuleController,
-                                                  sortFilterWidget:
-                                                      SortFilterWidget(
-                                                    key: viewModel
-                                                        .sortFilterWidgetKey,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 15,
-                                                        vertical: 0),
+                                                controller: viewModel.productModuleController,
+                                                sortFilterWidget: SortFilterWidget(
+                                                  key: viewModel.sortFilterWidgetKey,
+                                                  padding: const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 0
                                                   ),
-                                                  isLoadingFilter:
-                                                      viewModel.isBusy);
+                                                ),
+                                                isLoadingFilter: viewModel.isBusy
+                                              );
 
                                             case ModuleType.banner:
                                               return BannerModule(module);
@@ -151,15 +146,17 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                       ]),
                     ),
                   ),
+
                   if (viewModel.showSortAppBarSection)
                     Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        child: SortFilterWidget(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                        )),
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: SortFilterWidget(
+                        padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
+                      )
+                    ),
+
                 ],
               ),
             ),

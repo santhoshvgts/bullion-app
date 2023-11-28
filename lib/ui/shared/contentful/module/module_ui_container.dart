@@ -77,8 +77,7 @@ class ModuleUIContainer extends VGTSBuilderWidget<ModuleUIContainerViewModel> {
               if ((!vm.setting!.hasHeaderSection &&
                       vm.setting!.displaySettings!.itemDisplaySettings
                               .displayType ==
-                          DisplayStyle.standard) ||
-                  vm.setting?.moduleType == ModuleType.product)
+                          DisplayStyle.standard))
                 VerticalSpacing.custom(
                   value: vm.displaySetting!.itemDisplaySettings.cardPadding,
                 ),
