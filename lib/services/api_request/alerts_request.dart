@@ -19,8 +19,8 @@ class AlertsRequest {
         params: null, authenticated: true);
   }
 
-  static RequestSettings getAlertMeProductAlerts() {
-    return RequestSettings(Endpoints.getProductPriceAlerts, RequestMethod.GET,
+  static RequestSettings getAlertMeProducts() {
+    return RequestSettings(Endpoints.getAlertMeProductAlerts, RequestMethod.GET,
         params: null, authenticated: true);
   }
 
@@ -47,17 +47,33 @@ class AlertsRequest {
         authenticated: true);
   }
 
-  static RequestSettings removeAlertMe(productId) {
+  static RequestSettings removePriceAlert(productId) {
     return RequestSettings(
-        "${Endpoints.removeAlertMe}?productId=$productId", RequestMethod.POST,
+        Endpoints.removePriceAlert.replaceFirst("<productId>", productId.toString()), RequestMethod.POST,
         params: null, authenticated: true);
   }
 
-  static RequestSettings editAlertMe(productId, targetPrice) {
+  static RequestSettings removeAlertMe(productId) {
+    return RequestSettings(
+        Endpoints.removeAlertMe.replaceFirst("<productId>", productId.toString()), RequestMethod.POST,
+        params: null, authenticated: true);
+  }
+
+  static RequestSettings editPriceAlert(productId, targetPrice) {
+    return RequestSettings(
+        Endpoints.editPriceAlert
+            .replaceFirst("<productId>", productId.toString())
+            .replaceFirst("<targetPrice>", targetPrice.toString()),
+        RequestMethod.POST,
+        params: null,
+        authenticated: true);
+  }
+
+  static RequestSettings editAlertMe(productId, quantity) {
     return RequestSettings(
         Endpoints.editAlertMe
             .replaceFirst("<productId>", productId.toString())
-            .replaceFirst("<targetPrice>", targetPrice.toString()),
+            .replaceFirst("<quantity>", quantity.toString()),
         RequestMethod.POST,
         params: null,
         authenticated: true);

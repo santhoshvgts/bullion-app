@@ -15,10 +15,10 @@ import '../../../../helper/utils.dart';
 import '../../../widgets/animated_flexible_space.dart';
 import 'create_alerts_view_model.dart';
 
-class CreateAlertsPage extends VGTSBuilderWidget<CreateAlertsViewModel> {
+class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
   final AlertResponseModel? alertResponse;
 
-  const CreateAlertsPage({super.key, this.alertResponse});
+  const AddEditSpotPricePage({super.key, this.alertResponse});
 
   @override
   void onViewModelReady(CreateAlertsViewModel viewModel) {

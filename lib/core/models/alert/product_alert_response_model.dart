@@ -3,6 +3,7 @@ import 'package:bullion/core/models/base_model.dart';
 class ProductAlert extends BaseModel {
   String? id;
   ProductOverview? productOverview;
+  int? requestedQuantity;
   double? yourPrice;
   String? formattedYourPrice;
   bool? isNew;
@@ -12,6 +13,7 @@ class ProductAlert extends BaseModel {
   ProductAlert({
      this.id,
      this.productOverview,
+    this.requestedQuantity,
      this.yourPrice,
      this.formattedYourPrice,
      this.isNew,
@@ -24,7 +26,10 @@ class ProductAlert extends BaseModel {
 
   ProductAlert.fromJson(Map<String, dynamic> json) {
       id = json['id'];
-      productOverview = ProductOverview.fromJson(json['product_overview']);
+      if (json['product_overview'] != null) {
+        productOverview = ProductOverview.fromJson(json['product_overview']);
+      }
+      requestedQuantity = json['requested_qty'];
       yourPrice = json['your_price'];
       formattedYourPrice = json['formatted_your_price'];
       isNew = json['is_new'];

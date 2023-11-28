@@ -295,9 +295,8 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                     borderRadius: BorderRadius.circular(24),
                     onPressed: () {
                       locator<NavigationService>()
-                          .pushNamed(Routes.createAlerts);
+                          .pushNamed(Routes.addEditAlert);
                     },
-                    //disabled: viewModel.isBusy,
                   )),
             ),
           );

@@ -38,7 +38,7 @@ class AlertsViewModel extends VGTSBaseViewModel {
     _productAlerts =
         await requestList<ProductAlert>(AlertsRequest.getProductPriceAlerts());
     _alertMeAlerts = await requestList<ProductAlert>(
-        AlertsRequest.getAlertMeProductAlerts());
+        AlertsRequest.getAlertMeProducts());
 
     setBusy(false);
   }
@@ -66,12 +66,22 @@ class AlertsViewModel extends VGTSBaseViewModel {
     setBusy(false);
   }
 
+  void removePriceAlert(int? id) async {
+    setBusy(true);
+
+    await request(AlertsRequest.removePriceAlert(id));
+    _productAlerts = await requestList<ProductAlert>(
+        AlertsRequest.getProductPriceAlerts());
+
+    setBusy(false);
+  }
+
   void removeAlertMe(int? id) async {
     setBusy(true);
 
     await request(AlertsRequest.removeAlertMe(id));
     _alertMeAlerts = await requestList<ProductAlert>(
-        AlertsRequest.getAlertMeProductAlerts());
+        AlertsRequest.getAlertMeProducts());
 
     setBusy(false);
   }
@@ -79,9 +89,9 @@ class AlertsViewModel extends VGTSBaseViewModel {
   void editAlertMe(int? productId, int? targetPrice) async {
     setBusy(true);
 
-    await request(AlertsRequest.editAlertMe(productId, targetPrice));
+    await request(AlertsRequest.editPriceAlert(productId, targetPrice));
     _alertMeAlerts = await requestList<ProductAlert>(
-        AlertsRequest.getAlertMeProductAlerts());
+        AlertsRequest.getAlertMeProducts());
 
     setBusy(false);
   }

@@ -6,6 +6,9 @@ import '../../../../core/res/colors.dart';
 import '../../../../core/res/images.dart';
 import '../../../../core/res/spacing.dart';
 import '../../../../core/res/styles.dart';
+import '../../../../locator.dart';
+import '../../../../router.dart';
+import '../../../../services/shared/navigator_service.dart';
 import 'alerts_view_model.dart';
 
 class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
@@ -22,12 +25,12 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale,
       AlertsViewModel viewModel, Widget? child) {
-    return viewModel.alertMeAlerts == null
+    return viewModel.productAlerts == null
         ? const Center(child: Text("No data available"))
         : Scaffold(
-      body: viewModel.alertMeAlerts!.isNotEmpty
+      body: viewModel.productAlerts!.isNotEmpty
           ? ListView.separated(
-        itemCount: viewModel.alertMeAlerts?.length ?? 0,
+        itemCount: viewModel.productAlerts?.length ?? 0,
         padding: const EdgeInsets.all(15),
         separatorBuilder: (context, index) {
           return VerticalSpacing.d10px();
@@ -65,7 +68,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                             width: 56,
                             height: 56,
                             child: Image.network(viewModel
-                                .alertMeAlerts![index]
+                                .productAlerts![index]
                                 .productOverview
                                 ?.primaryImageUrl ??
                                 ""),
@@ -79,7 +82,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                               CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "${viewModel.alertMeAlerts?[index].productOverview?.name}",
+                                  "${viewModel.productAlerts?[index].productOverview?.name}",
                                   style: AppTextStyle.titleMedium,
                                 ),
                                 VerticalSpacing.d5px(),
@@ -94,16 +97,16 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                       ),
                       const SizedBox(height: 4.0),
                       Text(
-                          "Current Price: \$${viewModel.alertMeAlerts?[index].productOverview?.pricing?.newPrice}",
+                          "Current Price: \$${viewModel.productAlerts?[index].productOverview?.pricing?.newPrice}",
                           style: AppTextStyle.bodyMedium.copyWith(
                               color: AppColor.primaryText)),
                       const SizedBox(height: 4.0),
                       Text(
-                          "\$${viewModel.alertMeAlerts?[index].yourPrice}",
+                          "\$${viewModel.productAlerts?[index].yourPrice}",
                           style: AppTextStyle.titleLarge),
                       const SizedBox(height: 4.0),
                       Text(
-                          "${viewModel.alertMeAlerts?[index].formattedPostedDate}",
+                          "${viewModel.productAlerts?[index].formattedPostedDate}",
                           style: AppTextStyle.bodyMedium.copyWith(
                               color: AppColor.primaryText)),
                       const Divider(
@@ -137,7 +140,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            viewModel.removeAlertMe(viewModel.alertMeAlerts?[index].productOverview?.productId);
+                                            viewModel.removePriceAlert(viewModel.productAlerts?[index].productOverview?.productId);
                                             Navigator.pop(
                                                 context, 'OK');
                                           },
@@ -172,10 +175,12 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                           ),
                           InkWell(
                             onTap: () {
-                              viewModel.editAlertMe(
-                                  viewModel.alertMeAlerts?[index]
-                                      .productOverview?.productId,
-                                  1822);
+                              locator<NavigationService>().pushNamed(
+                                  Routes.editPriceAlert,
+                                  arguments: {
+                                    "productAlert": viewModel
+                                        .productAlerts![index]
+                                  });
                             },
                             child: Row(
                               children: [

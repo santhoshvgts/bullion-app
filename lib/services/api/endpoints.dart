@@ -1,14 +1,14 @@
 class Endpoints {
-  // Order endpoints
+  // Order
   static const getAllOrders = "/order/get-all";
   static const getOrderDetails = "/order/get/<orderId>";
 
-  // Address endpoints
+  // Address
   static const getAddress = "/address/get";
   static const deleteAddress = "/address/remove";
   static const addAddress = "/address/save";
 
-  // Location endpoints
+  // Location
   static const getCountries = "/address/add";
   static const getStates = "/address/states";
 
@@ -25,9 +25,19 @@ class Endpoints {
   static const editMarketAlert = "/market-alerts/edit";
   static const removeSpotPriceAlert = "/market-alerts/remove?alertId=<alertId>";
 
-  //Product Alerts - Alert Me
-  static const getProductPriceAlerts = "/product-alerts/get-all-product-price-alerts";
-  static const getAlertMeProductAlerts = "/product-alerts/get-all-product-alerts";
-  static const removeAlertMe = "/product-alerts/remove-product-price-alert";
-  static const editAlertMe = "/product-alerts/save-product-price-alert?productId=<productId>&targetPrice=<targetPrice>";
+  //Product Price Alerts
+  static const getProductPriceAlerts =
+      "/product-alerts/get-all-product-price-alerts";
+  static const editPriceAlert =
+      "/product-alerts/save-product-price-alert?productId=<productId>&targetPrice=<targetPrice>";
+  static const removePriceAlert =
+      "/product-alerts/remove-product-price-alert?productId=<productId>";
+
+  //Alert Me
+  static const getAlertMeProductAlerts =
+      "/product-alerts/get-all-product-alerts";
+  static const editAlertMe =
+      "/product-alerts/save-product-alert?productId=<productId>&qty=<quantity>";
+  static const removeAlertMe =
+      "/product-alerts/remove-product-alert?productId=<productId>";
 }
