@@ -42,7 +42,7 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
               expandedHeight: 100,
               pinned: true,
               flexibleSpace:
-                  const AnimatedFlexibleSpace(title: "Price Alert"),
+                  const AnimatedFlexibleSpace.withoutTab(title: "Price Alert"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy

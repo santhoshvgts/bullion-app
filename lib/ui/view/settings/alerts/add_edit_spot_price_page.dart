@@ -46,7 +46,7 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
               expandedHeight: 100,
               pinned: true,
               flexibleSpace:
-                  const AnimatedFlexibleSpace(title: "Custom Spot Price"),
+                  const AnimatedFlexibleSpace.withoutTab(title: "Custom Spot Price"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy

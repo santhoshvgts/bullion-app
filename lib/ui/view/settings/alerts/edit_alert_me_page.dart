@@ -42,7 +42,7 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
               expandedHeight: 100,
               pinned: true,
               flexibleSpace:
-                  const AnimatedFlexibleSpace(title: "Alert Me"),
+                  const AnimatedFlexibleSpace.withoutTab(title: "Alert Me"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy

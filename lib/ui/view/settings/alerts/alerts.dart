@@ -1,9 +1,9 @@
 import 'package:bullion/ui/view/settings/alerts/price_alert_section.dart';
 import 'package:bullion/ui/view/settings/alerts/custom_spot_price_section.dart';
+import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../../core/res/styles.dart';
 import '../../../../helper/utils.dart';
 import '../../../widgets/loading_data.dart';
 import 'alert_me_section.dart';
@@ -55,44 +55,7 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                     ),
                     expandedHeight: _expandedHeight,
                     pinned: true,
-                    flexibleSpace: Padding(
-                      padding: const EdgeInsets.only(bottom: kTextTabBarHeight),
-                      child: LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
-                          double percent =
-                              (((constraints.maxHeight - 56) - kToolbarHeight) *
-                                  100 /
-                                  (10 - kToolbarHeight));
-                          double dx = 0;
-
-                          dx = -13 + percent;
-                          /*if (constraints.maxHeight == 100) {
-                            dx = 0;
-                          }*/
-
-                          //To reduce the space between start to end
-                          dx = (dx * 64) / 100;
-
-                          return Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: kToolbarHeight / 4,
-                                  left: 16,
-                                ),
-                                child: Transform.translate(
-                                  offset: Offset(dx,
-                                      constraints.maxHeight - kToolbarHeight),
-                                  child: const Text("Alerts",
-                                      style: AppTextStyle.titleLarge),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
+                    flexibleSpace: const AnimatedFlexibleSpace.withTab(title: "Alerts"),
                     bottom: TabBar(
                       controller: _tabController,
                       isScrollable: true,
