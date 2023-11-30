@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -8,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/res/styles.dart';
+import '../../../helper/utils.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
 import '../../../services/shared/navigator_service.dart';
+import '../../widgets/loading_data.dart';
 import '../vgts_builder_widget.dart';
 import 'address_view_model.dart';
 
@@ -32,9 +32,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
         slivers: [
           SliverAppBar(
             leading: IconButton(
-              icon: Platform.isAndroid
-                  ? const Icon(Icons.arrow_back)
-                  : const Icon(Icons.arrow_back_ios),
+              icon: Util.showArrowBackward(),
               onPressed: () {
                 Navigator.of(context).maybePop();
               },
@@ -59,9 +57,9 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
           ),
           SliverToBoxAdapter(
             child: viewModel.isBusy
-                ? const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator())
+                ? LoadingData(
+              loadingStyle: LoadingStyle.LOGO,
+            )
                 : viewModel.hasNoData
                     ? const Center(child: Text("No data available"))
                     : SingleChildScrollView(
@@ -269,6 +267,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                 const SizedBox(
                   width: 16,
                 ),
+/*
                 Visibility(
                   visible: !isDefault,
                   child: Text(
@@ -277,6 +276,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                         .copyWith(color: AppColor.cyanBlue),
                   ),
                 )
+*/
               ],
             )
           ],

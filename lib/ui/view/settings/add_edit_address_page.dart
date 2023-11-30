@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -15,6 +13,7 @@ import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
 import '../../../helper/utils.dart';
 import '../../widgets/animated_flexible_space.dart';
+import '../../widgets/loading_data.dart';
 import 'add_edit_address_view_model.dart';
 
 class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
@@ -38,9 +37,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
           slivers: [
             SliverAppBar(
               leading: IconButton(
-                icon: Platform.isAndroid
-                    ? const Icon(Icons.arrow_back)
-                    : const Icon(Icons.arrow_back_ios),
+                icon: Util.showArrowBackward(),
                 onPressed: () {
                   Navigator.of(context).maybePop();
                 },
@@ -52,9 +49,9 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy
-                  ? const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator())
+                  ? LoadingData(
+                loadingStyle: LoadingStyle.LOGO,
+              )
                   /*: viewModel.userAddress == null
                       ? const Center(child: Text("No data available"))*/
                   : SingleChildScrollView(
