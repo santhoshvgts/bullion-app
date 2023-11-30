@@ -60,6 +60,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   flutter_typeahead: ^4.8.0
   collection: ^1.17.2
+  flutter_staggered_animations: ^1.1.1
 
   #html_utils
   flutter_widget_from_html: ^0.10.5+3

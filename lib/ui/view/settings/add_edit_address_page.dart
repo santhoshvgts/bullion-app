@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -15,6 +13,7 @@ import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
 import '../../../helper/utils.dart';
 import '../../widgets/animated_flexible_space.dart';
+import '../../widgets/loading_data.dart';
 import 'add_edit_address_view_model.dart';
 
 class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
@@ -38,23 +37,21 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
           slivers: [
             SliverAppBar(
               leading: IconButton(
-                icon: Platform.isAndroid
-                    ? const Icon(Icons.arrow_back)
-                    : const Icon(Icons.arrow_back_ios),
+                icon: Util.showArrowBackward(),
                 onPressed: () {
                   Navigator.of(context).maybePop();
                 },
               ),
               expandedHeight: 100,
               pinned: true,
-              flexibleSpace: AnimatedFlexibleSpace(
+              flexibleSpace: AnimatedFlexibleSpace.withoutTab(
                   title: userAddress != null ? "Edit Address" : "Add Address"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy
-                  ? const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator())
+                  ? LoadingData(
+                loadingStyle: LoadingStyle.LOGO,
+              )
                   /*: viewModel.userAddress == null
                       ? const Center(child: Text("No data available"))*/
                   : SingleChildScrollView(
@@ -318,9 +315,9 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
 
 class StreetAutoCompleteTextField
     extends VGTSBuilderWidget<AddEditAddressViewModel> {
-  AddEditAddressViewModel viewModel;
+  final AddEditAddressViewModel viewModel;
 
-  StreetAutoCompleteTextField(this.viewModel, {super.key});
+  const StreetAutoCompleteTextField(this.viewModel, {super.key});
 
   @override
   Widget viewBuilder(
@@ -329,8 +326,7 @@ class StreetAutoCompleteTextField
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-        const Text("Street Address",
-            textScaleFactor: 1, style: AppTextStyle.labelMedium),
+        const Text("Street Address", style: AppTextStyle.labelMedium),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
@@ -393,14 +389,12 @@ class StreetAutoCompleteTextField
             return ListTile(
               title: Text(
                 prediction.structuredFormatting!.mainText!,
-                textScaleFactor: 1,
                 style: AppTextStyle.titleMedium,
               ),
               subtitle: Text(
                 prediction.structuredFormatting!.secondaryText == null
                     ? ""
                     : prediction.structuredFormatting!.secondaryText!,
-                textScaleFactor: 1,
                 style: AppTextStyle.bodyMedium,
               ),
             );

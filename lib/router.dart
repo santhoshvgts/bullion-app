@@ -19,7 +19,9 @@ import 'package:bullion/ui/view/product/product_page.dart';
 import 'package:bullion/ui/view/settings/add_edit_address_page.dart';
 import 'package:bullion/ui/view/settings/address_page.dart';
 import 'package:bullion/ui/view/settings/alerts/alerts.dart';
-import 'package:bullion/ui/view/settings/alerts/create_alerts_page.dart';
+import 'package:bullion/ui/view/settings/alerts/add_edit_spot_price_page.dart';
+import 'package:bullion/ui/view/settings/alerts/edit_alert_me_page.dart';
+import 'package:bullion/ui/view/settings/alerts/edit_price_alert_page.dart';
 import 'package:bullion/ui/view/settings/orders_page.dart';
 import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
 import 'package:bullion/ui/widgets/three_sixty_degree.dart';
@@ -97,11 +99,14 @@ class Routes {
   static const String address = "/account/address";
   static const String addEditAddress = "/account/addEditAddress";
   static const String alerts = "/account/alerts";
-  static const String createAlerts = "/account/createAlerts";
+  static const String addEditAlert = "/account/createAlert";
+  static const String editPriceAlert = "/account/editPriceAlert";
+  static const String editAlertMe = "/account/editAlertMe";
   static const String myRewards = "/account/myrewards";
   static const String myRewardTransactions = "/account/myrewards/transaction";
 
   static String myOrderDetails(id) => "/account/my-orders/info/$id";
+  static const String editSpotPrice = "/account/editSpotPrice";
   static const String myFavorites = "/account/myfavorites";
   static const String myProductAlert = "/account/productalerts";
   static const String myProductPriceAlert = "/account/myproductpricealerts";
@@ -241,10 +246,38 @@ class AppRouter {
             builder: (_) => AlertsPage(initialIndex: settings.arguments as int),
             settings: RouteSettings(name: settings.name));
 
-      case Routes.createAlerts:
+      case Routes.addEditAlert:
         return MaterialPageRoute(
-            builder: (_) => CreateAlertsPage(),
+            builder: (_) => const AddEditSpotPricePage(),
             settings: RouteSettings(name: settings.name));
+
+      case Routes.editSpotPrice:
+        Map? data = settings.arguments as Map?;
+        return MaterialPageRoute(
+          builder: (_) => AddEditSpotPricePage(
+            alertResponse: data?['alertResponse'],
+          ),
+          settings: RouteSettings(name: settings.name),
+        );
+
+      case Routes.editPriceAlert:
+        Map? data = settings.arguments as Map?;
+        return MaterialPageRoute(
+          builder: (_) => EditPriceAlertPage(
+            productAlert: data?['productAlert'],
+          ),
+          settings: RouteSettings(name: settings.name),
+        );
+
+      case Routes.editAlertMe:
+        Map? data = settings.arguments as Map?;
+        return MaterialPageRoute(
+          builder: (_) => EditAlertMePage(
+            productAlert: data?['productAlert'],
+          ),
+          settings: RouteSettings(name: settings.name),
+        );
+
       //
       //   case Routes.myProductPriceAlert:
       //     return MaterialPageRoute(
