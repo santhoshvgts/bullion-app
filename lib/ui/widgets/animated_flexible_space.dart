@@ -20,11 +20,10 @@ class AnimatedFlexibleSpace extends StatelessWidget {
   const AnimatedFlexibleSpace.withoutTab({
     super.key,
     required this.title,
-    this.hasTabBar = false,
-  });
+  }) : hasTabBar = false;
 
   const AnimatedFlexibleSpace.withTab(
-      {super.key, required this.title, this.hasTabBar = true});
+      {super.key, required this.title}) : hasTabBar = true;
 
   @override
   Widget build(BuildContext context) {

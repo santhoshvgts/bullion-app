@@ -5,6 +5,7 @@ import 'package:bullion/core/res/styles.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:bullion/core/enums/trade_entry_type.dart';
 
@@ -196,6 +197,10 @@ class QtyAmountInputOutPut {
 }
 
 class Util {
+
+  static const String iOSWidgetName = 'BullionWidget';
+  static const String androidWidgetName = 'BullionWidget';
+
   static showSnackBar(BuildContext context, String content) {
     SnackBar snackBar =
         SnackBar(content: Text(content, style: AppTextStyle.titleSmall));
@@ -233,4 +238,15 @@ class Util {
         ? const Icon(Icons.arrow_back)
         : const Icon(Icons.arrow_back_ios);
   }
+
+  static void updateHeadline() {
+    HomeWidget.saveWidgetData<String>('headline_title', "title Bullion");
+    HomeWidget.saveWidgetData<String>(
+        'headline_description', "description Bullion. The updates can be seen here.");
+    HomeWidget.updateWidget(
+      iOSName: iOSWidgetName,
+      androidName: androidWidgetName,
+    );
+  }
+
 }
