@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.widget.RemoteViews
 
+import es.antonborri.home_widget.HomeWidgetPlugin
 /**
  * Implementation of App Widget functionality.
  */
@@ -16,8 +17,20 @@ class BullionWidget : AppWidgetProvider() {
     ) {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
+            val widgetData = HomeWidgetPlugin.getData(context)
+            val views = RemoteViews(context.packageName, R.layout.bullion_widget).apply {
+
+                val title = widgetData.getString("headline_title", null)
+                setTextViewText(R.id.headline_title, title ?: "No title set")
+
+                val description = widgetData.getString("headline_description", null)
+                setTextViewText(R.id.headline_description, description ?: "No description set")
+
+            }
+
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
+
     }
 
     override fun onEnabled(context: Context) {
@@ -29,6 +42,7 @@ class BullionWidget : AppWidgetProvider() {
     }
 }
 
+/*
 internal fun updateAppWidget(
     context: Context,
     appWidgetManager: AppWidgetManager,
@@ -41,4 +55,4 @@ internal fun updateAppWidget(
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)
-}
+}*/
