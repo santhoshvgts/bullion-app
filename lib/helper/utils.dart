@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/ui/view/settings/alerts/alerts_view_model.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -197,7 +198,6 @@ class QtyAmountInputOutPut {
 }
 
 class Util {
-
   static const String iOSWidgetName = 'BullionWidget';
   static const String androidWidgetName = 'BullionWidget';
 
@@ -239,14 +239,13 @@ class Util {
         : const Icon(Icons.arrow_back_ios);
   }
 
-  static void updateHeadline() {
-    HomeWidget.saveWidgetData<String>('headline_title', "title Bullion");
-    HomeWidget.saveWidgetData<String>(
-        'headline_description', "description Bullion. The updates can be seen here.");
+  static void updateSpotPrice(AlertsViewModel alertsViewModel) {
+    HomeWidget.saveWidgetData<String>('headline_title', "Spot Price");
+    HomeWidget.saveWidgetData<String>('headline_description',
+        "${alertsViewModel.getMetalName(alertsViewModel.alertResponse!.alertResponseModels?[0].metal)} - ${alertsViewModel.alertResponse!.alertResponseModels![0].description}");
     HomeWidget.updateWidget(
-      iOSName: iOSWidgetName,
-      androidName: androidWidgetName,
-    );
+        iOSName: iOSWidgetName,
+        androidName: androidWidgetName,
+        qualifiedAndroidName: "com.bullion.BullionWidget");
   }
-
 }

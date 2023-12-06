@@ -21,10 +21,10 @@ class BullionWidget : AppWidgetProvider() {
             val views = RemoteViews(context.packageName, R.layout.bullion_widget).apply {
 
                 val title = widgetData.getString("headline_title", null)
-                setTextViewText(R.id.headline_title, title ?: "No title set")
+                setTextViewText(R.id.headline_title, title ?: "Bullion")
 
                 val description = widgetData.getString("headline_description", null)
-                setTextViewText(R.id.headline_description, description ?: "No description set")
+                setTextViewText(R.id.headline_description, description ?: "Open the App to update")
 
             }
 

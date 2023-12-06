@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/enums/order_status.dart';
-import '../../../core/res/styles.dart';
 import '../../../helper/utils.dart';
 import '../../widgets/loading_data.dart';
 import 'orders_view_model.dart';
@@ -55,6 +54,7 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                     bottom: TabBar(
                       controller: _tabController,
                       isScrollable: true,
+                      tabAlignment: TabAlignment.start,
                       tabs: const [
                         Tab(text: "All Orders"),
                         Tab(text: "In Progress"),

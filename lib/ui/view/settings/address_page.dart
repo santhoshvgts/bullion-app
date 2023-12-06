@@ -44,7 +44,6 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                     valueKey: const Key("addAddress"),
                     onPressed: () {
                       locator<NavigationService>().pushNamed(Routes.addEditAddress);
-                      Util.updateHeadline();
                     },
                     iconWidget: const Icon(Icons.add, color: AppColor.cyanBlue),
                     color: AppColor.white,

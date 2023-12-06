@@ -1,11 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/widget_container"
     style="@style/Widget.Android.AppWidget.Container"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#FBEEEC"
     android:theme="@style/Theme.Android.AppWidgetContainer">
 
     <TextView
@@ -17,8 +15,9 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:background="@android:color/white"
-        android:text="Title"
+        android:background="#FBEEEC"
+        android:includeFontPadding="false"
+        android:text="Spot Price"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -32,9 +31,19 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        android:background="@android:color/white"
-        android:text="Title"
+        android:background="#FBEEEC"
+        android:includeFontPadding="false"
+        android:text="The Gold price has been increased by 2%"
         android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/icon_background"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_centerInParent="true"
+        android:alpha="0.1"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bull_logo" />
 
 </RelativeLayout>
