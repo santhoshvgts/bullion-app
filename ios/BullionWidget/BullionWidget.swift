@@ -8,54 +8,82 @@
 import WidgetKit
 import SwiftUI
 
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
-    }
+private let widgetGroupId = "<APP GROUP ID>"
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), emoji: "😀")
+struct Provider: TimelineProvider {
+    func placeholder(in context: Context) -> SpotPriceEntry {
+        SpotPriceEntry(date: Date(), title: "Spot Price", description: "The Gold price has increased by 2%")
+    }
+    
+    func getSnapshot(in context: Context, completion: @escaping (SpotPriceEntry) -> ()) {
+        let entry : SpotPriceEntry
+        if context.isPreview{
+            entry = placeholder(in: context)
+        } else {
+            let userDefaults = UserDefaults(suiteName: widgetGroupId)
+            let title = userDefaults?.string(forKey: "headline_title") ?? "Bullion"
+            let description = userDefaults?.string(forKey: "headline_description") ?? "Open the App to update"
+            entry = SpotPriceEntry(date: Date(), title: title, description: description)
+        }
         completion(entry)
     }
-
+    
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
-            entries.append(entry)
-        }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+        getSnapshot(in: context) { (entry) in
+          let timeline = Timeline(entries: [entry], policy: .atEnd)
+                    completion(timeline)
+                }
     }
 }
 
-struct SimpleEntry: TimelineEntry {
+struct SpotPriceEntry: TimelineEntry {
     let date: Date
-    let emoji: String
+    let title: String
+    let description: String
 }
 
 struct BullionWidgetEntryView : View {
     var entry: Provider.Entry
-
+    
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+        
+        ZStack {
 
-            Text("Emoji:")
-            Text(entry.emoji)
+            Color("#FBEEEC")
+                .edgesIgnoringSafeArea(.all)
+            
+            Image("bull_logo")
+                .resizable()
+                .frame(width: 112, height: 112)
+                .padding(16)
+                .opacity(0.1)
+            
+            VStack {
+                
+                Text(entry.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.black)
+                    .font(.system(size: 20))
+                    .padding(.leading, 8)
+                    .padding(.top, 8)
+                
+                Text(entry.description)
+                    .foregroundColor(.black)
+                    .font(.system(size: 16))
+                    .padding(.leading, 8)
+                    .padding(.top, 4)
+                
+            }
+            
         }
+        .cornerRadius(10)
+        .shadow(radius: 10)
     }
 }
 
 struct BullionWidget: Widget {
     let kind: String = "BullionWidget"
-
+    
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             if #available(iOS 17.0, *) {
@@ -75,6 +103,6 @@ struct BullionWidget: Widget {
 #Preview(as: .systemSmall) {
     BullionWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
+    SpotPriceEntry(date: .now, title: "Title", description: "Description")
 }
+
