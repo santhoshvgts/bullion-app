@@ -148,13 +148,6 @@ class DashboardContentPage extends StatelessWidget {
               ),
             ),
           );
-        }
-        if (path == '/pages/deals') {
-          return PageWillPop(
-            child: Scaffold(
-              body: _BodyContent(path ?? '', key!),
-            ),
-          );
         } else {
           return PageWillPop(
             child: Scaffold(
