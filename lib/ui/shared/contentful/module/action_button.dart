@@ -11,7 +11,7 @@ class ActionButtonItem extends StatelessWidget {
   final Color? textColor;
   final ItemDisplaySettings? itemDisplaySettings;
 
-  ActionButtonItem({this.settings, this.textColor, this.itemDisplaySettings});
+  const ActionButtonItem({super.key,  this.settings, this.textColor, this.itemDisplaySettings});
 
   onTap() {
     locator<NavigationService>().pushNamed(
@@ -45,25 +45,25 @@ class ActionButtonItem extends StatelessWidget {
           ));
     }
 
-    if (settings!.style == ActionButtonStyle.icon) {
-      List<String> iconSplit = settings!.labelText!.split("|");
-
-      int iconCode = int.tryParse(iconSplit[0])!;
-      String family = iconSplit[1];
-      Color color = getColorFromString(iconSplit[2]);
-      String? familyPackage = iconSplit.length > 2 ? iconSplit[3] : null;
-
-      print(iconCode);
-      print(family);
-
-      return InkWell(
-        onTap: onTap,
-        child: Icon(
-          IconData(iconCode, fontFamily: family, fontPackage: familyPackage),
-          color: color,
-        ),
-      );
-    }
+    // if (settings!.style == ActionButtonStyle.icon) {
+    //   List<String> iconSplit = settings!.labelText!.split("|");
+    //
+    //   int iconCode = int.tryParse(iconSplit[0])!;
+    //   String family = iconSplit[1];
+    //   Color color = getColorFromString(iconSplit[2]);
+    //   String? familyPackage = iconSplit.length > 2 ? iconSplit[3] : null;
+    //
+    //   print(iconCode);
+    //   print(family);
+    //
+    //   return InkWell(
+    //     onTap: onTap,
+    //     child: Icon(
+    //       IconData(iconCode, fontFamily: family, fontPackage: familyPackage),
+    //       color: color,
+    //     ),
+    //   );
+    // }
 
     return SizedBox(
       width: double.tryParse(itemDisplaySettings?.actionsWidth ?? ""),
