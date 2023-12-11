@@ -1,4 +1,7 @@
 class Constants {
+  //iOS
+  static const appGroupId = "group.bullion";
+
   //Staggered Animation
   static const staggeredListDuration = 375;
   static const staggeredGridDuration = 375;

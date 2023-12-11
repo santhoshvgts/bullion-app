@@ -1,7 +1,9 @@
+import 'package:bullion/core/constants/constants.dart';
 import 'package:bullion/ui/view/settings/alerts/price_alert_section.dart';
 import 'package:bullion/ui/view/settings/alerts/custom_spot_price_section.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:flutter/material.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../helper/utils.dart';
@@ -28,6 +30,7 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    HomeWidget.setAppGroupId(Constants.appGroupId);
     _tabController = TabController(
         initialIndex: widget.initialIndex, length: 3, vsync: this);
   }

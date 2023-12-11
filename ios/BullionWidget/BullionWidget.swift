@@ -8,7 +8,7 @@
 import WidgetKit
 import SwiftUI
 
-private let widgetGroupId = "<APP GROUP ID>"
+private let widgetGroupId = "group.bullion"
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SpotPriceEntry {

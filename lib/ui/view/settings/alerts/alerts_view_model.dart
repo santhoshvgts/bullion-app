@@ -33,7 +33,6 @@ class AlertsViewModel extends VGTSBaseViewModel {
 
   void init() async {
     setBusy(true);
-
     _alertResponse =
         await request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
     _productAlerts =
