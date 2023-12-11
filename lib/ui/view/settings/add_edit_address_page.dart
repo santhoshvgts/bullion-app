@@ -44,7 +44,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
               ),
               expandedHeight: 100,
               pinned: true,
-              flexibleSpace: AnimatedFlexibleSpace(
+              flexibleSpace: AnimatedFlexibleSpace.withoutTab(
                   title: userAddress != null ? "Edit Address" : "Add Address"),
             ),
             SliverToBoxAdapter(
@@ -315,9 +315,9 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
 
 class StreetAutoCompleteTextField
     extends VGTSBuilderWidget<AddEditAddressViewModel> {
-  AddEditAddressViewModel viewModel;
+  final AddEditAddressViewModel viewModel;
 
-  StreetAutoCompleteTextField(this.viewModel, {super.key});
+  const StreetAutoCompleteTextField(this.viewModel, {super.key});
 
   @override
   Widget viewBuilder(
@@ -326,8 +326,7 @@ class StreetAutoCompleteTextField
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-        const Text("Street Address",
-            textScaleFactor: 1, style: AppTextStyle.labelMedium),
+        const Text("Street Address", style: AppTextStyle.labelMedium),
         const Padding(
           padding: EdgeInsets.only(top: 10),
         ),
@@ -390,14 +389,12 @@ class StreetAutoCompleteTextField
             return ListTile(
               title: Text(
                 prediction.structuredFormatting!.mainText!,
-                textScaleFactor: 1,
                 style: AppTextStyle.titleMedium,
               ),
               subtitle: Text(
                 prediction.structuredFormatting!.secondaryText == null
                     ? ""
                     : prediction.structuredFormatting!.secondaryText!,
-                textScaleFactor: 1,
                 style: AppTextStyle.bodyMedium,
               ),
             );

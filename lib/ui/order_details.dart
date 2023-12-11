@@ -71,7 +71,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
               ),
               expandedHeight: _expandedHeight,
               pinned: true,
-              flexibleSpace: const AnimatedFlexibleSpace(title: "Order Details"),
+              flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "Order Details"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy
