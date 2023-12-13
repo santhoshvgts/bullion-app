@@ -8,7 +8,9 @@ import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:home_widget/home_widget.dart';
 
+import '../../../../../../core/constants/constants.dart';
 import '../../../../../../core/models/chart/chart_selection_info.dart';
 
 class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
@@ -20,6 +22,7 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
 
   @override
   void onViewModelReady(SpotPriceChartViewModel viewModel) {
+    HomeWidget.setAppGroupId(Constants.appGroupId);
     viewModel.init(slug, spotPrice);
   }
 

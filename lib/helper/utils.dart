@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bullion/core/res/styles.dart';
-import 'package:bullion/ui/view/settings/alerts/alerts_view_model.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
@@ -239,13 +239,14 @@ class Util {
         : const Icon(Icons.arrow_back_ios);
   }
 
-  static void updateSpotPrice(AlertsViewModel alertsViewModel) {
-    HomeWidget.saveWidgetData<String>('headline_title', "Spot Price");
-    HomeWidget.saveWidgetData<String>('headline_description',
-        "${alertsViewModel.getMetalName(alertsViewModel.alertResponse!.alertResponseModels?[0].metal)} - ${alertsViewModel.alertResponse!.alertResponseModels![0].description}");
-    HomeWidget.updateWidget(
-        iOSName: iOSWidgetName,
-        androidName: androidWidgetName,
-        qualifiedAndroidName: "com.bullion.BullionWidget");
+  static Future updateHomeWidget() async {
+    try {
+      return HomeWidget.updateWidget(
+          iOSName: iOSWidgetName,
+          androidName: androidWidgetName,
+          qualifiedAndroidName: "com.bullion.BullionWidget");
+    } on PlatformException catch (exception) {
+      debugPrint('Error Updating Widget. $exception');
+    }
   }
 }

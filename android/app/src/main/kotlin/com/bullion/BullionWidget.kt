@@ -3,9 +3,13 @@ package com.bullion
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.widget.RemoteViews
 
 import es.antonborri.home_widget.HomeWidgetPlugin
+import java.io.File
+
 /**
  * Implementation of App Widget functionality.
  */
@@ -26,6 +30,20 @@ class BullionWidget : AppWidgetProvider() {
                 val description = widgetData.getString("headline_description", null)
                 setTextViewText(R.id.headline_description, description ?: "Open the App to update")
 
+                val priceChanges = widgetData.getString("price_changes", null)
+                setTextViewText(R.id.price_changes, priceChanges ?: "---")
+
+                val imageName = widgetData.getString("logoDev", null)
+                if(imageName != null) {
+                    val imageFile = File(imageName)
+                    val imageExists = imageFile.exists()
+                    if (imageExists) {
+                        val myBitmap: Bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+                        setImageViewBitmap(R.id.widget_image, myBitmap)
+                    } else {
+                        println("Image not found!, looked @: ${imageName}")
+                    }
+                } else println("No image name found!")
             }
 
             appWidgetManager.updateAppWidget(appWidgetId, views)

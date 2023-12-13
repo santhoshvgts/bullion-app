@@ -8,12 +8,45 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/services/chart/spotprice_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:home_widget/home_widget.dart';
+
+import '../../../../../../helper/utils.dart';
 
 class SpotPriceChartViewModel extends VGTSBaseViewModel {
   bool? _mounted;
   SpotPrice? _spotPriceChartData;
 
   String? tag;
+
+  Future<void> render() async {
+    await updateSpotPrice();
+    await Util.updateHomeWidget();
+  }
+
+   Future updateSpotPrice() async {
+    try {
+      return Future.wait([
+        HomeWidget.saveWidgetData<String>('headline_title',
+            spotPriceChartData?.metalName ?? "Metal"),
+        HomeWidget.saveWidgetData<String>(
+            'headline_description',
+            chartSelectionInfoModel?.formatedPrice ??
+                "0"),
+        HomeWidget.saveWidgetData<String>('price_changes',
+            "${chartSelectionInfoModel!.changePct! > 0 ? "+" : "-"} ${chartSelectionInfoModel?.formatedChange!} (${chartSelectionInfoModel!.changePct! > 0 ? "+" : ""}${chartSelectionInfoModel!.formatedChangePercentage})"),
+        HomeWidget.renderFlutterWidget(
+          const Icon(Icons.logo_dev),
+          logicalSize: const Size(200, 200),
+          key: 'logoDev',
+        )
+      ]);
+    } on PlatformException catch (exception) {
+      debugPrint('Error Sending Data. $exception');
+    }
+  }
+
 
   final SpotPriceService _spotPriceService = locator<SpotPriceService>();
 
@@ -65,7 +98,7 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
             _spotPriceService!.moreMarketTimeRangeFilters;
       }
     } catch (ex) {}
-
+      render();
     setBusy(false);
   }
 
