@@ -3,7 +3,6 @@ import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../../core/models/alert/alert_add_response_model.dart';
-import '../../../../helper/utils.dart';
 import '../../../../services/api_request/alerts_request.dart';
 
 class AlertsViewModel extends VGTSBaseViewModel {
@@ -39,7 +38,6 @@ class AlertsViewModel extends VGTSBaseViewModel {
         await requestList<ProductAlert>(AlertsRequest.getProductPriceAlerts());
     _alertMeAlerts = await requestList<ProductAlert>(
         AlertsRequest.getAlertMeProducts());
-    if(_alertResponse != null) Util.updateSpotPrice(this);
 
     setBusy(false);
   }
