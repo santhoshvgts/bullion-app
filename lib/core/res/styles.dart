@@ -48,11 +48,6 @@ class AppStyle {
         color: Colors.black12, offset: Offset(0, 2), blurRadius: 10),
   ];
 
-  static final List<BoxShadow> elevatedGridShadow = [
-    const BoxShadow(
-        color: Colors.black12, offset: Offset(0, 2), blurRadius: 6),
-  ];
-
   // static final List<BoxShadow> dealsShadow = [
   //   const BoxShadow(
   //       color: AppColor.shadowColor, offset: Offset(0, 5), blurRadius: 10),

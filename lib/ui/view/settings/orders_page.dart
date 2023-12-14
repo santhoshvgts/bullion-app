@@ -1,11 +1,11 @@
+import 'dart:io';
+
 import 'package:bullion/ui/view/my_orders_section.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/enums/order_status.dart';
 import '../../../core/res/styles.dart';
-import '../../../helper/utils.dart';
-import '../../widgets/loading_data.dart';
 import 'orders_view_model.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -43,7 +43,9 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                 return <Widget>[
                   SliverAppBar(
                     leading: IconButton(
-                      icon: Util.showArrowBackward(),
+                      icon: Platform.isAndroid
+                          ? const Icon(Icons.arrow_back)
+                          : const Icon(Icons.arrow_back_ios),
                       onPressed: () {
                         Navigator.of(context).maybePop();
                       },
@@ -108,9 +110,10 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
               },
               controller: viewModel.scrollController,
               body: viewModel.isBusy
-                  ? LoadingData(
-                loadingStyle: LoadingStyle.LOGO,
-              )
+                  ? const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: LinearProgressIndicator(),
+                    )
                   : SizedBox(
                       height: MediaQuery.of(context).size.height -
                           viewModel.scrollController.offset,

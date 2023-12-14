@@ -1,17 +1,16 @@
+import 'dart:io';
+
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../../../core/res/styles.dart';
-import '../../../helper/utils.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
 import '../../../services/shared/navigator_service.dart';
-import '../../widgets/loading_data.dart';
 import '../vgts_builder_widget.dart';
 import 'address_view_model.dart';
 
@@ -30,128 +29,89 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
     return Scaffold(
       body: SafeArea(
           child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                leading: IconButton(
-                  icon: Util.showArrowBackward(),
-                  onPressed: () {
-                    Navigator.of(context).maybePop();
-                  },
-                ),
-                actions: <Widget>[
-                  Button(
-                    "Add Address",
-                    valueKey: const Key("addAddress"),
-                    onPressed: () {
-                      locator<NavigationService>().pushNamed(Routes.addEditAddress);
-                    },
-                    iconWidget: const Icon(Icons.add, color: AppColor.cyanBlue),
-                    color: AppColor.white,
-                    borderColor: AppColor.white,
-                    textStyle:
+        slivers: [
+          SliverAppBar(
+            leading: IconButton(
+              icon: Platform.isAndroid
+                  ? const Icon(Icons.arrow_back)
+                  : const Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.of(context).maybePop();
+              },
+            ),
+            actions: <Widget>[
+              Button(
+                "Add Address",
+                valueKey: const Key("addAddress"),
+                onPressed: () {
+                  locator<NavigationService>().pushNamed(Routes.addEditAddress);
+                },
+                iconWidget: Icon(Icons.add, color: AppColor.cyanBlue),
+                color: AppColor.white,
+                borderColor: AppColor.white,
+                textStyle:
                     AppTextStyle.titleSmall.copyWith(color: AppColor.cyanBlue),
-                  )
-                ],
-                expandedHeight: 100,
-                pinned: true,
-                flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "Address"),
-              ),
-              SliverToBoxAdapter(
-                child: viewModel.isBusy
-                    ? LoadingData(
-                  loadingStyle: LoadingStyle.LOGO,
-                )
-                    : viewModel.hasNoData
-                    ? const Center(child: Text("No data available"))
-                    : SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (viewModel.defaultAddress != null)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0),
-                                child: Text(
-                                  "Default Address",
-                                  style: AppTextStyle.titleSmall.copyWith(
-                                      color: AppColor.primaryText),
-                                ),
-                              ),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                physics:
-                                const NeverScrollableScrollPhysics(),
-                                itemCount: 1,
-                                //padding: const EdgeInsets.all(15),
-                                itemBuilder: (context, index) {
-                                  return AnimationConfiguration
-                                      .staggeredList(
-                                    position: index,
-                                    duration: const Duration(
-                                        milliseconds: 375),
-                                    child: SlideAnimation(
-                                      verticalOffset: 50.0,
-                                      child: FadeInAnimation(
-                                        child: getAddressLayout(viewModel, 0, context, isDefault: true),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )
-                            ],
-                          ),
-                        if (viewModel.userAddress != null &&
-                            viewModel.userAddress!.isNotEmpty)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8.0),
-                                child: Text(
-                                  "Other Address",
-                                  style: AppTextStyle.titleSmall.copyWith(
-                                      color: AppColor.primaryText),
-                                ),
-                              ),
-                              AnimationLimiter(
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics:
-                                  const NeverScrollableScrollPhysics(),
-                                  itemCount:
-                                  viewModel.userAddress?.length ?? 0,
-                                  //padding: const EdgeInsets.all(15),
-                                  itemBuilder: (context, index) {
-                                    return AnimationConfiguration
-                                        .staggeredList(
-                                      position: index,
-                                      duration: const Duration(
-                                          milliseconds: 375),
-                                      child: SlideAnimation(
-                                        verticalOffset: 50.0,
-                                        child: FadeInAnimation(
-                                          child: getAddressLayout(viewModel, index, context, isDefault: false),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
               )
             ],
-          )),
+            expandedHeight: 100,
+            pinned: true,
+            flexibleSpace: const AnimatedFlexibleSpace(title: "Address"),
+          ),
+          SliverToBoxAdapter(
+            child: viewModel.isBusy
+                ? const Align(
+                    alignment: Alignment.bottomCenter,
+                    child: LinearProgressIndicator())
+                : viewModel.hasNoData
+                    ? const Center(child: Text("No data available"))
+                    : SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if(viewModel.defaultAddress != null)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Text(
+                                      "Default Address",
+                                      style: AppTextStyle.titleSmall
+                                          .copyWith(color: AppColor.primaryText),
+                                    ),
+                                  ),
+                                  getAddressLayout(viewModel, 0, context,
+                                      isDefault: true),
+                                ],
+                              ),
+                              if(viewModel.userAddress != null && viewModel.userAddress!.isNotEmpty)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Text(
+                                      "Other Address",
+                                      style: AppTextStyle.titleSmall
+                                          .copyWith(color: AppColor.primaryText),
+                                    ),
+                                  ),
+                                  Column(
+                                      children:
+                                      getAddressLayoutList(viewModel, context))
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+          )
+        ],
+      )),
     );
   }
 
@@ -193,7 +153,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                   child: Text(
                     "Default",
                     style:
-                    AppTextStyle.titleSmall.copyWith(color: AppColor.white),
+                        AppTextStyle.titleSmall.copyWith(color: AppColor.white),
                   ),
                 ),
               ),
@@ -245,7 +205,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                         backgroundColor: Colors.white,
                         title: const Text('Delete'),
                         content:
-                        const Text("Do you want to delete this Address?"),
+                            const Text("Do you want to delete this Address?"),
                         actions: <Widget>[
                           TextButton(
                             onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -253,10 +213,9 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                           ),
                           TextButton(
                             onPressed: () {
-                              isDefault
-                                  ? viewModel.deleteAddress(
-                                  viewModel.defaultAddress!.id!)
-                                  : viewModel.deleteAddress(
+                              isDefault ? viewModel.deleteAddress(
+                                  viewModel.defaultAddress!.id!) :
+                              viewModel.deleteAddress(
                                   viewModel.userAddress![index].id!);
                               Navigator.pop(context, 'OK');
                             },
@@ -288,11 +247,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                 ),
                 InkWell(
                   onTap: () {
-                    locator<NavigationService>().pushNamed(
-                        Routes.addEditAddress,
-                        arguments: isDefault
-                            ? viewModel.defaultAddress
-                            : viewModel.userAddress![index]);
+                    locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: isDefault ? viewModel.defaultAddress : viewModel.userAddress![index]);
                   },
                   child: Row(
                     children: [
@@ -314,7 +269,6 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                 const SizedBox(
                   width: 16,
                 ),
-/*
                 Visibility(
                   visible: !isDefault,
                   child: Text(
@@ -323,7 +277,6 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                         .copyWith(color: AppColor.cyanBlue),
                   ),
                 )
-*/
               ],
             )
           ],
