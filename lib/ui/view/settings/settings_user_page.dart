@@ -49,6 +49,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           style: AppTextStyle.titleLarge.copyWith(
             fontFamily: AppTextStyle.fontFamily,
           ),
+          textScaleFactor: 1,
         ),
       ),
       body: SingleChildScrollView(
@@ -112,8 +113,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                               .pushNamed(Routes.alerts, arguments: 1);
                         },
                         child: getTextsLayout(
-                          const Icon(Icons.attach_money, size: 20),
-                          "Price Alert",
+                          const Icon(CupertinoIcons.bell, size: 20),
+                          "Alert Me!",
                         ),
                       ),
                       const Divider(
@@ -125,8 +126,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                               .pushNamed(Routes.alerts, arguments: 2);
                         },
                         child: getTextsLayout(
-                          const Icon(CupertinoIcons.bell, size: 20),
-                          "Alert Me!",
+                          const Icon(Icons.attach_money, size: 20),
+                          "Price Alert",
                         ),
                       ),
                     ],
