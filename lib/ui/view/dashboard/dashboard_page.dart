@@ -4,6 +4,7 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/dashboard/dashboard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/button.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,6 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
           ),
         ],
         padding: const NavBarPadding.all(4),
-        confineInSafeArea: true,
         hideNavigationBarWhenKeyboardShows: true,
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,

@@ -112,6 +112,8 @@ class VerticalSpacing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Padding(padding: EdgeInsets.only(top: spacing));
+    return SizedBox(
+      height: spacing,
+    );
   }
 }
