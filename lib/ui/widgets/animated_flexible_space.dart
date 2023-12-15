@@ -20,11 +20,10 @@ class AnimatedFlexibleSpace extends StatelessWidget {
   const AnimatedFlexibleSpace.withoutTab({
     super.key,
     required this.title,
-    this.hasTabBar = false,
-  });
+  }) : hasTabBar = false;
 
-  const AnimatedFlexibleSpace.withTab(
-      {super.key, required this.title, this.hasTabBar = true});
+  const AnimatedFlexibleSpace.withTab({super.key, required this.title})
+      : hasTabBar = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +36,8 @@ class AnimatedFlexibleSpace extends StatelessWidget {
                     (((constraints.maxHeight - 56) - kToolbarHeight) *
                         100 /
                         (10 - kToolbarHeight));
-                double dx = 0;
 
-                dx = -13 + percent;
+                double dx = -13 + percent;
                 // if (constraints.maxHeight == 100) {
                 //   dx = 0;
                 // }
@@ -69,9 +67,8 @@ class AnimatedFlexibleSpace extends StatelessWidget {
             double percent = ((constraints.maxHeight - kToolbarHeight) *
                 100 /
                 (10 - kToolbarHeight));
-            double dx = 0;
 
-            dx = 100 + percent;
+            double dx = 100 + percent;
 
             //To reduce the space between start to end
             dx = (dx * Constants.horizontalTextSpace) / 100;

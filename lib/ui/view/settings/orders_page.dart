@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/enums/order_status.dart';
-import '../../../core/res/styles.dart';
 import '../../../helper/utils.dart';
+import '../../widgets/animated_flexible_space.dart';
 import '../../widgets/loading_data.dart';
 import 'orders_view_model.dart';
 
@@ -50,51 +50,11 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                     ),
                     expandedHeight: _expandedHeight,
                     pinned: true,
-                    flexibleSpace: Padding(
-                      padding: const EdgeInsets.only(bottom: kTextTabBarHeight),
-                      child: LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
-                          double percent =
-                              (((constraints.maxHeight - 56) - kToolbarHeight) *
-                                  100 /
-                                  (10 - kToolbarHeight));
-                          double dx = 0;
-
-                          dx = -13 + percent;
-                          /*if (constraints.maxHeight == 100) {
-                            dx = 0;
-                          }*/
-
-                          //To reduce the space between start to end
-                          dx = (dx * 64) / 100;
-
-                          return Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: kToolbarHeight / 4,
-                                  left: 16,
-                                ),
-                                child: Transform.translate(
-                                  offset: Offset(
-                                    dx,
-                                    constraints.maxHeight - kToolbarHeight,
-                                  ),
-                                  child: const Text(
-                                    "My Orders",
-                                    style: AppTextStyle.titleLarge,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
+                    flexibleSpace: const AnimatedFlexibleSpace.withTab(title: "My Orders"),
                     bottom: TabBar(
                       controller: _tabController,
                       isScrollable: true,
+                      tabAlignment: TabAlignment.start,
                       tabs: const [
                         Tab(text: "All Orders"),
                         Tab(text: "In Progress"),
