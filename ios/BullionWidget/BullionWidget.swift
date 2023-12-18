@@ -12,7 +12,7 @@ private let widgetGroupId = "group.bullion"
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SpotPriceEntry {
-        SpotPriceEntry(date: Date(), title: "Spot Price", description: "The Gold price has increased by 2%")
+        SpotPriceEntry(date: Date(), title: "Spot Price", description: "$2000", priceChanges: "-($6.00) (-0.3%)", filename: "No screenshot available",  displaySize: context.displaySize)
     }
     
     func getSnapshot(in context: Context, completion: @escaping (SpotPriceEntry) -> ()) {
@@ -23,7 +23,9 @@ struct Provider: TimelineProvider {
             let userDefaults = UserDefaults(suiteName: widgetGroupId)
             let title = userDefaults?.string(forKey: "headline_title") ?? "Bullion"
             let description = userDefaults?.string(forKey: "headline_description") ?? "Open the App to update"
-            entry = SpotPriceEntry(date: Date(), title: title, description: description)
+            let priceChanges = userDefaults?.string(forKey: "price_changes") ?? "Open the App to update"
+            let filename = userDefaults?.string(forKey: "logoDev") ?? "No screenshot available"
+            entry = SpotPriceEntry(date: Date(), title: title, description: description, priceChanges: priceChanges, filename: filename, displaySize: context.displaySize)
         }
         completion(entry)
     }
@@ -40,10 +42,24 @@ struct SpotPriceEntry: TimelineEntry {
     let date: Date
     let title: String
     let description: String
+    let priceChanges: String
+    let filename: String
+    let displaySize: CGSize
 }
 
 struct BullionWidgetEntryView : View {
     var entry: Provider.Entry
+    
+    var ChartImage: some View {
+            if let uiImage = UIImage(contentsOfFile: entry.filename) {
+                let image = Image(uiImage: uiImage)
+                    .resizable()
+                    .frame(width: entry.displaySize.height*0.5, height: entry.displaySize.height*0.5, alignment: .center)
+                return AnyView(image)
+            }
+            print("The image file could not be loaded")
+            return AnyView(EmptyView())
+        }
     
     var body: some View {
         
@@ -58,20 +74,37 @@ struct BullionWidgetEntryView : View {
                 .padding(16)
                 .opacity(0.1)
             
-            VStack {
+            VStack(alignment: .leading) {
                 
                 Text(entry.title)
+                    .font(.system(size: 13))
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
-                    .font(.system(size: 20))
+                    .foregroundColor(Color(red: 118/255, green: 123/255, blue: 134/255))
+                    //.background(Color(red: 251/255, green: 238/255, blue: 236/255))
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(1)
                     .padding(.leading, 8)
-                    .padding(.top, 8)
+                .padding(.top, 8)
+
+                
                 
                 Text(entry.description)
-                    .foregroundColor(.black)
-                    .font(.system(size: 16))
-                    .padding(.leading, 8)
-                    .padding(.top, 4)
+                        .font(.system(size: 17))
+                        .bold()
+                        .foregroundColor(.primary)
+                        //.background(Color(red: 251/255, green: 238/255, blue: 236/255))
+                        .lineLimit(1)
+                        .padding(.leading, 8)
+
+                Text(entry.priceChanges)
+                        .font(.system(size: 11))
+                        .bold()
+                        .foregroundColor(Color(red: 205/255, green: 55/255, blue: 55/255))
+                        //.background(Color(red: 251/255, green: 238/255, blue: 236/255))
+                        .lineLimit(1)
+                        .padding(.leading, 8)
+                
+                ChartImage
                 
             }
             
@@ -100,9 +133,9 @@ struct BullionWidget: Widget {
     }
 }
 
-#Preview(as: .systemSmall) {
-    BullionWidget()
-} timeline: {
-    SpotPriceEntry(date: .now, title: "Title", description: "Description")
-}
+//#Preview(as: .systemSmall) {
+//    BullionWidget()
+//} timeline: {
+//    SpotPriceEntry(date: .now, title: "Title", description: "Description", filename: "filename", displaySize: <#T##CGSize#>)
+//}
 
