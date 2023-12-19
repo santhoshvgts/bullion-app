@@ -33,12 +33,28 @@ class AlertsViewModel extends VGTSBaseViewModel {
   void init() async {
     setBusy(true);
 
-    _alertResponse =
+    Future<AlertGetResponse?> alertResponseFuture = request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
+
+    Future<List<ProductAlert>?> productAlertsFuture = requestList<ProductAlert>(AlertsRequest.getProductPriceAlerts());
+
+    Future<List<ProductAlert>?> alertMeAlertsFuture = requestList<ProductAlert>(AlertsRequest.getAlertMeProducts());
+
+    await Future.wait([
+      alertResponseFuture,
+      productAlertsFuture,
+      alertMeAlertsFuture,
+    ]);
+
+    _alertResponse = await alertResponseFuture;
+    _productAlerts = await productAlertsFuture;
+    _alertMeAlerts = await alertMeAlertsFuture;
+
+    /* _alertResponse =
         await request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
     _productAlerts =
         await requestList<ProductAlert>(AlertsRequest.getProductPriceAlerts());
     _alertMeAlerts = await requestList<ProductAlert>(
-        AlertsRequest.getAlertMeProducts());
+        AlertsRequest.getAlertMeProducts());*/
 
     setBusy(false);
   }
