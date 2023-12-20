@@ -91,5 +91,3 @@ class CkAddress extends ViewModelWidget<CheckoutPageViewModel> {
 }
 
 
-//! Address Format
-//! Formated Phone Number

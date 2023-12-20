@@ -7,7 +7,6 @@ import 'package:bullion/core/models/module/checkout/selected_bullion_card_reward
 import 'package:bullion/core/models/module/checkout/selected_payment_method.dart';
 import 'package:bullion/core/models/module/checkout/shipping_address.dart';
 import 'package:bullion/core/models/module/checkout/shipping_option.dart';
-import 'package:flutter/material.dart';
 
 class Checkout extends BaseModel {
   DisplayMessage? displayMessage;
@@ -54,7 +53,7 @@ class Checkout extends BaseModel {
     }
     selectedPaymentMethod = json['selected_payment_method'] != null ? SelectedPaymentMethod.fromJson(json['selected_payment_method']) : null;
     selectedBullionCardReward = json['selected_bullion_card_rewards'] != null ? SelectedBullionCardReward.fromJson(json['selected_bullion_card_rewards']) : null;
-    debugPrint(json['selected_bullion_card_rewards']);
+
     selectedShippingOption = json['selected_shipping_option'] != null ? SelectedShippingOption.fromJson(json['selected_shipping_option']) : null;
     quickShipEligible = json['quick_ship_eligible'];
     totalItems = json['total_items'];

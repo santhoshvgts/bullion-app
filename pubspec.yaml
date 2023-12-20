@@ -41,6 +41,14 @@ dependencies:
   chart_sparkline: ^1.0.13
   syncfusion_flutter_charts: ^20.4.44
 
+  #Payment
+  flutter_braintree:
+    #    path: ../../flutter-braintree/
+    git:
+      url: https://github.com/santhoshvgts/flutter-braintree.git
+      ref: 0.0.1+1  
+  
+
   #local
   shared_preferences: ^2.2.1
   event_taxi: ^1.0.0

@@ -34,6 +34,7 @@ class CheckoutPage extends VGTSBuilderWidget<CheckoutPageViewModel> {
           ),
         ),
         //
+        
         //
         body: SingleChildScrollView(
             physics: const ScrollPhysics(parent: ClampingScrollPhysics()),
@@ -41,17 +42,18 @@ class CheckoutPage extends VGTSBuilderWidget<CheckoutPageViewModel> {
               viewModel.isBusy ? const SizedBox(height: 2, child: LinearProgressIndicator(valueColor: AlwaysStoppedAnimation(AppColor.primary))) : Container(),
               viewModel.isBusy
                   ? const LoadingShimmer()
-                  : const Column(
+                  :  const Column(
                       children: [
                         CkAddress(),
                         CkPayment(),
-                        //CkShippingOption(),
-
+                      //  CkShippingOption(),
                         CkOrderSummary(),
                         CkNotes(),
                       ],
                     ),
             ])),
+
+            
         //
         //
         bottomNavigationBar: viewModel.isBusy

@@ -50,7 +50,7 @@ class CkOrderSummary extends ViewModelWidget<CheckoutPageViewModel> {
                                     child: const Icon(
                                       Icons.error_outline,
                                       size: 15,
-                                      color: Colors.black45,
+                                      color: Colors.black45
                                     )),
                             ],
                           ),
@@ -91,15 +91,3 @@ class CkOrderSummary extends ViewModelWidget<CheckoutPageViewModel> {
   }
 }
 
-class _DefaultDivider extends StatelessWidget {
-  const _DefaultDivider();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Divider(
-      color: AppColor.divider,
-      thickness: 0.3,
-      height: 5,
-    );
-  }
-}
