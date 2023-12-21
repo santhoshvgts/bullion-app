@@ -398,6 +398,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+  flutter_braintree:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "0.0.1+1"
+      resolved-ref: "34bb491e8679b13a5bcacf01b899843f450d5ebf"
+      url: "https://github.com/santhoshvgts/flutter-braintree.git"
+    source: git
+    version: "3.0.0"
   flutter_cache_manager:
     dependency: "direct main"
     description:

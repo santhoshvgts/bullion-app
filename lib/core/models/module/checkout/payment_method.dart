@@ -22,6 +22,9 @@ class PaymentMethod extends BaseModel {
   String? subText;
   bool? requiresValidation;
 
+  // local
+  bool? canExpanded = false;
+
   PaymentMethod(
       {this.paymentMethodId,
       this.name,
@@ -40,7 +43,9 @@ class PaymentMethod extends BaseModel {
       this.userPaymentMethodId,
       this.requiresValidation,
       this.accountNumber,
-      this.userPaymentMethods});
+      this.userPaymentMethods,
+      this.canExpanded = false
+      });
 
   PaymentMethod.fromJson(Map<String, dynamic> json) {
     paymentMethodId = json['payment_method_id'];

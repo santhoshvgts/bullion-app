@@ -24,6 +24,14 @@ class CheckOutRequest {
 
   //
 
+  // static RequestSettings savePaymentAndRefreshCheckout(int? paymentMethodId, {int? userPaymentMethodId}) {
+  //    return RequestSettings("/checkout/get-payment-methods", RequestMethod.GET, params: null, authenticated: true);
+  //   Checkout? checkout = await _checkoutApi!.savePaymentMethod(paymentMethodId: paymentMethodId, userPaymentMethodId: userPaymentMethodId == null ? 0 : userPaymentMethodId);
+  //   _refreshCheckout(checkout);
+  // }
+
+  //
+
   static RequestSettings saveDeliveryAddress({int? addressId, bool? isCitadel, String? citadelAccount}) {
     String queryString = "?";
     queryString += "addressId=$addressId";
@@ -70,4 +78,17 @@ class CheckOutRequest {
 
     return RequestSettings("/checkout/remove-discounts-by-key$queryString", RequestMethod.POST, params: null, authenticated: true);
   }
+
+  //
+
+  static RequestSettings savePaymentMethod({int? paymentMethodId, int? userPaymentMethodId}) {
+    String queryString = "?";
+
+    queryString += "paymentMethodId=$paymentMethodId";
+    queryString += "&userPaymentMethodId=$userPaymentMethodId";
+
+    return RequestSettings("/checkout/save-payment$queryString", RequestMethod.POST, params: null, authenticated: true);
+  }
+
+  //
 }

@@ -11,6 +11,7 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/checkout_request.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/checkout/checkout_steam_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
   Timer? timer;
   final ApiBaseService _apiBaseService = locator<ApiBaseService>();
   List<PaymentMethod>? _paymentMethodList;
+  final CheckoutStreamService _checkoutStreamService = CheckoutStreamService();
 
   //************************************/ ( LOCAL VARIABLES )
 
@@ -41,7 +43,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
   bool get mounted => _mounted;
   bool get placeOrderLoading => _placeOrderLoading;
   List<PaymentMethod>? get paymentMethodList => _paymentMethodList ?? [];
-  
+
   bool get enablePlaceOrder {
     if (checkout == null) return false;
     if (checkout!.selectedShippingAddress == null) return false;
@@ -95,7 +97,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  //************************************/ ( Refresh  )
+  //************************************/ ( Page Refresh  )
 
   refreshPage() async {
     if (timer != null) {
@@ -109,7 +111,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     }
   }
 
-  //************************************/ ( CHECKOUT )
+  //************************************/ ( Load CHECKOUT )
 
   loadCheckout() async {
     setBusy(true);
@@ -133,8 +135,67 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     setBusy(false);
   }
 
-  //************************************/! ( PAYPAL )
+  //************************************/! ( paymentSelection )
 
+  paymentSelection(PaymentMethod payment) async {
+    for (var p in _paymentMethodList!) {
+      if (p.paymentMethodId == payment.paymentMethodId) {
+        p.canExpanded = !p.canExpanded!;
+        p.isSelected = !p.isSelected!;
+      } else {
+        p.canExpanded = false;
+        p.isSelected = false;
+      }
+    }
+    Util.cancelLockEvent();
+    if (!payment.supportsUserPaymentMethod! && !payment.requiresZda!) {
+      await savePaymentMethod(payment.paymentMethodId, userPaymentMethodId: payment.userPaymentMethodId);
+    } else {
+      if (payment.hasUserPaymentMethod! || payment.requiresZda!) {
+        // AlertResponse alertResponse = await locator<DialogService>().showBottomSheet(
+        //   key: const ValueKey("bsUserPaymentMethod"),
+        //   title: payment.name,
+        //   isDismissible: false,
+        //   child: UserPaymentMethodBottomSheet(
+        //     paymentMethod,
+        //     payment.userPaymentMethods,
+        //   ),
+        // );
+        // if (alertResponse.status == true && alertResponse.data == "REMOVE_PAYMENT") {
+        //   fetchPayments();
+        //   return;
+        // }
+      } else {
+        switch (payment.paymentMethodId) {
+          // case 19: // eCheck
+          //   await _addECheckBankInformation(paymentMethod);
+          //   break;
+          case 1: // Credit Card
+            // await _creditCardPage(paymentMethod);
+            await savePaymentMethod(payment.paymentMethodId, userPaymentMethodId: payment.userPaymentMethodId);
+            break;
+          default:
+            break;
+        }
+        return;
+      }
+    }
+    notifyListeners();
+  }
+
+  //************************************/! ( SavePaymentMethod )
+
+  Future<Checkout?> savePaymentMethod(int? paymentMethodId, {int? userPaymentMethodId}) async {
+    mounted = false;
+    setBusy(true);
+    var response = await _checkoutStreamService.savePaymentAndRefreshCheckout(paymentMethodId, userPaymentMethodId: userPaymentMethodId ?? 0);
+    setBusy(false);
+    mounted = false;
+    refreshPage();
+    return response;
+  }
+
+//************************************/! ( PAYPAL )
   onPayPalClick() async {
     if (placeOrderLoading) {
       return;
@@ -143,14 +204,14 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     mounted = false;
     placeOrderLoading = true;
     Util.cancelLockEvent();
-    //!  var response = await BraintreeService().openPayPal(checkout!.orderTotal);
+    //! var response = await BraintreeService().openPayPal(checkout!.orderTotal);
     placeOrderLoading = false;
     mounted = true;
     Util.enableLockEvent();
 
     //! if (response['nonce'] != null) {
-    //!   submitPlaceOrder(paymentMethodNonce: response['nonce']);
-    //! }
+    //   submitPlaceOrder(paymentMethodNonce: response['nonce']);
+    // }
   }
 
   //************************************/! ( BITPAY )
@@ -258,7 +319,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
 
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (mounted && count <= 1) {
-          navigationService.pushReplacementNamed(Routes.expiredCart, arguments: true);
+          navigationService.pushReplacementNamed(Routes.viewCart, arguments: true);
           timer.cancel();
           return;
         } else if (count <= 1) {

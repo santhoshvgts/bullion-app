@@ -31,29 +31,31 @@ class CkShippingOption extends ViewModelWidget<CheckoutPageViewModel> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Radio(
-                        value: true,
+                        value:false ,
                         activeColor: AppColor.primary,
                         fillColor: const MaterialStatePropertyAll(AppColor.primary),
                         groupValue: true,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                              print(value);
+                        },
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Express Delivery', style: AppTextStyle.bodyMedium),
-                            VerticalSpacing.d2px(),
-                            Text(
-                              'Expeted to delivery within 11',
-                              style: AppTextStyle.bodySmall.copyWith(fontSize: 10, color: Colors.black54),
-                              maxLines: 2,
-                            ),
+                            Text(viewModel.checkout!.selectedShippingOption!.shippingOptions?[index].name ?? '', style: AppTextStyle.bodyMedium,maxLines: 1,),
+                            // VerticalSpacing.d2px(),
+                            // Text(
+                            //   viewModel.checkout!.selectedShippingOption!.shippingOptions?[index].serviceDescription ?? '',
+                            //   style: AppTextStyle.bodySmall.copyWith(fontSize: 10, color: Colors.black54),
+                            //   maxLines: 2,
+                            // ),
                           ],
                         ),
                       ),
                       const Spacer(),
-                      Text('\$7.90', style: AppTextStyle.bodyMedium.copyWith(color: AppColor.text)),
+                      Text('\$${viewModel.checkout!.selectedShippingOption!.shippingOptions?[index].shipCharge.toString() ?? ''}', style: AppTextStyle.bodyMedium.copyWith(color: AppColor.text)),
                       HorizontalSpacing.d15px(),
                     ],
                   ),
