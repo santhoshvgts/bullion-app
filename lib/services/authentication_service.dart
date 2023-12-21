@@ -189,7 +189,7 @@ class AuthenticationService {
   }
 
   _showAlert(ErrorResponseException error, String title) {
-    _dialogService.showDialog(title: title, description: error.error?.message);
+    _dialogService.showDialog(title: title, description: error.error?.getSingleMessage() ?? '-');
   }
 
   // TODO - Sentry Implementation

@@ -120,8 +120,8 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                                                 isLoadingFilter: viewModel.isBusy
                                               );
 
-                                            // case ModuleType.banner:
-                                            //   return BannerModule(module);
+                                            case ModuleType.banner:
+                                              return BannerModule(module);
 
                                             default:
                                               return Container();

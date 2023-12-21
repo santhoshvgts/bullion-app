@@ -9,6 +9,7 @@
         android:label="${appName}"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
+        tools:replace="android:label"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
