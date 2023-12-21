@@ -27,6 +27,17 @@
         android:label="${appName}"
         android:usesCleartextTraffic="true">
         <receiver
+            android:name=".BullionSpotPricesWidget"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/bullion_spot_prices_widget_info" />
+        </receiver>
+        <receiver
             android:name=".BullionWidget"
             android:exported="false">
             <intent-filter>

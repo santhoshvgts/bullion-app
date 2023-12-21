@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_container"
+    style="@style/Widget.Android.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FBEEEC"
+    android:theme="@style/Theme.Android.AppWidgetContainer">
+
+    <ImageView
+        android:id="@+id/icon_background"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_centerInParent="true"
+        android:alpha="0.1"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bull_logo" />
+
+</RelativeLayout>

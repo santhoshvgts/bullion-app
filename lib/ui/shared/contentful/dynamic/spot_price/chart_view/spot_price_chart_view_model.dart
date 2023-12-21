@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:home_widget/home_widget.dart';
 
 import '../../../../../../helper/utils.dart';
+import '../../../../chart/spotprice_sparkline.dart';
 
 class SpotPriceChartViewModel extends VGTSBaseViewModel {
   bool? _mounted;
@@ -37,7 +38,14 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
         HomeWidget.saveWidgetData<String>('price_changes',
             "${chartSelectionInfoModel!.changePct! > 0 ? "+" : "-"} ${chartSelectionInfoModel?.formatedChange!} (${chartSelectionInfoModel!.changePct! > 0 ? "+" : ""}${chartSelectionInfoModel!.formatedChangePercentage})"),
         HomeWidget.renderFlutterWidget(
-          const Icon(Icons.logo_dev),
+          SizedBox(
+            height: 200,
+            width: 300,
+            child: SpotPriceSparkLineView(
+              _spotPriceChartData?.metalName,
+              _spotPriceChartData?.chartData,
+            ),
+          ),
           logicalSize: const Size(200, 200),
           key: 'logoDev',
         )
