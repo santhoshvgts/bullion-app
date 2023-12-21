@@ -84,8 +84,7 @@ class Images {
 
   static const String priceAlertIcon = "assets/images/v2/price_alert_icon.png";
   static const String favoriteIcon = "assets/images/v2/favorite_icon.png";
-  static const String favoriteIconFilled =
-      "assets/images/v2/favorite_icon_filled.png";
+  static const String favoriteIconFilled = "assets/images/v2/favorite_icon_filled.png";
   static const String cartIcon = "assets/images/cart_icon.png";
   static const String userIcon = "assets/images/v2/user_icon.png";
 

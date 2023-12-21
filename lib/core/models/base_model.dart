@@ -5,7 +5,10 @@ import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/models/google/place.dart';
 import 'package:bullion/core/models/google/place_autocomplete.dart';
+import 'package:bullion/core/models/module/checkout/payment_method.dart';
+import 'package:bullion/core/models/module/checkout/selected_payment_method.dart';
 import 'package:bullion/core/models/module/checkout/shipping_address.dart';
+import 'package:bullion/core/models/module/checkout/checkout.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/redirection.dart';
@@ -105,6 +108,17 @@ class BaseModel extends BaseObject {
 
       case Place:
         return Place() as T;
+
+      case Checkout:
+        return Checkout() as T;
+
+      case SelectedPaymentMethod:
+        return SelectedPaymentMethod() as T;
+
+      case PaymentMethod:
+        return PaymentMethod() as T;  
+
+        
     }
     throw "Requested Model not initialised in Base Model";
   }

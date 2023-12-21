@@ -1,4 +1,8 @@
-class SelectedPaymentMethod {
+// ignore_for_file: must_be_immutable
+
+import 'package:bullion/core/models/base_model.dart';
+
+class SelectedPaymentMethod extends BaseModel {
   int? paymentMethodId;
   int? userPaymentMethodId;
   String? displayName;
@@ -11,15 +15,7 @@ class SelectedPaymentMethod {
   String? notSelectedText;
   String? selectedInfoText;
 
-  SelectedPaymentMethod({this.paymentMethodId,
-        this.userPaymentMethodId,
-        this.displayName,
-        this.displaySubText,
-        this.icon,
-        this.isDisabled,
-        this.disabledText,
-        this.isSelected,
-        this.notSelectedText});
+  SelectedPaymentMethod({this.paymentMethodId, this.userPaymentMethodId, this.displayName, this.displaySubText, this.icon, this.isDisabled, this.disabledText, this.isSelected, this.notSelectedText});
 
   SelectedPaymentMethod.fromJson(Map<String, dynamic> json) {
     paymentMethodId = json['payment_method_id'];
@@ -35,19 +31,23 @@ class SelectedPaymentMethod {
     selectedInfoText = json['selected_info_text'];
   }
 
+  @override
+  SelectedPaymentMethod fromJson(json) => SelectedPaymentMethod.fromJson(json);
+
+  @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['payment_method_id'] = this.paymentMethodId;
-    data['user_payment_method_id'] = this.userPaymentMethodId;
-    data['display_name'] = this.displayName;
-    data['display_sub_text'] = this.displaySubText;
-    data['icon'] = this.icon;
-    data['is_disabled'] = this.isDisabled;
-    data['disabled_text'] = this.disabledText;
-    data['is_selected'] = this.isSelected;
-    data['is_bullion_card'] = this.isBullionCard;
-    data['not_selected_text'] = this.notSelectedText;
-    data['selected_info_text'] = this.selectedInfoText;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['payment_method_id'] = paymentMethodId;
+    data['user_payment_method_id'] = userPaymentMethodId;
+    data['display_name'] = displayName;
+    data['display_sub_text'] = displaySubText;
+    data['icon'] = icon;
+    data['is_disabled'] = isDisabled;
+    data['disabled_text'] = disabledText;
+    data['is_selected'] = isSelected;
+    data['is_bullion_card'] = isBullionCard;
+    data['not_selected_text'] = notSelectedText;
+    data['selected_info_text'] = selectedInfoText;
     return data;
   }
 }

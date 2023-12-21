@@ -1,4 +1,6 @@
+// ignore_for_file: must_be_immutable
 
+import 'package:bullion/core/models/base_model.dart';
 import 'package:bullion/core/models/module/cart/display_message.dart';
 import 'package:bullion/core/models/module/cart/order_total_summary.dart';
 import 'package:bullion/core/models/module/checkout/selected_bullion_card_reward.dart';
@@ -6,7 +8,7 @@ import 'package:bullion/core/models/module/checkout/selected_payment_method.dart
 import 'package:bullion/core/models/module/checkout/shipping_address.dart';
 import 'package:bullion/core/models/module/checkout/shipping_option.dart';
 
-class Checkout {
+class Checkout extends BaseModel {
   DisplayMessage? displayMessage;
   bool? isPriceExpired;
   String? priceTimeStamp;
@@ -27,94 +29,83 @@ class Checkout {
 
   Checkout(
       {this.displayMessage,
-        this.isPriceExpired,
-        this.priceTimeStamp,
-        this.timerDuration,
-        this.selectedShippingAddress,
-        this.selectedPaymentMethod,
-        this.selectedShippingOption,
-        this.quickShipEligible,
-        this.totalItems,
-        this.isEstimate,
-        this.orderTotal,
-        this.formattedOrderTotal,
-        this.orderTotalSummary});
+      this.isPriceExpired,
+      this.priceTimeStamp,
+      this.timerDuration,
+      this.selectedShippingAddress,
+      this.selectedPaymentMethod,
+      this.selectedShippingOption,
+      this.quickShipEligible,
+      this.totalItems,
+      this.isEstimate,
+      this.orderTotal,
+      this.formattedOrderTotal,
+      this.orderTotalSummary});
 
   Checkout.fromJson(Map<String, dynamic> json) {
-    displayMessage = json['display_message'] != null
-        ? new DisplayMessage.fromJson(
-        json['display_message'])
-        : null;
+    displayMessage = json['display_message'] != null ? DisplayMessage.fromJson(json['display_message']) : null;
     isPriceExpired = json['is_price_expired'];
     priceTimeStamp = json['price_time_stamp'];
     timerDuration = json['timer_duration'];
-    selectedShippingAddress = json['selected_shipping_address'] != null
-        ? new ShippingAddress.fromJson(
-        json['selected_shipping_address'])
-        : null;
+    selectedShippingAddress = json['selected_shipping_address'] != null ? ShippingAddress.fromJson(json['selected_shipping_address']) : null;
     if (json['warnings'] != null) {
       warnings = json['warnings'].cast<String>();
     }
-    selectedPaymentMethod = json['selected_payment_method'] != null
-        ? new SelectedPaymentMethod.fromJson(json['selected_payment_method'])
-        : null;
-    selectedBullionCardReward = json['selected_bullion_card_rewards'] != null
-        ? new SelectedBullionCardReward.fromJson(json['selected_bullion_card_rewards'])
-        : null;
-    print( json['selected_bullion_card_rewards'] );
+    selectedPaymentMethod = json['selected_payment_method'] != null ? SelectedPaymentMethod.fromJson(json['selected_payment_method']) : null;
+    selectedBullionCardReward = json['selected_bullion_card_rewards'] != null ? SelectedBullionCardReward.fromJson(json['selected_bullion_card_rewards']) : null;
 
-    selectedShippingOption = json['selected_shipping_option'] != null
-        ? new SelectedShippingOption.fromJson(json['selected_shipping_option'])
-        : null;
+    selectedShippingOption = json['selected_shipping_option'] != null ? SelectedShippingOption.fromJson(json['selected_shipping_option']) : null;
     quickShipEligible = json['quick_ship_eligible'];
     totalItems = json['total_items'];
     isEstimate = json['is_estimate'];
     redirect = json['redirect'];
     redirectUrl = json['redirect_to'];
     orderTotal = json['order_total'];
-    formattedOrderTotal = json['formatted_order_total'] == null ? '' : json['formatted_order_total'];
+    formattedOrderTotal = json['formatted_order_total'] ?? '';
     if (json['order_total_summary'] != null) {
       orderTotalSummary = <OrderTotalSummary>[];
       json['order_total_summary'].forEach((v) {
-        orderTotalSummary!.add(new OrderTotalSummary.fromJson(v));
+        orderTotalSummary!.add(OrderTotalSummary.fromJson(v));
       });
     }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.displayMessage != null) {
-      data['display_message'] = this.displayMessage!.toJson();
-    }
-    data['is_price_expired'] = this.isPriceExpired;
-    data['price_time_stamp'] = this.priceTimeStamp;
-    data['timer_duration'] = this.timerDuration;
-    if (this.selectedShippingAddress != null) {
-      data['selected_shipping_address'] = this.selectedShippingAddress!.toJson();
-    }
-    if (this.selectedPaymentMethod != null) {
-      data['selected_payment_method'] = this.selectedPaymentMethod!.toJson();
-    }
-    if (this.selectedBullionCardReward != null) {
+  @override
+  Checkout fromJson(json) => Checkout.fromJson(json);
 
-      data['selected_bullion_card_rewards'] = this.selectedBullionCardReward!.toJson();
+  @override
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (displayMessage != null) {
+      data['display_message'] = displayMessage!.toJson();
     }
-    if (this.warnings != null) {
-      data['warnings'] = this.warnings.toString();
+    data['is_price_expired'] = isPriceExpired;
+    data['price_time_stamp'] = priceTimeStamp;
+    data['timer_duration'] = timerDuration;
+    if (selectedShippingAddress != null) {
+      data['selected_shipping_address'] = selectedShippingAddress!.toJson();
     }
-    if (this.selectedShippingOption != null) {
-      data['selected_shipping_option'] = this.selectedShippingOption!.toJson();
+    if (selectedPaymentMethod != null) {
+      data['selected_payment_method'] = selectedPaymentMethod!.toJson();
     }
-    data['quick_ship_eligible'] = this.quickShipEligible;
-    data['total_items'] = this.totalItems;
-    data['is_estimate'] = this.isEstimate;
-    data['order_total'] = this.orderTotal;
-    data['redirect_to'] = this.redirectUrl;
-    data['redirect'] = this.redirect;
-    data['formatted_order_total'] = this.formattedOrderTotal;
-    if (this.orderTotalSummary != null) {
-      data['order_total_summary'] =
-          this.orderTotalSummary!.map((v) => v.toJson()).toList();
+    if (selectedBullionCardReward != null) {
+      data['selected_bullion_card_rewards'] = selectedBullionCardReward!.toJson();
+    }
+    if (warnings != null) {
+      data['warnings'] = warnings.toString();
+    }
+    if (selectedShippingOption != null) {
+      data['selected_shipping_option'] = selectedShippingOption!.toJson();
+    }
+    data['quick_ship_eligible'] = quickShipEligible;
+    data['total_items'] = totalItems;
+    data['is_estimate'] = isEstimate;
+    data['order_total'] = orderTotal;
+    data['redirect_to'] = redirectUrl;
+    data['redirect'] = redirect;
+    data['formatted_order_total'] = formattedOrderTotal;
+    if (orderTotalSummary != null) {
+      data['order_total_summary'] = orderTotalSummary!.map((v) => v.toJson()).toList();
     }
     return data;
   }
