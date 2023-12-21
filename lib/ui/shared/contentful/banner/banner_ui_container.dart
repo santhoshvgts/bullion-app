@@ -46,8 +46,10 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
   void onViewModelReady(BannerViewModel viewModel) {
     viewModel.init(this.moduleSetting!);
 
-    Image image = Image.network(viewModel.items!.first.imageUrl!);
-    image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener(listener));
+    if (viewModel.items?.isNotEmpty == true) {
+      Image image = Image.network(viewModel.items!.first.imageUrl!);
+      image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener(listener));
+    }
   }
 
   @override
