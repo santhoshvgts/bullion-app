@@ -16,7 +16,7 @@ class AddressViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     _userAddressList =
-        await requestList<UserAddress>(AddressRequest.getAddress());
+    await requestList<UserAddress>(AddressRequest.getAddress());
 
     if (_userAddressList != null) getDefaultAddress();
     if ((_userAddressList == null || _userAddressList!.isEmpty) &&
@@ -40,7 +40,7 @@ class AddressViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     _userAddressList =
-        await requestList<UserAddress>(AddressRequest.deleteAddress(addressId));
+    await requestList<UserAddress>(AddressRequest.deleteAddress(addressId));
 
     if (_userAddressList != null) getDefaultAddress();
 

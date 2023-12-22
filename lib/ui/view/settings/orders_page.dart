@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:bullion/ui/view/my_orders_section.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../core/enums/order_status.dart';
-import '../../../core/res/styles.dart';
+import '../../../helper/utils.dart';
+import '../../widgets/animated_flexible_space.dart';
+import '../../widgets/loading_data.dart';
 import 'orders_view_model.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -43,60 +43,18 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                 return <Widget>[
                   SliverAppBar(
                     leading: IconButton(
-                      icon: Platform.isAndroid
-                          ? const Icon(Icons.arrow_back)
-                          : const Icon(Icons.arrow_back_ios),
+                      icon: Util.showArrowBackward(),
                       onPressed: () {
                         Navigator.of(context).maybePop();
                       },
                     ),
                     expandedHeight: _expandedHeight,
                     pinned: true,
-                    flexibleSpace: Padding(
-                      padding: const EdgeInsets.only(bottom: kTextTabBarHeight),
-                      child: LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
-                          double percent =
-                              (((constraints.maxHeight - 56) - kToolbarHeight) *
-                                  100 /
-                                  (10 - kToolbarHeight));
-                          double dx = 0;
-
-                          dx = -13 + percent;
-                          /*if (constraints.maxHeight == 100) {
-                            dx = 0;
-                          }*/
-
-                          //To reduce the space between start to end
-                          dx = (dx * 64) / 100;
-
-                          return Stack(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  top: kToolbarHeight / 4,
-                                  left: 16,
-                                ),
-                                child: Transform.translate(
-                                  offset: Offset(
-                                    dx,
-                                    constraints.maxHeight - kToolbarHeight,
-                                  ),
-                                  child: const Text(
-                                    "My Orders",
-                                    style: AppTextStyle.titleLarge,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
+                    flexibleSpace: const AnimatedFlexibleSpace.withTab(title: "My Orders"),
                     bottom: TabBar(
                       controller: _tabController,
                       isScrollable: true,
+                      tabAlignment: TabAlignment.start,
                       tabs: const [
                         Tab(text: "All Orders"),
                         Tab(text: "In Progress"),
@@ -110,26 +68,25 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
               },
               controller: viewModel.scrollController,
               body: viewModel.isBusy
-                  ? const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator(),
-                    )
+                  ? LoadingData(
+                loadingStyle: LoadingStyle.LOGO,
+              )
                   : SizedBox(
-                      height: MediaQuery.of(context).size.height -
-                          viewModel.scrollController.offset,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: [
-                          MyOrdersPage(viewModel.ordersList, OrderStatus.ALL),
-                          MyOrdersPage(
-                              viewModel.ordersList, OrderStatus.INPROGRESS),
-                          MyOrdersPage(
-                              viewModel.ordersList, OrderStatus.SHIPPED),
-                          MyOrdersPage(
-                              viewModel.ordersList, OrderStatus.CANCELLED),
-                        ],
-                      ),
-                    ),
+                height: MediaQuery.of(context).size.height -
+                    viewModel.scrollController.offset,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    MyOrdersPage(viewModel.ordersList, OrderStatus.ALL),
+                    MyOrdersPage(
+                        viewModel.ordersList, OrderStatus.INPROGRESS),
+                    MyOrdersPage(
+                        viewModel.ordersList, OrderStatus.SHIPPED),
+                    MyOrdersPage(
+                        viewModel.ordersList, OrderStatus.CANCELLED),
+                  ],
+                ),
+              ),
               /*child: AppBar(
                 toolbarHeight: 80,
                 leadingWidth: double.infinity,
