@@ -1,15 +1,15 @@
-import 'dart:io';
-
 import 'package:bullion/ui/view/order_details_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
+import 'package:bullion/ui/widgets/loading_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../core/res/colors.dart';
 import '../core/res/styles.dart';
+import '../helper/utils.dart';
 
 class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
   final String orderID;
@@ -64,100 +64,98 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
           slivers: [
             SliverAppBar(
               leading: IconButton(
-                icon: Platform.isAndroid
-                    ? const Icon(Icons.arrow_back)
-                    : const Icon(Icons.arrow_back_ios),
+                icon: Util.showArrowBackward(),
                 onPressed: () {
                   Navigator.of(context).maybePop();
                 },
               ),
               expandedHeight: _expandedHeight,
               pinned: true,
-              flexibleSpace: const AnimatedFlexibleSpace(title: "Order Details"),
+              flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "Order Details"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy
-                  ? const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator())
+                  ? LoadingData(
+                loadingStyle: LoadingStyle.LOGO,
+              )
                   : viewModel.orderDetail == null
-                      ? const Center(child: Text("No data available"))
-                      : SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: AppColor.iconBG,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      width: 56,
-                                      height: 56,
-                                      child: const Icon(
-                                        Icons.receipt_long_outlined,
-                                        size: 32,
-                                        color: AppColor.turtleGreen,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              viewModel.orderDetail?.orderId ??
-                                                  "",
-                                              style: AppTextStyle.bodyMedium,
-                                            ),
-                                            const SizedBox(
-                                              height: 8,
-                                            ),
-                                            Text(
-                                              viewModel.orderDetail
-                                                      ?.orderStatus ??
-                                                  "",
-                                              style: AppTextStyle.labelMedium
-                                                  .copyWith(
-                                                      color: AppColor.cyanBlue),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              getDetailRow("Order Date", viewModel.date ?? ""),
-                              getDetailRow("Shipping Date", "--"),
-                              getDetailRow(
-                                "Payment Method",
-                                viewModel.orderDetail?.paymentMethod
-                                        ?.displayText ??
-                                    "",
-                              ),
-                              getDetailRow(
-                                "Address",
-                                viewModel.orderDetail?.shippingAddress
-                                        ?.displayText ??
-                                    "",
-                              ),
-                              const Divider(
-                                  color: AppColor.secondaryBackground,
-                                  thickness: 8),
-                              showOrderSummary(viewModel),
-                              showPriceDetails(viewModel),
-                            ],
+                  ? const Center(child: Text("No data available"))
+                  : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: AppColor.iconBG,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            width: 56,
+                            height: 56,
+                            child: const Icon(
+                              Icons.receipt_long_outlined,
+                              size: 32,
+                              color: AppColor.turtleGreen,
+                            ),
                           ),
-                        ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    viewModel.orderDetail?.orderId ??
+                                        "",
+                                    style: AppTextStyle.bodyMedium,
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text(
+                                    viewModel.orderDetail
+                                        ?.orderStatus ??
+                                        "",
+                                    style: AppTextStyle.labelMedium
+                                        .copyWith(
+                                        color: AppColor.cyanBlue),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    getDetailRow("Order Date", viewModel.date ?? ""),
+                    getDetailRow("Shipping Date", "--"),
+                    getDetailRow(
+                      "Payment Method",
+                      viewModel.orderDetail?.paymentMethod
+                          ?.displayText ??
+                          "",
+                    ),
+                    getDetailRow(
+                      "Address",
+                      viewModel.orderDetail?.shippingAddress
+                          ?.displayText ??
+                          "",
+                    ),
+                    const Divider(
+                        color: AppColor.secondaryBackground,
+                        thickness: 8),
+                    showOrderSummary(viewModel),
+                    showPriceDetails(viewModel),
+                  ],
+                ),
+              ),
             )
           ],
         ),
@@ -178,10 +176,10 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
         children: [
           Expanded(
               child: Text(
-            key,
-            style:
+                key,
+                style:
                 AppTextStyle.bodyMedium.copyWith(color: AppColor.primaryText),
-          )),
+              )),
           Expanded(child: Text(value, style: AppTextStyle.bodyMedium)),
         ],
       ),
@@ -219,7 +217,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                       ),
                     ),
                     child: Image.network(viewModel
-                            .orderDetail?.orderLineItems?[0].primaryImageUrl ??
+                        .orderDetail?.orderLineItems?[0].primaryImageUrl ??
                         ""),
                   ),
                 ),
@@ -233,7 +231,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                       children: [
                         Text(
                           viewModel.orderDetail?.orderLineItems?[0]
-                                  .productName ??
+                              .productName ??
                               "",
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -246,7 +244,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                         ),
                         Text(
                           viewModel.orderDetail?.orderLineItems?[0]
-                                  .formattedUnitPrice ??
+                              .formattedUnitPrice ??
                               "",
                           style: AppTextStyle.labelLarge
                               .copyWith(color: AppColor.turtleGreen),
@@ -296,7 +294,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
           children: [
             Text(element.key!,
                 style:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.concord)),
+                AppTextStyle.bodyMedium.copyWith(color: AppColor.concord)),
             Text(element.value!, style: AppTextStyle.bodyMedium)
           ],
         ),
@@ -346,7 +344,7 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
           Expanded(
             child: Text(key,
                 style:
-                    AppTextStyle.bodyMedium.copyWith(color: AppColor.concord)),
+                AppTextStyle.bodyMedium.copyWith(color: AppColor.concord)),
           ),
           Expanded(child: Text(value, style: AppTextStyle.bodyMedium))
         ],
@@ -450,26 +448,26 @@ class OrderDetails extends VGTSBuilderWidget<OrderDetailsViewModel> {
                   child: Container(
                     child: viewModel.isExpanded
                         ? Text(
-                            text,
-                            style: AppTextStyle.bodyMedium,
-                          )
+                      text,
+                      style: AppTextStyle.bodyMedium,
+                    )
                         : Wrap(
-                            children: [
-                              Text(
-                                "${text.substring(0, 150)}...",
-                                style: AppTextStyle.bodyMedium,
-                              ),
-                              InkWell(
-                                  child: Text(
-                                    "Learn More",
-                                    style: AppTextStyle.bodyMedium
-                                        .copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                  onTap: () {
-                                    viewModel.isExpanded = true;
-                                  }),
-                            ],
-                          ),
+                      children: [
+                        Text(
+                          "${text.substring(0, 150)}...",
+                          style: AppTextStyle.bodyMedium,
+                        ),
+                        InkWell(
+                            child: Text(
+                              "Learn More",
+                              style: AppTextStyle.bodyMedium
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            onTap: () {
+                              viewModel.isExpanded = true;
+                            }),
+                      ],
+                    ),
                   ),
                 )
               ]),

@@ -79,13 +79,13 @@ class SelectCountryStateBottomSheet
                       children: [
                         Expanded(
                             child: Text(
-                          isCountry
-                              ? viewModel.countryList![index].text!
-                              : viewModel.stateList![index].text!,
-                          textScaleFactor: 1,
-                          style: AppTextStyle.bodyMedium,
-                          textAlign: TextAlign.start,
-                        )),
+                              isCountry
+                                  ? viewModel.countryList![index].text!
+                                  : viewModel.stateList![index].text!,
+                              textScaleFactor: 1,
+                              style: AppTextStyle.bodyMedium,
+                              textAlign: TextAlign.start,
+                            )),
                         if (isCountry
                             ? viewModel.countryList![index].selected!
                             : viewModel.stateList![index].selected!)

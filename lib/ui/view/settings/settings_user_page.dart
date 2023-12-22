@@ -27,11 +27,11 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
 
   @override
   Widget viewBuilder(
-    BuildContext context,
-    AppLocalizations locale,
-    SettingsUserViewModel viewModel,
-    Widget? child,
-  ) {
+      BuildContext context,
+      AppLocalizations locale,
+      SettingsUserViewModel viewModel,
+      Widget? child,
+      ) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.primary,
@@ -49,7 +49,6 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           style: AppTextStyle.titleLarge.copyWith(
             fontFamily: AppTextStyle.fontFamily,
           ),
-          textScaleFactor: 1,
         ),
       ),
       body: SingleChildScrollView(
@@ -113,8 +112,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                               .pushNamed(Routes.alerts, arguments: 1);
                         },
                         child: getTextsLayout(
-                          const Icon(CupertinoIcons.bell, size: 20),
-                          "Alert Me!",
+                          const Icon(Icons.attach_money, size: 20),
+                          "Price Alert",
                         ),
                       ),
                       const Divider(
@@ -126,8 +125,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                               .pushNamed(Routes.alerts, arguments: 2);
                         },
                         child: getTextsLayout(
-                          const Icon(Icons.attach_money, size: 20),
-                          "Price Alert",
+                          const Icon(CupertinoIcons.bell, size: 20),
+                          "Alert Me!",
                         ),
                       ),
                     ],
@@ -153,7 +152,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                       const Padding(
                         padding: EdgeInsets.only(bottom: 16.0),
                         child:
-                            Text('Activity', style: AppTextStyle.titleMedium),
+                        Text('Activity', style: AppTextStyle.titleMedium),
                       ),
                       getTextsLayout(
                         const Icon(FeatherIcons.search, size: 20),
@@ -258,9 +257,9 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   }
 
   Widget getFooterSection(
-    BuildContext context, {
-    bool isAuthenticated = false,
-  }) {
+      BuildContext context, {
+        bool isAuthenticated = false,
+      }) {
     return Container(
       color: AppColor.accountBg,
       width: double.infinity,
@@ -301,7 +300,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
             const Padding(
               padding: EdgeInsets.only(top: 24.0),
               child:
-                  Text('Hours of Operation', style: AppTextStyle.titleMedium),
+              Text('Hours of Operation', style: AppTextStyle.titleMedium),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
@@ -362,9 +361,9 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   }
 
   Widget getAccountWidget(
-    SettingsUserViewModel viewModel,
-    BuildContext context,
-  ) {
+      SettingsUserViewModel viewModel,
+      BuildContext context,
+      ) {
     return Stack(
       children: [
         Column(
@@ -498,22 +497,22 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: texts
           .map((text) => Padding(
-                padding: const EdgeInsets.only(bottom: 7.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('\u2022'),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        text,
-                        style: AppTextStyle.bodyMedium
-                            .copyWith(color: AppColor.secondaryText),
-                      ),
-                    ),
-                  ],
-                ),
-              ))
+        padding: const EdgeInsets.only(bottom: 7.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('\u2022'),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                text,
+                style: AppTextStyle.bodyMedium
+                    .copyWith(color: AppColor.secondaryText),
+              ),
+            ),
+          ],
+        ),
+      ))
           .toList(),
     );
   }
@@ -526,7 +525,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           Text(
             key,
             style:
-                AppTextStyle.bodyMedium.copyWith(color: AppColor.secondaryText),
+            AppTextStyle.bodyMedium.copyWith(color: AppColor.secondaryText),
           ),
           InkWell(
             onTap: () => launchAnUrl(contactValue.contains('@')

@@ -1,8 +1,10 @@
 import 'package:bullion/core/enums/order_status.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/staggered_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../../core/models/module/order.dart';
 import '../../core/res/colors.dart';
@@ -25,31 +27,36 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
 
   @override
   Widget viewBuilder(
-    BuildContext context,
-    AppLocalizations locale,
-    MyOrdersViewModel viewModel,
-    Widget? child,
-  ) {
+      BuildContext context,
+      AppLocalizations locale,
+      MyOrdersViewModel viewModel,
+      Widget? child,
+      ) {
     return viewModel.filteredList == null
         ? const Center(child: Text("No data available"))
-        : ListView.separated(
-            itemCount: viewModel.filteredList?.length ?? 0,
-            padding: const EdgeInsets.all(15),
-            separatorBuilder: (context, index) {
-              return VerticalSpacing.d10px();
-            },
-            itemBuilder: (context, index) {
-              return GestureDetector(
+        : AnimationLimiter(
+      child: ListView.separated(
+        itemCount: viewModel.filteredList?.length ?? 0,
+        padding: const EdgeInsets.all(15),
+        separatorBuilder: (context, index) {
+          return VerticalSpacing.d10px();
+        },
+        itemBuilder: (context, index) {
+          return StaggeredAnimation.staggeredList(
+              index: index,
+              child: GestureDetector(
                 onTap: () {
-                  locator<NavigationService>().pushNamed(Routes.myOrderDetails(
-                      viewModel.filteredList?[index].orderId));
+                  locator<NavigationService>().pushNamed(
+                      Routes.myOrderDetails(
+                          viewModel.filteredList?[index].orderId));
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: AppColor.border),
+                        border:
+                        Border.all(width: 1, color: AppColor.border),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
@@ -61,23 +68,24 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                               children: [
                                 //Receipt icon with decoration
                                 /*Container(
-                                    decoration: BoxDecoration(
-                                      color: AppColor.iconBG,
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    width: 56,
-                                    height: 56,
-                                    child: const Icon(
-                                      Icons.receipt_long_outlined,
-                                      size: 32,
-                                      color: AppColor.turtleGreen,
-                                    ),
-                                  ),*/
+                                            decoration: BoxDecoration(
+                                              color: AppColor.iconBG,
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            width: 56,
+                                            height: 56,
+                                            child: const Icon(
+                                              Icons.receipt_long_outlined,
+                                              size: 32,
+                                              color: AppColor.turtleGreen,
+                                            ),
+                                          ),*/
                                 Expanded(
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "#${viewModel.filteredList?[index].orderId}",
@@ -86,10 +94,10 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                       VerticalSpacing.d5px(),
                                       Text(
                                         viewModel.filteredList?[index]
-                                                .orderSummary?[2].value ??
+                                            .orderSummary?[2].value ??
                                             "",
-                                        style:
-                                            AppTextStyle.labelMedium.copyWith(
+                                        style: AppTextStyle.labelMedium
+                                            .copyWith(
                                           color: AppColor.blue,
                                         ),
                                       ),
@@ -120,9 +128,10 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                               children: [
                                 Expanded(
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         "Order Date",
@@ -130,9 +139,9 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                       ),
                                       Text(
                                         viewModel.getDayCode(viewModel
-                                                .filteredList?[index]
-                                                .orderSummary?[0]
-                                                .value) ??
+                                            .filteredList?[index]
+                                            .orderSummary?[0]
+                                            .value) ??
                                             "",
                                         style: AppTextStyle.labelLarge,
                                       )
@@ -141,15 +150,16 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                                 ),
                                 Expanded(
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       const Text("Payment Method",
                                           style: AppTextStyle.labelSmall),
                                       Text(
                                         viewModel.filteredList?[index]
-                                                .orderSummary?[3].value ??
+                                            .orderSummary?[3].value ??
                                             "",
                                         style: AppTextStyle.labelLarge,
                                         overflow: TextOverflow.ellipsis,
@@ -165,8 +175,9 @@ class MyOrdersPage extends VGTSBuilderWidget<MyOrdersViewModel> {
                     )
                   ],
                 ),
-              );
-            },
-          );
+              ));
+        },
+      ),
+    );
   }
 }
