@@ -33,6 +33,6 @@ class DashboardViewModel extends VGTSBaseViewModel {
       path: "/spot-prices",
     ),
     CartPage(),
-    const SettingsUserPage()
+    // const SettingsUserPage()
   ];
 }

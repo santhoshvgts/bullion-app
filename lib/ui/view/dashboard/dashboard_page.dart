@@ -77,15 +77,15 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
               navigatorKey: locator<NavigationService>().getBottomKeyByIndex(3),
             ),
           ),
-          _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.person),
-            inactiveIcon: const Icon(CupertinoIcons.person),
-            title: "Accounts",
-            routeAndNavigatorSettings: RouteAndNavigatorSettings(
-              initialRoute: "/pages/accounts",
-              navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),
-            ),
-          ),
+          // _PersistentBottomNav(
+          //   icon: const Icon(CupertinoIcons.person),
+          //   inactiveIcon: const Icon(CupertinoIcons.person),
+          //   title: "Accounts",
+          //   routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          //     initialRoute: "/pages/accounts",
+          //     navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),
+          //   ),
+          // ),
         ],
         padding: const NavBarPadding.all(4),
         hideNavigationBarWhenKeyboardShows: true,
