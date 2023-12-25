@@ -2,12 +2,10 @@ import 'package:bullion/core/constants/display_direction.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
-import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
-import 'package:bullion/ui/shared/contentful/dynamic/product/add_to_cart/add_to_cart.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/product/product_text_style.dart';
 import 'package:bullion/ui/shared/contentful/product/product_view_model.dart';
@@ -17,6 +15,12 @@ import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../../../helper/utils.dart';
+import '../../../../locator.dart';
+import '../../../../router.dart';
+import '../../../../services/authentication_service.dart';
+import '../../../../services/shared/navigator_service.dart';
 
 typedef ProductModuleCallBackTypDef(ModuleSettings? settings);
 
@@ -678,12 +682,17 @@ class _PriceSection extends ViewModelWidget<ProductViewModel> {
                         : double.infinity,
                     textStyle: AppTextStyle.titleLarge.copyWith(fontSize: 14),
                     borderColor: AppColor.primaryDark, onPressed: () async {
-                  // if (!locator<AuthenticationService>().isAuthenticated){
-                  //   bool authenticated = await signInRequest(Images.iconAlertBottom, title: "AlertMe!®", content: "Add you Item to Price Alert. Get live update of item availability.");
-                  //   if (!authenticated) return;
-                  // }
-                  //
-                  // await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: _item), showViewButton: true,));
+                  if (locator<AuthenticationService>().isAuthenticated){
+                    locator<NavigationService>()
+                        .pushNamed(Routes.editAlertMe,
+                        arguments: {
+                          "productId": _item.productId
+                        });
+                  } else {
+                    Util.showSnackBar(context, "Please login to create an Alert");
+                  }
+
+                  //await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: _item), showViewButton: true,));
                 })),
           )
         else

@@ -15,12 +15,13 @@ import 'edit_alert_me_view_model.dart';
 
 class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
   final ProductAlert? productAlert;
+  final int? productId;
 
-  const EditAlertMePage({super.key, this.productAlert});
+  const EditAlertMePage({super.key, this.productAlert, this.productId});
 
   @override
   void onViewModelReady(EditAlertMeViewModel viewModel) {
-    viewModel.init(productAlert);
+    viewModel.init(productAlert, productId);
     super.onViewModelReady(viewModel);
   }
 
@@ -63,6 +64,7 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
                                     "Quantity",
                                     viewModel.quantityFormFieldController,
                                     textStyle: AppTextStyle.titleLarge,
+                                    autoFocus: true,
                                   ),
                                 ),
                               ],
@@ -77,7 +79,7 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Button(
                 color: AppColor.turtleGreen,
-                "Update",
+                viewModel.isCreateAlertMe ? "Create" : "Update",
                 valueKey: const Key("btnUpdate"),
                 borderRadius: BorderRadius.circular(24),
                 onPressed: () async {
