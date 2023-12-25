@@ -1,7 +1,6 @@
 import '../../../core/constants/module_type.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
-import '../../../services/authentication_service.dart';
 import '../../../services/shared/eventbus_service.dart';
 import '../vgts_base_view_model.dart';
 
@@ -28,7 +27,7 @@ class SettingsUserViewModel extends VGTSBaseViewModel {
   }
 
   void initialize() {
-    _isAuthenticated = locator<AuthenticationService>().isAuthenticated;
+    _isAuthenticated = authenticationService!.isAuthenticated;
     notifyListeners();
   }
 
@@ -37,8 +36,8 @@ class SettingsUserViewModel extends VGTSBaseViewModel {
   Future<void> refreshData() async {
     //setState(ViewState.Busy);
 
-    if (locator<AuthenticationService>().isAuthenticated) {
-      await locator<AuthenticationService>().getUserInfo();
+    if (authenticationService!.isAuthenticated) {
+      await authenticationService!.getUserInfo();
     }
     notifyListeners();
 

@@ -256,6 +256,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => AddEditSpotPricePage(
             alertResponse: data?['alertResponse'],
+            metalName: data?['metalName'],
           ),
           settings: RouteSettings(name: settings.name),
         );
