@@ -15,12 +15,13 @@ import '../../../widgets/animated_flexible_space.dart';
 
 class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
   final ProductAlert? productAlert;
+  final int? productId;
 
-  const EditPriceAlertPage({super.key, this.productAlert});
+  const EditPriceAlertPage({super.key, this.productAlert, this.productId});
 
   @override
   void onViewModelReady(EditPriceAlertViewModel viewModel) {
-    viewModel.init(productAlert);
+    viewModel.init(productAlert, productId);
     super.onViewModelReady(viewModel);
   }
 
@@ -63,6 +64,7 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
                                     "Target Price",
                                     viewModel.targetPriceFormFieldController,
                                     textStyle: AppTextStyle.titleLarge,
+                                    autoFocus: true,
                                   ),
                                 ),
                               ],
@@ -77,7 +79,7 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Button(
                 color: AppColor.turtleGreen,
-                "Update",
+                viewModel.isCreatePriceAlert ? "Create" : "Update",
                 valueKey: const Key("btnUpdate"),
                 borderRadius: BorderRadius.circular(24),
                 onPressed: () async {

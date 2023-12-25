@@ -23,6 +23,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../../../helper/utils.dart';
+import '../../../../../services/authentication_service.dart';
 import '../../../../widgets/image_pagination_builder.dart';
 
 class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
@@ -121,7 +123,18 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          if (locator<AuthenticationService>()
+                              .isAuthenticated) {
+                            locator<NavigationService>()
+                                .pushNamed(Routes.editPriceAlert, arguments: {
+                              "productId": setting?.overview?.productId
+                            });
+                          } else {
+                            Util.showSnackBar(context,
+                                "Please login to create a Price Alert");
+                          }
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(

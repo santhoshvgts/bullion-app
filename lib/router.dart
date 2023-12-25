@@ -266,6 +266,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => EditPriceAlertPage(
             productAlert: data?['productAlert'],
+            productId: data?['productId'],
           ),
           settings: RouteSettings(name: settings.name),
         );
