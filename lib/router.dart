@@ -266,7 +266,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => EditPriceAlertPage(
             productAlert: data?['productAlert'],
-            productId: data?['productId'],
+            productDetails: data?['productDetails'],
           ),
           settings: RouteSettings(name: settings.name),
         );
@@ -276,7 +276,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => EditAlertMePage(
             productAlert: data?['productAlert'],
-            productId: data?['productId'],
+            productDetails: data?['productDetails'],
           ),
           settings: RouteSettings(name: settings.name),
         );

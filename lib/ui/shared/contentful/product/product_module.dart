@@ -686,7 +686,7 @@ class _PriceSection extends ViewModelWidget<ProductViewModel> {
                     locator<NavigationService>()
                         .pushNamed(Routes.editAlertMe,
                         arguments: {
-                          "productId": _item.productId
+                          "productDetails": _item
                         });
                   } else {
                     Util.showSnackBar(context, "Please login to create an Alert");

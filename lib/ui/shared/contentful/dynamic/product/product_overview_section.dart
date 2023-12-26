@@ -128,7 +128,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                               .isAuthenticated) {
                             locator<NavigationService>()
                                 .pushNamed(Routes.editPriceAlert, arguments: {
-                              "productId": setting?.overview?.productId
+                              "productDetails": setting?.overview
                             });
                           } else {
                             Util.showSnackBar(context,

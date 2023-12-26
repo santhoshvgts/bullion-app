@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
+import 'package:bullion/core/models/module/product_item.dart' as product_item;
 import 'package:bullion/services/api_request/alerts_request.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +20,10 @@ class EditPriceAlertViewModel extends VGTSBaseViewModel {
       NumberFormFieldController(const Key("targetPrice"),
           required: true, requiredText: "Target Price can't be empty");
 
-  void init(ProductAlert? productAlert, int? productId) async {
-    if (productId != null) {
+  void init(ProductAlert? productAlert, product_item.ProductOverview? productDetails) async {
+    if (productDetails?.productId != null) {
       _isCreatePriceAlert = true;
-      this.productId = productId;
+      productId = productDetails?.productId;
     } else {
       _isCreatePriceAlert = false;
       this.productAlert = productAlert;

@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
+import 'package:bullion/core/models/module/product_item.dart' as product_item;
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
@@ -15,13 +16,13 @@ import 'edit_alert_me_view_model.dart';
 
 class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
   final ProductAlert? productAlert;
-  final int? productId;
+  final product_item.ProductOverview? productDetails;
 
-  const EditAlertMePage({super.key, this.productAlert, this.productId});
+  const EditAlertMePage({super.key, this.productAlert, this.productDetails});
 
   @override
   void onViewModelReady(EditAlertMeViewModel viewModel) {
-    viewModel.init(productAlert, productId);
+    viewModel.init(productAlert, productDetails);
     super.onViewModelReady(viewModel);
   }
 
@@ -58,6 +59,43 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: AppColor.iconBG,
+                                        borderRadius:
+                                        BorderRadius.circular(8),
+                                      ),
+                                      width: 56,
+                                      height: 56,
+                                      child: Image.network(viewModel
+                                          .isCreateAlertMe
+                                          ? productDetails?.primaryImageUrl ?? ""
+                                          : productAlert?.productOverview
+                                          ?.primaryImageUrl ??
+                                          ""),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${viewModel.isCreateAlertMe ? productDetails?.name : productAlert?.productOverview?.name}",
+                                            style: AppTextStyle
+                                                .titleMedium,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 24),
                                 Form(
                                   key: viewModel.priceAlertGlobalKey,
                                   child: EditTextField(
