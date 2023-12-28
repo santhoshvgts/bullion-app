@@ -40,4 +40,7 @@ class Endpoints {
       "/product-alerts/save-product-alert?productId=<productId>&qty=<quantity>";
   static const removeAlertMe =
       "/product-alerts/remove-product-alert?productId=<productId>";
+
+  //Favorites
+  static const getFavorites = "/product-alerts/get-all-wish-lists";
 }
