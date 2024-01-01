@@ -43,4 +43,6 @@ class Endpoints {
 
   //Favorites
   static const getFavorites = "/product-alerts/get-all-wish-lists";
+  static const addFavorite = "/product-alerts/save-wish-list?productId=<productId>";
+  static const removeFavorite = "/product-alerts/remove-wish-list?productId=<productId>";
 }

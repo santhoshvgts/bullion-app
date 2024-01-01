@@ -7,4 +7,9 @@ class FavoritesRequest {
     return RequestSettings(Endpoints.getFavorites, RequestMethod.GET,
         params: null, authenticated: true);
   }
+
+  static RequestSettings addFavorite(String productId) {
+    return RequestSettings(Endpoints.addFavorite.replaceAll('<productId>', productId), RequestMethod.POST,
+        params: null, authenticated: true);
+  }
 }

@@ -94,21 +94,23 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                        viewModel.addAsFavorite(setting?.productId);
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: setting!.isInUserWishList! ? Colors.red : Colors.white,
                             border: Border.all(
                               color: AppColor.outlineBorder,
                               width: 0.5,
                             ),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             CupertinoIcons.heart,
                             size: 20,
-                            color: AppColor.outlineBorder,
+                            color: setting!.isInUserWishList! ? AppColor.white : AppColor.outlineBorder,
                           ),
                         ),
                       ),
