@@ -5,6 +5,11 @@ import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:flutter/src/widgets/framework.dart';
+
+import '../../../../../helper/utils.dart';
+import '../../../../../router.dart';
+import '../../../../../services/shared/navigator_service.dart';
 
 class ProductDetailViewModel extends VGTSBaseViewModel {
   ProductDetails? _productDetails;
@@ -62,4 +67,18 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
     locator<CartService>()
         .addItemToCart(_productDetails!.overview!.productId, 1);
   }
+
+  void priceAlert(ProductOverview? overview, BuildContext context) {
+    if (authenticationService!.isAuthenticated) {
+      locator<NavigationService>()
+          .pushNamed(Routes.editPriceAlert, arguments: {
+        "productDetails": overview
+      });
+    } else {
+      Util.showSnackBar(context,
+          "Please login to create a Price Alert");
+    }
+  }
+
+
 }

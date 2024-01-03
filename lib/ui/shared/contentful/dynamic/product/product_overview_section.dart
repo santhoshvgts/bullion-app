@@ -124,31 +124,22 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                     children: [
                       InkWell(
                         onTap: () {
-                          if (locator<AuthenticationService>()
-                              .isAuthenticated) {
-                            locator<NavigationService>()
-                                .pushNamed(Routes.editPriceAlert, arguments: {
-                              "productDetails": setting?.overview
-                            });
-                          } else {
-                            Util.showSnackBar(context,
-                                "Please login to create a Price Alert");
-                          }
+                          viewModel.priceAlert(setting?.overview, context);
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: setting!.isInUserPriceAlert! ? AppColor.orangePeel : Colors.white,
                             border: Border.all(
                               color: AppColor.outlineBorder,
                               width: 0.5,
                             ),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             CupertinoIcons.bell,
                             size: 20,
-                            color: AppColor.outlineBorder,
+                            color: setting!.isInUserPriceAlert! ? AppColor.white : AppColor.outlineBorder,
                           ),
                         ),
                       ),
