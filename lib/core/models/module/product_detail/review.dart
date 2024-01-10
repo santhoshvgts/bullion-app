@@ -19,7 +19,7 @@ class Reviews {
         this.formattedPostedDate});
 
   Reviews.fromJson(Map<String, dynamic> json) {
-    avgRatings = json['avg_ratings'];
+    avgRatings = double.tryParse((json['avg_ratings'].toString()));
     name = json['name'];
     rating = json['rating'];
     heading = json['heading'];
