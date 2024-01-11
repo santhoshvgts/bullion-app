@@ -217,7 +217,11 @@ class FavoritesPage extends VGTSBuilderWidget<FavoritesViewModel> {
                                                                 ),
                                                                 TextButton(
                                                                   onPressed:
-                                                                      () {},
+                                                                      () {
+                                                                    viewModel.removeFavorite(viewModel.favoritesResponse?[index].overview?.productId);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                      },
                                                                   child: const Text(
                                                                       'Delete'),
                                                                 ),

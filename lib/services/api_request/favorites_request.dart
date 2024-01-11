@@ -12,4 +12,9 @@ class FavoritesRequest {
     return RequestSettings(Endpoints.addFavorite.replaceAll('<productId>', productId), RequestMethod.POST,
         params: null, authenticated: true);
   }
+
+  static RequestSettings removeFavorite(String productId) {
+    return RequestSettings(Endpoints.removeFavorite.replaceAll('<productId>', productId), RequestMethod.POST,
+        params: null, authenticated: true);
+  }
 }

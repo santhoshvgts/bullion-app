@@ -18,4 +18,12 @@ class FavoritesViewModel extends VGTSBaseViewModel {
   }
 
   List<ProductDetails>? get favoritesResponse => _favoritesResponse;
+
+  Future<void> removeFavorite(int? productId) async {
+    setBusy(true);
+
+    await request<ProductDetails>(FavoritesRequest.removeFavorite(productId.toString()));
+
+    setBusy(false);
+  }
 }
