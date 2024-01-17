@@ -6,6 +6,7 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/page_storage_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/ui/shared/account_button.dart';
 import 'package:bullion/ui/shared/cart/cart_button.dart';
 import 'package:bullion/ui/shared/search_card_section.dart';
 import 'package:bullion/ui/view/core/content_wrapper.dart';
@@ -113,8 +114,8 @@ class DashboardContentPage extends StatelessWidget {
                                   bottom: 10.0,
                                 ),
                                 title: SearchCardSection(
-                                  rightPadding: 45 -
-                                      ((15 - 45) *
+                                  rightPadding: 60 -
+                                      ((15 - 55) *
                                           ((constraints.biggest.height - 80) /
                                               _appBarExtendedHeight!)),
                                 ),
@@ -137,13 +138,8 @@ class DashboardContentPage extends StatelessWidget {
                             },
                           ),
                         ),
-                        actions:  [
-                          IconButton(
-                              onPressed: (){
-                                locator<NavigationService>().pushNamed(Routes.settings);
-                              },
-                              icon: Image.asset(Images.accountIcon, width: 30,)
-                          )
+                        actions: const [
+                          AccountButton()
                         ],
                       );
                     })
@@ -186,7 +182,7 @@ class _AppBar extends PreferredSize {
                 statusBarIconBrightness: Brightness.dark,
                 statusBarColor: AppColor.white,
               ),
-              actions: const [CartButton.light()],
+              actions: const [ AccountButton() ],
             ));
 }
 
