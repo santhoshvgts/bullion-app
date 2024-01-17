@@ -5,6 +5,7 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
@@ -23,65 +24,75 @@ class CkPayment extends ViewModelWidget<CheckoutPageViewModel> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(padding: EdgeInsets.only(top: 10, left: 15), child: Text('Select Payment Options', style: AppTextStyle.titleMedium)),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8))),
-          child: Column(
-            children: [
-              ListView.separated(
-                shrinkWrap: true,
-                primary: false,
-                physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (context, index) => AppStyle.dottedDivider,
-                itemCount: visibleMethods?.length ?? 0,
-                itemBuilder: (context, index) {
-                  PaymentMethod payment = visibleMethods![index];
-                  return InkWell(
-                    onTap: () => viewModel.paymentSelection(payment),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: DottedBorder(
+            color: Colors.transparent,
+            borderType: BorderType.RRect,
+            radius: const Radius.circular(5),
+            padding: EdgeInsets.zero,
+            dashPattern: const [2, 2],
+            child: Container(
+              // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8))),
+              child: Column(
+                children: [
+                  ListView.separated(
+                    shrinkWrap: true,
+                    primary: false,
+                    physics: const NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) => AppStyle.dottedDivider,
+                    itemCount: visibleMethods?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      PaymentMethod payment = visibleMethods![index];
+                      return InkWell(
+                        onTap: () => viewModel.paymentSelection(payment),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              payment.icon == null ? Container() : Icon(viewModel.paymentFAIcon(payment.icon), color: AppColor.primary, size: 15),
-                              HorizontalSpacing.d20px(),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  Row(
+                                  payment.icon == null ? Container() : Icon(viewModel.paymentFAIcon(payment.icon), color: AppColor.turtleGreen, size: 15),
+                                  HorizontalSpacing.d20px(),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(payment.name ?? '', style: AppTextStyle.bodyMedium),
-                                      HorizontalSpacing.d5px(),
-                                      if (payment.isSelected == true) const Icon(FontAwesomeIcons.solidCircleCheck, size: 12, color: AppColor.primary)
+                                      Row(
+                                        children: [
+                                          Text(payment.name ?? '', style: AppTextStyle.bodyMedium),
+                                          HorizontalSpacing.d5px(),
+                                          if (payment.isSelected == true) const Icon(FontAwesomeIcons.solidCircleCheck, size: 12, color: AppColor.primary)
+                                        ],
+                                      ),
+                                      VerticalSpacing.d2px(),
+                                      Text(payment.shortDescription ?? '', style: AppTextStyle.bodySmall.copyWith(color: Colors.black54, fontSize: 11)),
                                     ],
                                   ),
-                                  VerticalSpacing.d2px(),
-                                  Text(payment.shortDescription ?? '', style: AppTextStyle.bodySmall.copyWith(color: Colors.black54, fontSize: 11)),
+                                  const Spacer(),
+                                  InkWell(
+                                    key: Key("cardPaymentItem${payment.paymentMethodId}"),
+                                    onTap: () => locator<DialogService>().showBottomSheet(title: payment.name, child: _PaymentSummaryHelpText(payment?.description)),
+                                    child: const Icon(
+                                      Icons.info_outline,
+                                      size: 18,
+                                      color: Colors.black45,
+                                    ),
+                                  ),
+                                  HorizontalSpacing.d10px(),
                                 ],
                               ),
-                              const Spacer(),
-                              InkWell(
-                                key: Key("cardPaymentItem${payment.paymentMethodId}"),
-                                onTap: () => locator<DialogService>().showBottomSheet(title: payment.name, child: _PaymentSummaryHelpText(payment?.description)),
-                                child: const Icon(
-                                  Icons.info_outline,
-                                  size: 18,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                              HorizontalSpacing.d10px(),
+                              _CreditCard(payment: payment),
                             ],
                           ),
-                          _CreditCard(payment: payment),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ],

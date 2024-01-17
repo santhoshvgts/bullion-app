@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bullion/core/res/colors.dart';
 
 import 'package:bullion/core/res/styles.dart';
@@ -8,8 +10,10 @@ import 'package:bullion/ui/view/checkout/widgets/ck_notes.dart';
 import 'package:bullion/ui/view/checkout/widgets/ck_order_summary.dart';
 import 'package:bullion/ui/view/checkout/widgets/ck_payment.dart';
 import 'package:bullion/ui/view/checkout/widgets/ck_place_order_button.dart';
+import 'package:bullion/ui/view/checkout/widgets/ck_shipping_option.dart';
 import 'package:bullion/ui/view/checkout/widgets/ck_timer.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
+import 'package:bullion/ui/widgets/loading_data.dart';
 import 'package:bullion/ui/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -39,14 +43,18 @@ class CheckoutPage extends VGTSBuilderWidget<CheckoutPageViewModel> {
         body: SingleChildScrollView(
             physics: const ScrollPhysics(parent: ClampingScrollPhysics()),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              viewModel.isBusy ? const SizedBox(height: 2, child: LinearProgressIndicator(valueColor: AlwaysStoppedAnimation(AppColor.primary))) : Container(),
-              viewModel.isBusy
-                  ? const LoadingShimmer()
-                  :  const Column(
+              //viewModel.isBusy ? ,
+             viewModel.isBusy
+                      ? LoadingData(
+                    loadingStyle: LoadingStyle.LOGO,
+                  )
+                  :
+
+                    const Column(
                       children: [
                         CkAddress(),
-                        CkPayment(),
-                      //  CkShippingOption(),
+                       CkPayment(),
+                      // CkShippingOption(),
                         CkOrderSummary(),
                         CkNotes(),
                       ],
@@ -59,14 +67,14 @@ class CheckoutPage extends VGTSBuilderWidget<CheckoutPageViewModel> {
         bottomNavigationBar: viewModel.isBusy
             ? const SizedBox()
             : Container(
-                padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+                padding:  EdgeInsets.only(top: 20, left: 15, right: 15,bottom: Platform.isAndroid ? 15 : 0),
                 width: double.infinity,
                 decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black12, offset: Offset(0, 2), blurRadius: 12)]),
                 child: SafeArea(
                   child: Wrap(
                     children: [
                       Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
+                          padding: const EdgeInsets.only(bottom: 15),
                           child: Center(
                               child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +88,7 @@ class CheckoutPage extends VGTSBuilderWidget<CheckoutPageViewModel> {
                                 style: AppTextStyle.labelSmall.copyWith(color: AppColor.primary, decoration: TextDecoration.underline),
                               ),
                             ],
-                          ))),
+                          ))), 
                       const CkPlaceOrderButton(),
                     ],
                   ),

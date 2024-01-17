@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:bullion/core/models/module/cart/display_message.dart';
 import 'package:bullion/core/models/module/cart/order_total_summary.dart';
 import 'package:bullion/core/models/module/checkout/checkout.dart';
 import 'package:bullion/core/models/module/checkout/payment_method.dart';
 import 'package:bullion/core/models/module/checkout/selected_payment_method.dart';
 import 'package:bullion/core/models/module/checkout/shipping_option.dart';
 import 'package:bullion/core/models/user_address.dart';
+import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
@@ -134,6 +136,42 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     checkout = await _apiBaseService.request<Checkout>(CheckOutRequest.saveShippingOption(shippingId: shippingOption.id, shipCharge: shippingOption.shipCharge));
     setBusy(false);
   }
+
+  //************************************/! ( paymentSelection )
+
+  // onDeliveryAddressSelection() async {
+  //   mounted = false;
+  //   var address = await navigationService.pushNamed(Routes.checkoutAddress);
+  //   mounted = true;
+
+  //   print("Address $address");
+
+  //   if (address == true) {
+  //     refreshPage();
+  //     return;
+  //   }
+
+  //   if (address != null) {
+  //     print("ADDRESS $address");
+  //     int? addressId;
+  //     bool? isCitadel;
+  //     String? citadelAccount;
+
+  //     if (address is UserAddress) {
+  //       addressId = address.id;
+  //       isCitadel = false;
+  //     } else if (address is String) {
+  //       addressId = 0;
+  //       isCitadel = true;
+  //       citadelAccount = address;
+  //     }
+
+  //     setBusy(true);
+  //     checkout = await _apiBaseService.request<Checkout>(CheckOutRequest.saveDeliveryAddress(addressId: addressId, isCitadel: isCitadel, citadelAccount: citadelAccount));
+
+  //     setBusy(false);
+  //   }
+  // }
 
   //************************************/! ( paymentSelection )
 
@@ -280,7 +318,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
 
   onDeliveryAddressSelection() async {
     mounted = false;
-    var address = await navigationService.pushNamed(Routes.checkoutAddress);
+    var address = await navigationService.pushNamed(Routes.address);
     mounted = true;
 
     debugPrint("Address $address");
@@ -319,7 +357,13 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
 
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (mounted && count <= 1) {
-          navigationService.pushReplacementNamed(Routes.viewCart, arguments: true);
+          navigationService.pop();
+
+          //! TODO : review cart 
+          // navigationService.pushReplacementNamed(Routes.viewCart,
+          //     arguments: DisplayMessage(
+          //       message: 'Cart expired',
+          //     ));
           timer.cancel();
           return;
         } else if (count <= 1) {
@@ -444,6 +488,37 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
         return FontAwesomeIcons.piggyBank;
       default:
         return FontAwesomeIcons.circle;
+    }
+  }
+
+  Color paymentFAIconColor(String? name) {
+    switch (name) {
+      case "fa fa-exchange-alt":
+        return AppColor.green;
+      case "fa fa-credit-card":
+        return AppColor.green;
+      case "fab fa-paypal":
+        return const Color(0xFF023087);
+      case "fa fa-university":
+        return AppColor.green;
+      case "fab fa-cc-visa":
+        return AppColor.green;
+      case "fab fa-cc-mastercard":
+        return AppColor.green;
+      case "fa fa-money-check":
+        return AppColor.green;
+      case "fa fa-wallet":
+        return AppColor.green;
+      case "fa fa-chart-line":
+        return AppColor.green;
+      case "fa fa-newspaper":
+        return AppColor.green;
+      case "fab fa-bitcoin":
+        return const Color(0xFF022147);
+      case "fa fa-piggy-bank":
+        return AppColor.green;
+      default:
+        return AppColor.green;
     }
   }
 }
