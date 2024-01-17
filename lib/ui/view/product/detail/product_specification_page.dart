@@ -48,37 +48,41 @@ class SpecificationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Text(
-            data.key!,
-            textScaleFactor: 1,
-            style: AppTextStyle.bodyMedium,
-          ),
-          if (data.keyHelpText!.isNotEmpty)
-            InkWell(
-              onTap: () {
-                // TODO - Volume Discount
-                // locator<DialogService>().showBottomSheet(title: data.key, child: VolumeInfoBottomSheet(data.keyHelpText));
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Icon(
-                  Icons.info_outline,
-                  size: 16,
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          children: [
+            Text(
+              data.key!,
+              textScaleFactor: 1,
+              style: AppTextStyle.bodyMedium,
+            ),
+            if (data.keyHelpText!.isNotEmpty)
+              InkWell(
+                onTap: () {
+                  // TODO - Volume Discount
+                  // locator<DialogService>().showBottomSheet(title: data.key, child: VolumeInfoBottomSheet(data.keyHelpText));
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Icon(
+                    Icons.info_outline,
+                    size: 16,
+                  ),
                 ),
               ),
-            ),
-          Expanded(
-              child: Text(
-            data.value!,
-            textScaleFactor: 1,
-            style:
-                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w600),
-            textAlign: TextAlign.right,
-          )),
-        ],
+            Expanded(
+                child: Text(
+              data.value!,
+              textScaleFactor: 1,
+              style:
+                  AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              textAlign: TextAlign.right,
+            )),
+          ],
+        ),
       ),
     );
   }

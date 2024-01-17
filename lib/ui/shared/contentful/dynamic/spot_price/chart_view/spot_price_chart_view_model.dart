@@ -9,6 +9,8 @@ import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/services/chart/spotprice_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 
+import '../../../../../../router.dart';
+
 class SpotPriceChartViewModel extends VGTSBaseViewModel {
   bool? _mounted;
   SpotPrice? _spotPriceChartData;
@@ -123,6 +125,15 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
       trackedSpotController
           .add(ChartSelectionInfoModel.fromSpotPrice(_spotPriceChartData!));
     }
+  }
+
+  createSpotPrice() {
+    if (authenticationService!.isAuthenticated) {
+      navigationService.pushNamed(Routes.editSpotPrice,
+          arguments: {"metalName": spotPriceChartData?.metalName});
+      return true;
+    }
+    return false;
   }
 
   onCreateSpotPriceClick() async {

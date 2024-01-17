@@ -1,6 +1,7 @@
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_section.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/search/trending_section.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_chart_view.dart';
@@ -60,8 +61,8 @@ class DynamicItem extends StatelessWidget {
         return ProductOverviewSection(
             pageSettings!.productDetails, pageSettings!.slug);
 
-      // case DynamicType.productDetail:
-      //   return ProductDetailSection(pageSettings!.productDetails);
+      case DynamicType.productDetail:
+        return ProductDetailSection(pageSettings!.productDetails);
 
       // case DynamicType.marketNews:
       //   return MarketNewsList(setting!.dynamicItemData,metalName: metalName,);

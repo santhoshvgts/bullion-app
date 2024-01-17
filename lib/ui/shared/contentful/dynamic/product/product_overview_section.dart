@@ -1,6 +1,7 @@
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_detail/product_price.dart';
+import 'package:bullion/core/models/module/product_detail/product_variant.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
@@ -23,6 +24,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../../../helper/utils.dart';
+import '../../../../../services/authentication_service.dart';
 import '../../../../widgets/image_pagination_builder.dart';
 
 class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
@@ -59,7 +62,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
             child: Stack(
               children: [
                 _ImageList(
-                  viewModel.productDetails?.productPictures ??
+                  viewModel.productDetails?.productPictures?.map((e) => e.imageUrl ?? '').toList() ??
                       [viewModel.productDetails!.overview!.primaryImageUrl!],
                 ),
                 if (viewModel
@@ -94,21 +97,23 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                        viewModel.addAsFavorite(setting?.productId);
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: setting!.isInUserWishList! ? Colors.red : Colors.white,
                             border: Border.all(
                               color: AppColor.outlineBorder,
                               width: 0.5,
                             ),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             CupertinoIcons.heart,
                             size: 20,
-                            color: AppColor.outlineBorder,
+                            color: setting!.isInUserWishList! ? AppColor.white : AppColor.outlineBorder,
                           ),
                         ),
                       ),
@@ -121,21 +126,23 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          viewModel.priceAlert(setting?.overview, context);
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: setting!.isInUserPriceAlert! ? AppColor.orangePeel : Colors.white,
                             border: Border.all(
                               color: AppColor.outlineBorder,
                               width: 0.5,
                             ),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             CupertinoIcons.bell,
                             size: 20,
-                            color: AppColor.outlineBorder,
+                            color: setting!.isInUserPriceAlert! ? AppColor.white : AppColor.outlineBorder,
                           ),
                         ),
                       ),
@@ -156,7 +163,8 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
             _VolumePricing(),
           if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
             _CoinGradeSpecification(),
-          Padding(
+          Container(
+            color: AppColor.secondaryBackground,
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Button(
               "Add To Cart",
@@ -169,6 +177,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
               },
             ),
           ),
+
         ],
       ),
     );
@@ -349,8 +358,8 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
             _PriceInfo()
           else
             _AlertText(),
-          VerticalSpacing.d20px(),
-          _ShippingInfoCard(),
+          // VerticalSpacing.d20px(),
+          // _ShippingInfoCard(),
           VerticalSpacing.d10px(),
           _VariationSelection(),
         ],
@@ -430,7 +439,7 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-        color: AppColor.white,
+        color: AppColor.secondaryBackground,
         margin: const EdgeInsets.only(
           top: 10.0,
         ),
@@ -469,7 +478,7 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                   spacing: 7,
                   children: [
                     ...viewModel.productDetails?.volumePricing?.first
-                            ?.productPricesByPaymentType
+                        .productPricesByPaymentType
                             ?.map((e) {
                           return ChipItem(
                             text: e.name ?? '-',
@@ -494,66 +503,56 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...viewModel.productDetails?.volumePricing
-                            ?.map((volumePricing) {
+                    ...viewModel.productDetails?.volumePricing?.asMap()
+                            .map((index, volumePricing) {
                           ProductPricesByPaymentType? pricing = volumePricing
-                              ?.productPricesByPaymentType
+                              .productPricesByPaymentType
                               ?.firstWhere((element) =>
                                   element.name ==
                                   viewModel.selectedPaymentType?.name);
 
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: _VolumeDiscountCard(
-                              title: volumePricing?.tier ?? '-',
-                              price: pricing?.formattedPrice ?? "-",
-                              strikeThrough: viewModel
-                                  .selectedVolumePricing!.strikeThroughEnabled!,
-                              selected: viewModel.selectedVolumePricing ==
-                                  volumePricing,
-                              onTap: () {
-                                viewModel.selectedVolumePricing = volumePricing;
-                              },
+                          return MapEntry(
+                            index,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: _VolumeDiscountCard(
+                                title: volumePricing.tier ?? '-',
+                                price: pricing?.formattedPrice ?? "-",
+                                strikeThrough: viewModel
+                                    .selectedVolumePricing!.strikeThroughEnabled!,
+                                selected: viewModel.selectedVolumePricing ==
+                                    volumePricing,
+                                offerText: index == 0 ? "" : pricing?.formattedPriceSavings ?? '',
+                                onTap: () {
+                                  viewModel.selectedVolumePricing = volumePricing;
+                                },
+                              ),
                             ),
                           );
-                        }).toList() ??
+                        }).values.toList() ??
                         []
                   ],
                 ),
               ),
             ),
 
-            // Container(
-            //   margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            //   width: double.infinity,
-            //   height: 100,
-            //   child: ListView.separated(
-            //     primary: false,
-            //     shrinkWrap: true,
-            //     itemCount: viewModel.productDetails?.volumePricing?.length ?? 0,
-            //     padding: const EdgeInsets.symmetric(vertical: 10),
-            //     scrollDirection: Axis.horizontal,
-            //     separatorBuilder: (context, index) {
-            //       return Container();
-            //     },
-            //     itemBuilder: (context, index) {
-            //       VolumePricing? volumePricing =
-            //           viewModel.productDetails?.volumePricing?[index];
-            //
-            //       ProductPricesByPaymentType? pricing = volumePricing
-            //           ?.productPricesByPaymentType
-            //           ?.firstWhere((element) =>
-            //               element.name == viewModel.selectedPaymentType?.name);
-            //
-            //       return _VolumeDiscountCard(
-            //         title: volumePricing?.tier ?? '-',
-            //         price: pricing?.formattedPrice ?? "-",
-            //         strikeThrough:
-            //             viewModel.selectedVolumePricing!.strikeThroughEnabled!,
-            //       );
-            //     },
-            //   ),
-            // ),
+            if (viewModel.productOverview?.orderMin?.toString().isNotEmpty == true)
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColor.primary.withOpacity(0.05),
+                  border: Border.all(color: AppColor.primary),
+                  borderRadius: BorderRadius.circular(5)
+                ),
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                alignment: Alignment.center,
+                child: Text(
+                    "Min Qty of ${viewModel.productOverview?.orderMin?.toString() ?? ''} is required for purchase.",
+                  style: AppTextStyle.labelMedium.copyWith(color: AppColor.primary),
+                ),
+              ),
+
           ],
         ));
   }
@@ -587,10 +586,10 @@ class _VolumeDiscountCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColor.primary.withOpacity(0.05),
+          color: AppColor.white,
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: AppColor.primary,
+            color: AppColor.border
           ),
         ),
         width: MediaQuery.of(context).size.width / 3.5,
@@ -620,154 +619,16 @@ class _VolumeDiscountCard extends StatelessWidget {
                       strikeThrough ? TextDecoration.lineThrough : null),
               textAlign: TextAlign.center,
             ),
-            // if (offerText?.isNotEmpty == true) Text(offerText!),
+
+            VerticalSpacing.d2px(),
+
+            Text((offerText?.isEmpty == true) ? "" : "Save ${offerText!}", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.offerText),),
           ],
         ),
       ),
     );
   }
 }
-
-// BK - Payment Top and Qty Second
-// class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
-//   @override
-//   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-//     return Container(
-//         color: AppColor.white,
-//         margin: const EdgeInsets.only(
-//           top: 10.0,
-//         ),
-//         child: Column(
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//                   const Text(
-//                     "Volume Discount Pricing",
-//                     textScaleFactor: 1,
-//                     style: AppTextStyle.titleLarge
-//                   ),
-//                   HorizontalSpacing.d5px(),
-//                   InkWell(
-//                       onTap: () {},
-//                       child: const Padding(
-//                         padding: EdgeInsets.only(top: 3.0),
-//                         child: Icon(
-//                           Icons.info_outline,
-//                           size: 20,
-//                         ),
-//                       ))
-//                 ],
-//               ),
-//             ),
-//             SizedBox(
-//               width: double.infinity,
-//               child: SingleChildScrollView(
-//                 scrollDirection: Axis.horizontal,
-//                 padding: const EdgeInsets.symmetric(horizontal: 15),
-//                 child: Wrap(
-//                   spacing: 7,
-//                   children: [
-//                     ...viewModel.productDetails?.volumePricing?.firstOrNull
-//                             ?.productPricesByPaymentType
-//                             ?.map((e) {
-//                           return ChipItem(
-//                             text: e.name ?? '-',
-//                             onTap: () {
-//                               viewModel.selectedPaymentType = e;
-//                             },
-//                             isSelected: viewModel.selectedPaymentType == e,
-//                           );
-//                         }).toList() ??
-//                         []
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             Container(
-//               decoration: BoxDecoration(
-//                 color: AppColor.primary.withOpacity(0.05),
-//                 borderRadius: BorderRadius.circular(5),
-//                 border: Border.all(color: AppColor.primary),
-//               ),
-//               margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-//               width: double.infinity,
-//               child: ListView.separated(
-//                 primary: false,
-//                 shrinkWrap: true,
-//                 itemCount: viewModel.productDetails?.volumePricing?.length ?? 0,
-//                 padding: const EdgeInsets.symmetric(vertical: 10),
-//                 separatorBuilder: (context, index) {
-//                   return AppStyle.customDivider;
-//                 },
-//                 itemBuilder: (context, index) {
-//                   VolumePricing pricing =
-//                       viewModel.productDetails!.volumePricing![index];
-//
-//                   String price = pricing.productPricesByPaymentType
-//                           ?.firstWhere((element) =>
-//                               element.name ==
-//                               viewModel.selectedPaymentType?.name)
-//                           ?.formattedPrice ??
-//                       '-';
-//
-//                   return _VolumeDiscountCard(
-//                     title: pricing.tier ?? '-',
-//                     price: price,
-//                     strikeThrough: pricing.strikeThroughEnabled!,
-//                   );
-//                 },
-//               ),
-//             ),
-//           ],
-//         ));
-//   }
-// }
-
-// class _VolumeDiscountCard extends StatelessWidget {
-//   String title;
-//   String price;
-//   String? offerText;
-//   bool strikeThrough;
-//
-//   _VolumeDiscountCard({
-//     required this.title,
-//     required this.price,
-//     required this.strikeThrough,
-//     this.offerText,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.symmetric(horizontal: 10),
-//       width: double.infinity,
-//       child: Row(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(
-//             title,
-//             style: AppTextStyle.titleMedium.copyWith(
-//                 fontWeight: FontWeight.w500,
-//                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
-//           ),
-//           VerticalSpacing.d5px(),
-//           Text(
-//             price,
-//             style: AppTextStyle.titleMedium.copyWith(
-//                 fontWeight: FontWeight.w500,
-//                 decoration: strikeThrough ? TextDecoration.lineThrough : null),
-//             textAlign: TextAlign.center,
-//           ),
-//           // if (offerText?.isNotEmpty == true) Text(offerText!),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 class _CoinGradeSpecification extends ViewModelWidget<ProductDetailViewModel> {
   @override
@@ -895,6 +756,11 @@ class _AlertText extends ViewModelWidget<ProductDetailViewModel> {
 class _ShippingInfoCard extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+
+    if (viewModel.productOverview?.quickShip != true) {
+      return const SizedBox();
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12),
       decoration: BoxDecoration(
@@ -930,76 +796,74 @@ class _ShippingInfoCard extends ViewModelWidget<ProductDetailViewModel> {
 class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
       width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Weight",
-            style:
-                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
-          ),
-          VerticalSpacing.d10px(),
-          Wrap(
-            spacing: 5,
+      child: ListView.separated(
+        primary: false,
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        itemCount: viewModel.productDetails?.productVariants?.length ?? 0,
+        separatorBuilder: (context, index) {
+          ProductVariant variant = viewModel.productDetails!.productVariants![index];
+          if (variant.options!.length <= 1) {
+            return const SizedBox();
+          }
+          return VerticalSpacing.d20px();
+        },
+        itemBuilder: (context, index) {
+          ProductVariant variant = viewModel.productDetails!.productVariants![index];
+
+          if (variant.options!.length <= 1) {
+            return const SizedBox();
+          }
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...["1 oz", "1/2 oz", "1/4 oz", "1/10 oz"]
-                  .map((e) => Container(
+              Text(
+                variant.variantGroupName ?? '',
+                style:
+                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
+              ),
+              VerticalSpacing.d10px(),
+              Wrap(
+                spacing: 5,
+                children: [
+                  ...variant.options?.asMap().map((index, option) => MapEntry(
+                    index,
+                    InkWell(
+                      onTap: () {
+
+                      },
+                      child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 5),
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: option.isSelected!
+                                ? AppColor.primary.withOpacity(0.05) : Colors.white,
                             borderRadius: BorderRadius.circular(100),
                             border: Border.all(
-                              color: e == "1 oz"
+                              color: option.isSelected!
                                   ? AppColor.primary
                                   : AppColor.border,
                             )),
                         child: Text(
-                          e,
+                          option.variantOptionName ?? '',
                           style: AppTextStyle.bodyMedium.copyWith(
-                            color: AppColor.text,
+                            color: option.isSelected! ? AppColor.primary : AppColor.text,
+                            fontWeight:  option.isSelected! ? FontWeight.w500 : null
                           ),
                         ),
-                      ))
-                  .toList()
+                      ),
+                    ),
+                  )).values.toList() ?? []
+                ],
+              ),
             ],
-          ),
-          VerticalSpacing.d15px(),
-          Text(
-            "Year",
-            style:
-                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
-          ),
-          VerticalSpacing.d10px(),
-          Wrap(
-            spacing: 5,
-            children: [
-              ...["Random", "2023"]
-                  .map((e) => Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              color: e == "Random"
-                                  ? AppColor.primary
-                                  : AppColor.border,
-                            )),
-                        child: Text(
-                          e,
-                          style: AppTextStyle.bodyMedium.copyWith(
-                            color: AppColor.text,
-                          ),
-                        ),
-                      ))
-                  .toList()
-            ],
-          ),
-        ],
+          );
+        }
       ),
     );
   }

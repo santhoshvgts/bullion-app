@@ -1,18 +1,20 @@
 import 'package:bullion/core/models/chart/chart_selection_info.dart';
-import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_chart_view_model.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class SpotPriceHeader extends StatelessWidget {
-  final SpotPrice spotPrice;
-  final ChartSelectionInfoModel _mySpotPrice;
+import '../../../../../../helper/utils.dart';
 
-  SpotPriceHeader(this.spotPrice, this._mySpotPrice);
+class SpotPriceHeader extends StatelessWidget {
+  final ChartSelectionInfoModel _mySpotPrice;
+  final SpotPriceChartViewModel _viewModel;
+
+  const SpotPriceHeader(this._viewModel, this._mySpotPrice, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +125,10 @@ class SpotPriceHeader extends StatelessWidget {
                       AppTextStyle.labelSmall.copyWith(color: AppColor.primary),
                   height: 35,
                   valueKey: const ValueKey("btnAlert"),
-                  onPressed: () {},
+                  onPressed: () {
+                    bool isAuthenticated = _viewModel.createSpotPrice();
+                    if(!isAuthenticated) Util.showSnackBar(context, "Please login to create an Alert");
+                  },
                 ),
               ),
 
@@ -162,7 +167,7 @@ class SpotPriceHeader extends StatelessWidget {
                       style: AppTextStyle.labelMedium,
                     ),
                     Text(
-                      spotPrice.formattedBid ?? '',
+                      _viewModel.spotPriceChartData?.formattedBid ?? '',
                       textScaleFactor: 1,
                       style: AppTextStyle.bodyLarge,
                     ),
@@ -179,7 +184,7 @@ class SpotPriceHeader extends StatelessWidget {
                       style: AppTextStyle.labelMedium,
                     ),
                     Text(
-                      spotPrice.formattedAsk ?? '',
+                      _viewModel.spotPriceChartData?.formattedAsk ?? '',
                       textScaleFactor: 1,
                       style: AppTextStyle.bodyLarge,
                     ),

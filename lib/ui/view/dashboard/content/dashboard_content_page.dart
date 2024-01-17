@@ -137,8 +137,13 @@ class DashboardContentPage extends StatelessWidget {
                             },
                           ),
                         ),
-                        actions: const [
-                          CartButton.light(),
+                        actions:  [
+                          IconButton(
+                              onPressed: (){
+                                locator<NavigationService>().pushNamed(Routes.settings);
+                              },
+                              icon: Image.asset(Images.accountIcon, width: 30,)
+                          )
                         ],
                       );
                     })

@@ -2,12 +2,10 @@ import 'package:bullion/core/constants/display_direction.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
-import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
-import 'package:bullion/ui/shared/contentful/dynamic/product/add_to_cart/add_to_cart.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/product/product_text_style.dart';
 import 'package:bullion/ui/shared/contentful/product/product_view_model.dart';
@@ -17,6 +15,12 @@ import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../../../helper/utils.dart';
+import '../../../../locator.dart';
+import '../../../../router.dart';
+import '../../../../services/authentication_service.dart';
+import '../../../../services/shared/navigator_service.dart';
 
 typedef ProductModuleCallBackTypDef(ModuleSettings? settings);
 
@@ -222,7 +226,6 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
     double _itemWidth = viewModel.itemWidth(context);
-
     return InkWell(
       key: Key("actionProduct${_item.productId}"),
       onTap: () => viewModel.onItemTap(_item),
@@ -298,8 +301,47 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: _PriceSection(_item, Alignment.centerLeft),
-            )
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _PriceSection(_item, Alignment.centerLeft),
+
+
+                  if (_item.showDealProgress)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      VerticalSpacing.d10px(),
+
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: LinearProgressIndicator(
+                          value: _item.soldPercentage,
+                        ),
+                      ),
+
+                      VerticalSpacing.d2px(),
+
+                      Text("${(_item.soldPercentage * 100).round()}% Sold", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+
+                      VerticalSpacing.d5px(),
+
+                      Text("Only ${_item.onHand} left", textScaleFactor: 1, style: AppTextStyle.labelMedium.copyWith(
+                          color: AppColor.dealsRed,
+                          fontWeight: FontWeight.w600
+                      ),),
+
+                      VerticalSpacing.custom(value: 7),
+
+                      Text("Ends in 1d 21h 30m", style: AppTextStyle.bodySmall.copyWith(
+                          color: AppColor.dealsRed
+                      ),),
+                    ],
+                  )
+                ],
+              ),
+            ),
+
           ],
         ),
       ),
@@ -678,12 +720,17 @@ class _PriceSection extends ViewModelWidget<ProductViewModel> {
                         : double.infinity,
                     textStyle: AppTextStyle.titleLarge.copyWith(fontSize: 14),
                     borderColor: AppColor.primaryDark, onPressed: () async {
-                  // if (!locator<AuthenticationService>().isAuthenticated){
-                  //   bool authenticated = await signInRequest(Images.iconAlertBottom, title: "AlertMe!®", content: "Add you Item to Price Alert. Get live update of item availability.");
-                  //   if (!authenticated) return;
-                  // }
-                  //
-                  // await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: _item), showViewButton: true,));
+                  if (locator<AuthenticationService>().isAuthenticated){
+                    locator<NavigationService>()
+                        .pushNamed(Routes.editAlertMe,
+                        arguments: {
+                          "productDetails": _item
+                        });
+                  } else {
+                    Util.showSnackBar(context, "Please login to create an Alert");
+                  }
+
+                  //await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: _item), showViewButton: true,));
                 })),
           )
         else

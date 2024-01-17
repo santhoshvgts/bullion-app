@@ -228,32 +228,32 @@ class AlertMePage extends VGTSBuilderWidget<AlertsViewModel> {
                     ),
                   )
                 : Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height / 1.5,
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          Images.cartIcon,
-                          width: 150,
-                        ),
-                        const SizedBox(height: 32.0),
-                        const Text(
-                          "Price alerts are empty",
-                          textAlign: TextAlign.center,
-                          style: AppTextStyle.titleLarge,
-                        ),
-                        const SizedBox(height: 16.0),
-                        const Text(
-                          "Our price notification tool makes it easy to know when a product has reached your ideal price for purchase. You can manage your price alerts on this page. We will send you an email and/or SMS when the product has reached your price alert set price. Sign up to be notified for price alerts by clicking the bell icon on a product page.",
-                          textAlign: TextAlign.center,
-                          style: AppTextStyle.bodySmall,
-                        ),
-                      ],
-                    ),
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height / 1.5,
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    Images.cartIcon,
+                    width: 150,
                   ),
+                  const SizedBox(height: 32.0),
+                  const Text(
+                    "No Alerts found",
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.titleLarge,
+                  ),
+                  const SizedBox(height: 16.0),
+                  const Text(
+                    "You can manage your product back-in-stock notifications on this page. We will send you an email and/or SMS when the product is available to purchase. Sign up to be notified when a product comes back in-stock by clicking the “Notify Me” button on a product page.",
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.bodySmall,
+                  ),
+                ],
+              ),
+            )
           );
   }
 

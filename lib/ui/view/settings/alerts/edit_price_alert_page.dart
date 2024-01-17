@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
+import 'package:bullion/core/models/module/product_item.dart' as product_item;
 import 'package:bullion/ui/view/settings/alerts/edit_price_alert_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -15,12 +16,13 @@ import '../../../widgets/animated_flexible_space.dart';
 
 class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
   final ProductAlert? productAlert;
+  final product_item.ProductOverview? productDetails;
 
-  const EditPriceAlertPage({super.key, this.productAlert});
+  const EditPriceAlertPage({super.key, this.productAlert, this.productDetails});
 
   @override
   void onViewModelReady(EditPriceAlertViewModel viewModel) {
-    viewModel.init(productAlert);
+    viewModel.init(productAlert, productDetails);
     super.onViewModelReady(viewModel);
   }
 
@@ -49,26 +51,69 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
                   ? LoadingData(
                       loadingStyle: LoadingStyle.LOGO,
                     )
-                      : SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 8),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                  : SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
-                                Form(
-                                  key: viewModel.priceAlertGlobalKey,
-                                  child: EditTextField(
-                                    "Target Price",
-                                    viewModel.targetPriceFormFieldController,
-                                    textStyle: AppTextStyle.titleLarge,
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColor.iconBG,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  width: 56,
+                                  height: 56,
+                                  child: Image.network(viewModel
+                                          .isCreatePriceAlert
+                                      ? productDetails?.primaryImageUrl ?? ""
+                                      : productAlert?.productOverview
+                                              ?.primaryImageUrl ??
+                                          ""),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${viewModel.isCreatePriceAlert ? productDetails?.name : productAlert?.productOverview?.name}",
+                                        style: AppTextStyle.titleMedium,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "${viewModel.isCreatePriceAlert ? productDetails?.pricing?.formattedNewPrice.toString() : productAlert?.productOverview?.pricing?.formattedNewPrice.toString()}",
+                                            style: AppTextStyle.titleLarge,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
+                            const SizedBox(height: 24),
+                            Form(
+                              key: viewModel.priceAlertGlobalKey,
+                              child: EditTextField(
+                                "Target Price",
+                                viewModel.targetPriceFormFieldController,
+                                textStyle: AppTextStyle.titleLarge,
+                                autoFocus: true,
+                              ),
+                            ),
+                          ],
                         ),
+                      ),
+                    ),
             )
           ],
         )),
@@ -77,12 +122,11 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Button(
                 color: AppColor.turtleGreen,
-                "Update",
+                viewModel.isCreatePriceAlert ? "Create" : "Update",
                 valueKey: const Key("btnUpdate"),
                 borderRadius: BorderRadius.circular(24),
                 onPressed: () async {
-                  if (viewModel.priceAlertGlobalKey.currentState!
-                      .validate()) {
+                  if (viewModel.priceAlertGlobalKey.currentState!.validate()) {
                     bool result = await viewModel.editMarketAlert();
                     if (result) {
                       Util.showSnackBar(context, "Submitted successfully");
