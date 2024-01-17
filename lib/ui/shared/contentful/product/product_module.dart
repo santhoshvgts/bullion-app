@@ -16,6 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../../helper/utils.dart';
+import '../../../../locator.dart';
+import '../../../../router.dart';
+import '../../../../services/authentication_service.dart';
+import '../../../../services/shared/navigator_service.dart';
+
 typedef ProductModuleCallBackTypDef(ModuleSettings? settings);
 
 class ProductModuleController {
@@ -714,12 +720,17 @@ class _PriceSection extends ViewModelWidget<ProductViewModel> {
                         : double.infinity,
                     textStyle: AppTextStyle.titleLarge.copyWith(fontSize: 14),
                     borderColor: AppColor.primaryDark, onPressed: () async {
-                  // if (!locator<AuthenticationService>().isAuthenticated){
-                  //   bool authenticated = await signInRequest(Images.iconAlertBottom, title: "AlertMe!®", content: "Add you Item to Price Alert. Get live update of item availability.");
-                  //   if (!authenticated) return;
-                  // }
-                  //
-                  // await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: _item), showViewButton: true,));
+                  if (locator<AuthenticationService>().isAuthenticated){
+                    locator<NavigationService>()
+                        .pushNamed(Routes.editAlertMe,
+                        arguments: {
+                          "productDetails": _item
+                        });
+                  } else {
+                    Util.showSnackBar(context, "Please login to create an Alert");
+                  }
+
+                  //await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: _item), showViewButton: true,));
                 })),
           )
         else

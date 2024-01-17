@@ -73,12 +73,22 @@ class Pricing {
   String? badgeText;
   double? oldPrice;
   double? newPrice;
+  String? formattedOldPrice;
+  String? formattedNewPrice;
+  bool? strikeThroughEnabled;
+  String? currency;
 
   Pricing fromJson(json) => Pricing.fromJson(json);
 
   Pricing.fromJson(Map<String, dynamic> json) {
       productId  = json['product_id'];
       discountText  = json['discount_text'];
+      badgeText = json['badge_text'];
+      oldPrice = double.parse(json['old_price'].toString());
       newPrice  = json['new_price'];
+      formattedOldPrice = json['formatted_old_price'];
+      formattedNewPrice = json['formatted_new_price'];
+      strikeThroughEnabled = json['strike_through_enabled'];
+      currency = json['currency'];
   }
 }

@@ -6,6 +6,7 @@ import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import '../../locator.dart';
+import '../../services/authentication_service.dart';
 import '../../services/shared/api_base_service.dart';
 import '../../services/shared/api_model/error_response_exception.dart';
 import '../../services/shared/api_model/no_response_exception.dart';

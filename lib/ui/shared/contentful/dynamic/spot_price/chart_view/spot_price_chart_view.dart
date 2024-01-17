@@ -46,8 +46,7 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
               stream: viewModel.trackedSpotController.stream,
               initialData: viewModel.chartSelectionInfoModel,
               builder: (context, snapshot) {
-                return SpotPriceHeader(
-                  viewModel.spotPriceChartData!,
+                return SpotPriceHeader(viewModel,
                   snapshot.data as ChartSelectionInfoModel,
                 );
               },

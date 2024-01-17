@@ -45,7 +45,7 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  void init(AlertResponseModel? alertResponseModel) async {
+  void init(AlertResponseModel? alertResponseModel, String? metalName) async {
     setBusy(true);
     this.alertResponseModel = alertResponseModel;
 
@@ -63,6 +63,8 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
           break;
         }
       }
+    } else if (metalName != null) {
+      _metalsSelectedIndex = metalsList.indexOf(metalName);
     }
 
     setBusy(false);

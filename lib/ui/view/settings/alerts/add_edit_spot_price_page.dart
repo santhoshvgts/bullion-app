@@ -17,12 +17,13 @@ import 'create_alerts_view_model.dart';
 
 class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
   final AlertResponseModel? alertResponse;
+  final String? metalName;
 
-  const AddEditSpotPricePage({super.key, this.alertResponse});
+  const AddEditSpotPricePage({super.key, this.alertResponse, this.metalName});
 
   @override
   void onViewModelReady(CreateAlertsViewModel viewModel) {
-    viewModel.init(alertResponse);
+    viewModel.init(alertResponse, metalName);
     super.onViewModelReady(viewModel);
   }
 
@@ -69,6 +70,7 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                     "Alert Price",
                                     viewModel.alertPriceFormFieldController,
                                     textStyle: AppTextStyle.titleLarge,
+                                    autoFocus: true,
                                   ),
                                 ),
                                 const Padding(

@@ -259,6 +259,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => AddEditSpotPricePage(
             alertResponse: data?['alertResponse'],
+            metalName: data?['metalName'],
           ),
           settings: RouteSettings(name: settings.name),
         );
@@ -268,6 +269,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => EditPriceAlertPage(
             productAlert: data?['productAlert'],
+            productDetails: data?['productDetails'],
           ),
           settings: RouteSettings(name: settings.name),
         );
@@ -277,6 +279,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => EditAlertMePage(
             productAlert: data?['productAlert'],
+            productDetails: data?['productDetails'],
           ),
           settings: RouteSettings(name: settings.name),
         );

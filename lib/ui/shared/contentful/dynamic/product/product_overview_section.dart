@@ -24,6 +24,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:stacked/stacked.dart';
 
+import '../../../../../helper/utils.dart';
+import '../../../../../services/authentication_service.dart';
 import '../../../../widgets/image_pagination_builder.dart';
 
 class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
@@ -124,21 +126,23 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          viewModel.priceAlert(setting?.overview, context);
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: setting!.isInUserPriceAlert! ? AppColor.orangePeel : Colors.white,
                             border: Border.all(
                               color: AppColor.outlineBorder,
                               width: 0.5,
                             ),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             CupertinoIcons.bell,
                             size: 20,
-                            color: AppColor.outlineBorder,
+                            color: setting!.isInUserPriceAlert! ? AppColor.white : AppColor.outlineBorder,
                           ),
                         ),
                       ),
