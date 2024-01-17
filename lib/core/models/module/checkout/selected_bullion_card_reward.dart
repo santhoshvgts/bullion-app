@@ -1,7 +1,7 @@
 class SelectedBullionCardReward {
   String? formattedRewardBalanceInPoints;
   String? formattedRewardBalanceInCurrency;
-  double? rewardBalanceInCurrency;
+  int? rewardBalanceInCurrency;
   double? estRewardsOnOrder;
   String? formattedEstRewardsOnOrder;
   bool? isBullionCardCustomer;
