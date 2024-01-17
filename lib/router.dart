@@ -24,6 +24,7 @@ import 'package:bullion/ui/view/settings/alerts/edit_alert_me_page.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_price_alert_page.dart';
 import 'package:bullion/ui/view/settings/favorites/favorites_page.dart';
 import 'package:bullion/ui/view/settings/orders_page.dart';
+import 'package:bullion/ui/view/settings/settings_user_page.dart';
 import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
 import 'package:bullion/ui/widgets/three_sixty_degree.dart';
 import 'package:flutter/cupertino.dart';
@@ -393,6 +394,11 @@ class AppRouter {
       case Routes.myOrders:
         return MaterialPageRoute(
             builder: (_) => const OrdersPage(),
+            settings: RouteSettings(name: settings.name));
+
+      case Routes.settings:
+        return MaterialPageRoute(
+            builder: (_) => const SettingsUserPage(),
             settings: RouteSettings(name: settings.name));
 
       /*case Routes.myOrderDetails:

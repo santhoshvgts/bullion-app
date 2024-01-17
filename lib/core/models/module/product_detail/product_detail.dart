@@ -1,4 +1,7 @@
 import 'package:bullion/core/models/base_model.dart';
+import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
+import 'package:bullion/core/models/module/product_detail/product_picture.dart';
+import 'package:bullion/core/models/module/product_detail/product_variant.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:bullion/core/models/module/product_detail/product_reviews.dart';
 import 'package:bullion/core/models/module/product_detail/specifications.dart';
@@ -11,7 +14,7 @@ class ProductDetails extends BaseModel {
   int? requestedQty;
   List<VolumePricing>? volumePricing;
   String? volumePricingHelpText;
-  List<String>? productPictures;
+  List<ProductPicture>? productPictures;
   dynamic productVideos;
   String? description;
   ProductReviews? productReviews;
@@ -25,6 +28,9 @@ class ProductDetails extends BaseModel {
   bool? isNew;
   double? yourPrice;
   String? formatedYourPrice;
+
+  List<CompetitorPrice>? competitorPrices;
+  List<ProductVariant>? productVariants;
 
   bool? _isInUserWishList;
   bool? _isInUserPriceAlert;
@@ -78,26 +84,23 @@ class ProductDetails extends BaseModel {
 
   ProductDetails(
       {this.productId,
-      this.overview,
-      this.requestedQty,
-      this.volumePricing,
-      this.volumePricingHelpText,
-      this.productPictures,
-      this.productVideos,
-      this.description,
-      this.productReviews,
-      List? cgSpecification,
-      this.specifications,
-      this.priceBadgeText,
-      this.productNotes,
-      this.imageNote,
-      this.postedDate,
-      this.formatedPostedDate,
-      this.isNew,
-      this.yourPrice,
-      this.formatedYourPrice}) {
-    _coinGradeSpecification =
-        cgSpecification as List<Specifications>? ?? [];
+        this.overview,this.requestedQty,
+        this.volumePricing,
+        this.volumePricingHelpText,
+        this.productPictures,
+        this.productVideos,
+        this.description,
+        this.productReviews,
+        List? cgSpecification,
+        this.specifications,
+        this.priceBadgeText,
+        this.productNotes,
+        this.imageNote,
+        this.postedDate,
+        this.formatedPostedDate,
+        this.isNew,this.yourPrice,this.formatedYourPrice
+      }){
+    _coinGradeSpecification = cgSpecification as List<Specifications>? ?? [];
   }
 
   @override
@@ -121,19 +124,30 @@ class ProductDetails extends BaseModel {
       });
     }
     volumePricingHelpText = json['volume_pricing_help_text'];
-    productPictures = json['product_pictures'] == null
-        ? null
-        : json['product_pictures'].cast<String>();
     productVideos = json['product_videos'];
     description = json['description'];
     productReviews = json['product_reviews'] != null
         ? ProductReviews.fromJson(json['product_reviews'])
         : null;
 
+    if (json['product_pictures'] != null) {
+      productPictures = <ProductPicture>[];
+      json['product_pictures'].forEach((v) {
+        productPictures!.add(ProductPicture.fromJson(v));
+      });
+    }
+
     if (json['coin_grade_specification'] != null) {
       _coinGradeSpecification = <Specifications>[];
       json['coin_grade_specification'].forEach((v) {
         _coinGradeSpecification.add(Specifications.fromJson(v));
+      });
+    }
+
+    if (json['competitor_prices'] != null) {
+      competitorPrices = <CompetitorPrice>[];
+      json['competitor_prices'].forEach((v) {
+        competitorPrices!.add(new CompetitorPrice.fromJson(v));
       });
     }
 
@@ -143,6 +157,14 @@ class ProductDetails extends BaseModel {
         specifications!.add(Specifications.fromJson(v));
       });
     }
+
+    if (json['product_variants'] != null) {
+      productVariants = <ProductVariant>[];
+      json['product_variants'].forEach((v) {
+        productVariants!.add(new ProductVariant.fromJson(v));
+      });
+    }
+
     priceBadgeText = json['price_badge_text'];
 
     _isInUserWishList = json['is_in_user_wish_list'];
@@ -179,12 +201,25 @@ class ProductDetails extends BaseModel {
     if (productReviews != null) {
       data['product_reviews'] = productReviews!.toJson();
     }
-    data['coin_grade_specification'] =
-        _coinGradeSpecification.map((v) => v.toJson()).toList();
-      if (specifications != null) {
-      data['specifications'] =
-          specifications!.map((v) => v.toJson()).toList();
+    if (_coinGradeSpecification != null) {
+      data['coin_grade_specification'] = _coinGradeSpecification.map((v) => v.toJson()).toList();
     }
+    if (specifications != null) {
+      data['specifications'] = specifications!.map((v) => v.toJson()).toList();
+    }
+
+    if (productPictures != null) {
+      data['product_pictures'] = productPictures!.map((v) => v.toJson()).toList();
+    }
+
+    if (productVariants != null) {
+      data['product_variants'] = productVariants!.map((v) => v.toJson()).toList();
+    }
+
+    if (competitorPrices != null) {
+      data['competitor_prices'] = competitorPrices!.map((v) => v.toJson()).toList();
+    }
+
     data['price_badge_text'] = priceBadgeText;
     data['product_notes'] = productNotes;
     data['image_note'] = imageNote;

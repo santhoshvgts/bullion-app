@@ -4,8 +4,6 @@ import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-import '../settings/settings_user_page.dart';
-
 class DashboardViewModel extends VGTSBaseViewModel {
   final PersistentTabController bottomNavController = PersistentTabController(
     initialIndex: 0,
@@ -16,7 +14,7 @@ class DashboardViewModel extends VGTSBaseViewModel {
     '/pages/deals',
     '/spot-prices',
     '/cart/viewcart',
-    '/settings'
+    // '/settings'
   ];
 
   final List<Widget> pages = [
@@ -33,6 +31,6 @@ class DashboardViewModel extends VGTSBaseViewModel {
       path: "/spot-prices",
     ),
     CartPage(),
-    const SettingsUserPage()
+    // const SettingsUserPage()
   ];
 }

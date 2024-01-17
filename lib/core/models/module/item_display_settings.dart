@@ -69,6 +69,10 @@ class ItemDisplaySettings {
     switch (_itemAlignment) {
       case "center":
         return MainAxisAlignment.center;
+      case "left":
+        return MainAxisAlignment.start;
+      case "right":
+        return MainAxisAlignment.end;
       default:
         return MainAxisAlignment.spaceBetween;
     }

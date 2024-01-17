@@ -1,11 +1,10 @@
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/dashboard/dashboard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
-import 'package:bullion/ui/widgets/button.dart';
-import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,8 +41,8 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
         },
         items: [
           _PersistentBottomNav(
-            inactiveIcon: const Icon(FeatherIcons.home),
-            icon: const Icon(FeatherIcons.home),
+            inactiveIcon: Image.asset(Images.home, width: 20,),
+            icon: Image.asset(Images.home_active, width: 20,),
             title: "Home",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/home",
@@ -51,8 +50,8 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(FeatherIcons.tag),
-            inactiveIcon: const Icon(FeatherIcons.tag),
+            inactiveIcon: Image.asset(Images.deals, width: 22,),
+            icon: Image.asset(Images.deals_active, width: 22,),
             title: "Deals",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/deals",
@@ -60,7 +59,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.chart_bar),
+            icon: const Icon(CupertinoIcons.chart_bar,),
             inactiveIcon: const Icon(CupertinoIcons.chart_bar),
             title: "Charts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
@@ -77,15 +76,15 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
               navigatorKey: locator<NavigationService>().getBottomKeyByIndex(3),
             ),
           ),
-          _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.person),
-            inactiveIcon: const Icon(CupertinoIcons.person),
-            title: "Accounts",
-            routeAndNavigatorSettings: RouteAndNavigatorSettings(
-              initialRoute: "/pages/accounts",
-              navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),
-            ),
-          ),
+          // _PersistentBottomNav(
+          //   icon: const Icon(CupertinoIcons.person),
+          //   inactiveIcon: const Icon(CupertinoIcons.person),
+          //   title: "Accounts",
+          //   routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          //     initialRoute: "/pages/accounts",
+          //     navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),
+          //   ),
+          // ),
         ],
         padding: const NavBarPadding.all(4),
         hideNavigationBarWhenKeyboardShows: true,

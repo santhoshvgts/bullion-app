@@ -21,7 +21,7 @@ class NetworkImageLoader extends StatelessWidget {
         height: height,
         width: width,
         child: CachedNetworkImage(
-          imageUrl: image == null ? "" : image!,
+          imageUrl: image == null ? "" : ( image!.contains("testsite.bullion.com") ? image!.replaceAll("testsite.bullion.com", "www.images-bullion.com") : image! ),
           fit: fit,
           height: height,
           width: width,
