@@ -1,3 +1,6 @@
+import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
+import 'package:bullion/core/models/module/product_detail/product_picture.dart';
+import 'package:bullion/core/models/module/product_detail/product_variant.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:bullion/core/models/module/product_detail/product_reviews.dart';
 import 'package:bullion/core/models/module/product_detail/specifications.dart';
@@ -10,7 +13,7 @@ class ProductDetails {
   int? requestedQty;
   List<VolumePricing>? volumePricing;
   String? volumePricingHelpText;
-  List<String>? productPictures;
+  List<ProductPicture>? productPictures;
   dynamic productVideos;
   String? description;
   ProductReviews? productReviews;
@@ -24,6 +27,9 @@ class ProductDetails {
   bool? isNew;
   double? yourPrice;
   String? formatedYourPrice;
+
+  List<CompetitorPrice>? competitorPrices;
+  List<ProductVariant>? productVariants;
 
   bool? _isInUserWishList;
   bool? _isInUserPriceAlert;
@@ -84,7 +90,7 @@ class ProductDetails {
         this.formatedPostedDate,
         this.isNew,this.yourPrice,this.formatedYourPrice
       }){
-    this._coinGradeSpecification = cgSpecification as List<Specifications>? ?? [];
+    _coinGradeSpecification = cgSpecification as List<Specifications>? ?? [];
   }
   ProductDetails.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
@@ -100,30 +106,51 @@ class ProductDetails {
     if (json['volume_pricing'] != null) {
       volumePricing = <VolumePricing>[];
       json['volume_pricing'].forEach((v) {
-        volumePricing!.add(new VolumePricing.fromJson(v));
+        volumePricing!.add(VolumePricing.fromJson(v));
       });
     }
     volumePricingHelpText = json['volume_pricing_help_text'];
-    productPictures = json['product_pictures']==null ? null : json['product_pictures'].cast<String>();
     productVideos = json['product_videos'];
     description = json['description'];
     productReviews = json['product_reviews'] != null
-        ? new ProductReviews.fromJson(json['product_reviews'])
+        ? ProductReviews.fromJson(json['product_reviews'])
         : null;
+
+    if (json['product_pictures'] != null) {
+      productPictures = <ProductPicture>[];
+      json['product_pictures'].forEach((v) {
+        productPictures!.add(ProductPicture.fromJson(v));
+      });
+    }
 
     if (json['coin_grade_specification'] != null) {
       _coinGradeSpecification = <Specifications>[];
       json['coin_grade_specification'].forEach((v) {
-        _coinGradeSpecification.add(new Specifications.fromJson(v));
+        _coinGradeSpecification.add(Specifications.fromJson(v));
+      });
+    }
+
+    if (json['competitor_prices'] != null) {
+      competitorPrices = <CompetitorPrice>[];
+      json['competitor_prices'].forEach((v) {
+        competitorPrices!.add(new CompetitorPrice.fromJson(v));
       });
     }
 
     if (json['specifications'] != null) {
       specifications = <Specifications>[];
       json['specifications'].forEach((v) {
-        specifications!.add(new Specifications.fromJson(v));
+        specifications!.add(Specifications.fromJson(v));
       });
     }
+
+    if (json['product_variants'] != null) {
+      productVariants = <ProductVariant>[];
+      json['product_variants'].forEach((v) {
+        productVariants!.add(new ProductVariant.fromJson(v));
+      });
+    }
+
     priceBadgeText = json['price_badge_text'];
 
     _isInUserWishList = json['is_in_user_wish_list'];
@@ -141,41 +168,54 @@ class ProductDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    if (this.overview != null) {
-      data['overview'] = this.overview!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['product_id'] = productId;
+    if (overview != null) {
+      data['overview'] = overview!.toJson();
     }
-    if (this.volumePricing != null) {
+    if (volumePricing != null) {
       data['volume_pricing'] =
-          this.volumePricing!.map((v) => v.toJson()).toList();
+          volumePricing!.map((v) => v.toJson()).toList();
     }
-    data['volume_pricing_help_text'] = this.volumePricingHelpText;
-    data['product_pictures'] = this.productPictures;
-    data['product_videos'] = this.productVideos;
-    data['description'] = this.description;
-    if (this.productReviews != null) {
-      data['product_reviews'] = this.productReviews!.toJson();
+    data['volume_pricing_help_text'] = volumePricingHelpText;
+    data['product_pictures'] = productPictures;
+    data['product_videos'] = productVideos;
+    data['description'] = description;
+    if (productReviews != null) {
+      data['product_reviews'] = productReviews!.toJson();
     }
-    if (this._coinGradeSpecification != null) {
-      data['coin_grade_specification'] = this._coinGradeSpecification.map((v) => v.toJson()).toList();
+    if (_coinGradeSpecification != null) {
+      data['coin_grade_specification'] = _coinGradeSpecification.map((v) => v.toJson()).toList();
     }
-    if (this.specifications != null) {
-      data['specifications'] = this.specifications!.map((v) => v.toJson()).toList();
+    if (specifications != null) {
+      data['specifications'] = specifications!.map((v) => v.toJson()).toList();
     }
-    data['price_badge_text'] = this.priceBadgeText;
-    data['product_notes'] = this.productNotes;
-    data['image_note'] = this.imageNote;
-    data['requested_qty'] = this.requestedQty;
-    data['posted_date'] = this.postedDate;
-    data['formated_posted_date'] = this.formatedPostedDate;
-    data['is_new'] = this.isNew;
-    data['formatted_your_price'] = this.formatedYourPrice;
-    data['your_price'] = this.yourPrice;
 
-    data['is_in_user_wish_list'] = this._isInUserWishList;
-    data['is_in_user_price_alert'] = this._isInUserPriceAlert;
-    data['is_in_user_alert_me'] = this._isInUserAlertMe;
+    if (productPictures != null) {
+      data['product_pictures'] = productPictures!.map((v) => v.toJson()).toList();
+    }
+
+    if (productVariants != null) {
+      data['product_variants'] = productVariants!.map((v) => v.toJson()).toList();
+    }
+
+    if (competitorPrices != null) {
+      data['competitor_prices'] = competitorPrices!.map((v) => v.toJson()).toList();
+    }
+
+    data['price_badge_text'] = priceBadgeText;
+    data['product_notes'] = productNotes;
+    data['image_note'] = imageNote;
+    data['requested_qty'] = requestedQty;
+    data['posted_date'] = postedDate;
+    data['formated_posted_date'] = formatedPostedDate;
+    data['is_new'] = isNew;
+    data['formatted_your_price'] = formatedYourPrice;
+    data['your_price'] = yourPrice;
+
+    data['is_in_user_wish_list'] = _isInUserWishList;
+    data['is_in_user_price_alert'] = _isInUserPriceAlert;
+    data['is_in_user_alert_me'] = _isInUserAlertMe;
 
     return data;
   }

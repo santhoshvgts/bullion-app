@@ -192,7 +192,7 @@ class _WrapItemList extends StatelessWidget {
       return SingleChildScrollView(
         scrollDirection: direction,
         primary: false,
-        controller: new ScrollController(keepScrollOffset: false),
+        controller: ScrollController(keepScrollOffset: false),
         padding: itemDisplaySettings!.fullBleed
             ? EdgeInsets.zero
             : EdgeInsets.symmetric(horizontal: runSpacing),
@@ -225,12 +225,12 @@ class _WrapItemList extends StatelessWidget {
     List<Widget> items = [];
     List<Widget> childItem = children;
 
-    while (childItem.length > 0) {
+    while (childItem.isNotEmpty) {
       List<Widget> tuple =
           childItem.take(itemDisplaySettings!.gridCols).toList();
 
       tuple.forEach((element) {
-        if (childItem.length > 0) childItem.removeAt(0);
+        if (childItem.isNotEmpty) childItem.removeAt(0);
       });
 
       Widget item = IntrinsicHeight(

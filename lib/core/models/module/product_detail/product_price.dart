@@ -2,6 +2,7 @@ class ProductPricesByPaymentType {
   String? name;
   String? description;
   String? formattedPrice;
+  String? formattedPriceSavings;
 
   ProductPricesByPaymentType(
       {this.name, this.description, this.formattedPrice});
@@ -10,13 +11,15 @@ class ProductPricesByPaymentType {
     name = json['name'];
     description = json['description'];
     formattedPrice = json['formatted_price'];
+    formattedPriceSavings = json['formatted_price_savings'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['formatted_price'] = this.formattedPrice;
+    data['name'] = name;
+    data['description'] = description;
+    data['formatted_price'] = formattedPrice;
+    data['formatted_price_savings'] = formattedPriceSavings;
     return data;
   }
 

@@ -35,8 +35,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.primary,
-        automaticallyImplyLeading: false,
         elevation: 0,
+        iconTheme: const IconThemeData(color: AppColor.white),
         systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: AppColor.primary,
           statusBarIconBrightness: Brightness.light,

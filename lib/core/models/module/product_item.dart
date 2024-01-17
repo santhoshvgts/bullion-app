@@ -22,8 +22,39 @@ class ProductOverview {
   String? availabilityText;
   double? avgRatings;
   int? reviewCount;
+
+  int? onHand;
+  int? orderMin;
+  int? dealMax;
+
   bool? quickShip;
   bool? recurringEligible;
+
+
+  bool get showDealProgress {
+    return (dealMax ?? 0) > 0;
+  }
+
+  double get soldPercentage {
+    int dealMaxValue = dealMax ?? 0;
+    int onHandValue = onHand ?? 0;
+    int soldQty = 0;
+    if (dealMaxValue <= 0) {
+      return 0;
+    }
+
+    if (dealMaxValue < onHandValue) {
+      onHandValue = dealMaxValue;
+    }
+
+    soldQty = dealMaxValue - onHandValue;
+
+    // print("onHand: ${onHandValue}");
+    // print("dealMax: ${dealMaxValue}");
+    // print("(onHand ?? 0) / (dealMax ?? 0); ${(soldQty/ dealMaxValue)}");
+    return (soldQty/ dealMaxValue);
+  }
+
 
   String get formattedAvgRatings => avgRatings! > 0 ? avgRatings.toString() : "";
 
@@ -67,6 +98,11 @@ class ProductOverview {
     showPrice = json['show_price'];
     onPresale = json['on_presale'];
     presaleDate = json['presale_date'];
+
+    onHand = json['on_hand'];
+    orderMin = json['order_min'];
+    dealMax = json['deal_max'];
+
     primaryImageUrl = json['primary_image_url'];
     imageDesc = json['image_desc'];
     productAction = json['product_action'];
@@ -93,6 +129,12 @@ class ProductOverview {
     data['metal_name'] = this.metalName;
     data['alert_me'] = this.alertMe;
     data['on_sale'] = this.onSale;
+
+    data['on_hand'] = this.onHand;
+    data['deal_max'] = this.dealMax;
+    data['order_min'] = this.orderMin;
+
+
     data['show_price'] = this.showPrice;
     data['on_presale'] = this.onPresale;
     data['presale_date'] = this.presaleDate;

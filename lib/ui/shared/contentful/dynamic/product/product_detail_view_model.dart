@@ -18,6 +18,15 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
+  int _detailTapSectionIndex = 0;
+
+  int get detailTapSectionIndex => _detailTapSectionIndex;
+
+  set detailTapSectionIndex(int value) {
+    _detailTapSectionIndex = value;
+    notifyListeners();
+  }
+
   String? _slug;
 
   String? get slug => _slug;
