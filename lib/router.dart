@@ -22,6 +22,7 @@ import 'package:bullion/ui/view/settings/alerts/add_edit_spot_price_page.dart';
 import 'package:bullion/ui/view/settings/alerts/alerts.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_alert_me_page.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_price_alert_page.dart';
+import 'package:bullion/ui/view/settings/favorites/favorites_page.dart';
 import 'package:bullion/ui/view/settings/orders_page.dart';
 import 'package:bullion/ui/view/settings/settings_user_page.dart';
 import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
@@ -99,6 +100,7 @@ class Routes {
   static const String orderDetails = "/account/orderDetails";
   static const String address = "/account/address";
   static const String addEditAddress = "/account/addEditAddress";
+  static const String favorites = "/account/favorites";
   static const String alerts = "/account/alerts";
   static const String addEditAlert = "/account/createAlert";
   static const String editPriceAlert = "/account/editPriceAlert";
@@ -356,6 +358,11 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => AddEditAddressPage(
                 userAddress: settings.arguments as UserAddress?),
+            settings: RouteSettings(name: settings.name));
+
+      case Routes.favorites:
+        return MaterialPageRoute(
+            builder: (_) => const FavoritesPage(),
             settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myPortfolio:

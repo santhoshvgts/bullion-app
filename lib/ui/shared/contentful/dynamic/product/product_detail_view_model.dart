@@ -6,6 +6,8 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 
+import '../../../../../services/api_request/favorites_request.dart';
+
 class ProductDetailViewModel extends VGTSBaseViewModel {
   ProductDetails? _productDetails;
 
@@ -70,5 +72,23 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
   addToCart() {
     locator<CartService>()
         .addItemToCart(_productDetails!.overview!.productId, 1);
+  }
+
+  Future<void> addAsFavorite(int? productId) async {
+    setBusy(true);
+    if (!authenticationService.isAuthenticated) {
+       return;
+    }
+    var response;
+
+    if (productDetails!.isInUserWishList!) {
+
+    } else {
+      response =  await request<ProductDetails>(FavoritesRequest.addFavorite(productId.toString()));
+      productDetails!.isInUserWishList = response;
+
+    }
+
+    setBusy(false);
   }
 }
