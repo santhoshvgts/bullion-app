@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/api/api_error_response.dart';
 import 'package:bullion/core/models/base_model.dart';
+import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +16,7 @@ import '../../services/shared/preference_service.dart';
 class VGTSBaseViewModel extends BaseViewModel {
   final PreferenceService preferenceService = locator<PreferenceService>();
   final NavigationService navigationService = locator<NavigationService>();
-  final AuthenticationService? authenticationService = locator<AuthenticationService>();
+  final AuthenticationService authenticationService = locator<AuthenticationService>();
 
   VGTSBaseViewModel() {
     onInit();

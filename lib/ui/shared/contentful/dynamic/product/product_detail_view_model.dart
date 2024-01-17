@@ -11,6 +11,8 @@ import '../../../../../helper/utils.dart';
 import '../../../../../router.dart';
 import '../../../../../services/shared/navigator_service.dart';
 
+import '../../../../../services/api_request/favorites_request.dart';
+
 class ProductDetailViewModel extends VGTSBaseViewModel {
   ProductDetails? _productDetails;
 
@@ -20,6 +22,15 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
 
   set activeIndex(int value) {
     _activeIndex = value;
+    notifyListeners();
+  }
+
+  int _detailTapSectionIndex = 0;
+
+  int get detailTapSectionIndex => _detailTapSectionIndex;
+
+  set detailTapSectionIndex(int value) {
+    _detailTapSectionIndex = value;
     notifyListeners();
   }
 
@@ -81,4 +92,22 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
   }
 
 
+
+  Future<void> addAsFavorite(int? productId) async {
+    setBusy(true);
+    if (!authenticationService.isAuthenticated) {
+       return;
+    }
+    var response;
+
+    if (productDetails!.isInUserWishList!) {
+
+    } else {
+      response =  await request<ProductDetails>(FavoritesRequest.addFavorite(productId.toString()));
+      productDetails!.isInUserWishList = response;
+
+    }
+
+    setBusy(false);
+  }
 }

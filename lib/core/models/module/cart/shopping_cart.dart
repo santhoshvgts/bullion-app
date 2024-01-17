@@ -67,8 +67,7 @@ class ShoppingCart {
     showPotentialSavings = json['show_potential_savings'];
     totalItems = json['total_items'];
     isEstimate = json['is_estimate'];
-    orderTotal = json['order_total'];
-    orderTotal = json['order_total'];
+    orderTotal = double.tryParse(json['order_total'].toString());
     formattedOrderTotal = json['formatted_order_total'];
     if (json['order_total_summary'] != null) {
       orderTotalSummary = <OrderTotalSummary>[];

@@ -18,15 +18,20 @@ class Images {
   // Product Detail Screen
   static const String threeSixtyDegree = "assets/images/360-degrees.png";
 
+  static const String accountIcon = "assets/images/account_user.png";
+
+
   // BOTTOM MENU ICONS
-  static const String home = "assets/images/v2/home.png";
-  static const String home_active = "assets/images/v2/home_active.png";
+  static const String home = "assets/images/home_inactive.png";
+  static const String home_active = "assets/images/home_active.png";
   static const String account = "assets/images/v2/account.png";
   static const String account_active = "assets/images/v2/account_active.png";
   static const String price = "assets/images/v2/price.png";
   static const String price_active = "assets/images/v2/price_active.png";
-  static const String deals_active = "assets/images/v2/deals_active.png";
-  static const String deals = "assets/images/v2/deals.png";
+
+  static const String deals_active = "assets/images/deals_active.png";
+  static const String deals = "assets/images/deals_inactive.png";
+
   static const String shop = "assets/images/v2/shop.png";
   static const String menu_bar = "assets/images/v2/menu_bar.png";
   static const String shop_active = "assets/images/v2/shop_active.png";

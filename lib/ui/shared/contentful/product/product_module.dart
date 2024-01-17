@@ -226,7 +226,6 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
     double _itemWidth = viewModel.itemWidth(context);
-
     return InkWell(
       key: Key("actionProduct${_item.productId}"),
       onTap: () => viewModel.onItemTap(_item),
@@ -302,8 +301,47 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              child: _PriceSection(_item, Alignment.centerLeft),
-            )
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _PriceSection(_item, Alignment.centerLeft),
+
+
+                  if (_item.showDealProgress)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      VerticalSpacing.d10px(),
+
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: LinearProgressIndicator(
+                          value: _item.soldPercentage,
+                        ),
+                      ),
+
+                      VerticalSpacing.d2px(),
+
+                      Text("${(_item.soldPercentage * 100).round()}% Sold", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+
+                      VerticalSpacing.d5px(),
+
+                      Text("Only ${_item.onHand} left", textScaleFactor: 1, style: AppTextStyle.labelMedium.copyWith(
+                          color: AppColor.dealsRed,
+                          fontWeight: FontWeight.w600
+                      ),),
+
+                      VerticalSpacing.custom(value: 7),
+
+                      Text("Ends in 1d 21h 30m", style: AppTextStyle.bodySmall.copyWith(
+                          color: AppColor.dealsRed
+                      ),),
+                    ],
+                  )
+                ],
+              ),
+            ),
+
           ],
         ),
       ),

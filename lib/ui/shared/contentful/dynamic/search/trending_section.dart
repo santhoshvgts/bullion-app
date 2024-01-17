@@ -6,6 +6,7 @@ import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TrendingSection extends StatelessWidget {
@@ -22,15 +23,15 @@ class TrendingSection extends StatelessWidget {
   ) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: EdgeInsets.all(15.0),
-      margin: EdgeInsets.only(
+      padding: const EdgeInsets.all(15.0),
+      margin: const EdgeInsets.only(
         top: 10,
       ),
       color: AppColor.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(settings!.title ?? "Top Searches",
+          Text(settings!.title ?? "Trending Searches",
               textScaleFactor: 1,
               textAlign: TextAlign.start,
               style: AppTextStyle.titleMedium),
@@ -67,15 +68,25 @@ class _ItemCard extends StatelessWidget {
             removeRouteName: Routes.dashboard);
       },
       child: Container(
-        padding: EdgeInsets.only(left: 10.0, right: 10.0, bottom: 5.0, top: 3),
+        padding: const EdgeInsets.only(left: 10.0, right: 15.0, bottom: 5.0, top: 5),
         decoration: BoxDecoration(
             color: AppColor.white,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
             border: Border.all(color: AppColor.text, width: 0.8)),
-        child: Text(
-          _item.name!,
-          textScaleFactor: 1,
-          style: AppTextStyle.labelMedium.copyWith(fontSize: 13),
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+
+            const Icon(Icons.trending_up_sharp, color: AppColor.text,),
+
+            HorizontalSpacing.d5px(),
+
+            Text(
+              _item.name!,
+              textScaleFactor: 1,
+              style: AppTextStyle.labelLarge,
+            ),
+          ],
         ),
       ),
     );
