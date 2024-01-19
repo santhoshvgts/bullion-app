@@ -7,6 +7,8 @@ import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
 import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/checkout/checkout_page.dart';
+import 'package:bullion/ui/view/checkout/views/expired_cart/expired_cart_view.dart';
+
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
 import 'package:bullion/ui/view/core/search/search_page.dart';
@@ -188,24 +190,22 @@ class AppRouter {
           settings: RouteSettings(name: settings.name),
         );
 
-      //   case Routes.reviewCart:
-      //     return MaterialPageRoute(
-      //         builder: (_) => ReviewOrderPage(
-      //           fromPriceExpiry: false,
-      //         ),
-      //         settings: RouteSettings(name: settings.name));
-      //
-      //   case Routes.expiredCart:
-      //     return MaterialPageRoute(
-      //         builder: (_) => ReviewOrderPage(
-      //           fromPriceExpiry: true,
-      //         ),
-      //         settings: RouteSettings(name: settings.name));
-      //
-      case Routes.checkout:
+      case Routes.reviewCart:
         return MaterialPageRoute(
-            builder: (_) => const CheckoutPage(),
+            builder: (_) => ExpiredCartView(
+                  fromPriceExpiry: false,
+                ),
             settings: RouteSettings(name: settings.name));
+      //
+      case Routes.expiredCart:
+        return MaterialPageRoute(
+            builder: (_) => ExpiredCartView(
+                  fromPriceExpiry: true,
+                ),
+            settings: RouteSettings(name: settings.name));
+
+      case Routes.checkout:
+        return MaterialPageRoute(builder: (_) => const CheckoutPage(), settings: RouteSettings(name: settings.name));
       //
       //   case Routes.checkoutAddress:
       //     return MaterialPageRoute(
@@ -246,14 +246,10 @@ class AppRouter {
       //         settings: RouteSettings(name: settings.name));
       //
       case Routes.alerts:
-        return MaterialPageRoute(
-            builder: (_) => AlertsPage(initialIndex: settings.arguments as int),
-            settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => AlertsPage(initialIndex: settings.arguments as int), settings: RouteSettings(name: settings.name));
 
       case Routes.addEditAlert:
-        return MaterialPageRoute(
-            builder: (_) => const AddEditSpotPricePage(),
-            settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => const AddEditSpotPricePage(), settings: RouteSettings(name: settings.name));
 
       case Routes.editSpotPrice:
         Map? data = settings.arguments as Map?;
@@ -354,20 +350,13 @@ class AppRouter {
       //         settings: RouteSettings(name: settings.name));
       //
       case Routes.address:
-        return MaterialPageRoute(
-            builder: (_) => const AddressPage(),
-            settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => const AddressPage(), settings: RouteSettings(name: settings.name));
 
       case Routes.addEditAddress:
-        return MaterialPageRoute(
-            builder: (_) => AddEditAddressPage(
-                userAddress: settings.arguments as UserAddress?),
-            settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => AddEditAddressPage(userAddress: settings.arguments as UserAddress?), settings: RouteSettings(name: settings.name));
 
       case Routes.favorites:
-        return MaterialPageRoute(
-            builder: (_) => const FavoritesPage(),
-            settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => const FavoritesPage(), settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myPortfolio:
       //     return MaterialPageRoute(
@@ -396,14 +385,10 @@ class AppRouter {
       //     );
       //
       case Routes.myOrders:
-        return MaterialPageRoute(
-            builder: (_) => const OrdersPage(),
-            settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => const OrdersPage(), settings: RouteSettings(name: settings.name));
 
       case Routes.settings:
-        return MaterialPageRoute(
-            builder: (_) => const SettingsUserPage(),
-            settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => const SettingsUserPage(), settings: RouteSettings(name: settings.name));
 
       /*case Routes.myOrderDetails:
         return MaterialPageRoute(
@@ -433,9 +418,7 @@ class AppRouter {
     }
 
     if (uri.pathSegments.isEmpty) {
-      return TransparentRoute(
-          builder: (context) =>
-              PageMiddleware(settings.name, settings.arguments));
+      return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
     }
 
     switch (uri.pathSegments.first) {
@@ -478,9 +461,7 @@ class AppRouter {
         if (uri.pathSegments.length > 1) {
           metalName = uri.pathSegments.last.replaceAll('-', ' ').toTitleCase();
         }
-        return MaterialPageRoute(
-            builder: (_) => SpotPriceDetailPage(metalName, uri.toString()),
-            settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => SpotPriceDetailPage(metalName, uri.toString()), settings: RouteSettings(name: settings.name));
 
       case "product":
         //   if (settings.name!.startsWith("/product/reviews/add/")) {
@@ -524,9 +505,7 @@ class AppRouter {
 
       default:
         // locator<PageMiddlewareService>().getRouteAndRedirect(settings.name, settings.arguments);
-        return TransparentRoute(
-            builder: (context) =>
-                PageMiddleware(settings.name, settings.arguments));
+        return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
     }
   }
 
@@ -538,20 +517,14 @@ class AppRouter {
           Map<String, dynamic> data = {};
           data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
           data['from_success'] = false;
-          return MaterialPageRoute(
-              builder: (_) =>
-                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
-              settings: RouteSettings(name: settings.name));
+          return MaterialPageRoute(builder: (_) => OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]), settings: RouteSettings(name: settings.name));
 
         // Order Details
         case "my-orders":
           Map<String, dynamic> data = {};
           data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
           data['from_success'] = false;
-          return MaterialPageRoute(
-              builder: (_) =>
-                  OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]),
-              settings: RouteSettings(name: settings.name));
+          return MaterialPageRoute(builder: (_) => OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]), settings: RouteSettings(name: settings.name));
 
         //   case "resetpassword":
         //     return MaterialPageRoute(
@@ -626,26 +599,20 @@ class AppRouter {
           );
 
         default:
-          return TransparentRoute(
-              builder: (context) =>
-                  PageMiddleware(settings.name, settings.arguments));
+          return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
       }
     }
-    return TransparentRoute(
-        builder: (context) =>
-            PageMiddleware(settings.name, settings.arguments));
+    return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
   }
 }
 
 /// NoTransitionRoute
 /// Custom route which has no transitions
 class NoTransitionRoute<T> extends MaterialPageRoute<T> {
-  NoTransitionRoute({required WidgetBuilder builder, RouteSettings? settings})
-      : super(builder: builder, settings: settings);
+  NoTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     return child;
   }
 }
@@ -674,8 +641,7 @@ class TransparentRoute extends PageRoute<void> {
   Duration get transitionDuration => const Duration(milliseconds: 350);
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
     final result = builder(context);
     return FadeTransition(
       opacity: Tween<double>(begin: 0, end: 1).animate(animation),
@@ -691,17 +657,13 @@ class TransparentRoute extends PageRoute<void> {
 /// NoPushTransitionRoute
 /// Custom route which has no transition when pushed, but has a pop animation
 class NoPushTransitionRoute<T> extends CupertinoPageRoute<T> {
-  NoPushTransitionRoute(
-      {required WidgetBuilder builder, RouteSettings? settings})
-      : super(builder: builder, settings: settings);
+  NoPushTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     // is popping
     if (animation.status == AnimationStatus.reverse) {
-      return super
-          .buildTransitions(context, animation, secondaryAnimation, child);
+      return super.buildTransitions(context, animation, secondaryAnimation, child);
     }
     return child;
   }
@@ -710,17 +672,13 @@ class NoPushTransitionRoute<T> extends CupertinoPageRoute<T> {
 /// NoPopTransitionRoute
 /// Custom route which has no transition when popped, but has a push animation
 class NoPopTransitionRoute<T> extends MaterialPageRoute<T> {
-  NoPopTransitionRoute(
-      {required WidgetBuilder builder, RouteSettings? settings})
-      : super(builder: builder, settings: settings);
+  NoPopTransitionRoute({required WidgetBuilder builder, RouteSettings? settings}) : super(builder: builder, settings: settings);
 
   @override
-  Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
     // is pushing
     if (animation.status == AnimationStatus.forward) {
-      return super
-          .buildTransitions(context, animation, secondaryAnimation, child);
+      return super.buildTransitions(context, animation, secondaryAnimation, child);
     }
     return child;
   }
@@ -729,20 +687,13 @@ class NoPopTransitionRoute<T> extends MaterialPageRoute<T> {
 class RouteUtils {
   static RoutePredicate withNameLike(String name) {
     return (Route<dynamic> route) {
-      return !route.willHandlePopInternally &&
-          route is ModalRoute &&
-          route.settings.name != null &&
-          route.settings.name!.contains(name);
+      return !route.willHandlePopInternally && route is ModalRoute && route.settings.name != null && route.settings.name!.contains(name);
     };
   }
 }
 
 extension StringCasingExtension on String {
-  String toCapitalized() =>
-      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+  String toCapitalized() => length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
 
-  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
-      .split(' ')
-      .map((str) => str.toCapitalized())
-      .join(' ');
+  String toTitleCase() => replaceAll(RegExp(' +'), ' ').split(' ').map((str) => str.toCapitalized()).join(' ');
 }

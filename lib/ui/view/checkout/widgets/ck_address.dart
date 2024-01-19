@@ -2,9 +2,6 @@ import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
-import 'package:bullion/locator.dart';
-import 'package:bullion/router.dart';
-import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/checkout/checkout_view_model.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +21,7 @@ class CkAddress extends ViewModelWidget<CheckoutPageViewModel> {
         children: [
           const Padding(padding: EdgeInsets.only(top: 15, left: 15), child: Text('Shipping Address', style: AppTextStyle.titleMedium)),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             width: double.infinity,
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             decoration: const BoxDecoration(
@@ -36,11 +33,10 @@ class CkAddress extends ViewModelWidget<CheckoutPageViewModel> {
             ),
             child: InkWell(
               onTap: () => viewModel.onDeliveryAddressSelection(),
-              //  onTap: () {},
               child: Row(
                 children: [
                   const Icon(Icons.location_on, size: 25, color: AppColor.turtleGreen),
-                  HorizontalSpacing.d15px(),
+                  HorizontalSpacing.d10px(),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,10 +102,8 @@ class CkAddress extends ViewModelWidget<CheckoutPageViewModel> {
             padding: EdgeInsets.zero,
             dashPattern: const [2, 2],
             child: Container(
-              // padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
               width: double.infinity,
-              // margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(8)),
