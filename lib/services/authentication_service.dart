@@ -107,6 +107,7 @@ class AuthenticationService {
     String lastName,
     String email,
     String password,
+    String confirmPassword,
   ) async {
     try {
       var authResult = await _apiBaseService.request<AuthResponse>(
@@ -115,6 +116,7 @@ class AuthenticationService {
           lastName,
           email,
           password,
+          confirmPassword,
         ),
       );
       _setUser(authResult);

@@ -3,6 +3,7 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
+import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -43,6 +44,41 @@ class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
+                  Expanded(
+                    flex: 4,
+                    child: EditTextField(
+                      "",
+                      viewModel.qtyController,
+                      key: const ValueKey("txtQuantity"),
+                      // const TextInputType.numberWithOptions(decimal: false),
+                      prefixIcon: IconButton(
+                        icon: const Icon(
+                          Icons.remove,
+                          size: 20,
+                          color: AppColor.text,
+                        ),
+                        onPressed: () => viewModel.decrease(),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: const Icon(
+                          Icons.add,
+                          size: 20,
+                          color: AppColor.text,
+                        ),
+                        onPressed:
+                        viewModel.qtyValue >= 9999 ? null : () => viewModel.increase(),
+                      ),
+                      textAlign: TextAlign.center,
+                      margin: const EdgeInsets.only(right: 10.0),
+                      textInputAction: TextInputAction.done,
+                      onChanged: (val) {
+                        if (viewModel.qtyValidate) viewModel.qtyValidate = false;
+                        viewModel.triggerProductUpdateEvent(int.tryParse(val) ?? 1);
+                      },
+                    ),
+                  ),
+
                   Expanded(
                     flex: 5,
                     child: Button("Add to Cart",

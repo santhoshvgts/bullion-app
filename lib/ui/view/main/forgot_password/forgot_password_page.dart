@@ -76,7 +76,8 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
                   UrlLinkifier()
                 ],
                 text:
-                    "Enter the email address associated with your account and we'll email you a secure link to reset your password. If you do not receive an email, please try resubmitting your request or contacting customer service at service@APMEX.com for assistance.",
+                    "Enter the email address associated with your account and we'll email you a secure link to reset your password."
+                "If you do not receive an email, please try resubmitting your request or contacting customer service at support@bullion.com for assistance.",
                 style: AppTextStyle.bodyMedium,
                 linkStyle: AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
               ),

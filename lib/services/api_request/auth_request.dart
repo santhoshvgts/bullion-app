@@ -11,12 +11,13 @@ class AuthRequest {
     return RequestSettings("/auth/login", RequestMethod.POST, params: params, authenticated: false);
   }
 
-  static RequestSettings register(String firstName, String lastName, String email, String password) {
+  static RequestSettings register(String firstName, String lastName, String email, String password, String confirmPassword) {
     Map<String, dynamic> params = {};
     params['first_name'] = firstName;
     params['last_name'] = lastName;
     params['email'] = email;
     params['password'] = password;
+    params['confirm_password'] = confirmPassword;
 
     return RequestSettings("/auth/register", RequestMethod.POST, params: params, authenticated: false);
   }

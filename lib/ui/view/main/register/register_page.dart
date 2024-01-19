@@ -77,6 +77,17 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                         viewModel.passwordController,
                         placeholder: "********",
                         onSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(viewModel.confirmPasswordController.focusNode);
+                        },
+                        onChanged: (value) {},
+                      ),
+                      VerticalSpacing.custom(value: 28),
+
+                      EditTextField(
+                        "Confirm Password",
+                        viewModel.confirmPasswordController,
+                        placeholder: "********",
+                        onSubmitted: (value) {
                           FocusScope.of(context).unfocus();
                         },
                         onChanged: (value) {},

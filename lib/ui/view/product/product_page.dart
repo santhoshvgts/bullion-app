@@ -4,6 +4,7 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/shared/cart/cart_button.dart';
 import 'package:bullion/ui/shared/contentful/banner/banner_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/dynamic_module.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/product/add_to_cart/add_to_cart.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
 import 'package:bullion/ui/shared/contentful/product/product_module.dart';
 import 'package:bullion/ui/shared/contentful/standard/standard_module.dart';
@@ -167,6 +168,13 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                   ),
                 ),
               ),
+            ),
+            bottomNavigationBar: Wrap(
+              children: [
+                AddToCartSection(
+                  viewModel.productDetail
+                ),
+              ],
             ),
           ),
         );
