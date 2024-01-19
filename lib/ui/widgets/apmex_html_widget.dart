@@ -12,17 +12,13 @@ class ApmexHtmlWidget extends StatefulWidget {
   final String? content;
   final TextStyle textStyle;
 
-  final bool enableReadMore;
-
-  ApmexHtmlWidget(this.content, {this.textStyle = AppTextStyle.bodyMedium, this.enableReadMore = false });
+  ApmexHtmlWidget(this.content, {this.textStyle = AppTextStyle.bodyMedium,});
 
   @override
   State<ApmexHtmlWidget> createState() => _ApmexHtmlWidgetState();
 }
 
 class _ApmexHtmlWidgetState extends State<ApmexHtmlWidget> {
-
-  bool isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,33 +42,6 @@ class _ApmexHtmlWidgetState extends State<ApmexHtmlWidget> {
       },
       onTapImage: (ImageMetadata image) {},
     );
-
-    if (widget.enableReadMore) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRect(
-            child: SizedBox(
-              height: isExpanded ? null : MediaQuery.of(context).size.height / 1.5,
-              child: htmlWidget
-            )
-          ),
-
-          VerticalSpacing.d10px(),
-
-          InkWell(
-            onTap: () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
-            },
-            child: Text(isExpanded ? "Show Less" : "Read More", textScaleFactor: 1, style: AppTextStyle.titleSmall.copyWith(color: AppColor.primary),)
-          )
-
-        ],
-      );
-    }
-
     return htmlWidget;
   }
 }

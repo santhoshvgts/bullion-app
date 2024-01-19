@@ -5,10 +5,7 @@ import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
 import 'package:bullion/ui/view/checkout/checkout_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:bullion/core/enums/viewstate.dart';
 import 'package:bullion/core/models/module/cart/order_total_summary.dart';
-import 'package:bullion/core/models/module/checkout/selected_bullion_card_reward.dart';
 import 'package:bullion/core/models/module/checkout/selected_payment_method.dart';
 import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/core/res/colors.dart';
@@ -52,21 +49,45 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
          child: Scaffold(
            appBar: AppBar(
              automaticallyImplyLeading: false,
-             title: const Text(
-               "Confirm your Order",
-               textScaleFactor: 1,
+             title: Row(
+               crossAxisAlignment: CrossAxisAlignment.center,
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 Text(
+                   "Checkout",
+                   textScaleFactor: 1,
+                   style: AppTextStyle.titleMedium.copyWith(
+                       color: AppColor.text, fontFamily: AppTextStyle.fontFamily),
+                 ),
+
+
+
+               ],
              ),
+             leading: IconButton(icon: const Icon(Icons.close), onPressed: (){
+               if (viewModel.placeOrderLoading) {
+                 return;
+               }
+               locator<NavigationService>().pop();
+             },),
              actions: [
-
-               IconButton(icon: const Icon(Icons.close), onPressed: (){
-                 if (viewModel.placeOrderLoading) {
-                   return;
-                 }
-                 locator<NavigationService>().pop();
-               },)
-
-             ],
+               Container(
+                 decoration: BoxDecoration(
+                   color: AppColor.primary,
+                   borderRadius: BorderRadius.circular(15),
+                 ),
+                 margin: const EdgeInsets.only(left: 10, right: 15),
+                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                 child: Text(
+                   viewModel.formattedRemainingPricingTime,
+                   textScaleFactor: 1,
+                   textAlign: TextAlign.center,
+                   style: AppTextStyle.titleSmall.copyWith( color: AppColor.white),
+                 ),
+               ),
+             ]
            ),
+
            body: Stack(
              children: [
 
@@ -80,17 +101,17 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
                      const SizedBox(
                          height: 2,
                          child: LinearProgressIndicator(valueColor: AlwaysStoppedAnimation(AppColor.primary),)
-                     ) : Container(),
+                     ) : const SizedBox(),
 
                      Flexible(
-                       child: Container(
+                       child: SizedBox(
                          height: double.infinity,
                          child: SingleChildScrollView(
                            child: Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
 
-                               _PriceTimingSection(),
+                               // _PriceTimingSection(),
 
                                _DeliveryAddress(),
 
@@ -306,58 +327,45 @@ class _PriceTimingSection extends ViewModelWidget<CheckoutViewModel> {
         children: [
 
           Expanded(
-            child: Column(
-              children: [
-
-                const Text(
-                  "Your pricing will be locked for:",
-                  textScaleFactor: 1,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.bodySmall,
-                ),
-
-                Text(
-                  viewModel.formattedRemainingPricingTime,
-                  textScaleFactor: 1,
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.titleMedium.copyWith( color: AppColor.primary),
-                ),
-
-              ],
-            ),
-          ),
-
-          Container(
-            height: 40,
-            width: 0.5,
-            color: AppColor.black20,
-          ),
-
-          Expanded(
             child: InkWell(
               key: const Key("btnReviewOrder"),
               onTap: (){
                 locator<NavigationService>().pushNamed(Routes.reviewCart);
               },
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  Text(
-                    "Order Total (${viewModel.checkout!.totalItems} Items)",
-                    textScaleFactor: 1,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.bodySmall.copyWith(fontSize: 12, decoration: TextDecoration.underline),
-                  ),
 
                   Text(
                     viewModel.checkout!.formattedOrderTotal!,
                     textScaleFactor: 1,
                     textAlign: TextAlign.center,
-                    style: AppTextStyle.titleMedium.copyWith(fontSize: 22, color: AppColor.primary),
+                    style: AppTextStyle.titleMedium.copyWith(color: AppColor.primary),
+                  ),
+
+                  Text(
+                    "Order Total (${viewModel.checkout!.totalItems} Items)",
+                    textScaleFactor: 1,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.bodySmall.copyWith(fontSize: 12,color: AppColor.primary, decoration: TextDecoration.underline),
                   ),
 
                 ],
               ),
+            ),
+          ),
+
+          Container(
+            decoration: BoxDecoration(
+              color: AppColor.primary,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+            child: Text(
+              viewModel.formattedRemainingPricingTime,
+              textScaleFactor: 1,
+              textAlign: TextAlign.center,
+              style: AppTextStyle.titleSmall.copyWith( color: AppColor.white),
             ),
           ),
 
@@ -382,8 +390,12 @@ class _DeliveryAddress extends ViewModelWidget<CheckoutViewModel>  {
         key: const Key("cardAddressAction"),
         onTap: () => viewModel.onDeliveryAddressSelection(),
         child: Container(
-          color: AppColor.white,
-          margin: const EdgeInsets.only(top: 10, ),
+          decoration: BoxDecoration(
+            color: AppColor.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColor.divider, width: 0.5),
+          ),
+          margin: const EdgeInsets.only(top: 10, left: 15, right: 15),
           padding: const EdgeInsets.only(top: 10,bottom: 10,left: 15,right: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -431,8 +443,12 @@ class _DeliveryAddress extends ViewModelWidget<CheckoutViewModel>  {
       key: const Key("cardAddressAction"),
       onTap: () => viewModel.onDeliveryAddressSelection(),
       child: Container(
-        color: AppColor.white,
-        margin: const EdgeInsets.only(top: 10,bottom: 5),
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColor.divider, width: 0.5),
+        ),
+        margin: const EdgeInsets.only(top: 10, left: 15, right: 15),
         padding: const EdgeInsets.only(top: 10,bottom: 10,left: 15,right: 15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -450,7 +466,7 @@ class _DeliveryAddress extends ViewModelWidget<CheckoutViewModel>  {
 
                   VerticalSpacing.d2px(),
 
-                  Text("Select your shipping address for delivery",textScaleFactor: 1,style: AppTextStyle.bodySmall,),
+                  const Text("Select your shipping address for delivery",textScaleFactor: 1,style: AppTextStyle.bodySmall,),
                 ],
               ),
             ),
@@ -482,8 +498,12 @@ class _PaymentSection extends ViewModelWidget<CheckoutViewModel> {
         key: const Key("actionPayment"),
         onTap: () => viewModel.onPaymentClick(),
         child: Container(
-          color: AppColor.white,
-          margin: const EdgeInsets.only(top: 10, ),
+          decoration: BoxDecoration(
+            color: AppColor.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: AppColor.divider, width: 0.5),
+          ),
+          margin: const EdgeInsets.only(top: 10, left: 15, right: 15),
           padding: const EdgeInsets.only(top: 10,bottom: 10,left: 15,right: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -565,7 +585,7 @@ class _PaymentSection extends ViewModelWidget<CheckoutViewModel> {
 
                     VerticalSpacing.d2px(),
 
-                    Text("Please select your payment method", textScaleFactor: 1, style: AppTextStyle.bodySmall,),
+                    const Text("Please select your payment method", textScaleFactor: 1, style: AppTextStyle.bodySmall,),
                   ],
                 ),
               ),
@@ -736,7 +756,7 @@ class _OrderSummary extends ViewModelWidget<CheckoutViewModel> {
                             Text(item.key!, textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(fontSize: 15)),
 
                             if (item.canRemove == true)
-                              Container(
+                              SizedBox(
                                 height: 26,
                                 width: 60,
                                 child: InkWell(

@@ -78,7 +78,7 @@ class AppStyle {
 
   static const Widget customDivider = Divider(
     color: AppColor.divider,
-    thickness: 0.3,
+    thickness: 0.5,
   );
 
   static const Widget dottedDivider = DottedLine(

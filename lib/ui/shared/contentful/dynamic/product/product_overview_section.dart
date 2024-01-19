@@ -62,7 +62,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
         children: [
           _Header(),
           Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 10,),
             child: Stack(
               children: [
                 _ImageList(
@@ -158,29 +158,31 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
           ),
           VerticalSpacing.d5px(),
           _ProductInfoSection(),
-          if (viewModel.productDetails!.productNotes != null) _ProductNotes(),
+          if (viewModel.productDetails!.productNotes != null)
+            _ProductNotes(),
           if (viewModel.productDetails!.volumePricing == null)
             _VolumePriceLoading()
           else if (viewModel.productDetails!.volumePricing!.isEmpty)
             Container()
           else
             _VolumePricing(),
-          if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
+          // if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
             _CoinGradeSpecification(),
-          Container(
-            color: AppColor.secondaryBackground,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Button(
-              "Add To Cart",
-              width: double.infinity,
-              valueKey: const ValueKey("btnAddToCart"),
-              color: AppColor.secondary,
-              borderColor: AppColor.secondary,
-              onPressed: () {
-                viewModel.addToCart();
-              },
-            ),
-          ),
+
+          // Container(
+          //   color: AppColor.secondaryBackground,
+          //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          //   child: Button(
+          //     "Add To Cart",
+          //     width: double.infinity,
+          //     valueKey: const ValueKey("btnAddToCart"),
+          //     color: AppColor.secondary,
+          //     borderColor: AppColor.secondary,
+          //     onPressed: () {
+          //       viewModel.addToCart();
+          //     },
+          //   ),
+          // ),
 
         ],
       ),
@@ -330,8 +332,14 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
             _AlertText(),
           // VerticalSpacing.d20px(),
           // _ShippingInfoCard(),
+
           VerticalSpacing.d10px(),
+
+          AppStyle.customDivider,
+
           _VariationSelection(),
+
+          AppStyle.customDivider,
         ],
       ),
     );
@@ -341,24 +349,37 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
 class _ProductNotes extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Container(
-      color: AppColor.white,
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-      margin: const EdgeInsets.only(top: 10.0),
-      child: Column(
-        children: viewModel.productDetails!.productNotes!.map((e) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: Text(
-              e,
-              style: AppTextStyle.bodyMedium.copyWith(
-                fontSize: 14,
-              ),
-              textAlign: TextAlign.start,
-            ),
-          );
-        }).toList(),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          color: AppColor.white,
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Column(
+            children: viewModel.productDetails?.productNotes?.map((e) {
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+                decoration: BoxDecoration(
+                  color: AppColor.info.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                margin: EdgeInsets.only(bottom: 10),
+                width: double.infinity,
+                child: Text(
+                  e,
+                  style: AppTextStyle.bodyMedium.copyWith(
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              );
+            }).toList() ?? [],
+          ),
+        ),
+
+        AppStyle.customDivider,
+
+      ],
     );
   }
 }
@@ -369,7 +390,6 @@ class _VolumePriceLoading extends StatelessWidget {
     return Container(
       color: AppColor.white,
       padding: const EdgeInsets.symmetric(vertical: 10.0),
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -409,14 +429,11 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-        color: AppColor.secondaryBackground,
-        margin: const EdgeInsets.only(
-          top: 10.0,
-        ),
+        color: AppColor.white,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15,),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -425,7 +442,7 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                     textScaleFactor: 1,
                     style: AppTextStyle.titleMedium,
                   ),
-                  HorizontalSpacing.d5px(),
+                  Spacer(),
                   InkWell(
                     onTap: () {},
                     child: const Padding(
@@ -439,6 +456,9 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 ],
               ),
             ),
+
+            VerticalSpacing.d20px(),
+
             SizedBox(
               width: double.infinity,
               child: SingleChildScrollView(
@@ -464,6 +484,8 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
               ),
             ),
 
+            VerticalSpacing.d5px(),
+
             Container(
               alignment: Alignment.centerLeft,
               child: SingleChildScrollView(
@@ -484,7 +506,7 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                           return MapEntry(
                             index,
                             Padding(
-                              padding: const EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 0),
                               child: _VolumeDiscountCard(
                                 title: volumePricing.tier ?? '-',
                                 price: pricing?.formattedPrice ?? "-",
@@ -523,6 +545,8 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 ),
               ),
 
+            VerticalSpacing.d15px(),
+
           ],
         ));
   }
@@ -557,9 +581,9 @@ class _VolumeDiscountCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
           color: AppColor.white,
-          borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: AppColor.border
+            color: AppColor.border,
+            width: 0.6
           ),
         ),
         width: MediaQuery.of(context).size.width / 3.5,
@@ -805,7 +829,7 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
                     index,
                     InkWell(
                       onTap: () {
-
+                        viewModel.applyVariation(option.targetUrl ?? '');
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

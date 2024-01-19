@@ -225,7 +225,6 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     getTextsLayout(
                       const Icon(FeatherIcons.user, size: 20),
                       "Personal Info",
-                      "Profile, Change Email and password",
                     ),
                     const Divider(
                       color: AppColor.platinumColor,

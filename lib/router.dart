@@ -352,7 +352,9 @@ class AppRouter {
       //         settings: RouteSettings(name: settings.name));
       //
       case Routes.address:
-        return MaterialPageRoute(builder: (_) => const AddressPage(), settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => AddressPage(
+          fromCheckout: (settings.arguments as bool?) ?? false,
+        ), settings: RouteSettings(name: settings.name));
 
       case Routes.addEditAddress:
         return MaterialPageRoute(builder: (_) => AddEditAddressPage(userAddress: settings.arguments as UserAddress?), settings: RouteSettings(name: settings.name));

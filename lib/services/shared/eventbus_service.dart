@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:event_taxi/event_taxi.dart';
 
 class EventBusService {
@@ -21,4 +22,12 @@ class DisableLockTimeoutEvent implements Event {
 class RefreshDataEvent implements Event {
   String name;
   RefreshDataEvent(this.name);
+}
+
+class ProductApplyVariationEvent implements Event {
+
+  ProductDetails product;
+  String refreshUrl;
+
+  ProductApplyVariationEvent(this.product, this.refreshUrl);
 }

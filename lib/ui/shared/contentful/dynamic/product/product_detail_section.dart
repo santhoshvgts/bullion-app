@@ -28,56 +28,57 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, ProductDetailViewModel viewModel, Widget? child) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
+      color: AppColor.secondaryBackground,
       child: Column(
         children: [
-          DefaultTabController(
-            length: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+
+          Container(
+            margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: ExpansionTile(
+              title: const Text("Product Overview", style: AppTextStyle.titleMedium,),
+              tilePadding: const EdgeInsets.symmetric(horizontal: 12),
+              childrenPadding: const EdgeInsets.symmetric(horizontal: 15),
               children: [
+                ApmexHtmlWidget(
+                  viewModel.productDetails?.description ?? '',
+                  textStyle: AppTextStyle.bodyMedium.copyWith(height: 1.7),
+                )
+              ],
+            ),
+          ),
 
-                TabBar(
-                  isScrollable: true,
-                  tabs: const [
-                    Tab(text: "Overview",),
-                    Tab(text: "Specification",),
-                    Tab(text: "Shipping Info",),
-                  ],
-                  onTap: (int index) {
-                    viewModel.detailTapSectionIndex = index;
-                  },
-                ),
+          Container(
+            margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
+            decoration: BoxDecoration(
+                color: AppColor.white,
+                borderRadius: BorderRadius.circular(10)
+            ),
 
-                if (viewModel.detailTapSectionIndex == 0)
-                  Container(
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: ApmexHtmlWidget(
-                      viewModel.productDetails?.description ?? '',
-                      textStyle: AppTextStyle.bodyMedium.copyWith(height: 1.7),
-                      enableReadMore: true,
-                    )
-                  )
-                else if (viewModel.detailTapSectionIndex == 1)
-                  ListView.separated(
+            child: ExpansionTile(
+              title: const Text("Product Specification", style: AppTextStyle.titleMedium,),
+              tilePadding: const EdgeInsets.symmetric(horizontal: 12),
+              children: [
+                ListView.separated(
                     primary: false,
                     shrinkWrap: true,
                     itemCount: viewModel.productDetails?.specifications?.length ?? 0,
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     separatorBuilder: (context, index) {
                       return AppStyle.customDivider;
                     },
                     itemBuilder: (context, index) {
                       return SpecificationItem(viewModel.productDetails!.specifications![index]);
                     }
-                  )
-
+                )
               ],
             ),
           ),
-
-          VerticalSpacing.d15px(),
 
           _CompetitorPricing()
 

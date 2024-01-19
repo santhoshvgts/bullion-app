@@ -21,7 +21,6 @@ class AddToCartViewModel extends VGTSBaseViewModel {
 
   NumberFormFieldController qtyController = NumberFormFieldController(const ValueKey("txtQty"));
 
-  // TextEditingController qtyController = TextEditingController(text: "1");
   int get qtyValue => qtyController.text.isEmpty ? 0 : int.parse(qtyController.text);
   FocusNode qtyFocus = FocusNode();
 
@@ -35,16 +34,15 @@ class AddToCartViewModel extends VGTSBaseViewModel {
   }
 
   bool get showQty {
-    if (qtyController.text.isEmpty)
+    if (qtyController.text.isEmpty) {
       return false;
+    }
     return int.parse(qtyController.text) != 0;
   }
 
   init(ProductDetails? detail){
-
-
-
     _productDetails = detail;
+    qtyController.text = detail?.overview?.orderMin?.toString() ?? '1';
     notifyListeners();
   }
 
@@ -60,7 +58,7 @@ class AddToCartViewModel extends VGTSBaseViewModel {
   }
 
   decrease() {
-    if (qtyValue <= 1){
+    if (qtyValue <= (productDetails?.overview?.orderMin ?? 0)){
       return;
     }
 

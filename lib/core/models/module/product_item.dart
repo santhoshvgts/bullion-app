@@ -90,7 +90,7 @@ class ProductOverview {
     targetUrl = json['target_url'];
     name = json['name'];
     pricing =
-        json['pricing'] != null ? new Pricing.fromJson(json['pricing']) : null;
+        json['pricing'] != null ? Pricing.fromJson(json['pricing']) : null;
     metal = json['metal'];
     metalName = json['metal_name'];
     alertMe = json['alert_me'];
@@ -118,37 +118,37 @@ class ProductOverview {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['target_url'] = this.targetUrl;
-    data['name'] = this.name;
-    if (this.pricing != null) {
-      data['pricing'] = this.pricing!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['product_id'] = productId;
+    data['target_url'] = targetUrl;
+    data['name'] = name;
+    if (pricing != null) {
+      data['pricing'] = pricing!.toJson();
     }
-    data['metal'] = this.metal;
-    data['metal_name'] = this.metalName;
-    data['alert_me'] = this.alertMe;
-    data['on_sale'] = this.onSale;
+    data['metal'] = metal;
+    data['metal_name'] = metalName;
+    data['alert_me'] = alertMe;
+    data['on_sale'] = onSale;
 
-    data['on_hand'] = this.onHand;
-    data['deal_max'] = this.dealMax;
-    data['order_min'] = this.orderMin;
+    data['on_hand'] = onHand;
+    data['deal_max'] = dealMax;
+    data['order_min'] = orderMin;
 
 
-    data['show_price'] = this.showPrice;
-    data['on_presale'] = this.onPresale;
-    data['presale_date'] = this.presaleDate;
-    data['primary_image_url'] = this.primaryImageUrl;
-    data['image_desc'] = this.imageDesc;
-    data['product_action'] = this.productAction;
-    data['ribbon_text'] = this.ribbonText;
-    data['ribbon_text_background_color'] = this._ribbonTextBackgroundColor;
-    data['price_badge_text'] = this.priceBadgeText;
-    data['availability_text'] = this.availabilityText;
-    data['avg_ratings'] = this.avgRatings;
-    data['review_count'] = this.reviewCount;
-    data['quick_ship'] = this.quickShip;
-    data['recurring_eligible'] = this.recurringEligible;
+    data['show_price'] = showPrice;
+    data['on_presale'] = onPresale;
+    data['presale_date'] = presaleDate;
+    data['primary_image_url'] = primaryImageUrl;
+    data['image_desc'] = imageDesc;
+    data['product_action'] = productAction;
+    data['ribbon_text'] = ribbonText;
+    data['ribbon_text_background_color'] = _ribbonTextBackgroundColor;
+    data['price_badge_text'] = priceBadgeText;
+    data['availability_text'] = availabilityText;
+    data['avg_ratings'] = avgRatings;
+    data['review_count'] = reviewCount;
+    data['quick_ship'] = quickShip;
+    data['recurring_eligible'] = recurringEligible;
     return data;
   }
 }
@@ -188,16 +188,16 @@ class Pricing {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['discount_text'] = this.discountText;
-    data['badge_text'] = this.badgeText;
-    data['old_price'] = this.oldPrice;
-    data['new_price'] = this.newPrice;
-    data['formatted_old_price'] = this.formattedOldPrice;
-    data['formatted_new_price'] = this.formattedNewPrice;
-    data['strike_through_enabled'] = this.strikeThroughEnabled;
-    data['currency'] = this.currency;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['product_id'] = productId;
+    data['discount_text'] = discountText;
+    data['badge_text'] = badgeText;
+    data['old_price'] = oldPrice;
+    data['new_price'] = newPrice;
+    data['formatted_old_price'] = formattedOldPrice;
+    data['formatted_new_price'] = formattedNewPrice;
+    data['strike_through_enabled'] = strikeThroughEnabled;
+    data['currency'] = currency;
     return data;
   }
 }

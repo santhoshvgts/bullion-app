@@ -114,8 +114,8 @@ class DashboardContentPage extends StatelessWidget {
                                   bottom: 10.0,
                                 ),
                                 title: SearchCardSection(
-                                  rightPadding: 60 -
-                                      ((15 - 55) *
+                                  rightPadding: 45 -
+                                      ((15 - 45) *
                                           ((constraints.biggest.height - 80) /
                                               _appBarExtendedHeight!)),
                                 ),
@@ -139,7 +139,7 @@ class DashboardContentPage extends StatelessWidget {
                           ),
                         ),
                         actions: const [
-                          AccountButton()
+                          CartButton.light()
                         ],
                       );
                     })
@@ -182,7 +182,7 @@ class _AppBar extends PreferredSize {
                 statusBarIconBrightness: Brightness.dark,
                 statusBarColor: AppColor.white,
               ),
-              actions: const [ AccountButton() ],
+              actions: const [  CartButton.light() ],
             ));
 }
 

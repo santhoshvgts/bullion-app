@@ -142,7 +142,7 @@ class CheckoutViewModel extends VGTSBaseViewModel {
 
   onDeliveryAddressSelection() async {
     mounted = false;
-    var address = await navigationService.pushNamed(Routes.checkoutAddress);
+    var address = await navigationService.pushNamed(Routes.address, arguments: true);
     mounted = true;
 
     print("Address $address");
@@ -153,7 +153,6 @@ class CheckoutViewModel extends VGTSBaseViewModel {
     }
 
     if (address != null) {
-      print("ADDRESS $address");
       int? addressId;
       bool? isCitadel;
       String? citadelAccount;

@@ -4,6 +4,7 @@ import 'package:bullion/core/models/module/product_detail/volume_prcing.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -80,6 +81,10 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
   addToCart() {
     locator<CartService>()
         .addItemToCart(_productDetails!.overview!.productId, 1);
+  }
+
+  applyVariation(String targetUrl) {
+    locator<EventBusService>().eventBus.fire(ProductApplyVariationEvent(_productDetails!, targetUrl));
   }
 
   void priceAlert(ProductOverview? overview, BuildContext context) {

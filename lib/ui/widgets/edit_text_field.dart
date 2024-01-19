@@ -44,6 +44,7 @@ class EditTextField extends StatefulWidget {
   bool isPasswordField = false;
 
   bool enabled = true;
+  bool isInputDecorationNone = false;
 
   ValueChanged<String>? onChanged = (terms) {};
   ValueChanged<String>? onSubmitted = (terms) {};
@@ -65,6 +66,7 @@ class EditTextField extends StatefulWidget {
       this.textStyle,
       this.textInputAction = TextInputAction.next,
       this.suffixIcon,
+      this.isInputDecorationNone = false,
       this.counterText})
       : super(key: key);
 
@@ -187,11 +189,11 @@ class _EditTextFieldState extends State<EditTextField> {
                   ),
               alignLabelWithHint: true,
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              border: _outlineInputBorder,
-              enabledBorder: _outlineInputBorder,
-              disabledBorder: _outlineInputBorder,
-              focusedBorder: _focusedInputBorder,
-              errorBorder: _errorInputBorder,
+              border: widget.isInputDecorationNone ? noBorder : _outlineInputBorder,
+              enabledBorder: widget.isInputDecorationNone ? noBorder  : _outlineInputBorder,
+              disabledBorder: widget.isInputDecorationNone ? noBorder : _outlineInputBorder,
+              focusedBorder: widget.isInputDecorationNone ? noBorder : _focusedInputBorder,
+              errorBorder: widget.isInputDecorationNone ? noBorder : _errorInputBorder,
               errorText: state.hasError
                   ? state.errorText
                   : widget.controller.overrideErrorText,
@@ -246,6 +248,10 @@ class _EditTextFieldState extends State<EditTextField> {
     super.dispose();
   }
 }
+
+InputBorder noBorder = const OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.transparent)
+);
 
 InputBorder _outlineInputBorder = OutlineInputBorder(
   borderRadius: _borderRadius,
