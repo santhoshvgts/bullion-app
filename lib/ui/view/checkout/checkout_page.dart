@@ -10,11 +10,9 @@ import 'package:bullion/ui/view/checkout/widgets/ck_notes.dart';
 import 'package:bullion/ui/view/checkout/widgets/ck_order_summary.dart';
 import 'package:bullion/ui/view/checkout/widgets/ck_payment.dart';
 import 'package:bullion/ui/view/checkout/widgets/ck_place_order_button.dart';
-import 'package:bullion/ui/view/checkout/widgets/ck_shipping_option.dart';
 import 'package:bullion/ui/view/checkout/widgets/ck_timer.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/loading_data.dart';
-import 'package:bullion/ui/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -69,7 +67,7 @@ class CheckoutPage extends VGTSBuilderWidget<CheckoutPageViewModel> {
             : Container(
                 padding:  EdgeInsets.only(top: 20, left: 15, right: 15,bottom: Platform.isAndroid ? 15 : 0),
                 width: double.infinity,
-                decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black12, offset: Offset(0, 2), blurRadius: 12)]),
+                decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.black26, offset: Offset(0, 2), blurRadius: 8)]),
                 child: SafeArea(
                   child: Wrap(
                     children: [

@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:bullion/core/models/module/cart/display_message.dart';
 import 'package:bullion/core/models/module/cart/order_total_summary.dart';
 import 'package:bullion/core/models/module/checkout/checkout.dart';
 import 'package:bullion/core/models/module/checkout/payment_method.dart';
@@ -12,6 +10,7 @@ import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/checkout_request.dart';
+import 'package:bullion/services/checkout/braintree_service.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/checkout/checkout_steam_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
@@ -139,42 +138,6 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
 
   //************************************/! ( paymentSelection )
 
-  // onDeliveryAddressSelection() async {
-  //   mounted = false;
-  //   var address = await navigationService.pushNamed(Routes.checkoutAddress);
-  //   mounted = true;
-
-  //   print("Address $address");
-
-  //   if (address == true) {
-  //     refreshPage();
-  //     return;
-  //   }
-
-  //   if (address != null) {
-  //     print("ADDRESS $address");
-  //     int? addressId;
-  //     bool? isCitadel;
-  //     String? citadelAccount;
-
-  //     if (address is UserAddress) {
-  //       addressId = address.id;
-  //       isCitadel = false;
-  //     } else if (address is String) {
-  //       addressId = 0;
-  //       isCitadel = true;
-  //       citadelAccount = address;
-  //     }
-
-  //     setBusy(true);
-  //     checkout = await _apiBaseService.request<Checkout>(CheckOutRequest.saveDeliveryAddress(addressId: addressId, isCitadel: isCitadel, citadelAccount: citadelAccount));
-
-  //     setBusy(false);
-  //   }
-  // }
-
-  //************************************/! ( paymentSelection )
-
   paymentSelection(PaymentMethod payment) async {
     for (var p in _paymentMethodList!) {
       if (p.paymentMethodId == payment.paymentMethodId) {
@@ -233,7 +196,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     return response;
   }
 
-//************************************/! ( PAYPAL )
+  //************************************/! ( PAYPAL )
   onPayPalClick() async {
     if (placeOrderLoading) {
       return;
@@ -242,7 +205,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     mounted = false;
     placeOrderLoading = true;
     Util.cancelLockEvent();
-    //! var response = await BraintreeService().openPayPal(checkout!.orderTotal);
+     var response = await BraintreeService().openPayPal(checkout!.orderTotal);
     placeOrderLoading = false;
     mounted = true;
     Util.enableLockEvent();
@@ -357,13 +320,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
 
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (mounted && count <= 1) {
-          navigationService.pop();
-
-          //! TODO : review cart 
-          // navigationService.pushReplacementNamed(Routes.viewCart,
-          //     arguments: DisplayMessage(
-          //       message: 'Cart expired',
-          //     ));
+          navigationService.pushReplacementNamed(Routes.expiredCart, arguments: true);
           timer.cancel();
           return;
         } else if (count <= 1) {
@@ -445,7 +402,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     super.dispose();
   }
 
-//************************************/ ( RemoveFromOrder  )
+  //************************************/ ( RemoveFromOrder  )
 
   onRemoveFromOrderSummary(String? keyCode) async {
     if (isBusy) {
@@ -458,7 +415,7 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     setBusy(false);
   }
 
-//************************************/ ( PaymentIcons  )
+  //************************************/ ( PaymentIcons  )
 
   IconData paymentFAIcon(String? name) {
     switch (name) {
