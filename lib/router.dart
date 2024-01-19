@@ -10,6 +10,7 @@ import 'package:bullion/ui/view/checkout/checkout_page.dart';
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
 import 'package:bullion/ui/view/core/search/search_page.dart';
+import 'package:bullion/ui/view/core/search/search_result_page.dart';
 import 'package:bullion/ui/view/main/forgot_password/forgot_password_page.dart';
 import 'package:bullion/ui/view/main/intro/intro_page.dart';
 import 'package:bullion/ui/view/main/login/login_page.dart';
@@ -439,16 +440,15 @@ class AppRouter {
 
     switch (uri.pathSegments.first) {
       case "category":
-      case "search":
         return MaterialPageRoute(
             builder: (context) => MainPage(path: settings.name));
 
-      // case "search":
-      //   return MaterialPageRoute(
-      //     builder: (context) => SearchResultPage(
-      //       settings.name,
-      //     ),
-      //   );
+      case "search":
+        return MaterialPageRoute(
+          builder: (context) => SearchResultPage(
+            settings.name,
+          ),
+        );
 
       case "pages":
         return MaterialPageRoute(

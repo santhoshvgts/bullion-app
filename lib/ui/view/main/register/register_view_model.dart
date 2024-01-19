@@ -35,6 +35,26 @@ class RegisterViewModel extends VGTSBaseViewModel {
   PasswordFormFieldController passwordController = PasswordFormFieldController(
     const ValueKey("txtPassword"),
   );
+  late FormFieldController confirmPasswordController;
+
+  @override
+  Future onInit() {
+    confirmPasswordController = FormFieldController(
+        const ValueKey("txtConfirmPassword"),
+        validator: (String? value) {
+          return confirmPasswordValidator(value);
+        }
+    );
+    return super.onInit();
+  }
+
+  String? confirmPasswordValidator(String? value) {
+    if (passwordController.text != value) {
+      return "Password does not match";
+    }
+
+    return null;
+  }
 
   register(BuildContext context) async {
     if (formKey.currentState?.validate() != true) {
@@ -42,10 +62,12 @@ class RegisterViewModel extends VGTSBaseViewModel {
     }
     setBusy(true);
     AuthResponse? result = await _authenticationService.register(
-        nameController.text,
-        lnameController.text,
-        emailController.text,
-        passwordController.text);
+      nameController.text,
+      lnameController.text,
+      emailController.text,
+      passwordController.text,
+      confirmPasswordController.text,
+    );
 
     if (result != null) {
       if (fromMain) {

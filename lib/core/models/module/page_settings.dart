@@ -30,8 +30,8 @@ class PageSettings extends BaseModel {
   ShoppingCart? shoppingCart;
   CartItem? addedShoppingCartItem;
 
-  String? get title => _title == null ? "" : _title;
-  String? get searchTerm => _searchTerm == null ? "" : _searchTerm;
+  String? get title => _title ?? "";
+  String? get searchTerm => _searchTerm ?? "";
 
   ModuleSettings? productListingModule;
 

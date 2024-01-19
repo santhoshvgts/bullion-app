@@ -53,7 +53,7 @@ class SearchPage extends VGTSBuilderWidget<SearchViewModel> {
                                 child: TextField(
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: 'Try',
+                                    hintText: 'Search..',
                                     hintStyle: AppTextStyle.bodyMedium.copyWith(
                                       color: AppColor.text,
                                       fontFamily: AppTextStyle.fontFamily,

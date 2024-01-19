@@ -1,5 +1,6 @@
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 
 class ImagePaginationBuilder extends StatelessWidget {
@@ -13,12 +14,15 @@ class ImagePaginationBuilder extends StatelessWidget {
 
   List<String>? images;
 
+  SwiperController controller;
+
   ImagePaginationBuilder({
     this.activeIndex = 0,
     this.activeBorderColor,
     this.activeSize,
     this.size,
     this.images,
+    required this.controller
   });
 
   @override
@@ -36,7 +40,7 @@ class ImagePaginationBuilder extends StatelessWidget {
                     index,
                     InkWell(
                       onTap: () {
-                        // config.controller.move(index);
+                        controller.move(index);
                       },
                       child: Container(
                         decoration: BoxDecoration(

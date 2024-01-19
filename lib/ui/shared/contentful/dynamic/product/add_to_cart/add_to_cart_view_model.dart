@@ -1,12 +1,19 @@
+import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
+import '../../../../../../core/models/module/cart/cart_item.dart';
+
 class AddToCartViewModel extends VGTSBaseViewModel {
 
-  // final CartService? _cartService = locator<CartService>();
+  final CartService _cartService = locator<CartService>();
   ProductDetails? _productDetails;
 
   ProductDetails? get productDetails => _productDetails;
@@ -14,9 +21,9 @@ class AddToCartViewModel extends VGTSBaseViewModel {
 
   NumberFormFieldController qtyController = NumberFormFieldController(const ValueKey("txtQty"));
 
-  // TextEditingController qtyController = new TextEditingController(text: "1");
+  // TextEditingController qtyController = TextEditingController(text: "1");
   int get qtyValue => qtyController.text.isEmpty ? 0 : int.parse(qtyController.text);
-  FocusNode qtyFocus = new FocusNode();
+  FocusNode qtyFocus = FocusNode();
 
   bool _qtyValidate = false;
 
@@ -34,55 +41,70 @@ class AddToCartViewModel extends VGTSBaseViewModel {
   }
 
   init(ProductDetails? detail){
+
+
+
     _productDetails = detail;
     notifyListeners();
   }
 
   increase() {
-    // if (qtyValue >= 9999){
-    //   return;
-    // }
-    //
-    // int qty = qtyValue + 1;
-    // qtyController.text = qty.toString();
-    // qtyController.selection = TextSelection(baseOffset: qtyController.text.length, extentOffset: qtyController.text.length);
-    // notifyListeners();
+    if (qtyValue >= 9999){
+      return;
+    }
+
+    int qty = qtyValue + 1;
+    qtyController.text = qty.toString();
+    qtyController.textEditingController.selection = TextSelection(baseOffset: qtyController.text.length, extentOffset: qtyController.text.length);
+    notifyListeners();
   }
 
   decrease() {
-    // if (qtyValue <= 1){
-    //   return;
-    // }
-    //
-    // int qty = qtyValue - 1;
-    // qtyController.text = qty.toString();
-    // qtyController.selection = TextSelection(baseOffset: qtyController.text.length, extentOffset: qtyController.text.length);
-    // notifyListeners();
+    if (qtyValue <= 1){
+      return;
+    }
+
+    int qty = qtyValue - 1;
+    qtyController.text = qty.toString();
+    qtyController.textEditingController.selection = TextSelection(baseOffset: qtyController.text.length, extentOffset: qtyController.text.length);
+    notifyListeners();
   }
 
   addProduct(vm) async {
-    // qtyFocus.unfocus();
-    //
-    // busy(true);
-    // PageSettings? response = await _cartService!.addItemToCart(_productDetails!.overview!.productId, qtyValue);
-    // busy(false);
-    //
-    // if (response == null) {
-    //   return;
-    // }
-    //
-    // if (response.isSuccess!) {
-    //   locator<AnalyticsService>().logAddToCart(
-    //       itemId: _productDetails!.overview!.productId.toString(),
-    //       itemName: _productDetails!.overview!.name!,
-    //       quantity: qtyValue,
-    //       currency: response.shoppingCart!.currency ?? 'USD',
-    //       itemCategory: '',
-    //   );
-    //
-    //   print(productDetails!.productId);
-    //   CartItem? item = response.shoppingCart!.items!.firstWhereOrNull((element) => element.productId == productDetails!.overview!.productId);
-    //   AlertResponse result = await locator<DialogService>().showBottomSheet(title: "Added to Cart", child: AddToCartSuccessBottomSheet(vm, item));
+    qtyFocus.unfocus();
+
+    busy(true);
+    PageSettings? response = await _cartService!.addItemToCart(
+        _productDetails!.overview!.productId, qtyValue);
+    busy(false);
+
+    if (response == null) {
+      return;
     }
 
+    if (response.isSuccess!) {
+      locator<AnalyticsService>().logAddToCart(
+        itemId: _productDetails!.overview!.productId.toString(),
+        itemName: _productDetails!.overview!.name!,
+        quantity: qtyValue,
+        currency: response.shoppingCart!.currency ?? 'USD',
+        itemCategory: '',
+      );
+
+      CartItem? item = response.shoppingCart!.items!.where((element) =>
+      element.productId == productDetails!.overview!.productId).firstOrNull;
+      // AlertResponse result = await locator<DialogService>().showBottomSheet(title: "Added to Cart", child: AddToCartSuccessBottomSheet(vm, item));
+    }
+  }
+
+  triggerProductUpdateEvent(int qty) {
+    // try {
+    //   locator<EventBusService>().eventBus.fire(
+    //       ProductQtyUpdateEvent(productDetails!.overview!.productId!, qty));
+    //   print("TRIGGERED EVENT $qty");
+    // } catch (ex, s) {
+    //   Logger.e(ex.toString(), s: s);
+    // }
+  }
 }
+

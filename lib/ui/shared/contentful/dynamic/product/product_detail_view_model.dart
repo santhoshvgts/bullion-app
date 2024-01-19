@@ -5,6 +5,7 @@ import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../../../helper/utils.dart';
@@ -15,6 +16,8 @@ import '../../../../../services/api_request/favorites_request.dart';
 
 class ProductDetailViewModel extends VGTSBaseViewModel {
   ProductDetails? _productDetails;
+
+  SwiperController productImageController = SwiperController();
 
   int _activeIndex = 0;
 

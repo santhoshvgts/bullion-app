@@ -36,7 +36,7 @@ class SortDrawer extends StatelessWidget {
                 HorizontalSpacing.d10px(),
                 const Expanded(
                   child: Text(
-                    'All Sorts',
+                    'Sort By',
                     style: AppTextStyle.titleLarge,
                   ),
                 ),

@@ -174,6 +174,9 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
 
   @override
   Widget build(BuildContext context, ContentViewModel viewModel) {
+
+    String sortOption = (viewModel.productModel.sortOptions?.where((element) => element.selected == true).firstOrNull?.text) ?? '';
+
     return Container(
       padding: padding,
       decoration: BoxDecoration(
@@ -249,12 +252,12 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
               child: Row(
                 children: [
                   const Icon(
-                    Icons.keyboard_arrow_down_rounded,
+                    Icons.sort_rounded,
                     size: 18,
                   ),
                   HorizontalSpacing.d5px(),
-                  const Text(
-                    "Sort",
+                  Text(
+                    sortOption.isEmpty ? "Sort By" : sortOption,
                     textScaleFactor: 1,
                     style: AppTextStyle.titleSmall,
                   )

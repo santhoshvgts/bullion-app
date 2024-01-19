@@ -1,7 +1,10 @@
+import 'package:bullion/core/models/module/cart/cart_item.dart';
+import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/dashboard/dashboard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -68,8 +71,67 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            inactiveIcon: const Icon(CupertinoIcons.cart),
-            icon: const Icon(CupertinoIcons.cart),
+            inactiveIcon: StreamBuilder<PageSettings?>(
+              stream: locator<CartService>().stream,
+              builder: (context, snapshot) {
+                return SizedBox(
+                  width: 50,
+                  height: 24,
+                  child: Stack(
+                    children: [
+                      const Positioned.fill(child: Icon(CupertinoIcons.cart, size: 22,)),
+                      if (snapshot.hasData)
+                        if ((snapshot.data?.shoppingCart?.totalItems ?? 0) != 0)
+                          Positioned(
+                            right: 5,
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, color: AppColor.primary),
+                              padding: const EdgeInsets.all(5),
+                              child: Text(
+                                snapshot.data?.shoppingCart?.totalItems?.toString() ?? '',
+                                textScaleFactor: 1,
+                                style: AppTextStyle.bodyMedium
+                                    .copyWith(fontSize: 12, color: AppColor.white),
+                              ),
+                            ),
+                          )
+                    ],
+                  ),
+                );
+              }
+            ),
+            icon: StreamBuilder<PageSettings?>(
+                stream: locator<CartService>().stream,
+                builder: (context, snapshot) {
+                  return SizedBox(
+                    width: 50,
+                    height: 24,
+                    child: Stack(
+                      children: [
+                        const Positioned.fill(child: Icon(CupertinoIcons.cart, size: 22,)),
+                        if (snapshot.hasData)
+                          if ((snapshot.data?.shoppingCart?.totalItems ?? 0) != 0)
+                            Positioned(
+                              right: 5,
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle, color: AppColor.primary),
+                                padding: const EdgeInsets.all(5),
+                                child: Text(
+                                  snapshot.data?.shoppingCart?.totalItems?.toString() ?? '',
+                                  textScaleFactor: 1,
+                                  style: AppTextStyle.bodyMedium
+                                      .copyWith(fontSize: 12, color: AppColor.white),
+                                ),
+                              ),
+                            )
+                      ],
+                    ),
+                  );
+                }
+            ),
+            // icon: const Icon(CupertinoIcons.cart),
             title: "Cart",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/cart/viewCart",

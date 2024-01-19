@@ -12,16 +12,20 @@ import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
 import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
+import 'package:bullion/ui/view/product/product_images_full_view.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/chip_item.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:bullion/ui/widgets/shimmer_effect.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../../helper/utils.dart';
@@ -272,7 +276,7 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(images, index)));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(viewModel.productDetails?.productPictures, viewModel.activeIndex)));
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -290,42 +294,7 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
                 itemCount: images!.length,
                 loop: false,
                 layout: SwiperLayout.DEFAULT,
-                // pagination: const SwiperPagination(
-                //   alignment: Alignment.bottomCenter,
-                //   builder: DotSwiperPaginationBuilder(
-                //     activeSize: 7,
-                //     size: 7,
-                //     space: 2,
-                //     activeColor: AppColor.primary,
-                //     color: AppColor.shadowColor,
-                //   ),
-                // ),
-              ),
-              Positioned(
-                bottom: 10,
-                right: 10,
-                child: InkWell(
-                  onTap: () {
-                    locator<NavigationService>()
-                        .pushNamed(Routes.threeSixtyPage);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: AppColor.outlineBorder,
-                        width: 0.5,
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Image.asset(
-                      Images.threeSixtyDegree,
-                      width: 25,
-                      height: 25,
-                    ),
-                  ),
-                ),
+                controller: viewModel.productImageController,
               ),
             ],
           ),
@@ -337,6 +306,7 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
           size: 40,
           images: images,
           activeIndex: viewModel.activeIndex,
+          controller: viewModel.productImageController
         )
       ],
     );
@@ -872,79 +842,61 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
 class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisAlignment: MainAxisAlignment.end,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: const EdgeInsets.only(top: 0, bottom: 2.0),
-                  child: RichText(
-                    textScaleFactor: 1,
-                    textAlign: TextAlign.left,
-                    text: TextSpan(
-                        text:
-                            "${viewModel.productOverview!.pricing!.formattedNewPrice} ",
-                        style: AppTextStyle.titleLarge.copyWith(
-                            fontSize: 20,
-                            color: viewModel.productOverview!.pricing!
-                                    .strikeThroughEnabled!
-                                ? const Color(0xffC30000)
-                                : AppColor.primaryDark),
-                        children: <TextSpan>[
-                          if (viewModel
-                              .productOverview!.pricing!.strikeThroughEnabled!)
-                            TextSpan(
-                                text: viewModel.productOverview!.pricing!
-                                    .formattedOldPrice,
-                                style: AppTextStyle.titleLarge.copyWith(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 20,
-                                    color: const Color(0xff666666),
-                                    decoration: TextDecoration.lineThrough))
-                        ]),
-                  )),
+        Padding(
+            padding: const EdgeInsets.only(top: 0, bottom: 2.0),
+            child: RichText(
+              textScaleFactor: 1,
+              textAlign: TextAlign.left,
+              text: TextSpan(
+                  text:
+                  "${viewModel.productOverview!.pricing!.formattedNewPrice} ",
+                  style: AppTextStyle.titleLarge.copyWith(
+                      fontSize: 20,
+                      color: viewModel.productOverview!.pricing!
+                          .strikeThroughEnabled!
+                          ? const Color(0xffC30000)
+                          : AppColor.primaryDark),
+                  children: <TextSpan>[
+                    if (viewModel
+                        .productOverview!.pricing!.strikeThroughEnabled!)
+                      TextSpan(
+                          text: viewModel.productOverview!.pricing!
+                              .formattedOldPrice,
+                          style: AppTextStyle.titleLarge.copyWith(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 20,
+                              color: const Color(0xff666666),
+                              decoration: TextDecoration.lineThrough))
+                  ]),
+            )),
 
-              if (viewModel.productDetails?.priceBadgeText?.isNotEmpty == true)
-                Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: Text(
-                    viewModel.productDetails?.priceBadgeText ?? '',
-                    textAlign: TextAlign.left,
-                    style: AppTextStyle.bodyMedium.copyWith(fontSize: 14),
-                  ),
-                ),
-
-              if (viewModel.productOverview?.pricing?.strikeThroughEnabled ==
-                  true)
-                Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: Text(
-                      viewModel.productOverview!.pricing!.discountText ?? '',
-                      textAlign: TextAlign.left,
-                      style: AppTextStyle.bodyMedium.copyWith(
-                          color: AppColor.offerText,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14)),
-                ),
-
-              // VerticalSpacing.d15px(),
-            ],
+        if (viewModel.productDetails?.priceBadgeText?.isNotEmpty == true)
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text(
+              viewModel.productDetails?.priceBadgeText ?? '',
+              textAlign: TextAlign.left,
+              style: AppTextStyle.bodyMedium.copyWith(fontSize: 14),
+            ),
           ),
-        ),
-        Button(
-          "Add To Cart",
-          width: 140,
-          valueKey: const ValueKey("btnAddToCart"),
-          color: AppColor.secondary,
-          borderColor: AppColor.secondary,
-          onPressed: () {
-            viewModel.addToCart();
-          },
-        )
+
+        if (viewModel.productOverview?.pricing?.strikeThroughEnabled ==
+            true)
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+                viewModel.productOverview!.pricing!.discountText ?? '',
+                textAlign: TextAlign.left,
+                style: AppTextStyle.bodyMedium.copyWith(
+                    color: AppColor.offerText,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14)),
+          ),
+
+        // VerticalSpacing.d15px(),
       ],
     );
   }
