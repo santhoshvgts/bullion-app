@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:bullion/core/models/module/cart/cart_item.dart';
+import 'package:bullion/core/models/module/cart/shopping_cart.dart';
+import 'package:bullion/core/models/module/order.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/locator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -28,69 +31,69 @@ class AnalyticsService {
     koEvent.send();
   }
 
-  // Future<void> logFirstPurchase(Order order) async {
-  //
-  //   var eventMapObject = {
-  //     "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
-  //     "name":  order.orderLineItems?.map((e) => e.productName).toList(),
-  //     "content_id": order.orderLineItems?.map((e) => e.productId).toList(),
-  //     "price": "\$${order.orderTotal}",
-  //     "currency": "USD",
-  //     "checkout_as_guest": locator<AuthenticationService>().isGuestUser,
-  //     "order_id": order.orderId,
-  //   };
-  //
-  //   KochavaTracker.instance.sendEventWithDictionary("First Purchase", eventMapObject);
-  //
-  //   var gaObject = {
-  //     'currency': 'USD',
-  //     'amount': "\$${order.orderTotal}",
-  //     'product': order.orderLineItems?.map((e) => e.productName).toList().toString(),
-  //     'transaction_id': order.orderId,
-  //     "content_id":  order.orderLineItems?.map((e) => e.productId).toList().toString()
-  //   };
-  //   return locator<AnalyticsService>().logEvent('first_purchase', gaObject);
-  // }
-  //
-  // Future<void> logPurchase(Order order) async {
-  //
-  //   Map<String, dynamic> params = new Map();
-  //   params['currency'] = 'USD';
-  //   params['transaction_id'] = order.orderId;
-  //   params['tax'] = order.tax;
-  //   params['items'] = order.orderLineItems!.map((CartItem e) {
-  //     return {
-  //     "item_id": e.productId.toString(),
-  //     "item_name": e.productName,
-  //     "price": e.unitPrice,
-  //     "value": e.quantity! * e.unitPrice!,
-  //     "quantity": e.quantity,
-  //     "currency": 'USD'
-  //     };
-  //     }).toList().toString();
-  //   params['shipping'] = order.shippingAmount ;
-  //   params['value'] = order.orderTotal;
-  //   params['coupon'] = order.coupon;
-  //
-  //
-  //   var eventMapObject = {
-  //     "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
-  //     "name": order.orderLineItems?.fold<List<String?>>([], (prev, element) => List.from(prev)..add(element.productName)),
-  //     "content_id": order.orderLineItems?.fold<List<int?>>([], (prev, element) => List.from(prev)..add(element.productId)),
-  //     "price": order.orderTotal,
-  //     "currency": "USD",
-  //     "checkout_as_guest": locator<AuthenticationService>().isGuestUser,
-  //     "order_id": order.orderId,
-  //     "action": order.customerType,
-  //   };
-  //
-  //   logEvent("purchase", params);
-  //   KochavaTracker.instance.sendEventWithDictionary("Purchase", eventMapObject);
-  //
-  //   if (Platform.isIOS) {
-  //     Riskified.logSensitiveDeviceInfo();
-  //   }
-  // }
+  Future<void> logFirstPurchase(Order order) async {
+    //
+    // var eventMapObject = {
+    //   "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
+    //   "name":  order.orderLineItems?.map((e) => e.productName).toList(),
+    //   "content_id": order.orderLineItems?.map((e) => e.productId).toList(),
+    //   "price": "\$${order.orderTotal}",
+    //   "currency": "USD",
+    //   "checkout_as_guest": locator<AuthenticationService>().isGuestUser,
+    //   "order_id": order.orderId,
+    // };
+    //
+    // KochavaTracker.instance.sendEventWithDictionary("First Purchase", eventMapObject);
+
+    var gaObject = {
+      'currency': 'USD',
+      'amount': "\$${order.orderTotal}",
+      'product': order.orderLineItems?.map((e) => e.productName).toList().toString(),
+      'transaction_id': order.orderId,
+      "content_id":  order.orderLineItems?.map((e) => e.productId).toList().toString()
+    };
+    return locator<AnalyticsService>().logEvent('first_purchase', gaObject);
+  }
+
+  Future<void> logPurchase(Order order) async {
+
+    Map<String, dynamic> params = new Map();
+    params['currency'] = 'USD';
+    params['transaction_id'] = order.orderId;
+    params['tax'] = order.tax;
+    params['items'] = order.orderLineItems!.map((CartItem e) {
+      return {
+      "item_id": e.productId.toString(),
+      "item_name": e.productName,
+      "price": e.unitPrice,
+      "value": e.quantity! * e.unitPrice!,
+      "quantity": e.quantity,
+      "currency": 'USD'
+      };
+      }).toList().toString();
+    params['shipping'] = order.shippingAmount ;
+    params['value'] = order.orderTotal;
+    params['coupon'] = order.coupon;
+
+    logEvent("purchase", params);
+
+    // var eventMapObject = {
+    //   "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
+    //   "name": order.orderLineItems?.fold<List<String?>>([], (prev, element) => List.from(prev)..add(element.productName)),
+    //   "content_id": order.orderLineItems?.fold<List<int?>>([], (prev, element) => List.from(prev)..add(element.productId)),
+    //   "price": order.orderTotal,
+    //   "currency": "USD",
+    //   "checkout_as_guest": locator<AuthenticationService>().isGuestUser,
+    //   "order_id": order.orderId,
+    //   "action": order.customerType,
+    // };
+
+    // KochavaTracker.instance.sendEventWithDictionary("Purchase", eventMapObject);
+
+    // if (Platform.isIOS) {
+    //   Riskified.logSensitiveDeviceInfo();
+    // }
+  }
 
   Future<void> logShare({required String itemId, required String contentType, String method = "mobile"}) async {
     analytics.logShare(itemId: itemId, contentType: contentType, method: method);
@@ -149,48 +152,48 @@ class AnalyticsService {
   Future<void> logSearch(String searchTerm) async {
     await analytics.logSearch(searchTerm: searchTerm);
     KochavaTracker.instance.sendEventWithString("Search", searchTerm);
-    debugPrint('Analytics: log search ${searchTerm}');
+    debugPrint('Analytics: log search $searchTerm');
   }
 
-  // Future<void> logBeginCheckout(ShoppingCart? _shoppingCart) async {
-  //   var eventMapObject = {
-  //     "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
-  //     "name":  _shoppingCart!.items?.fold<List<String?>>([], (prev, element) => List.from(prev)..add(element.productName)),
-  //     "content_id": _shoppingCart.items?.fold<List<int?>>([], (prev, element) => List.from(prev)..add(element.productId)),
-  //     "checkout_as_guest":  locator<AuthenticationService>().isGuestUser,
-  //     "currency": "USD",
-  //   };
-  //
-  //   KochavaTracker.instance.sendEventWithDictionary("Checkout Start", eventMapObject);
-  //   await analytics.logBeginCheckout(value: _shoppingCart.orderTotal , currency: _shoppingCart.currency ?? 'USD',
-  //       items: _shoppingCart.items?.map((e) => AnalyticsEventItem(
-  //           itemId: e.productId.toString(),
-  //           itemName: e.productName,
-  //           quantity: e.quantity,
-  //           price: e.unitPrice,
-  //           currency: 'USD'
-  //       )).toList() ?? [],
-  //   );
-  // }
-  //
+  Future<void> logBeginCheckout(ShoppingCart? shoppingCart) async {
+    // var eventMapObject = {
+    //   "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
+    //   "name":  _shoppingCart!.items?.fold<List<String?>>([], (prev, element) => List.from(prev)..add(element.productName)),
+    //   "content_id": _shoppingCart.items?.fold<List<int?>>([], (prev, element) => List.from(prev)..add(element.productId)),
+    //   "checkout_as_guest":  locator<AuthenticationService>().isGuestUser,
+    //   "currency": "USD",
+    // };
+    //
+    // KochavaTracker.instance.sendEventWithDictionary("Checkout Start", eventMapObject);
+    await analytics.logBeginCheckout(value: shoppingCart?.orderTotal , currency: shoppingCart?.currency ?? 'USD',
+        items: shoppingCart?.items?.map((e) => AnalyticsEventItem(
+            itemId: e.productId.toString(),
+            itemName: e.productName,
+            quantity: e.quantity,
+            price: e.unitPrice,
+            currency: 'USD'
+        )).toList() ?? [],
+    );
+  }
 
-  Future<void> logProductView(ProductDetails? _productDetails) async {
+
+  Future<void> logProductView(ProductDetails? productDetails) async {
     locator<AnalyticsService>().logEvent('view_item', {
-      'currency': _productDetails?.overview!.pricing!.currency ?? 'USD',
+      'currency': productDetails?.overview!.pricing!.currency ?? 'USD',
       'items': [
         {
-          "item_id": _productDetails?.productId,
-          "item_name": _productDetails?.overview!.name
+          "item_id": productDetails?.productId,
+          "item_name": productDetails?.overview!.name
         }
       ].toString(),
-      "item": _productDetails?.productId,
-      'value': _productDetails?.overview?.pricing?.newPrice?.toString()
+      "item": productDetails?.productId,
+      'value': productDetails?.overview?.pricing?.newPrice?.toString()
     });
 
     var eventMapObject = {
       "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
-      "name":  _productDetails?.overview?.name,
-      "content_id": _productDetails?.productId,
+      "name":  productDetails?.overview?.name,
+      "content_id": productDetails?.productId,
     };
 
     KochavaTracker.instance.sendEventWithDictionary("View Product", eventMapObject);

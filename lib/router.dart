@@ -7,7 +7,9 @@ import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
 import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/checkout/checkout_page.dart';
-import 'package:bullion/ui/view/checkout/views/expired_cart/expired_cart_view.dart';
+import 'package:bullion/ui/view/checkout/payment_method/payment_method_page.dart';
+import 'package:bullion/ui/view/checkout_bk/checkout_page.dart';
+import 'package:bullion/ui/view/checkout_bk/views/expired_cart/expired_cart_view.dart';
 
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
@@ -205,18 +207,18 @@ class AppRouter {
             settings: RouteSettings(name: settings.name));
 
       case Routes.checkout:
-        return MaterialPageRoute(builder: (_) => const CheckoutPage(), settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => CheckoutPage(), settings: RouteSettings(name: settings.name));
       //
       //   case Routes.checkoutAddress:
       //     return MaterialPageRoute(
       //         builder: (_) => DeliveryAddressPage(),
       //         settings: RouteSettings(name: settings.name));
       //
-      //   case Routes.checkoutPayments:
-      //     return MaterialPageRoute(
-      //         builder: (_) => PaymentMethodPage(),
-      //         settings: RouteSettings(name: settings.name));
-      //
+        case Routes.checkoutPayments:
+          return MaterialPageRoute(
+              builder: (_) => PaymentMethodPage(),
+              settings: RouteSettings(name: settings.name));
+
       //
       //   case Routes.marketAlertEntry:
       //     return MaterialPageRoute(

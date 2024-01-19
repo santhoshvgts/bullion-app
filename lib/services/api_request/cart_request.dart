@@ -13,7 +13,7 @@ class CartRequest {
 
   static RequestSettings addShoppingCart(int? productId, int qty) {
     return RequestSettings(
-      "/shopping-cart/add?productId=${productId}&qty=${qty}",
+      "/shopping-cart/add?productId=$productId&qty=$qty",
       RequestMethod.POST,
       params: null,
       authenticated: false,
@@ -22,7 +22,7 @@ class CartRequest {
 
   static RequestSettings removeShoppingCart(int? productId) {
     return RequestSettings(
-      "/shopping-cart/remove?productId=${productId}",
+      "/shopping-cart/remove?productId=$productId",
       RequestMethod.POST,
       params: null,
       authenticated: false,
@@ -31,7 +31,7 @@ class CartRequest {
 
   static RequestSettings applyCoupon(String coupon) {
     return RequestSettings(
-      "/shopping-cart/validate-coupon?coupon=${coupon}",
+      "/shopping-cart/validate-coupon?coupon=$coupon",
       RequestMethod.POST,
       params: null,
       authenticated: false,
@@ -40,7 +40,7 @@ class CartRequest {
 
   static RequestSettings modifyShoppingCart(int? productId, int qty) {
     return RequestSettings(
-      "/shopping-cart/modify?productId=${productId}&qty=${qty}",
+      "/shopping-cart/modify?productId=$productId&qty=$qty",
       RequestMethod.POST,
       params: null,
       authenticated: false,

@@ -1,8 +1,8 @@
 // import 'package:bullion/core/res/colors.dart';
 // import 'package:bullion/core/res/images.dart';
 // import 'package:bullion/core/res/styles.dart';
-// import 'package:bullion/ui/view/checkout/checkout_view_model.dart';
-// import 'package:bullion/ui/view/checkout/views/ck_address_view_model.dart';
+// import 'package:bullion/ui/view/checkout_bk/checkout_view_model.dart';
+// import 'package:bullion/ui/view/checkout_bk/views/ck_address_view_model.dart';
 // import 'package:bullion/ui/view/vgts_builder_widget.dart';
 // import 'package:bullion/ui/widgets/shimmer_effect.dart';
 // import 'package:flutter/material.dart';

@@ -6,8 +6,10 @@ import 'package:bullion/services/api_request/checkout_request.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 
 class CheckoutStreamService {
-  Checkout? _checkout;
+
   final ApiBaseService _apiBaseService = locator<ApiBaseService>();
+
+  Checkout? _checkout;
 
   Checkout? get checkout => _checkout;
 
@@ -20,12 +22,12 @@ class CheckoutStreamService {
     _streamController.add(null);
   }
 
-  savePaymentAndRefreshCheckout(int? paymentMethodId, {int? userPaymentMethodId}) async {
-    Checkout? checkout = await _apiBaseService.request<Checkout>(CheckOutRequest.savePaymentMethod(paymentMethodId: paymentMethodId, userPaymentMethodId: userPaymentMethodId ?? 0));
+  savePaymentAndRefreshCheckout(int? paymentMethodId, {int? userPaymentMethodId, bool isNewAccount = false }) async {
+    Checkout? checkout = await _apiBaseService.request<Checkout>(CheckoutRequest.savePaymentMethod(paymentMethodId: paymentMethodId, userPaymentMethodId: userPaymentMethodId ?? 0));
     _refreshCheckout(checkout);
   }
 
-  _refreshCheckout(Checkout? checkout) {
+  _refreshCheckout(Checkout? checkout){
     if (checkout != null) {
       _checkout = checkout;
       _streamController.add(checkout);
@@ -33,7 +35,8 @@ class CheckoutStreamService {
   }
 
   refresh() async {
-    Checkout? checkout = await _apiBaseService.request<Checkout>(CheckOutRequest.validatePrice());
+    Checkout? checkout = await _apiBaseService.request<Checkout>(CheckoutRequest.validatePrice());
     _refreshCheckout(checkout);
   }
+
 }
