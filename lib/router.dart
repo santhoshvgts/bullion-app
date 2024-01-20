@@ -21,6 +21,7 @@ import 'package:bullion/ui/view/main/login/login_page.dart';
 import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
+import 'package:bullion/ui/view/settings/activity/recently_bought/recently_bought_page.dart';
 import 'package:bullion/ui/view/settings/add_edit_address_page.dart';
 import 'package:bullion/ui/view/settings/address_page.dart';
 import 'package:bullion/ui/view/settings/alerts/add_edit_spot_price_page.dart';
@@ -37,6 +38,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'ui/view/dashboard/dashboard_page.dart';
+import 'ui/view/settings/activity/recently_viewed/recently_viewed_page.dart';
+import 'ui/view/settings/activity/search_history/search_history_page.dart';
 
 const String initialRoute = "login";
 
@@ -370,24 +373,24 @@ class AppRouter {
       //       ),
       //     );
       //
-      //   case Routes.recentlyViewed:
-      //     return MaterialPageRoute(
-      //       builder: (_) => RecentlyViewedPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case Routes.searchHistory:
-      //     return MaterialPageRoute(
-      //       builder: (_) => SearchHistoryPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case Routes.recentlyBought:
-      //     return MaterialPageRoute(
-      //       builder: (_) => RecentlyBoughtPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
+        case Routes.recentlyViewed:
+          return MaterialPageRoute(
+            builder: (_) => RecentlyViewedPage(),
+            settings: RouteSettings(name: settings.name),
+          );
+
+        case Routes.searchHistory:
+          return MaterialPageRoute(
+            builder: (_) => SearchHistoryPage(),
+            settings: RouteSettings(name: settings.name),
+          );
+
+        case Routes.recentlyBought:
+          return MaterialPageRoute(
+            builder: (_) => RecentlyBoughtPage(),
+            settings: RouteSettings(name: settings.name),
+          );
+
       case Routes.myOrders:
         return MaterialPageRoute(builder: (_) => const OrdersPage(), settings: RouteSettings(name: settings.name));
 

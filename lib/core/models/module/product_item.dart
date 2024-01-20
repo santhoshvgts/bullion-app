@@ -1,7 +1,8 @@
+import 'package:bullion/core/models/base_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/helper/utils.dart';
 
-class ProductOverview {
+class ProductOverview extends BaseModel {
   int? productId;
   String? targetUrl;
   String? name;
@@ -84,6 +85,8 @@ class ProductOverview {
       this.reviewCount,
       this.quickShip,
       this.recurringEligible});
+
+  ProductOverview fromJson(Map<String, dynamic> json) => ProductOverview.fromJson(json);
 
   ProductOverview.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];

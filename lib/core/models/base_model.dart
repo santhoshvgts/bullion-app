@@ -13,6 +13,7 @@ import 'package:bullion/core/models/module/dynamic.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/models/module/redirection.dart';
 import 'package:bullion/core/models/module/search_module.dart';
 import 'package:bullion/core/models/module/selected_item_list.dart';
@@ -140,6 +141,9 @@ class BaseModel extends BaseObject {
 
       case DynamicModel:
         return DynamicModel() as T;
+
+      case ProductOverview:
+        return ProductOverview() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }

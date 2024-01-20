@@ -11,15 +11,19 @@ class AddressViewModel extends VGTSBaseViewModel {
 
   @override
   Future onInit() async {
-    setBusy(true);
-    _userAddressList = await requestList<UserAddress>(AddressRequest.getAddress());
-    setBusy(false);
+    await refresh();
     super.onInit();
   }
 
   void deleteAddress(int addressId) async {
     setBusy(true);
     _userAddressList = await requestList<UserAddress>(AddressRequest.deleteAddress(addressId));
+    setBusy(false);
+  }
+
+  refresh() async {
+    setBusy(true);
+    _userAddressList = await requestList<UserAddress>(AddressRequest.getAddress());
     setBusy(false);
   }
 

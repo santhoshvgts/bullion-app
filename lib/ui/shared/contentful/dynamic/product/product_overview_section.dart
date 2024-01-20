@@ -340,6 +340,7 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
           _VariationSelection(),
 
           AppStyle.customDivider,
+
         ],
       ),
     );
