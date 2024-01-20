@@ -1,8 +1,11 @@
+import 'package:bullion/core/models/module/checkout/shipping_option.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/cart/cart_summary_help_text.dart';
 import 'package:bullion/ui/shared/cart/warning_card.dart';
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
+import 'package:bullion/ui/view/checkout/address/checkout_address_section.dart';
 import 'package:bullion/ui/view/checkout/checkout_view_model.dart';
+import 'package:bullion/ui/view/checkout/payment_method/payment_method_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bullion/core/models/module/cart/order_total_summary.dart';
@@ -49,7 +52,8 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
          child: Scaffold(
            appBar: AppBar(
              automaticallyImplyLeading: false,
-             title: Row(
+             toolbarHeight: 65,
+             title: Column(
                crossAxisAlignment: CrossAxisAlignment.center,
                mainAxisAlignment: MainAxisAlignment.center,
                children: [
@@ -60,7 +64,17 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
                        color: AppColor.text, fontFamily: AppTextStyle.fontFamily),
                  ),
 
-
+                 InkWell(
+                   onTap: () {
+                     locator<NavigationService>().pushNamed(Routes.reviewCart);
+                   },
+                   child: Text(
+                     "Review Order ${viewModel.checkout?.formattedOrderTotal ?? '-'}",
+                     textScaleFactor: 1,
+                     style: AppTextStyle.labelMedium.copyWith(
+                         color: AppColor.text, fontFamily: AppTextStyle.fontFamily, decoration: TextDecoration.underline),
+                   ),
+                 ),
 
                ],
              ),
@@ -162,18 +176,22 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
                      crossAxisAlignment: CrossAxisAlignment.center,
                      children: [
 
-                       InkWell(
-                         onTap: () {
-                           ApmexWebView.open(locator<AppConfigService>().config!.appLinks!.checkoutTermCancelPolicy, title: "Cancellation Policy");
-                         },
-                         child: RichText(
-                           textScaleFactor: 1,
-                           text: TextSpan(
-                             text: 'By placing an order, I agree to ',
-                             style: AppTextStyle.bodySmall,
-                             children: <TextSpan>[
-                               TextSpan(text: 'terms and cancellation policy', style: AppTextStyle.bodySmall.copyWith(color: Colors.blue, decoration: TextDecoration.underline)),
-                             ],
+                       Padding(
+                         padding: const EdgeInsets.symmetric(horizontal: 5),
+                         child: InkWell(
+                           onTap: () {
+                             ApmexWebView.open(locator<AppConfigService>().config!.appLinks!.checkoutTermCancelPolicy, title: "Cancellation Policy");
+                           },
+                           child: RichText(
+                             textScaleFactor: 1,
+                             textAlign: TextAlign.center,
+                             text: TextSpan(
+                               text: 'By placing an order, I agree to ',
+                               style: AppTextStyle.bodySmall.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),
+                               children: <TextSpan>[
+                                 TextSpan(text: 'terms and cancellation policy', style: AppTextStyle.bodySmall.copyWith(color: Colors.blue, decoration: TextDecoration.underline)),
+                               ],
+                             ),
                            ),
                          ),
                        ),
@@ -270,7 +288,6 @@ class _PlaceOrderButton extends ViewModelWidget<CheckoutViewModel> {
          width: double.infinity,
          disabled: !viewModel.enablePlaceOrder,
          loading: viewModel.placeOrderLoading,
-         borderRadius: BorderRadius.circular(5),
          color: const Color(0xFF023087),
          borderColor: const Color(0xFF023087),
          onPressed: viewModel.isBusy ? null : (){
@@ -288,7 +305,6 @@ class _PlaceOrderButton extends ViewModelWidget<CheckoutViewModel> {
          width: double.infinity,
          disabled: !viewModel.enablePlaceOrder,
          loading: viewModel.placeOrderLoading,
-         borderRadius: BorderRadius.circular(5),
          color: const Color(0xFF022147),
          borderColor: const Color(0xFF022147),
          onPressed: viewModel.isBusy ? null : (){
@@ -380,10 +396,10 @@ class _DeliveryAddress extends ViewModelWidget<CheckoutViewModel>  {
 
   @override
   Widget build(BuildContext context, CheckoutViewModel viewModel) {
-
+print("viewModel.showAddressSelection ${viewModel.showAddressSelection}");
     if ((viewModel.checkout!.selectedShippingAddress != null &&
         viewModel.checkout!.selectedShippingAddress?.address?.id != 0 &&
-        viewModel.checkout!.selectedShippingAddress?.address?.id != null) ||  viewModel.checkout!.selectedShippingAddress?.isCitadel == true) {
+        viewModel.checkout!.selectedShippingAddress?.address?.id != null) && viewModel.showAddressSelection == false) {
       UserAddress? userAddress = viewModel.checkout!.selectedShippingAddress!.address;
 
       return InkWell(
@@ -401,7 +417,10 @@ class _DeliveryAddress extends ViewModelWidget<CheckoutViewModel>  {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
 
-              const Icon(Icons.location_on_outlined, size: 25, color: AppColor.primary,),
+              SizedBox(
+                width: 27,
+                child: Image.asset(Images.shippingAddressIcon, )
+              ),
 
               HorizontalSpacing.d15px(),
 
@@ -409,28 +428,23 @@ class _DeliveryAddress extends ViewModelWidget<CheckoutViewModel>  {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Ship To Address", textScaleFactor: 1,style: AppTextStyle.bodySmall.copyWith(fontSize: 12),),
+                    Text("Shipping Address", textScaleFactor: 1,style: AppTextStyle.bodySmall.copyWith(fontSize: 12),),
 
                     VerticalSpacing.d2px(),
 
-                    Text(viewModel.checkout!.selectedShippingAddress!.isCitadel! ? "Secure Storage" : userAddress!.name, textScaleFactor: 1,style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
+                    Text(userAddress!.name, textScaleFactor: 1,style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
 
                     VerticalSpacing.d2px(),
 
-                    if (!viewModel.checkout!.selectedShippingAddress!.isCitadel!)
-                      Text(userAddress!.add1 ?? "",textScaleFactor: 1,style: AppTextStyle.bodySmall,),
+                    Text(userAddress!.formattedFullAddress ?? "",textScaleFactor: 1,style: AppTextStyle.bodySmall,),
 
-                    if (viewModel.checkout!.selectedShippingAddress!.isCitadel!)
-                      Text(viewModel.checkout!.selectedShippingAddress!.citadelAccountNumber ?? 'Citadel Global Depository Services',textScaleFactor: 1,style: AppTextStyle.bodySmall,)
-                    else
-                      Text(userAddress!.formattedSubAddress,textScaleFactor: 1, style: AppTextStyle.bodySmall,),
                   ],
                 ),
               ),
 
               Container(
                   alignment: Alignment.bottomRight,
-                  child: Text("Edit", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
+                  child: Text("Change", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
               ),
 
             ],
@@ -439,48 +453,9 @@ class _DeliveryAddress extends ViewModelWidget<CheckoutViewModel>  {
       );
     }
 
-    return InkWell(
-      key: const Key("cardAddressAction"),
-      onTap: () => viewModel.onDeliveryAddressSelection(),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColor.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColor.divider, width: 0.5),
-        ),
-        margin: const EdgeInsets.only(top: 10, left: 15, right: 15),
-        padding: const EdgeInsets.only(top: 10,bottom: 10,left: 15,right: 15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-
-            const Icon(Icons.location_on_outlined, size: 25,),
-
-            HorizontalSpacing.d15px(),
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Ship To Address",textScaleFactor: 1,style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
-
-                  VerticalSpacing.d2px(),
-
-                  const Text("Select your shipping address for delivery",textScaleFactor: 1,style: AppTextStyle.bodySmall,),
-                ],
-              ),
-            ),
-
-            Container(
-                alignment: Alignment.bottomRight,
-                child: Text("Add", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
-            ),
-
-          ],
-        ),
-      ),
+    return CheckoutAddressSection(
+      viewModel.checkout
     );
-
   }
 
 }
@@ -490,10 +465,8 @@ class _PaymentSection extends ViewModelWidget<CheckoutViewModel> {
   @override
   Widget build(BuildContext context, CheckoutViewModel viewModel) {
 
-    if (viewModel.checkout!.selectedPaymentMethod != null) {
-
+    if (viewModel.checkout!.selectedPaymentMethod != null && viewModel.showPaymentSelection == false) {
       SelectedPaymentMethod paymentMethod = viewModel.checkout!.selectedPaymentMethod!;
-
       return InkWell(
         key: const Key("actionPayment"),
         onTap: () => viewModel.onPaymentClick(),
@@ -543,15 +516,13 @@ class _PaymentSection extends ViewModelWidget<CheckoutViewModel> {
                           textStyle: AppTextStyle.bodySmall,
                         ),
                       ),
-
-
                   ],
                 ),
               ),
 
               Container(
                   alignment: Alignment.bottomRight,
-                  child: Text("Edit", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
+                  child: Text("Change", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
               ),
 
             ],
@@ -560,47 +531,11 @@ class _PaymentSection extends ViewModelWidget<CheckoutViewModel> {
       );
     }
 
-    return InkWell(
-      key: const Key("actionPayment"),
-      onTap: viewModel.checkout!.selectedShippingAddress == null ? null : () => viewModel.onPaymentClick(),
-      child: Opacity(
-        opacity: viewModel.checkout!.selectedShippingAddress == null ? 0.7 : 1,
-        child: Container(
-          color: AppColor.white,
-          margin: const EdgeInsets.only(top: 10,),
-          padding: const EdgeInsets.only(top: 10, bottom: 10,left: 15,right: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
+    if (viewModel.checkout?.selectedShippingAddress != null || viewModel.checkout?.selectedPaymentMethod != null) {
+      return const PaymentMethodSection();
+    }
 
-              Icon(Icons.credit_card_rounded, color: viewModel.checkout!.selectedShippingAddress == null ? AppColor.disabled : null, size: 25,),
-
-              HorizontalSpacing.d15px(),
-
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Payment", textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
-
-                    VerticalSpacing.d2px(),
-
-                    const Text("Please select your payment method", textScaleFactor: 1, style: AppTextStyle.bodySmall,),
-                  ],
-                ),
-              ),
-
-              if (viewModel.checkout!.selectedShippingAddress != null)
-                Container(
-                    alignment: Alignment.bottomRight,
-                    child: Text("Add", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
-                ),
-
-            ],
-          ),
-        ),
-      ),
-    );
+    return const SizedBox();
   }
 
 }
@@ -623,201 +558,181 @@ class _ShippingOptionSection extends ViewModelWidget<CheckoutViewModel> {
     }
 
     return Container(
-      color: AppColor.white,
-      width: double.infinity,
-      margin: const EdgeInsets.only(top: 10,),
-      padding: const EdgeInsets.only(top: 10, bottom: 10,),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-
-          Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
-            child: Text("Shipping Options",textScaleFactor: 1,style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
-          ),
-
-          VerticalSpacing.d15px(),
-
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.only(left: 15,right: 15),
-            child: IntrinsicHeight(
-              child: Row(
-                children: [
-                  ...viewModel.checkout!.selectedShippingOption!.shippingOptions!.map((shippingOption) =>
-                      InkWell(
-                        onTap: (){
-                          viewModel.onShippingOptionSelect(shippingOption);
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width / 2,
-                          margin: const EdgeInsets.only(right: 15),
-                          decoration: BoxDecoration(
-                            color: viewModel.checkout!.selectedShippingOption!.selectedShippingOption == shippingOption.id ? AppColor.primary.withOpacity(0.07) : Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(width: viewModel.checkout!.selectedShippingOption!.selectedShippingOption == shippingOption.id ? 1.5 : 1,
-                                color: viewModel.checkout!.selectedShippingOption!.selectedShippingOption == shippingOption.id ? AppColor.primary : Colors.black12
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(child: Padding(
-                                    padding: const EdgeInsets.only(top: 10, left: 10),
-                                    child: Text(shippingOption.formattedShipCharge!, textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(color: AppColor.primary),),
-                                  )),
-
-                                  if (shippingOption.serviceDescription != null)
-                                    Container(
-                                      padding: const EdgeInsets.only(left: 5),
-                                      child: IconButton(
-                                          onPressed: () => locator<DialogService>().showBottomSheet(title: shippingOption.name, child: CartSummaryHelpText(shippingOption.serviceDescription)),
-                                          icon: const Icon(
-                                            Icons.error_outline,
-                                            size: 18,
-                                            color: AppColor.text,
-                                          )
-                                      ),
-                                    ),
-
-                                ],
-                              ),
-
-                              Padding(
-                                padding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: shippingOption.serviceDescription != null ? 0 : 10),
-                                child: Text(shippingOption.name!, textAlign: TextAlign.start, textScaleFactor: 1, style: AppTextStyle.bodySmall,),
-                              ),
-
-                            ],
-                          ),
-                        ),
-                      )
-                  ).toList()
-                ],
-              ),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColor.divider, width: 0.5),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+                padding: EdgeInsets.only(left: 15),
+                child: Text('Shipping Method', style: AppTextStyle.titleMedium)
             ),
-          )
+             Padding(
+                padding: const EdgeInsets.only(left: 15, top: 2),
+                child: Text('All shipping methods are fully insured', style: AppTextStyle.labelMedium.copyWith(fontWeight: FontWeight.w400,color: AppColor.secondaryText))
+            ),
 
+            VerticalSpacing.d20px(),
 
-        ],
-      ),
+            ListView.separated(
+                primary: false,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+
+                  ShippingOption? option = viewModel.checkout?.selectedShippingOption?.shippingOptions?[index];
+                  bool selected = viewModel.checkout?.selectedShippingOption?.selectedShippingOption == option?.id;
+                  return InkWell(
+                    onTap: () {
+                      viewModel.onShippingOptionSelect(option!);
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Radio(
+                          value: selected,
+                          activeColor: AppColor.primary,
+                          onChanged: (value) {
+                          },
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, groupValue: true,
+                        ),
+                        Expanded(child: Text(option?.name ?? '', style: AppTextStyle.bodyMedium.copyWith(color: selected ? AppColor.primary : null, fontWeight: selected ? FontWeight.w500 : null))),
+                        Text('\$${option?.shipCharge.toString() ?? ''}', style: AppTextStyle.bodyMedium.copyWith(color: selected ? AppColor.primary : null, fontWeight: selected ? FontWeight.w500 : null)),
+                        HorizontalSpacing.d15px(),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => const Divider(
+                  color: AppColor.divider,
+                  thickness: 0.3,
+                  height: 15,
+                ),
+                itemCount: viewModel.checkout?.selectedShippingOption?.shippingOptions?.length ?? 0
+            ),
+          ],
+        )
     );
+
   }
 
 }
 
 class _OrderSummary extends ViewModelWidget<CheckoutViewModel> {
-
   @override
   Widget build(BuildContext context, CheckoutViewModel viewModel) {
-
     if (viewModel.orderSummaryList == null){
       return Container();
     }
 
-    return Container(
-        color: AppColor.background,
-        margin: const EdgeInsets.only(top: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text(
-                "Order Summary",
-                textScaleFactor: 1,
-                style: AppTextStyle.titleMedium.copyWith(fontSize: 17),
-              ),
-            ),
-
-            ListView.separated(
-                itemCount: viewModel.orderSummaryList!.length,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(
+            left: 17,
+            right: 15,
+            top: 20,
+          ),
+          child: Text(
+            "Order Summary",
+            textScaleFactor: 1,
+            style: AppTextStyle.titleMedium,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(
+            left: 15,
+            right: 15,
+            top: 15,
+            bottom: 15,
+          ),
+          decoration: BoxDecoration(
+            color: AppColor.white,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            children: [
+              ListView.separated(
+                itemCount: viewModel.orderSummaryList?.length ?? 0,
                 primary: false,
                 shrinkWrap: true,
-                separatorBuilder: (context, index){
-                  return AppStyle.customDivider;
+                padding: const EdgeInsets.only(top: 2),
+                separatorBuilder: (context, index) {
+                  return AppStyle.dottedDivider;
                 },
                 itemBuilder: (context, index) {
-
                   OrderTotalSummary item = viewModel.orderSummaryList![index];
 
                   return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 15,
+                    ),
                     child: Row(
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(item.key!, textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(fontSize: 15)),
-
-                            if (item.canRemove == true)
-                              SizedBox(
-                                height: 26,
-                                width: 60,
-                                child: InkWell(
-                                  onTap: () {
-                                    viewModel.onRemoveFromOrderSummary(item.keyCode);
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Text("Remove", textAlign: TextAlign.left, textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(fontSize: 12)),
-                                    ],
-                                  )),
-                              ),
-                          ],
+                        Text(
+                          item.key!,
+                          textScaleFactor: 1,
+                          style: AppTextStyle.bodyMedium,
                         ),
-
                         HorizontalSpacing.d5px(),
-
                         if (item.keyHelpText!.isNotEmpty)
                           InkWell(
-                              onTap: () => locator<DialogService>().showBottomSheet(title: item.key, child: CartSummaryHelpText(item.keyHelpText)),
-                              child: const Icon(
-                                Icons.error_outline,
-                                size: 18,
-                                color: AppColor.text,
-                              )
+                            onTap: () {
+                              locator<DialogService>().showBottomSheet(
+                                title: item.key,
+                                child: CartSummaryHelpText(item.keyHelpText),
+                              );
+                            },
+                            child: const Icon(
+                              Icons.error_outline,
+                              size: 18,
+                              color: AppColor.text,
+                            ),
                           ),
-
                         Expanded(child: Container()),
-
                         HorizontalSpacing.d15px(),
-
-                        Text(item.value!, style: AppTextStyle.bodySmall.copyWith(color: item.textColor, fontSize: 15))
-
+                        Text(
+                          item.value!,
+                          style: AppTextStyle.bodyMedium.copyWith(
+                            color: item.textColor,
+                          ),
+                        )
                       ],
                     ),
                   );
-
-                }
-            ),
-
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              color: AppColor.white,
-              child: Row(
-                children: [
-                  Text("Total", textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(fontSize: 17)),
-
-                  Expanded(child: Container()),
-
-                  Text(viewModel.checkout!.formattedOrderTotal!, style: AppTextStyle.titleMedium.copyWith(fontSize: 17))
-
-                ],
+                },
               ),
-            ),
-
-          ],
+              AppStyle.dottedDivider,
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                child: Row(
+                  children: [
+                    Text("Total",
+                        textScaleFactor: 1,
+                        style: AppTextStyle.titleLarge.copyWith(fontSize: 17)),
+                    Expanded(child: Container()),
+                    Text(viewModel.checkout?.formattedOrderTotal ?? '',
+                        style: AppTextStyle.titleLarge.copyWith(fontSize: 17))
+                  ],
+                ),
+              ),
+              VerticalSpacing.d5px(),
+            ],
+          ),
         ),
+      ],
     );
   }
-
 }
+
 
 class _Notes extends ViewModelWidget<CheckoutViewModel> {
   @override

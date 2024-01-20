@@ -8,10 +8,12 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
 import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
+import 'package:bullion/ui/view/product/detail/volume_info_bottom_sheet.dart';
 import 'package:bullion/ui/view/product/product_images_full_view.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -443,9 +445,11 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                     textScaleFactor: 1,
                     style: AppTextStyle.titleMedium,
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      locator<DialogService>().showBottomSheet(title: "Volume Discount Pricing", child: VolumeInfoBottomSheet(viewModel.productDetails?.volumePricingHelpText));
+                    },
                     child: const Padding(
                       padding: EdgeInsets.only(top: 3.0),
                       child: Icon(

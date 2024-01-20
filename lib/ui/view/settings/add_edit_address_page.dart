@@ -21,8 +21,9 @@ import 'add_edit_address_view_model.dart';
 
 class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
   final UserAddress? userAddress;
+  final bool? fromCheckout;
 
-  const AddEditAddressPage({super.key, this.userAddress});
+  const AddEditAddressPage({super.key, this.userAddress, this.fromCheckout = false });
 
   @override
   void onViewModelReady(AddEditAddressViewModel viewModel) {
@@ -234,7 +235,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
 
   @override
   viewModelBuilder(BuildContext context) {
-    return AddEditAddressViewModel();
+    return AddEditAddressViewModel(fromCheckout);
   }
 }
 

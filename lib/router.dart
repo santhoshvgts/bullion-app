@@ -7,8 +7,6 @@ import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
 import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/checkout/checkout_page.dart';
-import 'package:bullion/ui/view/checkout/payment_method/payment_method_page.dart';
-import 'package:bullion/ui/view/checkout_bk/checkout_page.dart';
 import 'package:bullion/ui/view/checkout_bk/views/expired_cart/expired_cart_view.dart';
 
 import 'package:bullion/ui/view/core/page/main_page.dart';
@@ -217,11 +215,6 @@ class AppRouter {
       //         builder: (_) => DeliveryAddressPage(),
       //         settings: RouteSettings(name: settings.name));
       //
-        case Routes.checkoutPayments:
-          return MaterialPageRoute(
-              builder: (_) => PaymentMethodPage(),
-              settings: RouteSettings(name: settings.name));
-
       //
       //   case Routes.marketAlertEntry:
       //     return MaterialPageRoute(
@@ -360,7 +353,13 @@ class AppRouter {
         ), settings: RouteSettings(name: settings.name));
 
       case Routes.addEditAddress:
-        return MaterialPageRoute(builder: (_) => AddEditAddressPage(userAddress: settings.arguments as UserAddress?), settings: RouteSettings(name: settings.name));
+        bool fromCheckout = false;
+        UserAddress? userAddress;
+        if (settings.arguments is Map) {
+          fromCheckout = (settings.arguments as Map)['fromCheckout'] ?? false;
+          userAddress = (settings.arguments as Map)['userAddress'];
+        }
+        return MaterialPageRoute(builder: (_) => AddEditAddressPage(userAddress: userAddress, fromCheckout: fromCheckout,), settings: RouteSettings(name: settings.name));
 
       case Routes.favorites:
         return MaterialPageRoute(builder: (_) => const FavoritesPage(), settings: RouteSettings(name: settings.name));

@@ -19,6 +19,7 @@ class Images {
   static const String threeSixtyDegree = "assets/images/360-degrees.png";
 
   static const String accountIcon = "assets/images/account_user.png";
+  static const String shippingAddressIcon = "assets/images/shipping_address.png";
 
 
   // BOTTOM MENU ICONS

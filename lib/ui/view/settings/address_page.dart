@@ -96,7 +96,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                                             viewModel.deleteAddress(viewModel.userAddressList[index].id!);
                                           },
                                           onEdit: () async {
-                                            bool? result = await  locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: viewModel.userAddressList[index]);
+                                            bool? result = await  locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: { "userAddress": viewModel.userAddressList[index] });
                                             if (result == true) {
                                               viewModel.refresh();
                                             }

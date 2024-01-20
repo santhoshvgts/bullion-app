@@ -3,7 +3,6 @@ import 'package:bullion/ui/view/checkout/payment_method/user_payment_view_model.
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:bullion/core/enums/viewstate.dart';
 import 'package:bullion/core/models/module/checkout/payment_method.dart';
 import 'package:bullion/core/models/module/checkout/user_payment_method.dart';
 import 'package:bullion/core/res/colors.dart';
@@ -15,83 +14,87 @@ import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
-class UserPaymentMethodBottomSheet extends VGTSBuilderWidget<UserPaymentViewModel> {
+class UserPaymentMethodPage extends VGTSBuilderWidget<UserPaymentViewModel> {
 
   PaymentMethod paymentMethod;
   List<UserPaymentMethod>? userPaymentMethodList;
 
-  UserPaymentMethodBottomSheet(this.paymentMethod, this.userPaymentMethodList, {super.key});
+  UserPaymentMethodPage(this.paymentMethod, this.userPaymentMethodList, {super.key});
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, UserPaymentViewModel viewModel, Widget? child) {
-    return SafeArea(
-        child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(paymentMethod.name ?? '', textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
+      ),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height - ((25 / 100) * MediaQuery.of(context).size.height),
+        child: Stack(
           children: [
 
-            Container(
-              height: MediaQuery.of(context).size.height - ((25 / 100) * MediaQuery.of(context).size.height),
-              child: Stack(
-                children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height - ((11 / 100) * MediaQuery.of(context).size.height),
+                child: ListView(
+                  padding: const EdgeInsets.all(0),
+                  children: [
 
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height - ((11 / 100) * MediaQuery.of(context).size.height),
-                      child: ListView(
-                        padding: const EdgeInsets.all(0),
-                        children: [
+                    if (paymentMethod.requiresZda!)
+                      _buildZDAVerificationInfo(),
 
-                          if (paymentMethod.requiresZda!)
-                            _buildZDAVerificationInfo(),
+                    ...viewModel.userPaymentMethodList!.map((item) => Column(
+                      children: [
+                        _UserPaymentMethodCardItem(item, onPressed: viewModel.onUserPaymentMethodSelect),
+                        AppStyle.customDivider
+                      ],
+                    )).toList()
 
-                          ...viewModel.userPaymentMethodList!.map((item) => Column(
-                            children: [
-                              _UserPaymentMethodCardItem(item, onPressed: viewModel.onUserPaymentMethodSelect),
-                              AppStyle.customDivider
-                            ],
-                          )).toList()
+                  ],
+                ),
+              ),
+            ),
 
-                        ],
-                      ),
+            if (viewModel.loading)
+              Container(
+                color: AppColor.white.withOpacity(0.7),
+                height: MediaQuery.of(context).size.height,
+                child: const Center(
+                  child: SizedBox(
+                    height: 80,
+                    width: 80,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(AppColor.primary),
                     ),
                   ),
-
-                  if (viewModel.loading)
-                    Container(
-                      color: AppColor.white.withOpacity(0.7),
-                      height: MediaQuery.of(context).size.height,
-                      child: const Center(
-                        child: SizedBox(
-                          height: 80,
-                          width: 80,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(AppColor.primary),
-                          ),
-                        ),
-                      ),
-                    )
-
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Button.outline(paymentMethod.paymentMethodId != 19 ? "+ Add New Card" : "+ Add New Account",
-                  valueKey: const Key("btnAddNew"),
-                  width: double.infinity,
-                  onPressed: () {
-                    if(!viewModel.loading){
-                      viewModel.onAddNewClick();
-                    }
-                  }
-              ),
-            ),
+                ),
+              )
 
           ],
-        )
+        ),
+      ),
+      bottomNavigationBar: Wrap(
+        children: [
+
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Button.outline(paymentMethod.paymentMethodId != 19 ? "+ Add New Card" : "+ Add New Account",
+                valueKey: const Key("btnAddNew"),
+                width: double.infinity,
+                textStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary),
+                borderColor: AppColor.primary,
+                onPressed: () {
+                  if(!viewModel.loading){
+                    viewModel.onAddNewClick();
+                  }
+                }
+            ),
+          ),
+
+        ],
+      ),
     );
   }
 

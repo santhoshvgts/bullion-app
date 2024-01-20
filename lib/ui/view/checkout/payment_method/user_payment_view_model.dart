@@ -66,7 +66,7 @@ class UserPaymentViewModel extends VGTSBaseViewModel {
     await locator<CheckoutStreamService>().savePaymentAndRefreshCheckout(paymentMethod.paymentMethodId, userPaymentMethodId: userPaymentMethod.userPaymentMethodId);
     loading = false;
 
-    dialogService.dialogMaybeComplete(AlertResponse(status: true), key: const ValueKey("bsUserPaymentMethod"));
+    navigationService.pop();
   }
 
   onAddNewClick() async {

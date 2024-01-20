@@ -37,7 +37,7 @@ class CheckoutRequest {
   }
 
 
-  static RequestSettings saveDeliveryAddress({ int? addressId, bool? isCitadel, String? citadelAccount }) {
+  static RequestSettings saveDeliveryAddress({ int? addressId, bool? isCitadel = false, String? citadelAccount }) {
     String queryString = "?";
 
     queryString += "addressId=$addressId";

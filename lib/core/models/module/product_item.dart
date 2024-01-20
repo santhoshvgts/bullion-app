@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/base_model.dart';
+import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/helper/utils.dart';
 
@@ -31,6 +32,7 @@ class ProductOverview extends BaseModel {
   bool? quickShip;
   bool? recurringEligible;
 
+  List<CompetitorPrice>? competitorPrices;
 
   bool get showDealProgress {
     return (dealMax ?? 0) > 0;
@@ -106,6 +108,13 @@ class ProductOverview extends BaseModel {
     orderMin = json['order_min'];
     dealMax = json['deal_max'];
 
+    if (json['competitor_prices'] != null) {
+      competitorPrices = <CompetitorPrice>[];
+      json['competitor_prices'].forEach((v) {
+        competitorPrices!.add(CompetitorPrice.fromJson(v));
+      });
+    }
+
     primaryImageUrl = json['primary_image_url'];
     imageDesc = json['image_desc'];
     productAction = json['product_action'];
@@ -137,6 +146,9 @@ class ProductOverview extends BaseModel {
     data['deal_max'] = dealMax;
     data['order_min'] = orderMin;
 
+    if (competitorPrices != null) {
+      data['competitor_prices'] = competitorPrices!.map((v) => v.toJson()).toList();
+    }
 
     data['show_price'] = showPrice;
     data['on_presale'] = onPresale;

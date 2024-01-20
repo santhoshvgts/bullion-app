@@ -22,8 +22,24 @@ class CheckoutViewModel extends VGTSBaseViewModel {
 
   String errorText = "";
 
-  final CheckoutStreamService _checkoutStreamService =
-      locator<CheckoutStreamService>();
+  bool _showAddressSelection = false;
+  bool _showPaymentSelection = false;
+
+  bool get showPaymentSelection => _showPaymentSelection;
+
+  set showPaymentSelection(bool value) {
+    _showPaymentSelection = value;
+    notifyListeners();
+  }
+
+  bool get showAddressSelection => _showAddressSelection;
+
+  set showAddressSelection(bool value) {
+    _showAddressSelection = value;
+    notifyListeners();
+  }
+
+  final CheckoutStreamService _checkoutStreamService = locator<CheckoutStreamService>();
 
   String get formattedRemainingPricingTime =>
       _countDownTxt == "" ? "-" : _countDownTxt;
@@ -101,6 +117,8 @@ class CheckoutViewModel extends VGTSBaseViewModel {
     _runCountdown(_checkout!.timerDuration!);
     _checkoutStreamService.stream?.listen((event) {
       checkout = event;
+      showPaymentSelection = false;
+      showAddressSelection = false;
       notifyListeners();
     });
 
@@ -141,44 +159,11 @@ class CheckoutViewModel extends VGTSBaseViewModel {
   }
 
   onDeliveryAddressSelection() async {
-    mounted = false;
-    var address = await navigationService.pushNamed(Routes.address, arguments: true);
-    mounted = true;
-
-    print("Address $address");
-
-    if (address == true) {
-      refreshPage();
-      return;
-    }
-
-    if (address != null) {
-      int? addressId;
-      bool? isCitadel;
-      String? citadelAccount;
-
-      if (address is UserAddress) {
-        addressId = address.id;
-        isCitadel = false;
-      } else if (address is String) {
-        addressId = 0;
-        isCitadel = true;
-        citadelAccount = address;
-      }
-
-      setBusy(true);
-      checkout = await request<Checkout>(CheckoutRequest.saveDeliveryAddress(
-          addressId: addressId,
-          isCitadel: isCitadel,
-          citadelAccount: citadelAccount));
-      setBusy(false);
-    }
+    showAddressSelection = true;
   }
 
   onPaymentClick() async {
-    mounted = false;
-    await navigationService.pushNamed(Routes.checkoutPayments);
-    mounted = true;
+    showPaymentSelection = true;
   }
 
   onShippingOptionSelect(ShippingOption shippingOption) async {
@@ -364,4 +349,5 @@ class CheckoutViewModel extends VGTSBaseViewModel {
     }
     setBusy(false);
   }
+
 }

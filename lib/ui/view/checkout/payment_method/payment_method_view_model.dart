@@ -4,11 +4,13 @@ import 'package:bullion/services/checkout/checkout_steam_service.dart';
 import 'package:bullion/services/payment/braintree_service.dart';
 import 'package:bullion/services/payment/payment_gateway_service.dart';
 import 'package:bullion/services/payment/plaid_service.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/checkout/payment_method/echeck/add_echeck.dart';
 import 'package:bullion/ui/view/checkout/payment_method/echeck/add_new_echeck_account.dart';
 import 'package:bullion/ui/view/checkout/payment_method/user_payment_method_bottom_sheet.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:plaid_flutter/plaid_flutter.dart';
 import 'package:bullion/core/enums/viewstate.dart';
 import 'package:bullion/core/models/alert/alert_response.dart';
@@ -23,7 +25,6 @@ import '../credit_card/credit_card_bottomsheet_view_model.dart';
 
 class PaymentMethodViewModel extends VGTSBaseViewModel {
   final DialogService dialogService = locator<DialogService>();
-  final PaymentGatewayService _paymentGatewayApi = locator<PaymentGatewayService>();
   final CheckoutStreamService _checkoutStreamService = locator<CheckoutStreamService>();
 
   bool _isUserPaymentLoading = false;
@@ -49,10 +50,13 @@ class PaymentMethodViewModel extends VGTSBaseViewModel {
   List<PaymentMethod>? get paymentMethodList =>
       _paymentMethodList ?? [];
 
-  init() async {
+  @override
+  Future onInit() async {
     setBusy(true);
     _paymentMethodList = await requestList<PaymentMethod>(CheckoutRequest.getPaymentMethods());
     setBusy(false);
+
+    super.onInit();
   }
 
   onPaymentClick(PaymentMethod paymentMethod) async {
@@ -60,21 +64,10 @@ class PaymentMethodViewModel extends VGTSBaseViewModel {
 
     if (!paymentMethod.supportsUserPaymentMethod! &&
         !paymentMethod.requiresZda!) {
-      await savePaymentMethod(paymentMethod.paymentMethodId,
-          userPaymentMethodId: paymentMethod.userPaymentMethodId);
+      await savePaymentMethod(paymentMethod.paymentMethodId, userPaymentMethodId: paymentMethod.userPaymentMethodId);
     } else {
       if (paymentMethod.hasUserPaymentMethod! || paymentMethod.requiresZda!) {
-        AlertResponse alertResponse = await dialogService.showBottomSheet(
-            key: const ValueKey("bsUserPaymentMethod"),
-            title: paymentMethod.name,
-            isDismissible: false,
-            child: UserPaymentMethodBottomSheet(
-                paymentMethod, paymentMethod.userPaymentMethods));
-        if (alertResponse.status == true &&
-            alertResponse.data == "REMOVE_PAYMENT") {
-          init();
-          return;
-        }
+        locator<NavigationService>().push(CupertinoPageRoute(builder: (context) => UserPaymentMethodPage(paymentMethod, paymentMethod.userPaymentMethods)));
       } else {
         switch (paymentMethod.paymentMethodId) {
           case 19: // eCheck
@@ -89,7 +82,6 @@ class PaymentMethodViewModel extends VGTSBaseViewModel {
         return;
       }
     }
-    navigationService.pop();
   }
 
   Future<Checkout?> savePaymentMethod(int? paymentMethodId,

@@ -1,4 +1,6 @@
+import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
 import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
@@ -34,6 +36,11 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
       child: Column(
         children: [
 
+          _CompetitorPricing(
+            viewModel.productDetails!.overview!,
+            viewModel.productDetails?.competitorPrices ?? []
+          ),
+
           Container(
             margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
             decoration: BoxDecoration(
@@ -54,7 +61,7 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
           ),
 
           Container(
-            margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
+            margin: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 15),
             decoration: BoxDecoration(
                 color: AppColor.white,
                 borderRadius: BorderRadius.circular(10)
@@ -80,18 +87,21 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
             ),
           ),
 
-          _CompetitorPricing()
-
         ],
       ),
     );
   }
 }
 
-class _CompetitorPricing extends ViewModelWidget<ProductDetailViewModel> {
+class _CompetitorPricing extends StatelessWidget {
+
+  ProductOverview overview;
+  List<CompetitorPrice> competitorPrice;
+
+  _CompetitorPricing(this.overview, this.competitorPrice);
 
   @override
-  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+  Widget build(BuildContext context) {
 
    return Container(
      color: AppColor.secondaryBackground,
@@ -143,7 +153,7 @@ class _CompetitorPricing extends ViewModelWidget<ProductDetailViewModel> {
                              padding: const EdgeInsets.all(5),
                              width: 125,
                              child: NetworkImageLoader(
-                               image: viewModel.productOverview?.primaryImageUrl,
+                               image: overview.primaryImageUrl,
                                fit: BoxFit.fitWidth,
                              ),
                            ),
@@ -155,7 +165,7 @@ class _CompetitorPricing extends ViewModelWidget<ProductDetailViewModel> {
                              mainAxisAlignment: MainAxisAlignment.center,
                              children: [
                                Text(
-                                 viewModel.productOverview!.name!,
+                                 overview.name!,
                                  maxLines: 3,
                                  overflow: TextOverflow.ellipsis,
                                  textScaleFactor: 1,
@@ -187,8 +197,8 @@ class _CompetitorPricing extends ViewModelWidget<ProductDetailViewModel> {
                          Column(
                            crossAxisAlignment: CrossAxisAlignment.start,
                            children: [
-                             Text(viewModel.productOverview?.pricing?.badgeText ?? '', textScaleFactor: 1, style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),),
-                             Text(viewModel.productOverview?.pricing?.formattedNewPrice ?? '', textScaleFactor: 1, style: AppTextStyle.titleLarge.copyWith(color: AppColor.white)  ,),
+                             Text(overview.pricing?.badgeText ?? '', textScaleFactor: 1, style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),),
+                             Text(overview.pricing?.formattedNewPrice ?? '', textScaleFactor: 1, style: AppTextStyle.titleLarge.copyWith(color: AppColor.white)  ,),
 
                              VerticalSpacing.d5px(),
 
@@ -208,73 +218,8 @@ class _CompetitorPricing extends ViewModelWidget<ProductDetailViewModel> {
                      ),
                    ),
 
-                   ...viewModel.productDetails?.competitorPrices?.asMap().map((index, e) => MapEntry(
-                       index,
-                       Row(
-                         children: [
-                           Container(
-                             width: MediaQuery.of(context).size.width / 3,
-                             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                             margin: const EdgeInsets.only(right: 5),
-                             child: Column(
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                               children: [
 
-                                 Text(e.competitorName ?? '', textScaleFactor: 1, style: AppTextStyle.bodyLarge,),
-
-                                 VerticalSpacing.custom(value: 25),
-
-                                 Column(
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [
-
-                                     if (e.isLowest == true)
-                                       Container(
-                                           decoration: BoxDecoration(
-                                               color: AppColor.greenText,
-                                               borderRadius: BorderRadius.circular(5)
-                                           ),
-                                           padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                                           child: Text("Lowest Price",
-                                             style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),
-                                           )
-                                       ),
-
-                                     VerticalSpacing.d5px(),
-
-                                     const Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
-
-                                     Text(e.formattedPrice.toString(), textScaleFactor: 1, style: AppTextStyle.titleLarge,),
-
-                                     VerticalSpacing.d5px(),
-
-                                     Container(
-                                         decoration: BoxDecoration(
-                                             color: (e.isLower == true || e.inStock == false ? AppColor.red : AppColor.greenText).withOpacity(0.2),
-                                             borderRadius: BorderRadius.circular(5)
-                                         ),
-                                         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                                         child: Text(e.badgeText ?? '',
-                                           style: AppTextStyle.labelSmall.copyWith(
-                                               color: e.isLower == true || e.inStock == false ? AppColor.red : AppColor.greenText
-                                           ),
-                                         )
-                                     ),
-
-                                   ],
-                                 )
-                               ],
-                             ),
-                           ),
-                           const VerticalDivider(
-                             thickness: 0.5,
-                             width: 0.5,
-                           ),
-                         ],
-                       )),
-                   ).values.toList() ?? []
-
+                   CompetitorPricingSection(competitorPrice),
                  ],
                ),
              ),
@@ -284,6 +229,98 @@ class _CompetitorPricing extends ViewModelWidget<ProductDetailViewModel> {
        ],
      ),
    );
+  }
+
+}
+
+class CompetitorPricingSection extends StatelessWidget {
+
+  List<CompetitorPrice> competitorPrice;
+
+  CompetitorPricingSection(this.competitorPrice);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ...competitorPrice.asMap().map((index, e) => MapEntry(
+            index,
+            Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 3,
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  margin: const EdgeInsets.only(right: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+
+                      Text(e.competitorName ?? '', textScaleFactor: 1, style: AppTextStyle.bodyLarge,),
+
+                      VerticalSpacing.custom(value: 25),
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          if (e.isLowest == true)
+                            Container(
+                                decoration: BoxDecoration(
+                                    color: AppColor.greenText,
+                                    borderRadius: BorderRadius.circular(5)
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                                child: Text("Lowest Price",
+                                  style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),
+                                )
+                            ),
+
+                          VerticalSpacing.d5px(),
+
+                          const Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+
+                          Text(e.formattedPrice.toString(), textScaleFactor: 1, style: AppTextStyle.titleLarge,),
+
+                          VerticalSpacing.d5px(),
+
+                          Container(
+                              decoration: BoxDecoration(
+                                  color: (e.isLower == true || e.inStock == false ? AppColor.red : AppColor.greenText).withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(5)
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                              child: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+
+                                  if (e.inStock == true)
+                                    Icon(Icons.arrow_upward, size: 12, color: e.isLower == true ? AppColor.red : AppColor.greenText,),
+
+                                  Text(e.badgeText ?? '',
+                                    style: AppTextStyle.labelSmall.copyWith(
+                                        color: e.isLower == true || e.inStock == false ? AppColor.red : AppColor.greenText
+                                    ),
+                                  ),
+                                ],
+                              )
+                          ),
+
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                const VerticalDivider(
+                  thickness: 0.5,
+                  width: 0.5,
+                ),
+              ],
+            )),
+        ).values.toList() ?? []
+
+      ],
+    );
   }
 
 }
