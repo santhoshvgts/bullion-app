@@ -35,6 +35,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'ui/view/checkout/review_order/review_order_page.dart';
 import 'ui/view/dashboard/dashboard_page.dart';
 import 'ui/view/settings/activity/recently_viewed/recently_viewed_page.dart';
 import 'ui/view/settings/activity/search_history/search_history_page.dart';
@@ -195,16 +196,16 @@ class AppRouter {
 
       case Routes.reviewCart:
         return MaterialPageRoute(
-            builder: (_) => ExpiredCartView(
-                  fromPriceExpiry: false,
-                ),
+            builder: (_) => ReviewOrderPage(
+              fromPriceExpiry: false,
+            ),
             settings: RouteSettings(name: settings.name));
-      //
+
       case Routes.expiredCart:
         return MaterialPageRoute(
-            builder: (_) => ExpiredCartView(
-                  fromPriceExpiry: true,
-                ),
+            builder: (_) => ReviewOrderPage(
+              fromPriceExpiry: true,
+            ),
             settings: RouteSettings(name: settings.name));
 
       case Routes.checkout:

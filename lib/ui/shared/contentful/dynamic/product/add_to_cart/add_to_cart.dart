@@ -39,7 +39,8 @@ class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
         Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-              color: AppColor.white, boxShadow: AppStyle.topShadow),
+              color: AppColor.white, boxShadow: AppStyle.topShadow
+          ),
           child: Stack(
             children: [
               Row(

@@ -39,7 +39,7 @@ class UserPaymentMethodPage extends VGTSBuilderWidget<UserPaymentViewModel> {
               child: SizedBox(
                 height: MediaQuery.of(context).size.height - ((11 / 100) * MediaQuery.of(context).size.height),
                 child: ListView(
-                  padding: const EdgeInsets.all(0),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   children: [
 
                     if (paymentMethod.requiresZda!)
@@ -78,18 +78,20 @@ class UserPaymentMethodPage extends VGTSBuilderWidget<UserPaymentViewModel> {
       bottomNavigationBar: Wrap(
         children: [
 
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Button.outline(paymentMethod.paymentMethodId != 19 ? "+ Add New Card" : "+ Add New Account",
-                valueKey: const Key("btnAddNew"),
-                width: double.infinity,
-                textStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary),
-                borderColor: AppColor.primary,
-                onPressed: () {
-                  if(!viewModel.loading){
-                    viewModel.onAddNewClick();
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Button.outline(paymentMethod.paymentMethodId != 19 ? "+ Add New Card" : "+ Add New Account",
+                  valueKey: const Key("btnAddNew"),
+                  width: double.infinity,
+                  textStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary),
+                  borderColor: AppColor.primary,
+                  onPressed: () {
+                    if(!viewModel.loading){
+                      viewModel.onAddNewClick();
+                    }
                   }
-                }
+              ),
             ),
           ),
 
@@ -143,48 +145,68 @@ class _UserPaymentMethodCardItem extends ViewModelWidget<UserPaymentViewModel> {
       onTap: () => onPressed!(item),
       child: Container(
           color: AppColor.white,
-          padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          padding: const EdgeInsets.only(left: 20, right: 0, top: 10, bottom: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(item.name!,textScaleFactor: 1,style: AppTextStyle.titleMedium,),
 
+              VerticalSpacing.d10px(),
 
-              item.icon == null ? Container() : new Icon(FAIcon(item.icon), color: AppColor.primary, size: 25,),
+              Row(
+                children: [
 
-              HorizontalSpacing.d15px(),
+                  item.icon == null ? Container() : Icon(FAIcon(item.icon), color: AppColor.primary, size: 25,),
 
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(item.name!,textScaleFactor: 1,style: AppTextStyle.titleMedium,),
+                  HorizontalSpacing.d15px(),
 
-                    VerticalSpacing.d5px(),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
 
-                    if (item.accountNumber != null)
-                      Text(item.accountNumber!,textScaleFactor: 1,style: AppTextStyle.bodyMedium,),
+                        if (item.accountNumber != null)
+                          Text(item.accountNumber!,textScaleFactor: 1,style: AppTextStyle.bodyMedium,),
 
-                    if (item.subText != null)
-                      Text(item.subText!,textScaleFactor: 1,style: AppTextStyle.bodyMedium,),
+                        if (item.subText != null)
+                          Text(item.subText!,textScaleFactor: 1,style: AppTextStyle.bodyMedium,),
 
-                    if (item.isBullionCard == true)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Image.asset(Images.bullionCard, ),
-                      )
-                  ],
-                ),
+                        if (item.isBullionCard == true)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Image.asset(Images.bullionCard, ),
+                          )
+
+                      ],
+                    ),
+                  ),
+
+                  InkWell(
+                    onTap: () async {
+                      await viewModel.onDeleteUserPaymentMethod(item);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16.0),
+                      child: Row(
+                        children: [
+                          const Padding(padding: EdgeInsets.only(right: 4.0),
+                            child: Icon(
+                              Icons.close,
+                              size: 18,
+                              color: AppColor.red,
+                            ),
+                          ),
+                          Text("Delete", style: AppTextStyle.titleSmall.copyWith(color: AppColor.red),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
 
-              IconButton(
-                onPressed: () async {
-                  await viewModel.onDeleteUserPaymentMethod(item);
-                },
-                icon: const Icon(Icons.delete_outline, size: 20,)
-              )
-
             ],
-          )
+          ),
       ),
     );
   }

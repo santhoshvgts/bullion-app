@@ -45,15 +45,14 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
           child: Scaffold(
             backgroundColor: AppColor.white,
             appBar: AppBar(
-              elevation: 0,
+              elevation: 0.2,
               titleSpacing: 0,
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(CupertinoIcons.search),
-                ),
-                const CartButton.light()
+              title: SearchCardSection(
+                leftPadding: 0,
+                rightPadding: 0,
+              ),
+              actions: const [
+                 CartButton.light()
               ],
             ),
             body: Column(
@@ -144,19 +143,23 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                     ),
                   ),
                 ),
-                Opacity(
-                  opacity: viewModel.isBusy ? 0.5 : 1,
-                  child: IgnorePointer(
-                    ignoring: viewModel.isBusy,
-                    child: AddToCartSection(
-                        viewModel.productDetail,
-                        key: ValueKey("sectionAddToCart${viewModel.productDetail?.overview?.orderMin}")
+                SafeArea(
+                  child: Opacity(
+                    opacity: viewModel.isBusy ? 0.5 : 1,
+                    child: IgnorePointer(
+                      ignoring: viewModel.isBusy,
+                      child: Container(
+                        color: Colors.red,
+                        child: AddToCartSection(
+                            viewModel.productDetail,
+                            key: ValueKey("sectionAddToCart${viewModel.productDetail?.overview?.orderMin}")
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-
           ),
         );
       },

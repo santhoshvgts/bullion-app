@@ -1,7 +1,17 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:bullion/core/models/module/product_item.dart';
+import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/router.dart';
+import 'package:bullion/services/authentication_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/ui/shared/login_alert_section.dart';
+import 'package:bullion/ui/widgets/button.dart';
+import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -199,6 +209,66 @@ class Util {
   static showSnackBar(BuildContext context, String content) {
     SnackBar snackBar =
         SnackBar(content: Text(content, style: AppTextStyle.titleSmall));
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  static showLoginAlert() {
+    BuildContext context = locator<NavigationService>().navigatorKey.currentContext!;
+    SnackBar snackBar = SnackBar(
+      content: const LoginAlertSection(),
+      duration: const  Duration(seconds: 5),
+      action: SnackBarAction(label: "Sign In", onPressed: () {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        locator<NavigationService>().pushNamed(Routes.login);
+      }),
+    );
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  static showProductCheckout(ProductOverview overview) {
+    BuildContext context = locator<NavigationService>().navigatorKey.currentContext!;
+    SnackBar snackBar = SnackBar(
+      backgroundColor: Colors.white,
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Item Added to Cart", textScaleFactor: 1, style: AppTextStyle.titleSmall.copyWith(color: AppColor.green),),
+
+          VerticalSpacing.d10px(),
+
+          Row(
+            children: [
+
+              NetworkImageLoader(
+                image: overview.primaryImageUrl,
+                height: 30,
+                width: 30,
+              ),
+
+              Expanded(child: Text(overview.name ?? '', style: AppTextStyle.titleSmall.copyWith(color: AppColor.text))),
+
+              Button.mini("Checkout",
+                  valueKey: const ValueKey("btnCheckout"),
+                  color: AppColor.secondary,
+                  borderColor: AppColor.secondary,
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                    if (!locator<AuthenticationService>().isAuthenticated) {
+                      Util.showLoginAlert();
+                      return;
+                    }
+                    locator<NavigationService>().pushNamed(Routes.checkout);
+                  }
+              )
+            ],
+          ),
+
+        ],
+      ),
+      duration: const  Duration(seconds: 60),
+    );
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

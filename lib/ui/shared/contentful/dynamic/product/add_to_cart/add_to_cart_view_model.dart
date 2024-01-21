@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
@@ -71,10 +72,10 @@ class AddToCartViewModel extends VGTSBaseViewModel {
   addProduct(vm) async {
     qtyFocus.unfocus();
 
-    busy(true);
+    setBusy(true);
     PageSettings? response = await _cartService!.addItemToCart(
         _productDetails!.overview!.productId, qtyValue);
-    busy(false);
+    setBusy(false);
 
     if (response == null) {
       return;
@@ -92,6 +93,8 @@ class AddToCartViewModel extends VGTSBaseViewModel {
       CartItem? item = response.shoppingCart!.items!.where((element) =>
       element.productId == productDetails!.overview!.productId).firstOrNull;
       // AlertResponse result = await locator<DialogService>().showBottomSheet(title: "Added to Cart", child: AddToCartSuccessBottomSheet(vm, item));
+
+      Util.showProductCheckout(productDetails!.overview!);
     }
   }
 

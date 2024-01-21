@@ -103,7 +103,11 @@ class _CompetitorPricing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-   return Container(
+    if (competitorPrice.isEmpty) {
+      return const SizedBox();
+    }
+
+    return Container(
      color: AppColor.secondaryBackground,
      child: Column(
        crossAxisAlignment: CrossAxisAlignment.start,

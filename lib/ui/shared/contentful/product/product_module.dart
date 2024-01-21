@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bullion/core/constants/display_direction.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/constants/module_type.dart';
@@ -223,7 +225,13 @@ class _HorizontalItem extends ViewModelWidget<ProductViewModel> {
 class _VerticalItem extends ViewModelWidget<ProductViewModel> {
   final ProductOverview _item;
 
-  _VerticalItem(this._item);
+  _VerticalItem(this._item) {
+    if (_item.dealEndsIn != null) {
+      Timer.periodic(const Duration(seconds: 1), (timer) {
+
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
@@ -308,9 +316,8 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
                 children: [
                   _PriceSection(_item, Alignment.centerLeft),
 
-
                   if (_item.showDealProgress)
-                  Column(
+                    Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       VerticalSpacing.d10px(),
@@ -335,9 +342,16 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
 
                       VerticalSpacing.custom(value: 7),
 
-                      Text("Ends in 1d 21h 30m", style: AppTextStyle.bodySmall.copyWith(
-                          color: AppColor.dealsRed
-                      ),),
+                      StreamBuilder(
+                        stream: Stream.periodic(const Duration(seconds: 1)),
+                        builder: (context, snapshot) {
+                          return Text("Ends in ${_item.formattedDealEndsIn}", style: AppTextStyle.bodySmall.copyWith(
+                              color: AppColor.dealsRed
+                          ),);
+                        }
+                      ),
+
+
                     ],
                   )
                 ],

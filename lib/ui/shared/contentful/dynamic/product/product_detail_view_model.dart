@@ -113,9 +113,7 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
     } else {
       response =  await request<ProductDetails>(FavoritesRequest.addFavorite(productId.toString()));
       productDetails!.isInUserWishList = response;
-
     }
-
     setBusy(false);
   }
 }

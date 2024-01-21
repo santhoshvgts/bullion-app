@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/res/spacing.dart';
+import 'package:bullion/helper/utils.dart';
 import 'package:bullion/ui/view/settings/settings_user_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -589,6 +590,10 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     borderColor: AppColor.primary,
                     valueKey: const Key("btnSignInCreate"),
                     onPressed: () {
+                      if (!locator<AuthenticationService>().isAuthenticated) {
+                        Util.showLoginAlert();
+                        return;
+                      }
                       locator<NavigationService>().pushNamed(Routes.myOrders);
                     },
                   )

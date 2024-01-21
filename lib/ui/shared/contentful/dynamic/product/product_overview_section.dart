@@ -104,7 +104,11 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                     children: [
                       InkWell(
                         onTap: () {
-                        viewModel.addAsFavorite(setting?.productId);
+                          if (!locator<AuthenticationService>().isAuthenticated) {
+                            Util.showLoginAlert();
+                            return;
+                          }
+                          viewModel.addAsFavorite(setting?.productId);
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),
@@ -133,6 +137,10 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                     children: [
                       InkWell(
                         onTap: () {
+                          if (!locator<AuthenticationService>().isAuthenticated) {
+                            Util.showLoginAlert();
+                            return;
+                          }
                           viewModel.priceAlert(setting?.overview, context);
                         },
                         child: Container(
@@ -168,7 +176,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
             Container()
           else
             _VolumePricing(),
-          // if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
+          if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
             _CoinGradeSpecification(),
 
           // Container(

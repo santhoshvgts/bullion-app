@@ -2,6 +2,7 @@ import 'package:bullion/core/models/base_model.dart';
 import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/helper/utils.dart';
+import 'package:intl/intl.dart';
 
 class ProductOverview extends BaseModel {
   int? productId;
@@ -14,6 +15,7 @@ class ProductOverview extends BaseModel {
   bool? onSale;
   bool? onPresale;
   String? presaleDate;
+  String? dealEndsIn;
   String? primaryImageUrl;
   String? imageDesc;
   String? productAction;
@@ -33,6 +35,44 @@ class ProductOverview extends BaseModel {
   bool? recurringEligible;
 
   List<CompetitorPrice>? competitorPrices;
+
+  String get formattedDealEndsIn {
+
+    if (!showDealProgress) {
+      return "-";
+    }
+
+    if (dealEndsIn == null) {
+      return "-";
+    }
+
+    Duration day = DateTime.parse(dealEndsIn!).difference(DateTime.now());
+    return _printDuration(day);
+  }
+
+  String _printDuration(Duration duration) {
+
+    List<String> days = [];
+
+    if (duration.inDays.remainder(24) > 0) {
+      days.add("${duration.inDays.toString().padLeft(2, '0')} d");
+    }
+
+    if (duration.inHours.remainder(24) > 0) {
+      days.add("${duration.inHours.remainder(24).toString().padLeft(2, '0')} h");
+    }
+
+    if (duration.inMinutes.remainder(24) > 0) {
+      days.add("${duration.inMinutes.remainder(60).toString().padLeft(2, '0')} m");
+    }
+    if (duration.inSeconds.remainder(24) > 0) {
+      days.add("${duration.inSeconds.remainder(60).toString().padLeft(2, '0')} s");
+    }
+
+    return days.map((seg) {
+      return seg;
+    }).join(' ');
+  }
 
   bool get showDealProgress {
     return (dealMax ?? 0) > 0;
@@ -86,6 +126,7 @@ class ProductOverview extends BaseModel {
       this.avgRatings,
       this.reviewCount,
       this.quickShip,
+      this.dealEndsIn,
       this.recurringEligible});
 
   ProductOverview fromJson(Map<String, dynamic> json) => ProductOverview.fromJson(json);
@@ -103,6 +144,7 @@ class ProductOverview extends BaseModel {
     showPrice = json['show_price'];
     onPresale = json['on_presale'];
     presaleDate = json['presale_date'];
+    dealEndsIn = json['deal_ends_in'];
 
     onHand = json['on_hand'];
     orderMin = json['order_min'];
@@ -150,6 +192,7 @@ class ProductOverview extends BaseModel {
       data['competitor_prices'] = competitorPrices!.map((v) => v.toJson()).toList();
     }
 
+    data['deal_ends_in'] = dealEndsIn;
     data['show_price'] = showPrice;
     data['on_presale'] = onPresale;
     data['presale_date'] = presaleDate;
