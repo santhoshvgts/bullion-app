@@ -2,7 +2,7 @@ import 'package:bullion/services/shared/api_model/request_settings.dart';
 import 'package:bullion/services/shared/request_method.dart';
 
 
-class BraintreeRequest {
+class CheckOutPaymentRequest {
   //
   static RequestSettings getPlaidLinkToken() {
     return RequestSettings("/payment-method/get-plaid-link-token", RequestMethod.GET, params: null, authenticated: true);

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bullion/core/models/module/cart/shopping_cart.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/locator.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -152,26 +153,26 @@ class AnalyticsService {
     debugPrint('Analytics: log search ${searchTerm}');
   }
 
-  // Future<void> logBeginCheckout(ShoppingCart? _shoppingCart) async {
-  //   var eventMapObject = {
-  //     "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
-  //     "name":  _shoppingCart!.items?.fold<List<String?>>([], (prev, element) => List.from(prev)..add(element.productName)),
-  //     "content_id": _shoppingCart.items?.fold<List<int?>>([], (prev, element) => List.from(prev)..add(element.productId)),
-  //     "checkout_as_guest":  locator<AuthenticationService>().isGuestUser,
-  //     "currency": "USD",
-  //   };
-  //
-  //   KochavaTracker.instance.sendEventWithDictionary("Checkout Start", eventMapObject);
-  //   await analytics.logBeginCheckout(value: _shoppingCart.orderTotal , currency: _shoppingCart.currency ?? 'USD',
-  //       items: _shoppingCart.items?.map((e) => AnalyticsEventItem(
-  //           itemId: e.productId.toString(),
-  //           itemName: e.productName,
-  //           quantity: e.quantity,
-  //           price: e.unitPrice,
-  //           currency: 'USD'
-  //       )).toList() ?? [],
-  //   );
-  // }
+  Future<void> logBeginCheckout(ShoppingCart? shoppingCart) async {
+    var eventMapObject = {
+      "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
+      "name":  shoppingCart!.items?.fold<List<String?>>([], (prev, element) => List.from(prev)..add(element.productName)),
+      "content_id": shoppingCart.items?.fold<List<int?>>([], (prev, element) => List.from(prev)..add(element.productId)),
+      "checkout_as_guest":  locator<AuthenticationService>().isGuestUser,
+      "currency": "USD",
+    };
+  
+    KochavaTracker.instance.sendEventWithDictionary("Checkout Start", eventMapObject);
+    await analytics.logBeginCheckout(value: shoppingCart.orderTotal , currency: shoppingCart.currency ?? 'USD',
+        items: shoppingCart.items?.map((e) => AnalyticsEventItem(
+            itemId: e.productId.toString(),
+            itemName: e.productName,
+            quantity: e.quantity,
+            price: e.unitPrice,
+            currency: 'USD'
+        )).toList() ?? [],
+    );
+  }
   //
 
   Future<void> logProductView(ProductDetails? _productDetails) async {

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:photo_view/photo_view.dart';
 
+
 class ProductImagesFullViewPage extends StatefulWidget {
 
   final List<ProductPicture>? images;

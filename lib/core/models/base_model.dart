@@ -5,6 +5,8 @@ import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/models/google/place.dart';
 import 'package:bullion/core/models/google/place_autocomplete.dart';
+import 'package:bullion/core/models/module/checkout/bitpay_transcation_url.dart';
+import 'package:bullion/core/models/module/checkout/brain_treen_token.dart';
 import 'package:bullion/core/models/module/checkout/payment_method.dart';
 import 'package:bullion/core/models/module/checkout/selected_payment_method.dart';
 import 'package:bullion/core/models/module/checkout/shipping_address.dart';
@@ -136,6 +138,12 @@ class BaseModel extends BaseObject {
 
       case ProductDetails:
         return ProductDetails() as T;
+
+      case BrainTreeToken:
+        return BrainTreeToken() as T;
+
+      case BitPayTranscationUrl:
+        return BitPayTranscationUrl() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }

@@ -1,4 +1,4 @@
-import 'package:bullion/core/models/module/checkout/checkout.dart';
+import 'package:bullion/core/models/module/checkout/brain_treen_token.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/api_request/payment_request.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
@@ -38,21 +38,19 @@ class BraintreeService {
   // }
 
   Future<Map> openPayPal(double? amount, {String currency = "USD"}) async {
-    String? token = await _apiBaseService.request<Checkout>(BraintreeRequest.getBrainTreeClientToken());// _paymentGatewayApi!.getBrainTreeClientToken();
+    BrainTreeToken? brainTreeToken = await _apiBaseService.request<BrainTreeToken>(CheckOutPaymentRequest.getBrainTreeClientToken()); // _paymentGatewayApi!.getBrainTreeClientToken();
 
     try {
       BraintreePaymentMethodNonce? result = await Braintree.requestPaypalNonce(
-        token,
-        BraintreePayPalRequest(displayName: 'Apmex', amount: amount.toString(), currencyCode: currency, isShippingAddressRequired: true),
+        brainTreeToken.token!,
+        BraintreePayPalRequest(displayName: 'Bullion', amount: amount.toString(), currencyCode: currency, isShippingAddressRequired: true),
       );
-
       if (result != null) {
         return {"nonce": result.nonce};
       }
     } catch (ex) {
       return {};
     }
-
     return {};
   }
 }

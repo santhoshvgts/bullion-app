@@ -10,9 +10,11 @@ import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/checkout_request.dart';
-import 'package:bullion/services/checkout/braintree_service.dart';
+import 'package:bullion/services/payment/bitpay.dart';
+import 'package:bullion/services/payment/braintree_service.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/checkout/checkout_steam_service.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +32,14 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
   //************************************/ ( LOCAL VARIABLES )
 
   String _countDownTxt = "";
+  String errorText = "";
   bool _lockedOut = false;
   bool _mounted = true;
   bool _placeOrderLoading = false;
   List<PaymentMethod>? enabledpaymentMethodList = [];
+  TextEditingController rewardController = TextEditingController();
+  FocusNode rewardFocus = FocusNode();
+  bool rewardValidate = false;
 
   //************************************/ ( GETTER )
 
@@ -59,14 +65,14 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     await loadCheckout();
     await fetchPayments();
     _runCountdown(_checkout!.timerDuration!);
-    //! _checkoutStreamService!.stream?.listen((event) {
-    //!   checkout = event;
-    //!   notifyListeners();
-    //! });
+    _checkoutStreamService.stream?.listen((event) {
+      checkout = event;
+      notifyListeners();
+    });
 
     var cart = await (locator<CartService>().getCart());
 
-    //!locator<AnalyticsService>().logBeginCheckout(cart?.shoppingCart);
+    locator<AnalyticsService>().logBeginCheckout(cart?.shoppingCart);
     return super.onInit();
   }
 
@@ -205,14 +211,14 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     mounted = false;
     placeOrderLoading = true;
     Util.cancelLockEvent();
-     var response = await BraintreeService().openPayPal(checkout!.orderTotal);
+    var response = await BraintreeService().openPayPal(checkout!.orderTotal);
     placeOrderLoading = false;
     mounted = true;
     Util.enableLockEvent();
 
-    //! if (response['nonce'] != null) {
-    //   submitPlaceOrder(paymentMethodNonce: response['nonce']);
-    // }
+    if (response['nonce'] != null) {
+      submitPlaceOrder(paymentMethodNonce: response['nonce']);
+    }
   }
 
   //************************************/! ( BITPAY )
@@ -225,14 +231,14 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     mounted = false;
     placeOrderLoading = true;
     Util.cancelLockEvent();
-    //! var response = await BitPayService().openBitPayPayment();
+    var response = await BitPayService().openBitPayPayment();
     placeOrderLoading = false;
     mounted = true;
     Util.enableLockEvent();
 
-    //! if (response == true) {
-    //!   submitPlaceOrder();
-    //! }
+    if (response == true) {
+      submitPlaceOrder();
+    }
   }
 
   //************************************/! ( PAYMNET )
@@ -242,8 +248,9 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
 
     placeOrderLoading = true;
     debugPrint("Nonce $paymentMethodNonce");
-    // var placeOrderResponse = await _checkoutApi!.placeOrder(_checkout!.selectedShippingAddress, _checkout!.selectedPaymentMethod, paymentMethodNonce, paymentMethodDeviceData);
-    // placeOrderLoading = false;
+    Checkout placeOrderResponse = await _apiBaseService.request<Checkout>(CheckOutRequest.placeOrder(_checkout!.selectedShippingAddress, _checkout!.selectedPaymentMethod, paymentMethodNonce, paymentMethodDeviceData));
+
+    placeOrderLoading = false;
 
     // if (placeOrderResponse == null) {
     //   mounted = true;
@@ -268,13 +275,13 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     //       break;
     //   }
 
-    // //! locator<AnalyticsService>().logPurchase(placeOrderResponse);
+    //   //! locator<AnalyticsService>().logPurchase(placeOrderResponse);
 
-    // navigationService.pushAndPopUntil(
-    //   "${Routes.orderPlaced}/${placeOrderResponse.orderId}",
-    //   removeRouteName: Routes.dashboard,
-    // );
-    //  }
+    //   navigationService.pushAndPopUntil(
+    //     "${Routes.orderPlaced}/${placeOrderResponse.orderId}",
+    //     removeRouteName: Routes.dashboard,
+    //   );
+    // }
   }
 
   //************************************/! ( DELIVERY ADDRESS )
@@ -294,20 +301,15 @@ class CheckoutPageViewModel extends VGTSBaseViewModel {
     if (address != null) {
       debugPrint("ADDRESS $address");
       int? addressId;
-      bool? isCitadel;
-      String? citadelAccount;
 
       if (address is UserAddress) {
         addressId = address.id;
-        isCitadel = false;
       } else if (address is String) {
         addressId = 0;
-        isCitadel = true;
-        citadelAccount = address;
       }
 
       setBusy(true);
-      checkout = await _apiBaseService.request<Checkout>(CheckOutRequest.saveDeliveryAddress(addressId: addressId, isCitadel: isCitadel, citadelAccount: citadelAccount));
+      checkout = await _apiBaseService.request<Checkout>(CheckOutRequest.saveDeliveryAddress(addressId: addressId));
       setBusy(false);
     }
   }

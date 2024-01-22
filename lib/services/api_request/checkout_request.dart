@@ -32,10 +32,9 @@ class CheckOutRequest {
 
   //
 
-  static RequestSettings saveDeliveryAddress({int? addressId, bool? isCitadel, String? citadelAccount}) {
+  static RequestSettings saveDeliveryAddress({int? addressId, String? citadelAccount}) {
     String queryString = "?";
     queryString += "addressId=$addressId";
-    queryString += "&isCitadel=$isCitadel";
     queryString += "&citadelAccount=$citadelAccount";
 
     return RequestSettings("/checkout/save-address$queryString", RequestMethod.POST, params: null, authenticated: true);
