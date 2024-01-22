@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -12,7 +13,7 @@ import 'add_to_cart_view_model.dart';
 class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
   ProductDetails? productDetails;
 
-  AddToCartSection(this.productDetails);
+  AddToCartSection(this.productDetails, { Key? key }) : super(key: key);
 
   @override
   AddToCartViewModel viewModelBuilder(BuildContext context) =>
@@ -38,53 +39,81 @@ class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
         Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-              color: AppColor.white, boxShadow: AppStyle.topShadow),
+              color: AppColor.white, boxShadow: AppStyle.topShadow
+          ),
           child: Stack(
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
 
                   Expanded(
                     flex: 4,
-                    child: EditTextField(
-                      "",
-                      viewModel.qtyController,
-                      key: const ValueKey("txtQuantity"),
-                      // const TextInputType.numberWithOptions(decimal: false),
-                      prefixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.remove,
-                          size: 20,
-                          color: AppColor.text,
-                        ),
-                        onPressed: () => viewModel.decrease(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(color: AppColor.border)
                       ),
-                      suffixIcon: IconButton(
-                        icon: const Icon(
-                          Icons.add,
-                          size: 20,
-                          color: AppColor.text,
-                        ),
-                        onPressed:
-                        viewModel.qtyValue >= 9999 ? null : () => viewModel.increase(),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.remove,
+                                size: 20,
+                                color: AppColor.text,
+                              ),
+                              onPressed: () => viewModel.decrease(),
+                            ),
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                              height: 42,
+                              child: EditTextField(
+                                "",
+                                viewModel.qtyController,
+                                key: const ValueKey("txtQuantity"),
+                                textAlign: TextAlign.center,
+                                textInputAction: TextInputAction.done,
+                                isInputDecorationNone: true,
+                                textStyle: AppTextStyle.titleSmall,
+                                padding: EdgeInsets.zero,
+                                onChanged: (val) {
+                                  if (viewModel.qtyValidate) viewModel.qtyValidate = false;
+                                  viewModel.triggerProductUpdateEvent(int.tryParse(val) ?? 1);
+                                },
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 40,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.add,
+                                size: 20,
+                                color: AppColor.text,
+                              ),
+                              onPressed:
+                              viewModel.qtyValue >= 9999 ? null : () => viewModel.increase(),
+                            ),
+                          )
+                        ],
                       ),
-                      textAlign: TextAlign.center,
-                      margin: const EdgeInsets.only(right: 10.0),
-                      textInputAction: TextInputAction.done,
-                      onChanged: (val) {
-                        if (viewModel.qtyValidate) viewModel.qtyValidate = false;
-                        viewModel.triggerProductUpdateEvent(int.tryParse(val) ?? 1);
-                      },
                     ),
                   ),
+
+                  HorizontalSpacing.d5px(),
 
                   Expanded(
                     flex: 5,
                     child: Button("Add to Cart",
                         width: double.infinity,
                         color: AppColor.secondary,
-                        height: 42,
+                        height: 45,
                         borderColor: AppColor.secondary,
                         valueKey: const Key("btnAddToCart"), onPressed: () {
                       viewModel.addProduct(viewModel);

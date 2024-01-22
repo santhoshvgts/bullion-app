@@ -30,92 +30,75 @@ class ProductItemCard extends StatelessWidget {
       key: Key("actionProduct${detail.productId}"),
       onTap: () => locator<NavigationService>()
           .pushNamed(detail.overview!.targetUrl, arguments: detail),
-      child: Stack(
-        children: [
-          Container(
-            padding:
-                const EdgeInsets.only(left: 15, right: 0, top: 15, bottom: 15),
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: AppColor.white,
+      child: Container(
+        padding: const EdgeInsets.only(left: 15, right: 0, top: 15, bottom: 15),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColor.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            NetworkImageLoader(
+              image: item!.primaryImageUrl,
+              fit: BoxFit.cover,
+              height: 100,
+              width: 100,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                NetworkImageLoader(
-                  image: item!.primaryImageUrl,
-                  fit: BoxFit.cover,
-                  height: 100,
-                  width: 100,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(item!.name!,
+                        textAlign: TextAlign.left,
+                        maxLines: 2,
+                        textScaleFactor: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: ProductTextStyle.title(2,
+                            color: AppColor.black)),
+                    VerticalSpacing.d10px(),
+                    _PriceSection(item, Alignment.centerLeft, type),
+                    if (type == ProductItemCardType.AlertMe)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 15),
+                        child: Text(
+                          "Quantity: ${detail.requestedQty}",
+                          textScaleFactor: 1,
+                          style: AppTextStyle.titleMedium,
+                        ),
+                      )
+                    else if (type == ProductItemCardType.PriceAlert)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 15),
+                        child: Text(
+                          "Your Price: ${detail.formatedYourPrice}",
+                          textScaleFactor: 1,
+                          style: AppTextStyle.titleMedium,
+                        ),
+                      )
+                  ],
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item!.name!,
-                            textAlign: TextAlign.left,
-                            maxLines: 2,
-                            textScaleFactor: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: ProductTextStyle.title(2,
-                                color: AppColor.black)),
-                        VerticalSpacing.d10px(),
-                        _PriceSection(item, Alignment.centerLeft, type),
-                        if (type == ProductItemCardType.AlertMe)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 15),
-                            child: Text(
-                              "Quantity: ${detail.requestedQty}",
-                              textScaleFactor: 1,
-                              style: AppTextStyle.titleMedium,
-                            ),
-                          )
-                        else if (type == ProductItemCardType.PriceAlert)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 15),
-                            child: Text(
-                              "Your Price: ${detail.formatedYourPrice}",
-                              textScaleFactor: 1,
-                              style: AppTextStyle.titleMedium,
-                            ),
-                          )
-                      ],
-                    ),
-                  ),
-                ),
-                if (type == ProductItemCardType.Favorite &&
-                    onDeleteClick != null)
-                  IconButton(
-                      icon: const Icon(Icons.delete_outline),
-                      onPressed: () => onDeleteClick!(detail))
-                else if (onDeleteClick != null)
-                  IconButton(
-                      icon: const Icon(Icons.more_vert),
-                      onPressed: () {
-                        // onDeleteClick(detail);
-                        locator<DialogService>()
-                            .showBottomSheet(child: _buildBottomAction());
-                      })
-              ],
+              ),
             ),
-          ),
-
-          // if (item.ribbonText != null)
-          //   Positioned(
-          //       top: 10,
-          //       left: 0,
-          //       child: Container(
-          //           decoration: BoxDecoration(
-          //               color: item.ribbonTextBackgroundColor
-          //           ),
-          //           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-          //           child: Text(item.ribbonText, style: TextStyle(fontSize: 12, color: AppColor.white),textScaleFactor: 1,)
-          //       )
-          //   ),
-        ],
+            if (type == ProductItemCardType.Favorite &&
+                onDeleteClick != null)
+              IconButton(
+                  icon: const Icon(Icons.delete_outline),
+                  onPressed: () => onDeleteClick!(detail))
+            else if (onDeleteClick != null)
+              IconButton(
+                  icon: const Icon(Icons.more_vert),
+                  onPressed: () {
+                    // onDeleteClick(detail);
+                    locator<DialogService>()
+                        .showBottomSheet(child: _buildBottomAction());
+                  })
+          ],
+        ),
       ),
     );
   }

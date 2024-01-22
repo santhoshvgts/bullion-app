@@ -24,8 +24,7 @@ class AlertsRequest {
         params: null, authenticated: true);
   }
 
-  static RequestSettings createEditMarketAlert(
-      int id, double price, int operatorId, int metal, bool isCreate) {
+  static RequestSettings createEditMarketAlert(int id, double price, int operatorId, int metal, bool isCreate) {
     Map<String, dynamic> params = {};
     params['id'] = id;
     params['operator_id'] = operatorId;
@@ -36,7 +35,8 @@ class AlertsRequest {
         isCreate ? Endpoints.addMarketAlert : Endpoints.editMarketAlert,
         RequestMethod.POST,
         params: params,
-        authenticated: true);
+        authenticated: true
+    );
   }
 
   static RequestSettings removeSpotPriceAlert(alertId) {

@@ -15,9 +15,10 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
 
   GlobalKey<FormState> customSpotPriceGlobalKey = GlobalKey<FormState>();
 
-  NumberFormFieldController alertPriceFormFieldController =
-      NumberFormFieldController(const Key("alertPrice"),
-          required: true, requiredText: "Alert Price can't be empty");
+  AmountFormFieldController alertPriceFormFieldController = AmountFormFieldController(const Key("alertPrice"),
+      required: true,
+      requiredText: "Alert Price can't be empty"
+  );
 
   int _metalsSelectedIndex = 0;
   int _optionsSelectedIndex = 0;

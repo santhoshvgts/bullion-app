@@ -8,8 +8,10 @@ import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
@@ -17,6 +19,7 @@ import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
 import 'display_message_toast.dart';
 
@@ -24,8 +27,7 @@ class CartViewModel extends VGTSBaseViewModel {
   final ToastService toastService = locator<ToastService>();
   final DialogService dialogService = locator<DialogService>();
 
-  TextEditingController promoCodeController = TextEditingController();
-  FocusNode promoCodeFocus = FocusNode();
+  TextFormFieldController promoCodeController = TextFormFieldController(const ValueKey("txtPromoCode"));
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -238,7 +240,10 @@ class CartViewModel extends VGTSBaseViewModel {
   }
 
   onCheckoutClick() async {
-    // Todo - Authentication Request
+    if (!locator<AuthenticationService>().isAuthenticated) {
+      Util.showLoginAlert();
+      return;
+    }
     locator<NavigationService>().pushNamed(Routes.checkout);
 
     // if (!locator<AuthenticationService>().isAuthenticated) {

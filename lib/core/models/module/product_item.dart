@@ -1,7 +1,10 @@
+import 'package:bullion/core/models/base_model.dart';
+import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/helper/utils.dart';
+import 'package:intl/intl.dart';
 
-class ProductOverview {
+class ProductOverview extends BaseModel {
   int? productId;
   String? targetUrl;
   String? name;
@@ -12,6 +15,7 @@ class ProductOverview {
   bool? onSale;
   bool? onPresale;
   String? presaleDate;
+  String? dealEndsIn;
   String? primaryImageUrl;
   String? imageDesc;
   String? productAction;
@@ -30,6 +34,45 @@ class ProductOverview {
   bool? quickShip;
   bool? recurringEligible;
 
+  List<CompetitorPrice>? competitorPrices;
+
+  String get formattedDealEndsIn {
+
+    if (!showDealProgress) {
+      return "-";
+    }
+
+    if (dealEndsIn == null) {
+      return "-";
+    }
+
+    Duration day = DateTime.parse(dealEndsIn!).difference(DateTime.now());
+    return _printDuration(day);
+  }
+
+  String _printDuration(Duration duration) {
+
+    List<String> days = [];
+
+    if (duration.inDays.remainder(24) > 0) {
+      days.add("${duration.inDays.toString().padLeft(2, '0')} d");
+    }
+
+    if (duration.inHours.remainder(24) > 0) {
+      days.add("${duration.inHours.remainder(24).toString().padLeft(2, '0')} h");
+    }
+
+    if (duration.inMinutes.remainder(24) > 0) {
+      days.add("${duration.inMinutes.remainder(60).toString().padLeft(2, '0')} m");
+    }
+    if (duration.inSeconds.remainder(24) > 0) {
+      days.add("${duration.inSeconds.remainder(60).toString().padLeft(2, '0')} s");
+    }
+
+    return days.map((seg) {
+      return seg;
+    }).join(' ');
+  }
 
   bool get showDealProgress {
     return (dealMax ?? 0) > 0;
@@ -83,14 +126,17 @@ class ProductOverview {
       this.avgRatings,
       this.reviewCount,
       this.quickShip,
+      this.dealEndsIn,
       this.recurringEligible});
+
+  ProductOverview fromJson(Map<String, dynamic> json) => ProductOverview.fromJson(json);
 
   ProductOverview.fromJson(Map<String, dynamic> json) {
     productId = json['product_id'];
     targetUrl = json['target_url'];
     name = json['name'];
     pricing =
-        json['pricing'] != null ? new Pricing.fromJson(json['pricing']) : null;
+        json['pricing'] != null ? Pricing.fromJson(json['pricing']) : null;
     metal = json['metal'];
     metalName = json['metal_name'];
     alertMe = json['alert_me'];
@@ -98,10 +144,18 @@ class ProductOverview {
     showPrice = json['show_price'];
     onPresale = json['on_presale'];
     presaleDate = json['presale_date'];
+    dealEndsIn = json['deal_ends_in'];
 
     onHand = json['on_hand'];
     orderMin = json['order_min'];
     dealMax = json['deal_max'];
+
+    if (json['competitor_prices'] != null) {
+      competitorPrices = <CompetitorPrice>[];
+      json['competitor_prices'].forEach((v) {
+        competitorPrices!.add(CompetitorPrice.fromJson(v));
+      });
+    }
 
     primaryImageUrl = json['primary_image_url'];
     imageDesc = json['image_desc'];
@@ -118,37 +172,41 @@ class ProductOverview {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['target_url'] = this.targetUrl;
-    data['name'] = this.name;
-    if (this.pricing != null) {
-      data['pricing'] = this.pricing!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['product_id'] = productId;
+    data['target_url'] = targetUrl;
+    data['name'] = name;
+    if (pricing != null) {
+      data['pricing'] = pricing!.toJson();
     }
-    data['metal'] = this.metal;
-    data['metal_name'] = this.metalName;
-    data['alert_me'] = this.alertMe;
-    data['on_sale'] = this.onSale;
+    data['metal'] = metal;
+    data['metal_name'] = metalName;
+    data['alert_me'] = alertMe;
+    data['on_sale'] = onSale;
 
-    data['on_hand'] = this.onHand;
-    data['deal_max'] = this.dealMax;
-    data['order_min'] = this.orderMin;
+    data['on_hand'] = onHand;
+    data['deal_max'] = dealMax;
+    data['order_min'] = orderMin;
 
+    if (competitorPrices != null) {
+      data['competitor_prices'] = competitorPrices!.map((v) => v.toJson()).toList();
+    }
 
-    data['show_price'] = this.showPrice;
-    data['on_presale'] = this.onPresale;
-    data['presale_date'] = this.presaleDate;
-    data['primary_image_url'] = this.primaryImageUrl;
-    data['image_desc'] = this.imageDesc;
-    data['product_action'] = this.productAction;
-    data['ribbon_text'] = this.ribbonText;
-    data['ribbon_text_background_color'] = this._ribbonTextBackgroundColor;
-    data['price_badge_text'] = this.priceBadgeText;
-    data['availability_text'] = this.availabilityText;
-    data['avg_ratings'] = this.avgRatings;
-    data['review_count'] = this.reviewCount;
-    data['quick_ship'] = this.quickShip;
-    data['recurring_eligible'] = this.recurringEligible;
+    data['deal_ends_in'] = dealEndsIn;
+    data['show_price'] = showPrice;
+    data['on_presale'] = onPresale;
+    data['presale_date'] = presaleDate;
+    data['primary_image_url'] = primaryImageUrl;
+    data['image_desc'] = imageDesc;
+    data['product_action'] = productAction;
+    data['ribbon_text'] = ribbonText;
+    data['ribbon_text_background_color'] = _ribbonTextBackgroundColor;
+    data['price_badge_text'] = priceBadgeText;
+    data['availability_text'] = availabilityText;
+    data['avg_ratings'] = avgRatings;
+    data['review_count'] = reviewCount;
+    data['quick_ship'] = quickShip;
+    data['recurring_eligible'] = recurringEligible;
     return data;
   }
 }
@@ -188,16 +246,16 @@ class Pricing {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['discount_text'] = this.discountText;
-    data['badge_text'] = this.badgeText;
-    data['old_price'] = this.oldPrice;
-    data['new_price'] = this.newPrice;
-    data['formatted_old_price'] = this.formattedOldPrice;
-    data['formatted_new_price'] = this.formattedNewPrice;
-    data['strike_through_enabled'] = this.strikeThroughEnabled;
-    data['currency'] = this.currency;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['product_id'] = productId;
+    data['discount_text'] = discountText;
+    data['badge_text'] = badgeText;
+    data['old_price'] = oldPrice;
+    data['new_price'] = newPrice;
+    data['formatted_old_price'] = formattedOldPrice;
+    data['formatted_new_price'] = formattedNewPrice;
+    data['strike_through_enabled'] = strikeThroughEnabled;
+    data['currency'] = currency;
     return data;
   }
 }

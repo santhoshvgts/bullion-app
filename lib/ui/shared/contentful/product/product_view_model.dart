@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/display_settings.dart';
 import 'package:bullion/core/models/module/item_display_settings.dart';

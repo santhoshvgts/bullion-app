@@ -7,7 +7,7 @@ import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/order_details.dart';
 import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/checkout/checkout_page.dart';
-import 'package:bullion/ui/view/checkout/views/expired_cart/expired_cart_view.dart';
+import 'package:bullion/ui/view/checkout_bk/views/expired_cart/expired_cart_view.dart';
 
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
@@ -19,6 +19,7 @@ import 'package:bullion/ui/view/main/login/login_page.dart';
 import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
+import 'package:bullion/ui/view/settings/activity/recently_bought/recently_bought_page.dart';
 import 'package:bullion/ui/view/settings/add_edit_address_page.dart';
 import 'package:bullion/ui/view/settings/address_page.dart';
 import 'package:bullion/ui/view/settings/alerts/add_edit_spot_price_page.dart';
@@ -34,7 +35,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'ui/view/checkout/review_order/review_order_page.dart';
 import 'ui/view/dashboard/dashboard_page.dart';
+import 'ui/view/settings/activity/recently_viewed/recently_viewed_page.dart';
+import 'ui/view/settings/activity/search_history/search_history_page.dart';
 
 const String initialRoute = "login";
 
@@ -192,29 +196,24 @@ class AppRouter {
 
       case Routes.reviewCart:
         return MaterialPageRoute(
-            builder: (_) => ExpiredCartView(
-                  fromPriceExpiry: false,
-                ),
+            builder: (_) => ReviewOrderPage(
+              fromPriceExpiry: false,
+            ),
             settings: RouteSettings(name: settings.name));
-      //
+
       case Routes.expiredCart:
         return MaterialPageRoute(
-            builder: (_) => ExpiredCartView(
-                  fromPriceExpiry: true,
-                ),
+            builder: (_) => ReviewOrderPage(
+              fromPriceExpiry: true,
+            ),
             settings: RouteSettings(name: settings.name));
 
       case Routes.checkout:
-        return MaterialPageRoute(builder: (_) => const CheckoutPage(), settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => CheckoutPage(), settings: RouteSettings(name: settings.name));
       //
       //   case Routes.checkoutAddress:
       //     return MaterialPageRoute(
       //         builder: (_) => DeliveryAddressPage(),
-      //         settings: RouteSettings(name: settings.name));
-      //
-      //   case Routes.checkoutPayments:
-      //     return MaterialPageRoute(
-      //         builder: (_) => PaymentMethodPage(),
       //         settings: RouteSettings(name: settings.name));
       //
       //
@@ -350,10 +349,18 @@ class AppRouter {
       //         settings: RouteSettings(name: settings.name));
       //
       case Routes.address:
-        return MaterialPageRoute(builder: (_) => const AddressPage(), settings: RouteSettings(name: settings.name));
+        return MaterialPageRoute(builder: (_) => AddressPage(
+          fromCheckout: (settings.arguments as bool?) ?? false,
+        ), settings: RouteSettings(name: settings.name));
 
       case Routes.addEditAddress:
-        return MaterialPageRoute(builder: (_) => AddEditAddressPage(userAddress: settings.arguments as UserAddress?), settings: RouteSettings(name: settings.name));
+        bool fromCheckout = false;
+        UserAddress? userAddress;
+        if (settings.arguments is Map) {
+          fromCheckout = (settings.arguments as Map)['fromCheckout'] ?? false;
+          userAddress = (settings.arguments as Map)['userAddress'];
+        }
+        return MaterialPageRoute(builder: (_) => AddEditAddressPage(userAddress: userAddress, fromCheckout: fromCheckout,), settings: RouteSettings(name: settings.name));
 
       case Routes.favorites:
         return MaterialPageRoute(builder: (_) => const FavoritesPage(), settings: RouteSettings(name: settings.name));
@@ -366,24 +373,24 @@ class AppRouter {
       //       ),
       //     );
       //
-      //   case Routes.recentlyViewed:
-      //     return MaterialPageRoute(
-      //       builder: (_) => RecentlyViewedPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case Routes.searchHistory:
-      //     return MaterialPageRoute(
-      //       builder: (_) => SearchHistoryPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
-      //   case Routes.recentlyBought:
-      //     return MaterialPageRoute(
-      //       builder: (_) => RecentlyBoughtPage(),
-      //       settings: RouteSettings(name: settings.name),
-      //     );
-      //
+        case Routes.recentlyViewed:
+          return MaterialPageRoute(
+            builder: (_) => RecentlyViewedPage(),
+            settings: RouteSettings(name: settings.name),
+          );
+
+        case Routes.searchHistory:
+          return MaterialPageRoute(
+            builder: (_) => SearchHistoryPage(),
+            settings: RouteSettings(name: settings.name),
+          );
+
+        case Routes.recentlyBought:
+          return MaterialPageRoute(
+            builder: (_) => RecentlyBoughtPage(),
+            settings: RouteSettings(name: settings.name),
+          );
+
       case Routes.myOrders:
         return MaterialPageRoute(builder: (_) => const OrdersPage(), settings: RouteSettings(name: settings.name));
 
