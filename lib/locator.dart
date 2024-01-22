@@ -7,7 +7,9 @@ import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/chart/spotprice_service.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/checkout/checkout_steam_service.dart';
 import 'package:bullion/services/filter_service.dart';
+import 'package:bullion/services/payment/payment_gateway_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
@@ -41,6 +43,8 @@ void setupLocator() {
 
   locator.registerLazySingleton(() => CartService());
   locator.registerLazySingleton(() => FilterService());
+  locator.registerLazySingleton(() => CheckoutStreamService());
+  locator.registerLazySingleton(() => PaymentGatewayService());
 
   // locator.registerLazySingleton(() => AuthRepo());
   locator.registerLazySingleton(() => UpdateChecker());

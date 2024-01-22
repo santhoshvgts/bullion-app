@@ -23,7 +23,7 @@ class AuthenticationService {
   // final PushNotificationService? _pushService = locator<PushNotificationService>();
 
   User? _user;
-  StreamController<User?> userController = StreamController<User?>();
+  StreamController<User?> userController = StreamController<User?>.broadcast();
 
   bool get isAuthenticated => _tokenService.getToken()?.isNotEmpty == true;
 

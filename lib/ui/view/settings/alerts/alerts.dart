@@ -28,8 +28,7 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(
-        initialIndex: widget.initialIndex, length: 3, vsync: this);
+    _tabController = TabController(initialIndex: widget.initialIndex, length: 3, vsync: this);
   }
 
   @override
@@ -78,6 +77,7 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                   : SizedBox(
                       height: MediaQuery.of(context).size.height -
                           viewModel.scrollController.offset,
+                      width: double.infinity,
                       child: TabBarView(
                         controller: _tabController,
                         children: [

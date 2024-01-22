@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
@@ -21,7 +22,6 @@ class AddToCartViewModel extends VGTSBaseViewModel {
 
   NumberFormFieldController qtyController = NumberFormFieldController(const ValueKey("txtQty"));
 
-  // TextEditingController qtyController = TextEditingController(text: "1");
   int get qtyValue => qtyController.text.isEmpty ? 0 : int.parse(qtyController.text);
   FocusNode qtyFocus = FocusNode();
 
@@ -35,16 +35,15 @@ class AddToCartViewModel extends VGTSBaseViewModel {
   }
 
   bool get showQty {
-    if (qtyController.text.isEmpty)
+    if (qtyController.text.isEmpty) {
       return false;
+    }
     return int.parse(qtyController.text) != 0;
   }
 
   init(ProductDetails? detail){
-
-
-
     _productDetails = detail;
+    qtyController.text = detail?.overview?.orderMin?.toString() ?? '1';
     notifyListeners();
   }
 
@@ -60,7 +59,7 @@ class AddToCartViewModel extends VGTSBaseViewModel {
   }
 
   decrease() {
-    if (qtyValue <= 1){
+    if (qtyValue <= (productDetails?.overview?.orderMin ?? 0)){
       return;
     }
 
@@ -73,10 +72,10 @@ class AddToCartViewModel extends VGTSBaseViewModel {
   addProduct(vm) async {
     qtyFocus.unfocus();
 
-    busy(true);
+    setBusy(true);
     PageSettings? response = await _cartService!.addItemToCart(
         _productDetails!.overview!.productId, qtyValue);
-    busy(false);
+    setBusy(false);
 
     if (response == null) {
       return;
@@ -94,6 +93,8 @@ class AddToCartViewModel extends VGTSBaseViewModel {
       CartItem? item = response.shoppingCart!.items!.where((element) =>
       element.productId == productDetails!.overview!.productId).firstOrNull;
       // AlertResponse result = await locator<DialogService>().showBottomSheet(title: "Added to Cart", child: AddToCartSuccessBottomSheet(vm, item));
+
+      Util.showProductCheckout(productDetails!.overview!);
     }
   }
 

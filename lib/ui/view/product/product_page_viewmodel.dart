@@ -55,6 +55,11 @@ class ProductPageViewModel extends VGTSBaseViewModel {
         init(_productDetail, _path);
       }
     });
+
+    locator<EventBusService>().eventBus.registerTo<ProductApplyVariationEvent>().listen((event) async {
+      init(event.product, event.refreshUrl);
+    });
+
     init(detail,path);
     notifyListeners();
   }

@@ -76,8 +76,7 @@ class AlertsViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     await request(AlertsRequest.removeSpotPriceAlert(id));
-    _alertResponse =
-    await request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
+    _alertResponse = await request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
 
     setBusy(false);
   }

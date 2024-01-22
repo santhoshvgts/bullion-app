@@ -1,4 +1,6 @@
+import 'package:bullion/core/models/module/dynamic.dart';
 import 'package:bullion/core/models/user_address.dart';
+import 'package:bullion/services/checkout/checkout_steam_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,9 @@ import '../../../services/shared/dialog_service.dart';
 import 'bottom_sheets/select_country_state_bottomsheet.dart';
 
 class AddEditAddressViewModel extends VGTSBaseViewModel {
+
+  bool? fromCheckout = false;
+
   GooglePlaceApi? googlePlaceApi = locator<GooglePlaceApi>();
 
   FormFieldController addressFormController = FormFieldController(const Key("addressFormKey"));
@@ -25,7 +30,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
 
   //AddressType _selectedAddressType = AddressType.home;
 
-  UserAddress? userAddressResult, editUserAddress;
+  UserAddress? editUserAddress;
   ShippingAddress? _shippingAddress;
 
   GlobalKey<FormState> addEditAddressGlobalKey = GlobalKey<FormState>();
@@ -53,6 +58,8 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
 
   FocusNode streetFocus = FocusNode();
   FocusNode searchFocus = FocusNode();
+
+  AddEditAddressViewModel(this.fromCheckout);
 
   init(UserAddress? editUserAddress) async {
     setBusy(true);
@@ -115,11 +122,15 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     userAddress.zip = pinFormFieldController.text;
     userAddress.primaryPhone = phoneFormFieldController.text;
 
-    userAddressResult = await request<UserAddress>(AddressRequest.addAddress(userAddress.toJson()));
-
+    DynamicModel? result = await request<DynamicModel>(AddressRequest.addAddress(userAddress.toJson()));
+    UserAddress userAddressResult = UserAddress.fromJson(result?.json['address']);
     //setBusy(false);
     notifyListeners();
     locator<DialogService>().dialogComplete(AlertResponse(status: true));
+
+    if (fromCheckout == true) {
+      await locator<CheckoutStreamService>().saveAddressAndRefreshCheckout(userAddressResult);
+    }
 
     return userAddressResult != null;
   }

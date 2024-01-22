@@ -1,4 +1,4 @@
-import 'package:bullion/ui/view/checkout/views/review_cart/review_cart_view_model.dart';
+import 'package:bullion/ui/view/checkout_bk/views/review_cart/review_cart_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

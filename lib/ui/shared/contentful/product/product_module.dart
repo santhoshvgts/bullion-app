@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:bullion/core/constants/display_direction.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_section.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/product/product_text_style.dart';
 import 'package:bullion/ui/shared/contentful/product/product_view_model.dart';
@@ -221,7 +225,13 @@ class _HorizontalItem extends ViewModelWidget<ProductViewModel> {
 class _VerticalItem extends ViewModelWidget<ProductViewModel> {
   final ProductOverview _item;
 
-  _VerticalItem(this._item);
+  _VerticalItem(this._item) {
+    if (_item.dealEndsIn != null) {
+      Timer.periodic(const Duration(seconds: 1), (timer) {
+
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
@@ -306,9 +316,8 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
                 children: [
                   _PriceSection(_item, Alignment.centerLeft),
 
-
                   if (_item.showDealProgress)
-                  Column(
+                    Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       VerticalSpacing.d10px(),
@@ -333,9 +342,16 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
 
                       VerticalSpacing.custom(value: 7),
 
-                      Text("Ends in 1d 21h 30m", style: AppTextStyle.bodySmall.copyWith(
-                          color: AppColor.dealsRed
-                      ),),
+                      StreamBuilder(
+                        stream: Stream.periodic(const Duration(seconds: 1)),
+                        builder: (context, snapshot) {
+                          return Text("Ends in ${_item.formattedDealEndsIn}", style: AppTextStyle.bodySmall.copyWith(
+                              color: AppColor.dealsRed
+                          ),);
+                        }
+                      ),
+
+
                     ],
                   )
                 ],
@@ -438,24 +454,7 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Expanded(child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _PriceSection(_item, Alignment.centerLeft),
-
-                                VerticalSpacing.d5px(),
-
-                                Container(
-                                    decoration: BoxDecoration(
-                                        color: AppColor.green.withOpacity(0.2),
-                                        borderRadius: BorderRadius.circular(5)
-                                    ),
-                                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                                    child: Text("Lowest Price",  style: AppTextStyle.bodySmall.copyWith(fontSize: 11,color: AppColor.green),)
-                                ),
-
-                              ],
-                            )),
+                            Expanded(child: _PriceSection(_item, Alignment.centerLeft),),
 
                             VerticalSpacing.d10px(),
 
@@ -464,14 +463,15 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                                 alignment: Alignment.centerRight,
                                 child: Padding(
                                   padding: const EdgeInsets.only(top: 10),
-                                  child: Button.mini("Add to Cart",
-                                    width: 100,
-                                    color: AppColor.secondary,
-                                    borderColor: AppColor.secondary,
-                                    valueKey: const Key("btnAddToCart"),
-                                    onPressed: () {
-                                    },
-                                  ),
+                                  child: CircleAvatar(
+                                    backgroundColor: AppColor.secondary,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        locator<NavigationService>().pushNamed(_item.targetUrl, arguments: ProductDetails(overview: _item));
+                                      },
+                                      icon: const Icon(Icons.open_in_new, size: 16, color: AppColor.white,)
+                                    ),
+                                  )
                                 ),
                               )
                             )
@@ -486,77 +486,6 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
 
             VerticalSpacing.d10px(),
 
-            // Container(
-            //   decoration: BoxDecoration(
-            //       color: AppColor.white,
-            //       border: Border.all(
-            //           color: AppColor.border,
-            //       ),
-            //       borderRadius: BorderRadius.circular(5)
-            //   ),
-            //   margin: const EdgeInsets.only(left: 10),
-            //   child: IntrinsicHeight(
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //
-            //         ...["Money Metals","JM Bullion","SD Bullion","Sliver Gold Bull", "Hero Bullion"].map((e) => Column(
-            //           children: [
-            //             Container(
-            //               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            //               margin: const EdgeInsets.only(right: 5),
-            //               width: double.infinity,
-            //               child: Row(
-            //                 children: [
-            //                   Expanded(
-            //                     child: Column(
-            //                       crossAxisAlignment: CrossAxisAlignment.start,
-            //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                       children: [
-            //
-            //                         Text(e, textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
-            //                         VerticalSpacing.d5px(),
-            //                         Container(
-            //                             decoration: BoxDecoration(
-            //                                 color: AppColor.red.withOpacity(0.2),
-            //                                 borderRadius: BorderRadius.circular(5)
-            //                             ),
-            //                             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-            //                             child: Text("8.00% High",  style: AppTextStyle.labelSmall.copyWith(color: AppColor.red),)
-            //                         ),
-            //                       ],
-            //                     ),
-            //                   ),
-            //                   Expanded(
-            //                     child: Column(
-            //                       crossAxisAlignment: CrossAxisAlignment.end,
-            //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                       children: [
-            //
-            //                         const Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
-            //                         VerticalSpacing.d2px(),
-            //
-            //                         const Text("\$31.85", textScaleFactor: 1, style: AppTextStyle.bodyLarge,),
-            //
-            //                       ],
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //             const Divider(
-            //               thickness: 0.5,
-            //               height: 0.5,
-            //             ),
-            //           ],
-            //         ),),
-            //
-            //
-            //       ],
-            //     ),
-            //   ),
-            // ),
-
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
@@ -567,55 +496,9 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                     ),
                     borderRadius: BorderRadius.circular(5)
                 ),
-                margin: EdgeInsets.only(left: 10),
+                margin: const EdgeInsets.only(left: 10),
                 child: IntrinsicHeight(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      ...["Money Metals","JM Bullion","SD Bullion","Sliver Gold Bull", "Hero Bullion"].map((e) => Row(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3.5,
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                            margin: const EdgeInsets.only(right: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-
-                                Text(e, textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
-
-                                VerticalSpacing.custom(value: 25),
-
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
-                                    const Text("\$31.85", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
-                                    Container(
-                                        decoration: BoxDecoration(
-                                            color: AppColor.red.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(5)
-                                        ),
-                                        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                                        child: Text("8.00% High",  style: AppTextStyle.labelSmall.copyWith(color: AppColor.red),)
-                                    ),
-
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          const VerticalDivider(
-                            thickness: 0.5,
-                            width: 0.5,
-                          ),
-                        ],
-                      ),)
-
-                    ],
-                  ),
+                  child: CompetitorPricingSection(_item.competitorPrices ?? []),
                 ),
               ),
             ),

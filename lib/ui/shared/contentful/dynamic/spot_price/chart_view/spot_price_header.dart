@@ -2,6 +2,8 @@ import 'package:bullion/core/models/chart/chart_selection_info.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_chart_view_model.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/cupertino.dart';
@@ -126,8 +128,11 @@ class SpotPriceHeader extends StatelessWidget {
                   height: 35,
                   valueKey: const ValueKey("btnAlert"),
                   onPressed: () {
+                    if (!locator<AuthenticationService>().isAuthenticated) {
+                      Util.showLoginAlert();
+                      return;
+                    }
                     bool isAuthenticated = _viewModel.createSpotPrice();
-                    if(!isAuthenticated) Util.showSnackBar(context, "Please login to create an Alert");
                   },
                 ),
               ),

@@ -88,38 +88,28 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                     (int index) {
                                       return ChoiceChip(
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(24),
+                                          borderRadius: BorderRadius.circular(24),
                                         ),
-                                        label:
-                                            Text(viewModel.metalsList[index]),
-                                        labelStyle: AppTextStyle.bodyMedium
-                                            .copyWith(
-                                                color: AppColor.primaryText),
-                                        color:
-                                            MaterialStateProperty.resolveWith(
-                                                (states) {
-                                          if (states.contains(
-                                              MaterialState.selected)) {
-                                            return AppColor.turtleGreen
-                                                .withOpacity(0.08);
+                                        label: Text(viewModel.metalsList[index]),
+                                        labelStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primaryText),
+                                        color: MaterialStateProperty.resolveWith((states) {
+                                          if (states.contains(MaterialState.selected)) {
+                                            return AppColor.primary.withOpacity(0.08);
                                           }
                                           return Colors.white;
                                         }),
-                                        side:
-                                            MaterialStateBorderSide.resolveWith(
-                                                (Set<MaterialState> states) {
-                                          if (states.contains(
-                                              MaterialState.selected)) {
+                                        side: MaterialStateBorderSide.resolveWith((Set<MaterialState> states) {
+                                          if (states.contains(MaterialState.selected)) {
                                             return const BorderSide(
                                                 width: 1.0,
-                                                color: AppColor.turtleGreen);
+                                                color: AppColor.primary
+                                            );
                                           }
                                           return const BorderSide(
                                               width: 1.0,
                                               color: AppColor.border);
                                         }),
-                                        checkmarkColor: AppColor.turtleGreen,
+                                        checkmarkColor: AppColor.primary,
                                         backgroundColor: Colors.white,
                                         selected: index ==
                                             viewModel.metalsSelectedIndex,
@@ -142,26 +132,17 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                 Wrap(
                                   spacing: 8.0,
                                   children: List<Widget>.generate(
-                                    viewModel
-                                        .operatorsResponse!.operators!.length,
+                                    viewModel.operatorsResponse!.operators!.length,
                                     (int index) {
                                       return ChoiceChip(
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(24),
+                                          borderRadius: BorderRadius.circular(24),
                                         ),
-                                        label: Text(viewModel.operatorsResponse!
-                                            .operators![index].description!),
-                                        labelStyle: AppTextStyle.bodyMedium
-                                            .copyWith(
-                                                color: AppColor.primaryText),
-                                        color:
-                                            MaterialStateProperty.resolveWith(
-                                                (states) {
-                                          if (states.contains(
-                                              MaterialState.selected)) {
-                                            return AppColor.turtleGreen
-                                                .withOpacity(0.08);
+                                        label: Text(viewModel.operatorsResponse!.operators![index].description!),
+                                        labelStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primaryText),
+                                        color: MaterialStateProperty.resolveWith((states) {
+                                          if (states.contains(MaterialState.selected)) {
+                                            return AppColor.primary.withOpacity(0.08);
                                           }
                                           return Colors.white;
                                         }),
@@ -172,13 +153,15 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                               MaterialState.selected)) {
                                             return const BorderSide(
                                                 width: 1.0,
-                                                color: AppColor.turtleGreen);
+                                                color: AppColor.primary
+                                            );
                                           }
                                           return const BorderSide(
                                               width: 1.0,
-                                              color: AppColor.border);
+                                              color: AppColor.border
+                                          );
                                         }),
-                                        checkmarkColor: AppColor.turtleGreen,
+                                        checkmarkColor: AppColor.primary,
                                         backgroundColor: Colors.white,
                                         selected: index ==
                                             viewModel.optionsSelectedIndex,
@@ -201,7 +184,7 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
           child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Button(
-                color: AppColor.turtleGreen,
+                color: AppColor.primary,
                 alertResponse == null ? "Create" : "Update",
                 valueKey: const Key("btnCreate"),
                 borderRadius: BorderRadius.circular(24),

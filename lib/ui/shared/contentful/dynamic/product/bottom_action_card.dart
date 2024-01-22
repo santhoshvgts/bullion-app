@@ -70,6 +70,6 @@ class _Button extends StatelessWidget {
         textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.black20),
         color: Colors.black12,
         borderColor: Colors.transparent,
-        onPressed: () => null);
+        onPressed: () {});
   }
 }

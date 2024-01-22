@@ -131,22 +131,21 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                   );
                 }
             ),
-            // icon: const Icon(CupertinoIcons.cart),
             title: "Cart",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/cart/viewCart",
               navigatorKey: locator<NavigationService>().getBottomKeyByIndex(3),
             ),
           ),
-          // _PersistentBottomNav(
-          //   icon: const Icon(CupertinoIcons.person),
-          //   inactiveIcon: const Icon(CupertinoIcons.person),
-          //   title: "Accounts",
-          //   routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          //     initialRoute: "/pages/accounts",
-          //     navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),
-          //   ),
-          // ),
+          _PersistentBottomNav(
+            icon: const Icon(CupertinoIcons.person, size: 22,),
+            inactiveIcon: const Icon(CupertinoIcons.person, size: 22),
+            title: "Accounts",
+            routeAndNavigatorSettings: RouteAndNavigatorSettings(
+              initialRoute: "/pages/accounts",
+              navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),
+            ),
+          ),
         ],
         padding: const NavBarPadding.all(4),
         hideNavigationBarWhenKeyboardShows: true,

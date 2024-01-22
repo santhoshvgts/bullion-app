@@ -19,6 +19,7 @@ import 'package:bullion/ui/shared/contentful/standard/standard_module.dart';
 import 'package:bullion/ui/view/cart/cart_item_card.dart';
 import 'package:bullion/ui/view/cart/cart_view_model.dart';
 import 'package:bullion/ui/widgets/button.dart';
+import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/page_will_pop.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -553,36 +554,37 @@ class _PromoCode extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                        color: AppColor.secondaryBackground,
-                        borderRadius: BorderRadius.circular(5)),
+                      color: viewModel.couponInlineMessage!.color.withOpacity(0.09),
+                      borderRadius: BorderRadius.circular(5)
+                    ),
                     child: Row(
                       children: [
                         Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.only(right: 10),
-                            child: Icon(
-                              viewModel.couponInlineMessage!.icon,
-                              color: viewModel.couponInlineMessage!.color,
-                              size: 35,
-                            )),
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(
+                            viewModel.couponInlineMessage!.icon,
+                            color: viewModel.couponInlineMessage!.color,
+                            size: 25,
+                          )
+                        ),
                         Expanded(
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (viewModel.couponInlineMessage!.title != null)
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 5),
                                   child: Text(
-                                      viewModel.couponInlineMessage!.title!,
-                                      style: AppTextStyle.titleLarge.copyWith(
-                                          fontSize: 14,
-                                          color: viewModel
-                                              .couponInlineMessage!.color),
-                                      textAlign: TextAlign.start),
+                                    viewModel.couponInlineMessage!.title!,
+                                    style: AppTextStyle.titleSmall.copyWith(color: viewModel.couponInlineMessage!.color),
+                                    textAlign: TextAlign.start
+                                  ),
                                 ),
                               Text(viewModel.couponInlineMessage!.message!,
-                                  style: AppTextStyle.bodyLarge.copyWith(
+                                  style: AppTextStyle.bodySmall.copyWith(
                                       color:
-                                          viewModel.couponInlineMessage!.color),
+                                      viewModel.couponInlineMessage!.color),
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -591,45 +593,30 @@ class _PromoCode extends StatelessWidget {
                     ),
                   )),
             VerticalSpacing.d10px(),
-            // EditText(
-            //   "Enter Promo Code",
-            //   const Key("textPromoCode"),
-            //   viewModel.promoCodeController,
-            //   TextInputType.text,
-            //   focusNode: viewModel.promoCodeFocus,
-            //   validate: viewModel.promoCodeValidate,
-            //   errorText: viewModel.errorText,
-            //   marginEdgeInsets: const EdgeInsets.only(
-            //       left: 15.0, right: 15.0, bottom: 10.0, top: 5),
-            //   autofocus: true,
-            //   textCapitalization: TextCapitalization.characters,
-            //   textInputAction: TextInputAction.done,
-            //   onSubmitted: (value) {},
-            //   onChanged: (value) {
-            //     viewModel.promoCodeValidate = false;
-            //     setState(() {});
-            //   },
-            // ),
+            EditTextField(
+              "Enter Promo Code",
+              viewModel.promoCodeController,
+              margin: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 10.0, top: 5),
+              textInputAction: TextInputAction.done,
+              autoFocus: true,
+              onChanged: (value) {
+                setState((){});
+              },
+            ),
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 15.0, right: 15.0, bottom: 15.0, top: 10),
                 child: Button("Apply Promo Code",
                     width: double.infinity,
-                    color: viewModel.promoCodeController.text.isEmpty
-                        ? Colors.black12
-                        : AppColor.primary,
-                    textStyle: viewModel.promoCodeController.text.isEmpty
-                        ? AppTextStyle.bodyLarge.copyWith(color: Colors.black26)
-                        : AppTextStyle.bodyLarge,
-                    borderColor: Colors.transparent,
                     loading: viewModel.isBusy,
+                    disabled: viewModel.promoCodeController.text.isEmpty,
                     valueKey: const Key("btnPromoCodeAdd"),
                     onPressed: () async {
                   setState(() {});
-
-                  if (viewModel.promoCodeController.text.isNotEmpty)
+                  if (viewModel.promoCodeController.text.isNotEmpty) {
                     await viewModel.applyCoupon(context);
+                  }
                   setState(() {});
                 }),
               ),

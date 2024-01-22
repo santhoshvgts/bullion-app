@@ -27,8 +27,8 @@ class LoadingData extends StatelessWidget {
               const Positioned.fill(
                 child: Center(
                   child: SizedBox(
-                    width: 60,
-                    height: 60,
+                    width: 50,
+                    height: 50,
                     child: CircularProgressIndicator(
                       strokeWidth: 1.5,
                     ),
@@ -39,8 +39,8 @@ class LoadingData extends StatelessWidget {
                 child: Center(
                   child: Image.asset(
                     Images.appBullLogo,
-                    width: 50,
-                    height: 50,
+                    width: 40,
+                    height: 40,
                   ),
                 ),
               )

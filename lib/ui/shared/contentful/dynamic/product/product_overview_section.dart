@@ -8,10 +8,12 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
 import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
+import 'package:bullion/ui/view/product/detail/volume_info_bottom_sheet.dart';
 import 'package:bullion/ui/view/product/product_images_full_view.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -62,7 +64,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
         children: [
           _Header(),
           Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+            padding: const EdgeInsets.only(left: 15, right: 15, top: 10,),
             child: Stack(
               children: [
                 _ImageList(
@@ -102,7 +104,11 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                     children: [
                       InkWell(
                         onTap: () {
-                        viewModel.addAsFavorite(setting?.productId);
+                          if (!locator<AuthenticationService>().isAuthenticated) {
+                            Util.showLoginAlert();
+                            return;
+                          }
+                          viewModel.addAsFavorite(setting?.productId);
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),
@@ -131,6 +137,10 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                     children: [
                       InkWell(
                         onTap: () {
+                          if (!locator<AuthenticationService>().isAuthenticated) {
+                            Util.showLoginAlert();
+                            return;
+                          }
                           viewModel.priceAlert(setting?.overview, context);
                         },
                         child: Container(
@@ -158,7 +168,8 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
           ),
           VerticalSpacing.d5px(),
           _ProductInfoSection(),
-          if (viewModel.productDetails!.productNotes != null) _ProductNotes(),
+          if (viewModel.productDetails!.productNotes != null)
+            _ProductNotes(),
           if (viewModel.productDetails!.volumePricing == null)
             _VolumePriceLoading()
           else if (viewModel.productDetails!.volumePricing!.isEmpty)
@@ -167,20 +178,21 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
             _VolumePricing(),
           if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
             _CoinGradeSpecification(),
-          Container(
-            color: AppColor.secondaryBackground,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Button(
-              "Add To Cart",
-              width: double.infinity,
-              valueKey: const ValueKey("btnAddToCart"),
-              color: AppColor.secondary,
-              borderColor: AppColor.secondary,
-              onPressed: () {
-                viewModel.addToCart();
-              },
-            ),
-          ),
+
+          // Container(
+          //   color: AppColor.secondaryBackground,
+          //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          //   child: Button(
+          //     "Add To Cart",
+          //     width: double.infinity,
+          //     valueKey: const ValueKey("btnAddToCart"),
+          //     color: AppColor.secondary,
+          //     borderColor: AppColor.secondary,
+          //     onPressed: () {
+          //       viewModel.addToCart();
+          //     },
+          //   ),
+          // ),
 
         ],
       ),
@@ -330,8 +342,15 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
             _AlertText(),
           // VerticalSpacing.d20px(),
           // _ShippingInfoCard(),
+
           VerticalSpacing.d10px(),
+
+          AppStyle.customDivider,
+
           _VariationSelection(),
+
+          AppStyle.customDivider,
+
         ],
       ),
     );
@@ -341,24 +360,37 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
 class _ProductNotes extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Container(
-      color: AppColor.white,
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-      margin: const EdgeInsets.only(top: 10.0),
-      child: Column(
-        children: viewModel.productDetails!.productNotes!.map((e) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: Text(
-              e,
-              style: AppTextStyle.bodyMedium.copyWith(
-                fontSize: 14,
-              ),
-              textAlign: TextAlign.start,
-            ),
-          );
-        }).toList(),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          color: AppColor.white,
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Column(
+            children: viewModel.productDetails?.productNotes?.map((e) {
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
+                decoration: BoxDecoration(
+                  color: AppColor.info.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                margin: EdgeInsets.only(bottom: 10),
+                width: double.infinity,
+                child: Text(
+                  e,
+                  style: AppTextStyle.bodyMedium.copyWith(
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              );
+            }).toList() ?? [],
+          ),
+        ),
+
+        AppStyle.customDivider,
+
+      ],
     );
   }
 }
@@ -369,7 +401,6 @@ class _VolumePriceLoading extends StatelessWidget {
     return Container(
       color: AppColor.white,
       padding: const EdgeInsets.symmetric(vertical: 10.0),
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -409,14 +440,11 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
     return Container(
-        color: AppColor.secondaryBackground,
-        margin: const EdgeInsets.only(
-          top: 10.0,
-        ),
+        color: AppColor.white,
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15,),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -425,9 +453,11 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                     textScaleFactor: 1,
                     style: AppTextStyle.titleMedium,
                   ),
-                  HorizontalSpacing.d5px(),
+                  const Spacer(),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      locator<DialogService>().showBottomSheet(title: "Volume Discount Pricing", child: VolumeInfoBottomSheet(viewModel.productDetails?.volumePricingHelpText));
+                    },
                     child: const Padding(
                       padding: EdgeInsets.only(top: 3.0),
                       child: Icon(
@@ -439,6 +469,9 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 ],
               ),
             ),
+
+            VerticalSpacing.d20px(),
+
             SizedBox(
               width: double.infinity,
               child: SingleChildScrollView(
@@ -464,6 +497,8 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
               ),
             ),
 
+            VerticalSpacing.d5px(),
+
             Container(
               alignment: Alignment.centerLeft,
               child: SingleChildScrollView(
@@ -484,7 +519,7 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                           return MapEntry(
                             index,
                             Padding(
-                              padding: const EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 0),
                               child: _VolumeDiscountCard(
                                 title: volumePricing.tier ?? '-',
                                 price: pricing?.formattedPrice ?? "-",
@@ -523,6 +558,8 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 ),
               ),
 
+            VerticalSpacing.d15px(),
+
           ],
         ));
   }
@@ -557,9 +594,9 @@ class _VolumeDiscountCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
           color: AppColor.white,
-          borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: AppColor.border
+            color: AppColor.border,
+            width: 0.6
           ),
         ),
         width: MediaQuery.of(context).size.width / 3.5,
@@ -805,7 +842,7 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
                     index,
                     InkWell(
                       onTap: () {
-
+                        viewModel.applyVariation(option.targetUrl ?? '');
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
