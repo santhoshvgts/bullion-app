@@ -1,6 +1,7 @@
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/helper/utils.dart';
+import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/ui/view/settings/settings_user_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
@@ -138,7 +141,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                             },
                             child: getTextsLayout(
                               const Icon(Icons.pin_drop_outlined, size: 20),
-                              "Addresses",
+                              "Saved Address",
                             ),
                           ),
                           const Divider(
@@ -401,7 +404,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.searchHistory);
+                      launchUrlString("https://www.bullion.com", mode: LaunchMode.externalApplication);
                     },
                     child: getTextsLayout(null, "Visit Bullion.com",),
                   ),
@@ -410,7 +413,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.recentlyViewed);
+                      locator<NavigationService>().pushNamed(locator<AppConfigService>().config?.appLinks?.userAgreement);
                     },
                     child: getTextsLayout(
                       null,
@@ -422,7 +425,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.recentlyBought);
+                      locator<NavigationService>().pushNamed(locator<AppConfigService>().config?.appLinks?.privacy);
                     },
                     child: getTextsLayout(
                       null,
@@ -458,30 +461,32 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.searchHistory);
+                      launchUrlString("tel://${locator<AppConfigService>().config!.appLinks!.tollFree}");
                     },
-                    child: getTextsLayout(null, "Toll Free: 8003759006",),
+                    child: getTextsLayout(null, "Toll Free: ${locator<AppConfigService>().config?.appLinks?.tollFree}",
+                        null,
+                        AppColor.blue),
                   ),
                   const Divider(
                     color: AppColor.platinumColor,
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.recentlyViewed);
+                      launchUrlString("tel://${locator<AppConfigService>().config!.appLinks!.localNumber}");
                     },
-                    child: getTextsLayout(
-                      null,
-                      "Local Number : 405.595.2100",
-                    ),
+                    child: getTextsLayout(null, "Local Number: ${locator<AppConfigService>().config?.appLinks?.localNumber}",
+                        null,
+                        AppColor.blue),
                   ),
                   const Divider(color: AppColor.platinumColor,),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.recentlyBought);
+                      launchUrlString("mailto:${locator<AppConfigService>().config!.appLinks!.supportEmail}");
                     },
-                    child: getTextsLayout(
+                    child: getTextsLayout(null,
+                      "Email: ${locator<AppConfigService>().config?.appLinks?.supportEmail}",
                       null,
-                      "Email : service@bullion.com",
+                      AppColor.blue
                     ),
                   ),
 
@@ -734,7 +739,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getTextsLayout(Icon? icon, String text1, [String? text2]) {
+  Widget getTextsLayout(Icon? icon, String text1, [String? text2, Color? textColor]) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -748,12 +753,12 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(text1, style: AppTextStyle.bodyMedium),
+              Text(text1, style: AppTextStyle.bodyMedium.copyWith(color: textColor)),
               if (text2 != null)
                 Text(
                   text2,
                   style: AppTextStyle.bodySmall
-                      .copyWith(color: AppColor.secondaryText),
+                      .copyWith(color: textColor ?? AppColor.secondaryText),
                 ),
             ],
           ),

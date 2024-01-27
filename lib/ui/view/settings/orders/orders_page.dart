@@ -90,7 +90,7 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                               index: index,
                               child: GestureDetector(
                                 onTap: () {
-                                  locator<NavigationService>().pushNamed(Routes.myOrderDetails(order.orderId));
+                                  locator<NavigationService>().pushNamed(Routes.myOrderDetails, arguments: { "order_id": order.orderId, "from_success": false });
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(

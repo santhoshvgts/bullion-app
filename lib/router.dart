@@ -4,7 +4,7 @@ import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
-import 'package:bullion/ui/order_details.dart';
+import 'package:bullion/ui/view/settings/orders/detail/order_detail_page.dart';
 import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/checkout/checkout_page.dart';
 import 'package:bullion/ui/view/checkout_bk/views/expired_cart/expired_cart_view.dart';
@@ -115,7 +115,7 @@ class Routes {
   static const String myRewards = "/account/myrewards";
   static const String myRewardTransactions = "/account/myrewards/transaction";
 
-  static String myOrderDetails(id) => "/account/my-orders/info/$id";
+  static const String myOrderDetails = "/account/orderdetails";
   static const String editSpotPrice = "/account/editSpotPrice";
   static const String myFavorites = "/account/myfavorites";
   static const String myProductAlert = "/account/productalerts";
@@ -460,6 +460,17 @@ class AppRouter {
       //       builder: (context) =>
       //           PageMiddleware(settings.name, settings.arguments));
 
+      case "orders":
+        if (uri.pathSegments[1] == "success") {
+          Map<String, dynamic> data = {};
+          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
+          data['from_success'] = true;
+          return MaterialPageRoute(
+              builder: (_) => OrderDetailPage(data),
+              settings: RouteSettings(name: settings.name));
+        }
+        return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
+
       case "spot-prices":
       case "spotprices":
         String metalName = "gold";
@@ -518,18 +529,11 @@ class AppRouter {
     Uri uri = Uri.parse(settings.name!);
     if (uri.pathSegments.length > 1) {
       switch (uri.pathSegments[1].toLowerCase()) {
-        case "my-orders":
-          Map<String, dynamic> data = {};
-          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-          data['from_success'] = false;
-          return MaterialPageRoute(builder: (_) => OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]), settings: RouteSettings(name: settings.name));
-
-        // Order Details
-        case "my-orders":
-          Map<String, dynamic> data = {};
-          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-          data['from_success'] = false;
-          return MaterialPageRoute(builder: (_) => OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]), settings: RouteSettings(name: settings.name));
+        case "orderdetails":
+          Map<String, dynamic> data = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+              builder: (_) => OrderDetailPage(data),
+              settings: RouteSettings(name: settings.name));
 
         //   case "resetpassword":
         //     return MaterialPageRoute(
