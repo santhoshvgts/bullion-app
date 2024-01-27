@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
 class CartItem {
   int? productId;
@@ -20,13 +21,15 @@ class CartItem {
   bool loading = false;
   bool enabled = true;
 
-  TextEditingController get qtyController {
-    TextEditingController textEditingController =
-        TextEditingController(text: quantity.toString());
-    textEditingController.selection = TextSelection.fromPosition(
-        TextPosition(offset: quantity.toString().length));
-    return textEditingController;
-  }
+  late NumberFormFieldController qtyController;
+
+  // NumberFormFieldController get qtyController {
+  //
+  //   qtyController.text = quantity.toString();
+  //   qtyController.textEditingController.selection = TextSelection.fromPosition(
+  //       TextPosition(offset: quantity.toString().length));
+  //   return qtyController;
+  // }
 
   FocusNode qtyFocus = new FocusNode();
 
@@ -70,6 +73,12 @@ class CartItem {
     tax = double.parse(json['tax'].toString());
     formattedTax = json['formatted_tax'];
     showTax = json['show_tax'];
+
+
+    qtyController = NumberFormFieldController(ValueKey("txtQty$productId"));
+    qtyController.text = quantity.toString();
+    // qtyController.textEditingController.selection = TextSelection.fromPosition(
+    //     TextPosition(offset: quantity.toString().length));
   }
 
   Map<String, dynamic> toJson() {

@@ -5,6 +5,7 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,7 @@ class CartItemCard extends StatelessWidget {
                               flex: 1,
                               child: Text(
                                 _item.formattedUnitPrice!,
-                                style: AppTextStyle.titleSmall,
+                                style: AppTextStyle.titleMedium,
                                 textScaleFactor: 1,
                               ),
                             ),
@@ -90,77 +91,145 @@ class CartItemCard extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: AppColor.secondaryBackground,
-                                      border: Border.all(
-                                        color: Colors.black12,
-                                        width: 0.25,
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(50),
+                                          border: Border.all(color: AppColor.border)
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 35,
+                                            width: 40,
+                                            child: IconButton(
+                                              padding: const EdgeInsets.all(2),
+                                              icon: const Icon(
+                                                Icons.remove,
+                                                size: 20,
+                                                color: AppColor.text,
+                                              ),
+                                              onPressed: () {
+                                                _item.loading = true;
+                                                onDecrease!(_item);
+                                              },
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: SizedBox(
+                                              height: 35,
+                                              child: EditTextField(
+                                                "",
+                                                _item.qtyController,
+                                                key: const ValueKey("txtQuantity"),
+                                                textAlign: TextAlign.center,
+                                                textInputAction: TextInputAction.done,
+                                                isInputDecorationNone: true,
+                                                textStyle: AppTextStyle.titleSmall,
+                                                padding: EdgeInsets.zero,
+                                                onSubmitted: (val) {
+                                                  if (!_item.loading){
+                                                    _item.loading = true;
+                                                    onValueChange!(_item, int.parse(val));
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          ),
+
+                                          SizedBox(
+                                            height: 35,
+                                            width: 40,
+                                            child: IconButton(
+                                              padding: const EdgeInsets.all(2),
+                                              icon: const Icon(
+                                                Icons.add,
+                                                size: 20,
+                                                color: AppColor.text,
+                                              ),
+                                              onPressed: () {
+                                                _item.loading = true;
+                                                onIncrease!(_item);
+                                              },
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            _item.loading = true;
-                                            onDecrease!(_item);
-                                          },
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 2,
-                                              horizontal: 5,
-                                            ),
-                                            child: Icon(
-                                              CupertinoIcons.minus_circle,
-                                              size: 20,
-                                              color: AppColor.primary,
-                                            ),
-                                          ),
-                                        ),
-                                        HorizontalSpacing.d10px(),
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                            bottom: 2.0,
-                                            right: 5,
-                                          ),
-                                          width: 35,
-                                          child: Text(
-                                            _item.qtyController.text,
-                                            style: AppTextStyle.bodyMedium
-                                                .copyWith(
-                                              color: AppColor.text,
-                                              fontFamily:
-                                                  AppTextStyle.fontFamily,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            textScaleFactor: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            _item.loading = true;
-                                            onIncrease!(_item);
-                                          },
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 5,
-                                              vertical: 2,
-                                            ),
-                                            child: Icon(
-                                              CupertinoIcons.add_circled,
-                                              size: 20,
-                                              color: AppColor.primary,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
+                                  // Container(
+                                  //   height: 30,
+                                  //   decoration: BoxDecoration(
+                                  //     borderRadius: BorderRadius.circular(50),
+                                  //     color: AppColor.secondaryBackground,
+                                  //     border: Border.all(
+                                  //       color: Colors.black12,
+                                  //       width: 0.25,
+                                  //     ),
+                                  //   ),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: [
+                                  //       InkWell(
+                                  //         onTap: () {
+                                  //           _item.loading = true;
+                                  //           onDecrease!(_item);
+                                  //         },
+                                  //         child: const Padding(
+                                  //           padding: EdgeInsets.symmetric(
+                                  //             vertical: 2,
+                                  //             horizontal: 5,
+                                  //           ),
+                                  //           child: Icon(
+                                  //             CupertinoIcons.minus_circle,
+                                  //             size: 20,
+                                  //             color: AppColor.primary,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //       HorizontalSpacing.d10px(),
+                                  //       Container(
+                                  //         padding: const EdgeInsets.only(
+                                  //           bottom: 2.0,
+                                  //           right: 5,
+                                  //         ),
+                                  //         width: 35,
+                                  //         child: Text(
+                                  //           _item.qtyController.text,
+                                  //           style: AppTextStyle.bodyMedium
+                                  //               .copyWith(
+                                  //             color: AppColor.text,
+                                  //             fontFamily:
+                                  //                 AppTextStyle.fontFamily,
+                                  //           ),
+                                  //           textAlign: TextAlign.center,
+                                  //           textScaleFactor: 1,
+                                  //           overflow: TextOverflow.ellipsis,
+                                  //         ),
+                                  //       ),
+                                  //       InkWell(
+                                  //         onTap: () {
+                                  //           _item.loading = true;
+                                  //           onIncrease!(_item);
+                                  //         },
+                                  //         child: const Padding(
+                                  //           padding: EdgeInsets.symmetric(
+                                  //             horizontal: 5,
+                                  //             vertical: 2,
+                                  //           ),
+                                  //           child: Icon(
+                                  //             CupertinoIcons.add_circled,
+                                  //             size: 20,
+                                  //             color: AppColor.primary,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                   IconButton(
                                     onPressed: () {
                                       _item.loading = true;
