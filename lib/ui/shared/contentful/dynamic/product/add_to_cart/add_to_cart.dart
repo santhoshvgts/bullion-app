@@ -25,9 +25,8 @@ class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
   }
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      AddToCartViewModel viewModel, Widget? child) {
-    return Column(
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, AddToCartViewModel viewModel, Widget? child) {
+    return Wrap(
       children: [
         if (viewModel.isBusy)
           const SizedBox(
@@ -37,9 +36,9 @@ class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
             ),
           ),
         Container(
-          padding: const EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              color: AppColor.white, boxShadow: AppStyle.topShadow
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          decoration: const BoxDecoration(
+            color: AppColor.white,
           ),
           child: Stack(
             children: [

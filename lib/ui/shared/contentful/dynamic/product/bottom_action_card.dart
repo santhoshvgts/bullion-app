@@ -2,6 +2,10 @@ import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/helper/utils.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/authentication_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 
@@ -10,25 +14,23 @@ import 'add_to_cart/add_to_cart.dart';
 class BottomActionCard extends StatelessWidget {
   final ProductDetails? productDetails;
 
-  BottomActionCard(this.productDetails);
+  BottomActionCard(this.productDetails, { Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (productDetails!.overview!.productAction ==
-        ProductInfoDisplayType.addToCart) {
-      return AddToCartSection(productDetails);
-    } else if (productDetails!.overview!.alertMe!)
+    if (productDetails!.overview!.productAction == ProductInfoDisplayType.addToCart) {
+      return AddToCartSection(productDetails, key: ValueKey("sectionAddToCart${productDetails?.overview?.orderMin}"));
+    } else if (productDetails!.overview!.alertMe!) {
       return _AlertButton("Setup AlertMe!®", onTap: () async {
-        // TODO - ALERT ME AUTHENTICATION VALIDATION
-        // if (!locator<AuthenticationService>().isAuthenticated){
-        //   bool authenticated = await signInRequest(Images.iconAlertBottom, title: "AlertMe!®", content: "Add you Item to Price Alert. Get live update of item availability.");
-        //   if (!authenticated) return;
-        // }
-
+        if (!locator<AuthenticationService>().isAuthenticated) {
+          Util.showLoginAlert();
+          return;
+        }
         // await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(productDetails, showViewButton: true,));
       });
-    else
+    } else {
       return _Button(productDetails!.overview!.availabilityText);
+    }
   }
 }
 

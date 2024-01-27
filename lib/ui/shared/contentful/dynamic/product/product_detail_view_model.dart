@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/module/dynamic.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_detail/product_price.dart';
 import 'package:bullion/core/models/module/product_detail/volume_prcing.dart';
@@ -88,32 +89,34 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
   }
 
   void priceAlert(ProductOverview? overview, BuildContext context) {
-    if (authenticationService!.isAuthenticated) {
-      locator<NavigationService>()
-          .pushNamed(Routes.editPriceAlert, arguments: {
-        "productDetails": overview
-      });
-    } else {
-      Util.showSnackBar(context,
-          "Please login to create a Price Alert");
+    if (!authenticationService.isAuthenticated) {
+      Util.showLoginAlert();
+      return;
     }
+    locator<NavigationService>().pushNamed(Routes.editPriceAlert, arguments: { "productDetails": overview });
   }
 
-
-
   Future<void> addAsFavorite(int? productId) async {
-    setBusy(true);
     if (!authenticationService.isAuthenticated) {
+      Util.showLoginAlert();
        return;
     }
-    var response;
 
-    if (productDetails!.isInUserWishList!) {
+    setBusyForObject(productDetails!.isInUserWishList, true);
 
+    if (productDetails!.isInUserWishList! == true) {
+      var response =  await request<DynamicModel>(FavoritesRequest.removeFavorite(productId.toString()));
+      if (response != null) {
+        productDetails!.isInUserWishList = false;
+        notifyListeners();
+      }
     } else {
-      response =  await request<ProductDetails>(FavoritesRequest.addFavorite(productId.toString()));
-      productDetails!.isInUserWishList = response;
+      var response =  await request<DynamicModel>(FavoritesRequest.addFavorite(productId.toString()));
+      if (response != null) {
+        productDetails!.isInUserWishList = true;
+        notifyListeners();
+      }
     }
-    setBusy(false);
+    setBusyForObject(productDetails!.isInUserWishList, false);
   }
 }

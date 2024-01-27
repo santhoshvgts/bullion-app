@@ -124,9 +124,6 @@ class BaseModel extends BaseObject {
       case AlertGetResponse:
         return AlertGetResponse() as T;
 
-      case ProductAlert:
-        return ProductAlert() as T;
-
       case Checkout:
         return Checkout() as T;
 

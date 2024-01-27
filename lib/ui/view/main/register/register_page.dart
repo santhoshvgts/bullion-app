@@ -118,7 +118,8 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                 ),
                 textStyle:
                     AppTextStyle.titleSmall.copyWith(color: AppColor.text),
-                onPressed: () => viewModel.continueWithoutLogin(),
+                onPressed: () {
+                },
               ),
             ],
           ),

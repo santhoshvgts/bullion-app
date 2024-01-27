@@ -220,7 +220,7 @@ class Util {
       duration: const  Duration(seconds: 5),
       action: SnackBarAction(label: "Sign In", onPressed: () {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        locator<NavigationService>().pushNamed(Routes.login);
+        locator<NavigationService>().pushNamed(Routes.login, arguments: { 'fromMain': false });
       }),
     );
     ScaffoldMessenger.of(context).clearSnackBars();

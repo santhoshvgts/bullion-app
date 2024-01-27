@@ -22,7 +22,7 @@ class Order extends BaseModel {
   PaymentMethod? paymentMethod;
   bool? quickShipEligible;
   int? totalItems;
-  double? orderTotal;
+  num? orderTotal;
   String? formattedOrderTotal;
   bool? hasTaxableItems;
   String? formattedTaxableSubTotal;
@@ -38,9 +38,9 @@ class Order extends BaseModel {
   List<TrackingInfo>? shipmentTracking;
   String? coupon;
   String? customerType;
-  double? predictiveMargin;
-  double? shippingAmount;
-  double? tax;
+  num? predictiveMargin;
+  num? shippingAmount;
+  num? tax;
   String? primaryImage;
   int? itemsCount;
   String? subTitle;

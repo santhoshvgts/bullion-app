@@ -67,7 +67,7 @@ class ApiBaseService extends ApiBaseHelper {
       var response = await _sendAsync(settings.method, settings.endPoint, settings.params, authenticated: settings.authenticated);
       if (response != null) {
         if (response.statusCode == 200 || response.statusCode == 201) {
-          return BaseModel.createFromMap<T>(jsonDecode(utf8.decode(response.bodyBytes)));
+          return BaseModel.createFromMap<T>( response.bodyBytes.isEmpty ? {} : jsonDecode(utf8.decode(response.bodyBytes)));
         }
       }
     } on TimeoutException catch (exception, stacktrace) {

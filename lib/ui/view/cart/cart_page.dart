@@ -8,6 +8,7 @@ import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/router.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/cart/cart_summary_help_text.dart';
@@ -147,8 +148,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
                                               width: 200,
                                               valueKey: const Key("btnShopNow"),
                                               onPressed: () {
-                                                locator<NavigationService>()
-                                                    .pop();
+                                                locator<NavigationService>().pushNamed(Routes.home);
                                               },
                                             )
                                           ],

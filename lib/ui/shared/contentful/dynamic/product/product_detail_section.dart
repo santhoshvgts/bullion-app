@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
@@ -142,48 +143,6 @@ class _CompetitorPricing extends StatelessWidget {
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
 
-                   SizedBox(
-                     width: 180,
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       children: [
-                         ClipRRect(
-                           borderRadius: const BorderRadius.only(
-                               topLeft: Radius.circular(0),
-                               topRight: Radius.circular(0)),
-                           child: Container(
-                             color: AppColor.white,
-                             padding: const EdgeInsets.all(5),
-                             width: 125,
-                             child: NetworkImageLoader(
-                               image: overview.primaryImageUrl,
-                               fit: BoxFit.fitWidth,
-                             ),
-                           ),
-                         ),
-                         Padding(
-                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             children: [
-                               Text(
-                                 overview.name!,
-                                 maxLines: 3,
-                                 overflow: TextOverflow.ellipsis,
-                                 textScaleFactor: 1,
-                                 style: AppTextStyle.bodySmall,
-                                 textAlign: TextAlign.center,
-                               ),
-
-                             ],
-                           ),
-                         ),
-                       ],
-                     ),
-                   ),
-
                    Container(
                      width: MediaQuery.of(context).size.width / 3,
                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -252,7 +211,6 @@ class CompetitorPricingSection extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width / 3,
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   margin: const EdgeInsets.only(right: 5),
                   child: Column(
@@ -260,7 +218,13 @@ class CompetitorPricingSection extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
 
-                      Text(e.competitorName ?? '', textScaleFactor: 1, style: AppTextStyle.bodyLarge,),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width / 3,
+                          minWidth: MediaQuery.of(context).size.width / 3,
+                        ),
+                        child: Text(e.competitorName ?? '', textScaleFactor: 1, style: AppTextStyle.bodyLarge,)
+                      ),
 
                       VerticalSpacing.custom(value: 25),
 
@@ -282,7 +246,7 @@ class CompetitorPricingSection extends StatelessWidget {
 
                           VerticalSpacing.d5px(),
 
-                          const Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+                          Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
 
                           Text(e.formattedPrice.toString(), textScaleFactor: 1, style: AppTextStyle.titleLarge,),
 
@@ -290,7 +254,7 @@ class CompetitorPricingSection extends StatelessWidget {
 
                           Container(
                               decoration: BoxDecoration(
-                                  color: (e.isLower == true || e.inStock == false ? AppColor.red : AppColor.greenText).withOpacity(0.2),
+                                  color: (e.isLower != true || e.inStock == false ? AppColor.red : AppColor.greenText).withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(5)
                               ),
                               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
@@ -299,11 +263,11 @@ class CompetitorPricingSection extends StatelessWidget {
                                 children: [
 
                                   if (e.inStock == true)
-                                    Icon(Icons.arrow_upward, size: 12, color: e.isLower == true ? AppColor.red : AppColor.greenText,),
+                                    Icon( e.isLower == true ? Icons.arrow_downward : Icons.arrow_upward, size: 12, color: e.isLower != true ? AppColor.red : AppColor.greenText,),
 
                                   Text(e.badgeText ?? '',
                                     style: AppTextStyle.labelSmall.copyWith(
-                                        color: e.isLower == true || e.inStock == false ? AppColor.red : AppColor.greenText
+                                        color: e.isLower != true || e.inStock == false ? AppColor.red : AppColor.greenText
                                     ),
                                   ),
                                 ],

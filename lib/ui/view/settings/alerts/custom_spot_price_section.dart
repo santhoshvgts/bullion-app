@@ -113,7 +113,7 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                               );
 
                                               if (response.status == true) {
-                                                viewModel.removeSpotPriceAlert(viewModel.productAlerts?[index].productOverview?.productId);
+                                                viewModel.removeSpotPriceAlert(viewModel.productAlerts?[index].overview?.productId);
                                               }
                                             },
                                             child: Row(

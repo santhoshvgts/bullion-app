@@ -69,7 +69,7 @@ class AlertMePage extends VGTSBuilderWidget<AlertsViewModel> {
                                             height: 56,
                                             child: Image.network(viewModel
                                                     .alertMeAlerts![index]
-                                                    .productOverview
+                                                    .overview
                                                     ?.primaryImageUrl ??
                                                 ""),
                                           ),
@@ -82,7 +82,7 @@ class AlertMePage extends VGTSBuilderWidget<AlertsViewModel> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${viewModel.alertMeAlerts?[index].productOverview?.name}",
+                                                  "${viewModel.alertMeAlerts?[index].overview?.name}",
                                                   style:
                                                       AppTextStyle.titleMedium,
                                                 ),
@@ -98,17 +98,17 @@ class AlertMePage extends VGTSBuilderWidget<AlertsViewModel> {
                                       ),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                          "Current Price: \$${viewModel.alertMeAlerts?[index].productOverview?.pricing?.newPrice}",
+                                          "Current Price: \$${viewModel.alertMeAlerts?[index].overview?.pricing?.newPrice}",
                                           style: AppTextStyle.bodyMedium
                                               .copyWith(
                                                   color: AppColor.primaryText)),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                          "${viewModel.alertMeAlerts?[index].requestedQuantity}",
+                                          "${viewModel.alertMeAlerts?[index].requestedQty}",
                                           style: AppTextStyle.titleLarge),
                                       const SizedBox(height: 4.0),
                                       Text(
-                                          "${viewModel.alertMeAlerts?[index].formattedPostedDate}",
+                                          "${viewModel.alertMeAlerts?[index].formatedPostedDate}",
                                           style: AppTextStyle.bodyMedium
                                               .copyWith(
                                                   color: AppColor.primaryText)),
@@ -150,7 +150,7 @@ class AlertMePage extends VGTSBuilderWidget<AlertsViewModel> {
                                                             viewModel
                                                                 .alertMeAlerts?[
                                                                     index]
-                                                                .productOverview
+                                                                .overview
                                                                 ?.productId);
                                                         Navigator.pop(
                                                             context, 'OK');
@@ -253,8 +253,7 @@ class AlertMePage extends VGTSBuilderWidget<AlertsViewModel> {
                         ),
                       ],
                     ),
-                  )
-          );
+                  ));
   }
 
   @override

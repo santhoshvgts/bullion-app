@@ -376,64 +376,144 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     BuildContext context, {
     bool isAuthenticated = false,
   }) {
-    return Container(
-      color: AppColor.accountBg,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 16.0),
-              child: Text('Privacy', style: AppTextStyle.titleMedium),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: AppStyle.elevatedCardShadow,
+              borderRadius: BorderRadius.circular(12),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Text('Visit Bullion.com',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16.0),
+                    child:
+                    Text('Privacy', style: AppTextStyle.titleMedium),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      locator<NavigationService>().pushNamed(Routes.searchHistory);
+                    },
+                    child: getTextsLayout(null, "Visit Bullion.com",),
+                  ),
+                  const Divider(
+                    color: AppColor.platinumColor,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      locator<NavigationService>().pushNamed(Routes.recentlyViewed);
+                    },
+                    child: getTextsLayout(
+                      null,
+                      "User Agreements",
+                    ),
+                  ),
+                  const Divider(
+                    color: AppColor.platinumColor,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      locator<NavigationService>().pushNamed(Routes.recentlyBought);
+                    },
+                    child: getTextsLayout(
+                      null,
+                      "Privacy Policy",
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Text("User Agreements",
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
+          ),
+        ),
+
+        VerticalSpacing.d15px(),
+
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: AppStyle.elevatedCardShadow,
+              borderRadius: BorderRadius.circular(12),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Text('Privacy Policy',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16.0),
+                    child:
+                    Text('Contact Us', style: AppTextStyle.titleMedium),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      locator<NavigationService>().pushNamed(Routes.searchHistory);
+                    },
+                    child: getTextsLayout(null, "Toll Free: 8003759006",),
+                  ),
+                  const Divider(
+                    color: AppColor.platinumColor,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      locator<NavigationService>().pushNamed(Routes.recentlyViewed);
+                    },
+                    child: getTextsLayout(
+                      null,
+                      "Local Number : 405.595.2100",
+                    ),
+                  ),
+                  const Divider(color: AppColor.platinumColor,),
+                  InkWell(
+                    onTap: () {
+                      locator<NavigationService>().pushNamed(Routes.recentlyBought);
+                    },
+                    child: getTextsLayout(
+                      null,
+                      "Email : service@bullion.com",
+                    ),
+                  ),
+
+                  const Divider(color: AppColor.platinumColor,),
+
+                  InkWell(
+                    onTap: () {
+                      locator<NavigationService>().pushNamed(Routes.searchHistory);
+                    },
+                    child: getTextsLayout(null, "Monday - Thursday | 8 a.m - 8 p.m(EST)\nFriday | 8 a.m - 6 p.m(EST)",),
+                  ),
+                ],
+              ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 24.0),
-              child: Text('Contact Us', style: AppTextStyle.titleMedium),
-            ),
-            showContactInfo('Toll Free : ', '8003759006'),
-            showContactInfo('Local Number : ', '405.595.2100'),
-            showContactInfo('Email : ', 'service@bullion.com'),
-            const Padding(
-              padding: EdgeInsets.only(top: 24.0),
-              child:
-                  Text('Hours of Operation', style: AppTextStyle.titleMedium),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text('Monday - Thursday | 8 a.m - 8 p.m(EST)',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text('Friday | 8 a.m - 6 p.m(EST)',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
-            ),
-            Visibility(
-              visible: isAuthenticated,
+          ),
+        ),
+
+        VerticalSpacing.d15px(),
+
+        Visibility(
+          visible: isAuthenticated,
+          child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: AppStyle.elevatedCardShadow,
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: InkWell(
                   onTap: () {
                     showDialog<String>(
@@ -458,21 +538,20 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                       ),
                     );
                   },
-                  child: Text('Logout',
-                      style: AppTextStyle.bodyMedium
-                          .copyWith(color: AppColor.secondaryText)),
+                  child: getTextsLayout(const Icon(CupertinoIcons.power, size: 20,), "Logout",),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 48.0, bottom: 15),
-              child: Text('App Version - 1.0.3 (10)',
-                  style: AppTextStyle.bodySmall
-                      .copyWith(color: AppColor.secondaryText)),
-            )
-          ],
+          ),
         ),
-      ),
+
+        Padding(
+          padding: const EdgeInsets.only(top: 48.0, bottom: 15),
+          child: Text('App Version - 1.0.3 (10)',
+              style: AppTextStyle.bodySmall
+                  .copyWith(color: AppColor.secondaryText)),
+        )
+      ],
     );
   }
 
@@ -655,15 +734,17 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget getTextsLayout(Icon icon, String text1, [String? text2]) {
+  Widget getTextsLayout(Icon? icon, String text1, [String? text2]) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: icon,
-          ),
+
+          if (icon != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: icon,
+            ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

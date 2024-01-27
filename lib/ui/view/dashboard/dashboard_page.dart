@@ -26,6 +26,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
     return Scaffold(
       body: PersistentTabView(
         context,
+        key: locator<NavigationService>().tabBarKey,
         controller: viewModel.bottomNavController,
         screens: [
           ...viewModel.pages

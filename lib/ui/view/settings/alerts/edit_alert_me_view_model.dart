@@ -1,5 +1,7 @@
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart' as product_item;
+import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/services/api_request/alerts_request.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +12,8 @@ import '../../../../locator.dart';
 import '../../../../services/shared/dialog_service.dart';
 
 class EditAlertMeViewModel extends VGTSBaseViewModel {
-  bool _isCreateAlertMe = true;
-  ProductAlert? productAlert;
-  int? productId;
+  ProductOverview? productOverview;
+  ProductDetails? productDetails;
 
   GlobalKey<FormState> priceAlertGlobalKey = GlobalKey<FormState>();
 
@@ -20,23 +21,19 @@ class EditAlertMeViewModel extends VGTSBaseViewModel {
       NumberFormFieldController(const Key("quantity"),
           required: true, requiredText: "Quantity can't be empty");
 
-  void init(ProductAlert? productAlert, product_item.ProductOverview? productDetails) async {
-    if(productDetails?.productId != null) {
-      _isCreateAlertMe = true;
-      productId = productDetails?.productId;
-    } else {
-      _isCreateAlertMe = false;
-      this.productAlert = productAlert;
-      quantityFormFieldController.text = productAlert?.requestedQuantity.toString();
+  void init(ProductOverview? data) async {
+    productOverview = data;
+    productDetails = await request<ProductDetails>(AlertsRequest.getPriceAlertById(data!.productId!));
+
+    if (productDetails != null) {
+      quantityFormFieldController.text = productDetails?.requestedQty.toString();
     }
   }
 
   Future<bool> editAlertMe() async {
     //setBusy(true);
     locator<DialogService>().showLoader();
-    ProductAlert? productAlert = await request<ProductAlert>(
-        AlertsRequest.editAlertMe(_isCreateAlertMe ? productId : this.productAlert?.productOverview?.productId, quantityFormFieldController.text
-                ));
+    ProductDetails? productAlert = await request<ProductDetails>(AlertsRequest.editAlertMe(productOverview!.productId, quantityFormFieldController.text));
 
     //setBusy(false);
     notifyListeners();
@@ -44,6 +41,4 @@ class EditAlertMeViewModel extends VGTSBaseViewModel {
 
     return productAlert != null;
   }
-
-  bool get isCreateAlertMe => _isCreateAlertMe;
 }

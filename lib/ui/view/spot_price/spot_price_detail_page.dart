@@ -96,7 +96,7 @@ class _SpotPriceDetailPageState extends State<SpotPriceDetailPage>
                         );
                       },
                     );
-                  })?.toList() ??
+                  }).toList() ??
                   []
             ],
           ),

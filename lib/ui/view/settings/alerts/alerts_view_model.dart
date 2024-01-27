@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -23,8 +24,8 @@ class AlertsViewModel extends VGTSBaseViewModel {
   }
 
   AlertGetResponse? _alertResponse;
-  List<ProductAlert>? _productAlerts;
-  List<ProductAlert>? _alertMeAlerts;
+  List<ProductDetails>? _productAlerts;
+  List<ProductDetails>? _alertMeAlerts;
 
   _onScroll() {
     notifyListeners();
@@ -35,9 +36,9 @@ class AlertsViewModel extends VGTSBaseViewModel {
 
     Future<AlertGetResponse?> alertResponseFuture = request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
 
-    Future<List<ProductAlert>?> productAlertsFuture = requestList<ProductAlert>(AlertsRequest.getProductPriceAlerts());
+    Future<List<ProductDetails>?> productAlertsFuture = requestList<ProductDetails>(AlertsRequest.getProductPriceAlerts());
 
-    Future<List<ProductAlert>?> alertMeAlertsFuture = requestList<ProductAlert>(AlertsRequest.getAlertMeProducts());
+    Future<List<ProductDetails>?> alertMeAlertsFuture = requestList<ProductDetails>(AlertsRequest.getAlertMeProducts());
 
     await Future.wait([
       alertResponseFuture,
@@ -52,8 +53,8 @@ class AlertsViewModel extends VGTSBaseViewModel {
     /* _alertResponse =
         await request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
     _productAlerts =
-        await requestList<ProductAlert>(AlertsRequest.getProductPriceAlerts());
-    _alertMeAlerts = await requestList<ProductAlert>(
+        await requestList<ProductDetails>(AlertsRequest.getProductPriceAlerts());
+    _alertMeAlerts = await requestList<ProductDetails>(
         AlertsRequest.getAlertMeProducts());*/
 
     setBusy(false);
@@ -67,9 +68,9 @@ class AlertsViewModel extends VGTSBaseViewModel {
 
   AlertGetResponse? get alertResponse => _alertResponse;
 
-  List<ProductAlert>? get productAlerts => _productAlerts;
+  List<ProductDetails>? get productAlerts => _productAlerts;
 
-  List<ProductAlert>? get alertMeAlerts => _alertMeAlerts;
+  List<ProductDetails>? get alertMeAlerts => _alertMeAlerts;
 
 
   void removeSpotPriceAlert(int? id) async {
@@ -85,7 +86,7 @@ class AlertsViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     await request(AlertsRequest.removePriceAlert(id));
-    _productAlerts = await requestList<ProductAlert>(
+    _productAlerts = await requestList<ProductDetails>(
         AlertsRequest.getProductPriceAlerts());
 
     setBusy(false);
@@ -95,7 +96,7 @@ class AlertsViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     await request(AlertsRequest.removeAlertMe(id));
-    _alertMeAlerts = await requestList<ProductAlert>(
+    _alertMeAlerts = await requestList<ProductDetails>(
         AlertsRequest.getAlertMeProducts());
 
     setBusy(false);
@@ -105,7 +106,7 @@ class AlertsViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     await request(AlertsRequest.editPriceAlert(productId, targetPrice));
-    _alertMeAlerts = await requestList<ProductAlert>(
+    _alertMeAlerts = await requestList<ProductDetails>(
         AlertsRequest.getAlertMeProducts());
 
     setBusy(false);

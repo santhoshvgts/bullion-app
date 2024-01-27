@@ -33,6 +33,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
   final bool? enableController;
   final Function(bool onload)? onLoading;
   final String? metalName;
+  final Color? backgroundColor;
 
   final LoadingStyle loadingStyle;
 
@@ -44,6 +45,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
     this.onPageFetched,
     this.enableController = true,
     this.onLoading,
+    this.backgroundColor,
     this.loadingStyle = LoadingStyle.DEFAULT,
     this.metalName,
   });
@@ -77,7 +79,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
               return;
             },
             child: Container(
-              color: AppColor.secondaryBackground,
+              color: backgroundColor ?? AppColor.secondaryBackground,
               child: Stack(
                 children: [
                   SizedBox(

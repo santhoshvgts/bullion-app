@@ -29,6 +29,7 @@ class LoginViewModel extends VGTSBaseViewModel {
   TextFormFieldController passwordController = TextFormFieldController(
       const ValueKey("txtPassword"),
       required: true,
+      textCapital: TextCapitalization.none,
       requiredText: 'Required Password !');
 
   init(bool fromMain, String? redirectRoute) {

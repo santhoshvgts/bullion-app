@@ -7,6 +7,7 @@ import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DialogManager extends StatefulWidget {
@@ -41,19 +42,24 @@ class _DialogManagerState extends State<DialogManager> {
 
   _showInfoDialog(AlertRequest request) {
     showDialog(
-        useRootNavigator: true,
-        context: context,
-        builder: (context) {
+      useRootNavigator: true,
+      context: context,
+
+      builder: (context) {
           return WillPopScope(
             onWillPop: () async {
               _dialogService.dialogComplete(AlertResponse(status: false));
               return false;
             },
             child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)
+              ),
+              actionsPadding: const EdgeInsets.only(bottom: 10, right: 20),
               title: Text(
                 request.title!,
                 textScaleFactor: 1,
-                style: AppTextStyle.labelMedium,
+                style: AppTextStyle.bodyMedium,
               ),
               content: Text(request.description!, style: AppTextStyle.bodyMedium),
               actions: <Widget>[
@@ -70,25 +76,30 @@ class _DialogManagerState extends State<DialogManager> {
               ],
             ),
           );
-        });
+        }
+    );
   }
 
   _showConfirmationDialog(AlertRequest request) {
     showDialog(
-        context: context,
-        builder: (context) {
-          return WillPopScope(
+      context: context,
+      builder: (context) {
+        return WillPopScope(
             onWillPop: () async {
               _dialogService.dialogComplete(AlertResponse(status: false));
               return false;
             },
             child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12)
+              ),
+              actionsPadding: const EdgeInsets.only(bottom: 10, right: 20),
               title: Text(
                 request.title!,
                 textScaleFactor: 1,
-                style: AppTextStyle.titleLarge.copyWith(color: AppColor.primary),
+                style: AppTextStyle.titleMedium.copyWith(color: AppColor.primary),
               ),
-              content: Text(request.description!, textScaleFactor: 1, style: AppTextStyle.labelMedium),
+              content: Text(request.description!, textScaleFactor: 1, style: AppTextStyle.bodyMedium),
               actions: <Widget>[
                 TextButton(
                   child: const Text(
@@ -113,7 +124,7 @@ class _DialogManagerState extends State<DialogManager> {
               ],
             ),
           );
-        });
+    });
   }
 
   void _bottomSheet(AlertRequest request) {
@@ -266,7 +277,9 @@ class _DialogManagerState extends State<DialogManager> {
               return false;
             },
             child: Dialog(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)
+                ),
                 child: Wrap(
                   children: [
                     if (request.showActionBar!)

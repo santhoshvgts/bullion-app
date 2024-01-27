@@ -27,7 +27,7 @@ import 'package:bullion/ui/view/settings/alerts/alerts.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_alert_me_page.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_price_alert_page.dart';
 import 'package:bullion/ui/view/settings/favorites/favorites_page.dart';
-import 'package:bullion/ui/view/settings/orders_page.dart';
+import 'package:bullion/ui/view/settings/orders/orders_page.dart';
 import 'package:bullion/ui/view/settings/settings_user_page.dart';
 import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
 import 'package:bullion/ui/widgets/three_sixty_degree.dart';
@@ -264,7 +264,6 @@ class AppRouter {
         Map? data = settings.arguments as Map?;
         return MaterialPageRoute(
           builder: (_) => EditPriceAlertPage(
-            productAlert: data?['productAlert'],
             productDetails: data?['productDetails'],
           ),
           settings: RouteSettings(name: settings.name),
@@ -274,7 +273,6 @@ class AppRouter {
         Map? data = settings.arguments as Map?;
         return MaterialPageRoute(
           builder: (_) => EditAlertMePage(
-            productAlert: data?['productAlert'],
             productDetails: data?['productDetails'],
           ),
           settings: RouteSettings(name: settings.name),

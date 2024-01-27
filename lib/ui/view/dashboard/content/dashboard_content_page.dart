@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
@@ -38,48 +39,54 @@ class DashboardContentPage extends StatelessWidget {
           return PageWillPop(
             child: Scaffold(
               backgroundColor: AppColor.secondaryBackground,
-              floatingActionButton:
-                  locator<AuthenticationService>().isAuthenticated
-                      ? null
-                      : Container(
-                          decoration: BoxDecoration(
-                            color: AppColor.black.withOpacity(0.8),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          width: double.infinity,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Sign in for the best experience.",
-                                  textScaleFactor: 1,
-                                  style: AppTextStyle.bodySmall.copyWith(
-                                    color: AppColor.white,
-                                  ),
-                                ),
-                              ),
-                              Button(
-                                "Sign In",
-                                width: 90,
-                                height: 30,
-                                textStyle: AppTextStyle.bodySmall.copyWith(
-                                  color: AppColor.white,
-                                ),
-                                valueKey: const ValueKey("btnSignIn"),
-                                onPressed: () {
-                                  locator<NavigationService>().pushNamed(
-                                    Routes.login,
-                                    arguments: {"fromMain": false},
-                                  );
-                                },
-                              ),
-                            ],
+              floatingActionButton: StreamBuilder(
+                initialData: locator<AuthenticationService>().getUser,
+                stream: locator<AuthenticationService>().userController.stream,
+                builder: (context, snapshot) {
+                  if (locator<AuthenticationService>().isAuthenticated) {
+                    return Container();
+                  }
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.black.withOpacity(0.8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    width: double.infinity,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Sign in for the best experience.",
+                            textScaleFactor: 1,
+                            style: AppTextStyle.bodySmall.copyWith(
+                              color: AppColor.white,
+                            ),
                           ),
                         ),
+                        Button(
+                          "Sign In",
+                          width: 90,
+                          height: 30,
+                          textStyle: AppTextStyle.bodySmall.copyWith(
+                            color: AppColor.white,
+                          ),
+                          valueKey: const ValueKey("btnSignIn"),
+                          onPressed: () {
+                            locator<NavigationService>().pushNamed(
+                              Routes.login,
+                              arguments: {"fromMain": false},
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
               body: NestedScrollView(
@@ -197,12 +204,13 @@ class _BodyContent extends ViewModelWidget<DashboardContentViewModel> {
     return ContentWrapper(path,
         enableController: false,
         initialValue: locator<PageStorageService>().read(context, pageKey),
+        backgroundColor: path == "/spot-prices" ? AppColor.primary : null,
         onPageFetched: (pageSetting) {
-      viewModel.pageSettings = pageSetting;
-      locator<PageStorageService>()
-          .write(context, pageKey, viewModel.pageSettings);
-      viewModel.notifyListeners();
-    });
+          viewModel.pageSettings = pageSetting;
+          locator<PageStorageService>()
+              .write(context, pageKey, viewModel.pageSettings);
+          viewModel.notifyListeners();
+        });
   }
 }
 

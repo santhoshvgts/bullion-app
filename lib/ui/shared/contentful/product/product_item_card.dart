@@ -105,48 +105,46 @@ class ProductItemCard extends StatelessWidget {
 
   Widget _buildBottomAction() {
     return SafeArea(
-      child: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              child: MaterialButton(
-                minWidth: double.infinity,
-                onPressed: () {
-                  locator<DialogService>().dialogComplete(AlertResponse());
-                  onPressed!(detail);
-                },
-                child: const Row(
-                  children: [
-                    Text(
-                      "Edit",
-                      textScaleFactor: 1,
-                      style: AppTextStyle.labelMedium,
-                    ),
-                  ],
-                ),
+      child: Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: MaterialButton(
+              minWidth: double.infinity,
+              onPressed: () {
+                locator<DialogService>().dialogComplete(AlertResponse());
+                onPressed!(detail);
+              },
+              child: const Row(
+                children: [
+                  Text(
+                    "Edit",
+                    textScaleFactor: 1,
+                    style: AppTextStyle.labelMedium,
+                  ),
+                ],
               ),
-              width: double.infinity,
             ),
-            SizedBox(
-              width: double.infinity,
-              child: MaterialButton(
-                onPressed: () {
-                  locator<DialogService>().dialogComplete(AlertResponse());
-                  onDeleteClick!(detail);
-                },
-                child: const Row(
-                  children: [
-                    Text(
-                      "Remove",
-                      textScaleFactor: 1,
-                      style: AppTextStyle.labelMedium,
-                    ),
-                  ],
-                ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: MaterialButton(
+              onPressed: () {
+                locator<DialogService>().dialogComplete(AlertResponse());
+                onDeleteClick!(detail);
+              },
+              child: const Row(
+                children: [
+                  Text(
+                    "Remove",
+                    textScaleFactor: 1,
+                    style: AppTextStyle.labelMedium,
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

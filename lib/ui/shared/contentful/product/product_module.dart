@@ -342,14 +342,15 @@ class _VerticalItem extends ViewModelWidget<ProductViewModel> {
 
                       VerticalSpacing.custom(value: 7),
 
-                      StreamBuilder(
-                        stream: Stream.periodic(const Duration(seconds: 1)),
-                        builder: (context, snapshot) {
-                          return Text("Ends in ${_item.formattedDealEndsIn}", style: AppTextStyle.bodySmall.copyWith(
-                              color: AppColor.dealsRed
-                          ),);
-                        }
-                      ),
+                      if (_item.formattedDealEndsIn != "-")
+                        StreamBuilder(
+                          stream: Stream.periodic(const Duration(seconds: 1)),
+                          builder: (context, snapshot) {
+                            return Text("Ends in ${_item.formattedDealEndsIn}", style: AppTextStyle.bodySmall.copyWith(
+                                color: AppColor.dealsRed
+                            ),);
+                          }
+                        ),
 
 
                     ],
@@ -469,7 +470,7 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                                       onPressed: () {
                                         locator<NavigationService>().pushNamed(_item.targetUrl, arguments: ProductDetails(overview: _item));
                                       },
-                                      icon: const Icon(Icons.open_in_new, size: 16, color: AppColor.white,)
+                                      icon: const Icon(Icons.navigate_next,  color: AppColor.white,)
                                     ),
                                   )
                                 ),

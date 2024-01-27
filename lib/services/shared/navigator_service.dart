@@ -148,10 +148,10 @@ class NavigationService {
   }
 
   void changeTab(int index) {
-    final BottomNavigationBar navigationBar =
-        tabBarKey.currentWidget as BottomNavigationBar;
-    if (navigationBar.currentIndex != index) {
-      navigationBar.onTap!(index);
+    final PersistentTabView navigationBar =
+        tabBarKey.currentWidget as PersistentTabView;
+    if (navigationBar.controller?.index != index) {
+      navigationBar.controller?.jumpToTab(index);
     }
   }
 }

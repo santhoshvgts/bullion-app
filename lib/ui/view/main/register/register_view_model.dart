@@ -41,6 +41,7 @@ class RegisterViewModel extends VGTSBaseViewModel {
   Future onInit() {
     confirmPasswordController = FormFieldController(
         const ValueKey("txtConfirmPassword"),
+        textCapitalization: TextCapitalization.none,
         validator: (String? value) {
           return confirmPasswordValidator(value);
         }
@@ -99,7 +100,8 @@ class RegisterViewModel extends VGTSBaseViewModel {
         .eventBus
         .fire(RefreshDataEvent(RefreshType.homeRefresh));
     await navigationService.pushReplacementNamed(Routes.login,
-        arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+        arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute
+    });
   }
 
   @override

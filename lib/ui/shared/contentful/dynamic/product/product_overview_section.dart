@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_detail/product_price.dart';
@@ -8,6 +9,7 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
@@ -28,6 +30,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../../helper/utils.dart';
@@ -47,8 +50,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
   }
 
   @override
-  ProductDetailViewModel viewModelBuilder(BuildContext context) =>
-      ProductDetailViewModel();
+  ProductDetailViewModel viewModelBuilder(BuildContext context) => ProductDetailViewModel();
 
   @override
   Widget viewBuilder(
@@ -62,111 +64,127 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _Header(),
-          Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 10,),
-            child: Stack(
-              children: [
-                _ImageList(
-                  viewModel.productDetails?.productPictures?.map((e) => e.imageUrl ?? '').toList() ??
-                      [viewModel.productDetails!.overview!.primaryImageUrl!],
-                ),
-                if (viewModel
-                        .productDetails?.overview?.ribbonText?.isNotEmpty ==
-                    true)
-                  Positioned(
-                    top: 10,
-                    left: 10,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: viewModel.productDetails!.overview!
-                            .ribbonTextBackgroundColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
-                      child: Text(
-                        viewModel.productDetails!.overview!.ribbonText!,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColor.white,
-                        ),
-                        textScaleFactor: 1,
-                      ),
-                    ),
-                  ),
+          Stack(
+            children: [
+              _ImageList(
+                viewModel.productDetails?.productPictures?.map((e) => e.imageUrl ?? '').toList() ??
+                    [viewModel.productDetails!.overview!.primaryImageUrl!],
+              ),
+              if (viewModel.productDetails?.overview?.ribbonText?.isNotEmpty == true)
                 Positioned(
                   top: 10,
-                  right: 10,
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          if (!locator<AuthenticationService>().isAuthenticated) {
-                            Util.showLoginAlert();
-                            return;
-                          }
-                          viewModel.addAsFavorite(setting?.productId);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: setting!.isInUserWishList! ? Colors.red : Colors.white,
-                            border: Border.all(
-                              color: AppColor.outlineBorder,
-                              width: 0.5,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            CupertinoIcons.heart,
-                            size: 20,
-                            color: setting!.isInUserWishList! ? AppColor.white : AppColor.outlineBorder,
-                          ),
-                        ),
+                  left: 15,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: viewModel.productDetails!.overview!.ribbonTextBackgroundColor,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5,),
+                    child: Text(
+                      viewModel.productDetails!.overview!.ribbonText!,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColor.white,
                       ),
-                    ],
+                      textScaleFactor: 1,
+                    ),
                   ),
                 ),
-                Positioned(
-                  top: 60,
-                  right: 10,
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          if (!locator<AuthenticationService>().isAuthenticated) {
-                            Util.showLoginAlert();
-                            return;
-                          }
-                          viewModel.priceAlert(setting?.overview, context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: setting!.isInUserPriceAlert! ? AppColor.orangePeel : Colors.white,
-                            border: Border.all(
-                              color: AppColor.outlineBorder,
-                              width: 0.5,
-                            ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            CupertinoIcons.bell,
-                            size: 20,
-                            color: setting!.isInUserPriceAlert! ? AppColor.white : AppColor.outlineBorder,
-                          ),
-                        ),
-                      ),
-                    ],
+              Positioned(
+                top: 10,
+                right: 15,
+                child: InkWell(
+                  onTap: () {
+                    if (!locator<AuthenticationService>().isAuthenticated) {
+                      Util.showLoginAlert();
+                      return;
+                    }
+                    viewModel.addAsFavorite(setting?.productId);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: viewModel.busy(viewModel.productDetails!.isInUserWishList) ? SizedBox(
+                      height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1.5,
+                          valueColor: AlwaysStoppedAnimation(Colors.red.shade400)
+                        )
+                    ) : Icon(
+                      setting!.isInUserWishList! ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                      size: 20,
+                      color: setting!.isInUserWishList! ? Colors.red.shade400 : AppColor.outlineBorder,
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                top: 60,
+                right: 15,
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        if (!locator<AuthenticationService>().isAuthenticated) {
+                          Util.showLoginAlert();
+                          return;
+                        }
+                        viewModel.priceAlert(setting?.overview, context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          setting!.isInUserPriceAlert! ? CupertinoIcons.bell_fill : CupertinoIcons.bell,
+                          size: 20,
+                          color: setting!.isInUserPriceAlert! ? Colors.orange.shade400 : AppColor.outlineBorder,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Positioned(
+                bottom: 80,
+                right: 15,
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Share.share(
+                          "Check out this product on BULLION.com:\n${viewModel.productDetails!.overview!.name!}\n\n${locator<AppConfigService>()
+                                  .config!
+                                  .appLinks!
+                                  .webUrl!}${viewModel.productDetails!.overview!.targetUrl!}",
+                          subject: "Bullion.com",
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.share,
+                          size: 20,
+                          color: AppColor.text,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          VerticalSpacing.d5px(),
           _ProductInfoSection(),
           if (viewModel.productDetails!.productNotes != null)
             _ProductNotes(),
@@ -178,21 +196,6 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
             _VolumePricing(),
           if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
             _CoinGradeSpecification(),
-
-          // Container(
-          //   color: AppColor.secondaryBackground,
-          //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          //   child: Button(
-          //     "Add To Cart",
-          //     width: double.infinity,
-          //     valueKey: const ValueKey("btnAddToCart"),
-          //     color: AppColor.secondary,
-          //     borderColor: AppColor.secondary,
-          //     onPressed: () {
-          //       viewModel.addToCart();
-          //     },
-          //   ),
-          // ),
 
         ],
       ),
@@ -215,13 +218,100 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
             style: AppTextStyle.titleMedium,
             textScaleFactor: 1,
           ),
+
+        ],
+      ),
+    );
+  }
+}
+
+class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
+  final List<String>? images;
+
+  const _ImageList(this.images);
+
+  @override
+  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 1.8,
+          child: Swiper(
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(viewModel.productDetails?.productPictures, viewModel.activeIndex)));
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  color: AppColor.secondaryBackground,
+                  child: NetworkImageLoader(
+                    image: images![index],
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              );
+            },
+            onIndexChanged: (index) {
+              viewModel.activeIndex = index;
+            },
+            itemCount: images!.length,
+            loop: false,
+            layout: SwiperLayout.DEFAULT,
+            controller: viewModel.productImageController,
+          ),
+        ),
+        VerticalSpacing.d10px(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: ImagePaginationBuilder(
+            activeBorderColor: AppColor.primary,
+            activeSize: 40,
+            size: 40,
+            images: images,
+            activeIndex: viewModel.activeIndex,
+            controller: viewModel.productImageController
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
+  @override
+  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+    return Container(
+      padding: const EdgeInsets.only(left: 15, right: 15, top: 20, bottom: 10),
+      color: AppColor.white,
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          Text(
+            viewModel.productDetails?.overview?.name ?? "-",
+            style: AppTextStyle.titleMedium,
+            textScaleFactor: 1,
+          ),
+
           VerticalSpacing.d10px(),
+
+          if (viewModel.productDetails!.overview!.productAction ==
+              ProductInfoDisplayType.addToCart)
+            _PriceInfo()
+          else
+            _AlertText(),
+
+          VerticalSpacing.d10px(),
+
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               RatingBar(
                 initialRating:
-                    viewModel.productDetails?.overview?.avgRatings ?? 0,
+                viewModel.productDetails?.overview?.avgRatings ?? 0,
                 allowHalfRating: true,
                 itemSize: 15,
                 glow: true,
@@ -247,109 +337,21 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
               HorizontalSpacing.d5px(),
               Expanded(
                   child: Text(
-                viewModel.productDetails!.overview!.reviewCount == 0
-                    ? ""
-                    : "${viewModel.productDetails?.overview?.avgRatings} (${viewModel.productDetails!.overview!.reviewCount})",
-                textScaleFactor: 1,
-                textAlign: TextAlign.left,
-                style: AppTextStyle.bodySmall,
-              )),
+                    viewModel.productDetails!.overview!.reviewCount == 0
+                        ? ""
+                        : "${viewModel.productDetails?.overview?.avgRatings} (${viewModel.productDetails!.overview!.reviewCount})",
+                    textScaleFactor: 1,
+                    textAlign: TextAlign.left,
+                    style: AppTextStyle.bodySmall,
+                  )),
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
-  final List<String>? images;
-
-  const _ImageList(this.images);
-
-  @override
-  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height / 2,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: AppColor.border,
-              style: BorderStyle.solid,
-              width: 0.5,
-            ),
-          ),
-          child: Stack(
-            children: [
-              Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(viewModel.productDetails?.productPictures, viewModel.activeIndex)));
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10),
-                      child: NetworkImageLoader(
-                        image: images![index],
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  );
-                },
-                onIndexChanged: (index) {
-                  viewModel.activeIndex = index;
-                },
-                itemCount: images!.length,
-                loop: false,
-                layout: SwiperLayout.DEFAULT,
-                controller: viewModel.productImageController,
-              ),
-            ],
-          ),
-        ),
-        VerticalSpacing.d10px(),
-        ImagePaginationBuilder(
-          activeBorderColor: AppColor.primary,
-          activeSize: 40,
-          size: 40,
-          images: images,
-          activeIndex: viewModel.activeIndex,
-          controller: viewModel.productImageController
-        )
-      ],
-    );
-  }
-}
-
-class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
-  @override
-  Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Container(
-      padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-      color: AppColor.white,
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (viewModel.productDetails!.overview!.productAction ==
-              ProductInfoDisplayType.addToCart)
-            _PriceInfo()
-          else
-            _AlertText(),
-          // VerticalSpacing.d20px(),
-          // _ShippingInfoCard(),
 
           VerticalSpacing.d10px(),
 
           AppStyle.customDivider,
 
           _VariationSelection(),
-
-          AppStyle.customDivider,
 
         ],
       ),
@@ -374,7 +376,7 @@ class _ProductNotes extends ViewModelWidget<ProductDetailViewModel> {
                   color: AppColor.info.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(10)
                 ),
-                margin: EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(bottom: 10),
                 width: double.infinity,
                 child: Text(
                   e,
@@ -618,7 +620,7 @@ class _VolumeDiscountCard extends StatelessWidget {
                       strikeThrough ? TextDecoration.lineThrough : null),
             ),
             VerticalSpacing.d5px(),
-            Text(
+            AutoSizeText(
               price,
               style: AppTextStyle.bodyLarge.copyWith(
                   fontWeight: FontWeight.w500,
@@ -750,12 +752,9 @@ class _CoinGradeSpecification extends ViewModelWidget<ProductDetailViewModel> {
 class _AlertText extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Text(
-        viewModel.productDetails!.overview!.availabilityText!,
-        style: AppTextStyle.titleLarge.copyWith(color: AppColor.red),
-      ),
+    return Text(
+      viewModel.productDetails?.overview?.availabilityText ?? '-',
+      style: AppTextStyle.titleMedium.copyWith(color: AppColor.red),
     );
   }
 }
@@ -804,74 +803,76 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
-      width: double.infinity,
-      child: ListView.separated(
-        primary: false,
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemCount: viewModel.productDetails?.productVariants?.length ?? 0,
-        separatorBuilder: (context, index) {
-          ProductVariant variant = viewModel.productDetails!.productVariants![index];
-          if (variant.options!.length <= 1) {
-            return const SizedBox();
-          }
-          return VerticalSpacing.d20px();
-        },
-        itemBuilder: (context, index) {
-          ProductVariant variant = viewModel.productDetails!.productVariants![index];
+    List<ProductVariant> variantList = viewModel.productDetails?.productVariants?.where((element) => (element.options?.length ?? 0) > 1).toList() ?? [];
 
-          if (variant.options!.length <= 1) {
-            return const SizedBox();
-          }
+    if (variantList.isEmpty) {
+      return const SizedBox();
+    }
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                variant.variantGroupName ?? '',
-                style:
-                AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
-              ),
-              VerticalSpacing.d10px(),
-              Wrap(
-                spacing: 5,
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 5),
+          width: double.infinity,
+          child: ListView.separated(
+            primary: false,
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemCount: variantList.length,
+            separatorBuilder: (context, index) {
+              return VerticalSpacing.d20px();
+            },
+            itemBuilder: (context, index) {
+              ProductVariant variant = variantList[index];
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ...variant.options?.asMap().map((index, option) => MapEntry(
-                    index,
-                    InkWell(
-                      onTap: () {
-                        viewModel.applyVariation(option.targetUrl ?? '');
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: option.isSelected!
-                                ? AppColor.primary.withOpacity(0.05) : Colors.white,
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              color: option.isSelected!
-                                  ? AppColor.primary
-                                  : AppColor.border,
-                            )),
-                        child: Text(
-                          option.variantOptionName ?? '',
-                          style: AppTextStyle.bodyMedium.copyWith(
-                            color: option.isSelected! ? AppColor.primary : AppColor.text,
-                            fontWeight:  option.isSelected! ? FontWeight.w500 : null
+                  Text(
+                    variant.variantGroupName ?? '',
+                    style:
+                    AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w500),
+                  ),
+                  VerticalSpacing.d10px(),
+                  Wrap(
+                    spacing: 5,
+                    children: [
+                      ...variant.options?.asMap().map((index, option) => MapEntry(
+                        index,
+                        InkWell(
+                          onTap: () {
+                            viewModel.applyVariation(option.targetUrl ?? '');
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: option.isSelected!
+                                    ? AppColor.primary.withOpacity(0.05) : Colors.white,
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(
+                                  color: option.isSelected!
+                                      ? AppColor.primary
+                                      : AppColor.border,
+                                )),
+                            child: Text(
+                              option.variantOptionName ?? '',
+                              style: AppTextStyle.bodyMedium.copyWith(
+                                color: option.isSelected! ? AppColor.primary : AppColor.text,
+                                fontWeight:  option.isSelected! ? FontWeight.w500 : null
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  )).values.toList() ?? []
+                      )).values.toList() ?? []
+                    ],
+                  ),
                 ],
-              ),
-            ],
-          );
-        }
-      ),
+              );
+            }
+          ),
+        ),
+        AppStyle.customDivider,
+      ],
     );
   }
 }
@@ -892,6 +893,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
                   "${viewModel.productOverview!.pricing!.formattedNewPrice} ",
                   style: AppTextStyle.titleLarge.copyWith(
                       fontSize: 20,
+                      fontFamily: AppTextStyle.fontFamily,
                       color: viewModel.productOverview!.pricing!
                           .strikeThroughEnabled!
                           ? const Color(0xffC30000)

@@ -24,9 +24,6 @@ class TrendingSection extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(15.0),
-      margin: const EdgeInsets.only(
-        top: 10,
-      ),
       color: AppColor.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
