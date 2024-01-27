@@ -34,52 +34,20 @@ class SpotPriceHeader extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    !_mySpotPrice.isSelected!
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            textBaseline: TextBaseline.alphabetic,
-                            children: <Widget>[
-                              Text(
-                                "${_mySpotPrice.changePct! > 0 ? "+" : "-"} ${_mySpotPrice.formatedChange!}",
-                                textScaleFactor: 1,
-                                style: AppTextStyle.labelMedium.copyWith(
-                                  color: _mySpotPrice.changeColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 5),
-                              ),
-                              Text(
-                                "(${_mySpotPrice.changePct! > 0 ? "+" : ""}${_mySpotPrice.formatedChangePercentage})",
-                                textScaleFactor: 1,
-                                style: AppTextStyle.labelMedium.copyWith(
-                                  color: _mySpotPrice.changeColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              // const Padding(
-                              //   padding: EdgeInsets.only(left: 5),
-                              // ),
-                              // Text(
-                              //   _mySpotPrice.formatedDate!,
-                              //   textScaleFactor: 1,
-                              //   style: AppTextStyle.bodySmall.copyWith(
-                              //     fontSize: 13,
-                              //     color: AppColor.secondaryText,
-                              //   ),
-                              // ),
 
-                              // Icon(
-                              //   _mySpotPrice.changeIcon,
-                              //   color: _mySpotPrice.changeColor,
-                              // ),
-                            ],
-                          )
-                        : const SizedBox(
-                            height: 20,
-                          ),
+                    Text(
+                      DateFormat("dd-MMM-yy hh:mm a").format(
+                        DateFormat("yyyy-MM-dd hh:mm:ss a").parse(
+                          (_mySpotPrice.formatedDate!),
+                        ),
+                      ),
+                      textScaleFactor: 1,
+                      style: AppTextStyle.bodySmall.copyWith(
+                        fontSize: 13,
+                        color: AppColor.secondaryText,
+                      ),
+                    ),
+
                     VerticalSpacing.d2px(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -97,17 +65,35 @@ class SpotPriceHeader extends StatelessWidget {
                       ],
                     ),
                     VerticalSpacing.d2px(),
-                    Text(
-                      DateFormat("dd-MMM-yy hh:mm a").format(
-                        DateFormat("yyyy-MM-dd hh:mm:ss a").parse(
-                          (_mySpotPrice.formatedDate!),
-                        ),
-                      ),
-                      textScaleFactor: 1,
-                      style: AppTextStyle.bodySmall.copyWith(
-                        fontSize: 13,
-                        color: AppColor.secondaryText,
-                      ),
+                    !_mySpotPrice.isSelected!
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            textBaseline: TextBaseline.alphabetic,
+                            children: <Widget>[
+                              Text(
+                                "${_mySpotPrice.changePct! > 0 ? "" : "-"} ${_mySpotPrice.formatedChange!}",
+                                textScaleFactor: 1,
+                                style: AppTextStyle.labelMedium.copyWith(
+                                  color: _mySpotPrice.changeColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(left: 5),
+                              ),
+                              Text(
+                                "(${_mySpotPrice.changePct! > 0 ? "+" : ""}${_mySpotPrice.formatedChangePercentage})",
+                                textScaleFactor: 1,
+                                style: AppTextStyle.labelMedium.copyWith(
+                                  color: _mySpotPrice.changeColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          )
+                        : const SizedBox(
+                      height: 20,
                     ),
                   ],
                 ),

@@ -1,7 +1,14 @@
 
 
+import 'package:bullion/core/constants/module_type.dart';
+import 'package:bullion/core/models/module/display_settings.dart';
+import 'package:bullion/core/models/module/item_display_settings.dart';
+import 'package:bullion/core/models/module/module_settings.dart';
+import 'package:bullion/core/models/module/product_item.dart';
+import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/contentful/product/product_item_card.dart';
+import 'package:bullion/ui/shared/contentful/product/product_module.dart';
 import 'package:bullion/ui/view/settings/activity/recently_viewed/recently_viewed_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:flutter/material.dart';
@@ -69,24 +76,44 @@ class RecentlyViewedPage extends VGTSBuilderWidget<RecentlyViewedViewModel> {
                   child: Column(
                     children: [
 
-                      ListView.separated(
-                          itemCount: viewModel.isBusy ? 4 : viewModel.productList!.length,
-                          primary: false,
-                          shrinkWrap: true,
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(height: 10,);
-                          },
-                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                          itemBuilder: (context, index) {
-                            if (viewModel.isBusy) {
-                              return ShimmerEffect(height: 130,);
-                            }
-                            return ProductItemCard(ProductDetails(overview: viewModel.productList![index]), ProductItemCardType.Favorite,
-                              onPressed: (ProductDetails detail) {
-                                locator<NavigationService>().pushNamed(detail.overview!.targetUrl, arguments: detail);
-                              },
-                            );
-                          }),
+                      ProductWrapItemList(
+                        wrap: true,
+                        spacing: 0,
+                        runSpacing: 0,
+                        gridCols: 2,
+                        children: viewModel.productList!
+                            .asMap()
+                            .map((index, item) {
+                          return MapEntry(index, VerticalItem(item,
+                            itemWidth: (MediaQuery.of(context).size.width/2) - 1,
+                            wrapItems: true,
+                            gridCols: 2,
+                            textColor: AppColor.text,
+                            onItemTap: (ProductOverview overview) {
+                              locator<NavigationService>().pushNamed(overview.targetUrl, arguments: ProductDetails(overview: overview));
+                            },
+                          ));
+                        }).values.toList(),
+                      ),
+
+                      // ListView.separated(
+                      //     itemCount: viewModel.isBusy ? 4 : viewModel.productList!.length,
+                      //     primary: false,
+                      //     shrinkWrap: true,
+                      //     separatorBuilder: (context, index) {
+                      //       return const SizedBox(height: 10,);
+                      //     },
+                      //     padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                      //     itemBuilder: (context, index) {
+                      //       if (viewModel.isBusy) {
+                      //         return ShimmerEffect(height: 130,);
+                      //       }
+                      //       return ProductItemCard(ProductDetails(overview: viewModel.productList![index]), ProductItemCardType.Favorite,
+                      //         onPressed: (ProductDetails detail) {
+                      //           locator<NavigationService>().pushNamed(detail.overview!.targetUrl, arguments: detail);
+                      //         },
+                      //       );
+                      //     }),
 
                       if (viewModel.isPaginationLoading)
                         Container(

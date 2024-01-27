@@ -159,9 +159,16 @@ class _AddressItemCard extends StatelessWidget {
                         ),
                       ),
 
-                      IconButton(onPressed: (){
-                        locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: { "fromCheckout": true, "userAddress": address });
-                      }, icon: const Icon(Icons.open_in_new, size: 16,))
+                      Button.mini("Edit",
+                          valueKey: const ValueKey("btnEdit"),
+                          textStyle: AppTextStyle.labelMedium.copyWith(color: AppColor.primary),
+                          borderColor: AppColor.white,
+                          width: 65,
+                          onPressed: () {
+                            locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: { "fromCheckout": true, "userAddress": address });
+                          }
+                      )
+
                     ],
                   ),
                   Padding(

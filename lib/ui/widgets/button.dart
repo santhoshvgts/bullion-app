@@ -86,9 +86,7 @@ class Button extends StatelessWidget {
         this.disabled = false,
         this.iconWidget,
         this.loading = false,
-      }) {
-    textStyle = AppTextStyle.labelSmall.copyWith(color: AppColor.white);
-  }
+      });
 
 
   @override

@@ -63,8 +63,8 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.chart_bar,),
-            inactiveIcon: const Icon(CupertinoIcons.chart_bar),
+            inactiveIcon: Image.asset(Images.chart_inactive, width: 22,),
+            icon: Image.asset(Images.chart_active, width: 22,),
             title: "Charts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/spot-price",
@@ -139,8 +139,8 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.person, size: 22,),
-            inactiveIcon: const Icon(CupertinoIcons.person, size: 22),
+            inactiveIcon: Image.asset(Images.account, width: 22,),
+            icon: Image.asset(Images.account_active, width: 22,),
             title: "Accounts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/accounts",

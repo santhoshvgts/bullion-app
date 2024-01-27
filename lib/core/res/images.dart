@@ -25,13 +25,16 @@ class Images {
   // BOTTOM MENU ICONS
   static const String home = "assets/images/home_inactive.png";
   static const String home_active = "assets/images/home_active.png";
-  static const String account = "assets/images/v2/account.png";
-  static const String account_active = "assets/images/v2/account_active.png";
+  static const String account = "assets/images/user_inactive.png";
+  static const String account_active = "assets/images/user_active.png";
   static const String price = "assets/images/v2/price.png";
   static const String price_active = "assets/images/v2/price_active.png";
 
   static const String deals_active = "assets/images/deals_active.png";
   static const String deals = "assets/images/deals_inactive.png";
+
+  static const String chart_active = "assets/images/chart_active.png";
+  static const String chart_inactive = "assets/images/chart_inactive.png";
 
   static const String shop = "assets/images/v2/shop.png";
   static const String menu_bar = "assets/images/v2/menu_bar.png";
@@ -45,9 +48,6 @@ class Images {
 
   static const String arrow = "assets/images/v2/arrow.png";
   static const String notification = "assets/images/notification.png";
-
-  static const String chart = "assets/images/chart.png";
-  static const String chart_active = "assets/images/chart_active.png";
 
   static const String gift = "assets/images/gift_holiday.png";
   static const String gift_active = "assets/images/gift_holiday.png";

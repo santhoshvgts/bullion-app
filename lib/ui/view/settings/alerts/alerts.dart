@@ -57,8 +57,6 @@ class _AlertsPageState extends State<AlertsPage> with TickerProviderStateMixin {
                     flexibleSpace: const AnimatedFlexibleSpace.withTab(title: "Alerts"),
                     bottom: TabBar(
                       controller: _tabController,
-                      isScrollable: true,
-                      tabAlignment: TabAlignment.start,
                       tabs: const [
                         Tab(text: "Custom Spot Price"),
                         Tab(text: "Price Alert"),
