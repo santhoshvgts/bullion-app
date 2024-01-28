@@ -12,13 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-import '../../../core/res/styles.dart';
-import '../../../helper/utils.dart';
-import '../../../locator.dart';
-import '../../../router.dart';
-import '../../../services/shared/navigator_service.dart';
-import '../../widgets/loading_data.dart';
-import '../vgts_builder_widget.dart';
+import '../../../../core/res/styles.dart';
+import '../../../../helper/utils.dart';
+import '../../../../locator.dart';
+import '../../../../router.dart';
+import '../../../../services/shared/navigator_service.dart';
+import '../../../widgets/loading_data.dart';
+import '../../vgts_builder_widget.dart';
 import 'address_view_model.dart';
 
 class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
@@ -62,8 +62,8 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                             ),
                             const SizedBox(height: 32.0),
                             Button("+ Create Address", width: 200, valueKey: const ValueKey("btnAddress"), onPressed: () async {
-                              bool? result = await locator<NavigationService>().pushNamed(Routes.addEditAddress);
-                              if (result == true) {
+                              var result = await locator<NavigationService>().pushNamed(Routes.addEditAddress);
+                              if (result != null) {
                                 viewModel.refresh();
                               }
                             })

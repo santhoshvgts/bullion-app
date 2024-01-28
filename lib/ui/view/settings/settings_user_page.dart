@@ -48,6 +48,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           statusBarBrightness: Brightness.dark,
         ),
         title: StreamBuilder<User?>(
+          initialData: locator<AuthenticationService>().getUser,
           stream: locator<AuthenticationService>().userController.stream,
           builder: (context, snapshot) {
             User? user = snapshot.data;
@@ -58,7 +59,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
 
             return Column(
               children: [
-                Text("Hi, ${locator<AuthenticationService>().getUser?.firstName ?? ""}",
+                Text("Hi, ${locator<AuthenticationService>().getUser?.fullName ?? ""}",
                   style: AppTextStyle.titleMedium.copyWith(
                     fontFamily: AppTextStyle.fontFamily,
                   ),
@@ -128,9 +129,14 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                             child: Text('Manage Account',
                                 style: AppTextStyle.titleMedium),
                           ),
-                          getTextsLayout(
-                            const Icon(FeatherIcons.user, size: 20),
-                            "Personal Info",
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>().pushNamed(Routes.accountSetting);
+                            },
+                            child: getTextsLayout(
+                              const Icon(FeatherIcons.user, size: 20),
+                              "Personal Info",
+                            ),
                           ),
                           const Divider(
                             color: AppColor.platinumColor,

@@ -23,4 +23,15 @@ class SelectedItemList extends BaseModel {
     data['selected'] = selected;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is SelectedItemList &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
+
+  @override
+  int get hashCode => super.hashCode ^ value.hashCode;
 }

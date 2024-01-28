@@ -1,21 +1,23 @@
 import 'package:bullion/core/models/module/dynamic.dart';
 import 'package:bullion/core/models/user_address.dart';
+import 'package:bullion/helper/utils.dart';
 import 'package:bullion/services/checkout/checkout_steam_service.dart';
+import 'package:bullion/ui/view/settings/address/address_recommend_bottomsheet.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
-import '../../../core/models/alert/alert_response.dart';
-import '../../../core/models/google/place.dart';
-import '../../../core/models/google/place_autocomplete.dart';
-import '../../../core/models/module/checkout/shipping_address.dart';
-import '../../../core/models/module/selected_item_list.dart';
-import '../../../locator.dart';
-import '../../../services/api/google_place_api.dart';
-import '../../../services/api_request/address_request.dart';
-import '../../../services/shared/dialog_service.dart';
-import 'bottom_sheets/select_country_state_bottomsheet.dart';
+import '../../../../core/models/alert/alert_response.dart';
+import '../../../../core/models/google/place.dart';
+import '../../../../core/models/google/place_autocomplete.dart';
+import '../../../../core/models/module/checkout/shipping_address.dart';
+import '../../../../core/models/module/selected_item_list.dart';
+import '../../../../locator.dart';
+import '../../../../services/api/google_place_api.dart';
+import '../../../../services/api_request/address_request.dart';
+import '../../../../services/shared/dialog_service.dart';
+import '../bottom_sheets/select_country_state_bottomsheet.dart';
 
 class AddEditAddressViewModel extends VGTSBaseViewModel {
 
@@ -29,6 +31,14 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
   bool _stateEnable = false;
 
   //AddressType _selectedAddressType = AddressType.home;
+  SelectAddress _selectedAddress = SelectAddress.Suggested;
+
+  SelectAddress get selectedAddress => _selectedAddress;
+
+  void setAddress(SelectAddress viewState) {
+    _selectedAddress = viewState;
+    notifyListeners();
+  }
 
   UserAddress? editUserAddress;
   ShippingAddress? _shippingAddress;
@@ -44,13 +54,6 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
   TextFormFieldController countryFormFieldController = TextFormFieldController(const Key("txtCountry"), required: true, requiredText: "Country can't be empty");
   NameFormFieldController stateFormFieldController = NameFormFieldController(const Key("txtName"), required: false);
 
-  /*TextFormFieldController streetFormFieldController = TextFormFieldController(
-      const Key("txtStreet"),
-      required: true,
-      requiredText: "Street Address can't be empty");
-  TextFormFieldController buildingFormFieldController =
-      TextFormFieldController(const Key("txtBuilding"));*/
-
   bool streetValidate = false;
 
   TextEditingController streetTextEditingController = TextEditingController();
@@ -58,6 +61,24 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
 
   FocusNode streetFocus = FocusNode();
   FocusNode searchFocus = FocusNode();
+
+  List<SelectedItemList>? get countryList => _shippingAddress == null
+      ? []
+      : searchController.text.isEmpty
+      ? _shippingAddress!.availableCountries
+      : _shippingAddress!.availableCountries!.where((i) => i.text!.toLowerCase().contains(searchController.text.toLowerCase())).toList();
+
+  List<SelectedItemList>? get stateList => _shippingAddress == null
+      ? []
+      : searchController.text.isEmpty
+      ? _shippingAddress!.availableStates
+      : _shippingAddress!.availableStates!.where((i) => i.text!.toLowerCase().contains(searchController.text.toLowerCase())).toList();
+
+  ShippingAddress? get shippingAddress => _shippingAddress;
+
+  bool get stateEnable => _stateEnable;
+
+  bool? get isDefaultAddress => _isDefaultAddress;
 
   AddEditAddressViewModel(this.fromCheckout);
 
@@ -91,7 +112,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  void initAddAddress() async {
+  initAddAddress() async {
     List<SelectedItemList> country = _shippingAddress!.availableCountries!.where((element) => element.selected == true).toList();
     if (country.isNotEmpty) countryFormFieldController.text = country[0].text!;
 
@@ -101,12 +122,13 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     firstNameFormFieldController.focusNode.requestFocus();
   }
 
-  Future<bool> submitAddress() async {
-    //setBusy(true);
-    locator<DialogService>().showLoader();
+  submitAddress() async {
+    if (addEditAddressGlobalKey.currentState!.validate() != true) {
+      return;
+    }
 
     UserAddress userAddress = UserAddress();
-    editUserAddress != null ? userAddress.id = editUserAddress?.id : userAddress.id = 0;
+    userAddress.id = editUserAddress != null ? editUserAddress?.id : 0;
     userAddress.isValidated = true;
     userAddress.overrideValidation = false;
 
@@ -122,27 +144,33 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     userAddress.zip = pinFormFieldController.text;
     userAddress.primaryPhone = phoneFormFieldController.text;
 
-    DynamicModel? result = await request<DynamicModel>(AddressRequest.addAddress(userAddress.toJson()));
-    UserAddress userAddressResult = UserAddress.fromJson(result?.json['address']);
-    //setBusy(false);
-    notifyListeners();
-    locator<DialogService>().dialogComplete(AlertResponse(status: true));
+    setBusy(true);
+    ShippingAddress? response = await request<ShippingAddress>(AddressRequest.addAddress(userAddress.toJson()));
+    setBusy(false);
+    if (response != null) {
+      _shippingAddress = response;
+      notifyListeners();
 
-    if (fromCheckout == true) {
-      await locator<CheckoutStreamService>().saveAddressAndRefreshCheckout(userAddressResult);
+      if (_shippingAddress!.recommendedAddress != null) {
+        AlertResponse alertResponse = await locator<DialogService>()
+            .showBottomSheet(
+            title: "Verify Shipping Address",
+            child: AddressRecommendBottomSheet(this),
+            showCloseIcon: false);
+        if (alertResponse.status != true) {
+          return;
+        }
+      }
+
+      Util.showSnackBar(navigationService.navigatorKey.currentContext!,
+          editUserAddress != null
+              ? "Your Address has been Saved !"
+              : "Your Address has been Updated !");
+
+      navigationService.pop(returnValue: _shippingAddress!.address!.id);
     }
-
-    return userAddressResult != null;
   }
 
-  /*AddressType get selectedAddressType => _selectedAddressType;
-
-  set selectedAddressType(AddressType value) {
-    _selectedAddressType = value;
-    notifyListeners();
-  }*/
-
-  bool? get isDefaultAddress => _isDefaultAddress;
 
   void showCountries() async {
     searchController.clear();
@@ -222,19 +250,16 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     setBusy(false);
   }
 
-  List<SelectedItemList>? get countryList => _shippingAddress == null
-      ? []
-      : searchController.text.isEmpty
-          ? _shippingAddress!.availableCountries
-          : _shippingAddress!.availableCountries!.where((i) => i.text!.toLowerCase().contains(searchController.text.toLowerCase())).toList();
+  saveRecommended() async {
+    shippingAddress!.recommendedAddress!.id = shippingAddress!.address!.id;
 
-  List<SelectedItemList>? get stateList => _shippingAddress == null
-      ? []
-      : searchController.text.isEmpty
-          ? _shippingAddress!.availableStates
-          : _shippingAddress!.availableStates!.where((i) => i.text!.toLowerCase().contains(searchController.text.toLowerCase())).toList();
+    await requestList<UserAddress>(AddressRequest.saveRecommended(
+        _selectedAddress == SelectAddress.Suggested
+            ? shippingAddress!.recommendedAddress!
+            : shippingAddress!.address!));
 
-  ShippingAddress? get shippingAddress => _shippingAddress;
+    locator<DialogService>().dialogComplete(AlertResponse(status: true));
+    notifyListeners();
+  }
 
-  bool get stateEnable => _stateEnable;
 }

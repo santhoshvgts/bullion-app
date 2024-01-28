@@ -1,7 +1,7 @@
 import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/services/api_request/address_request.dart';
 
-import '../vgts_base_view_model.dart';
+import '../../vgts_base_view_model.dart';
 
 class AddressViewModel extends VGTSBaseViewModel {
 

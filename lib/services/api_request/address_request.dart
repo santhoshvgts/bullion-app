@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/services/api/endpoints.dart';
 
 import '../../locator.dart';
@@ -20,6 +21,10 @@ class AddressRequest {
   static RequestSettings addAddress(Map<String, dynamic> json) {
     return RequestSettings(Endpoints.addAddress, RequestMethod.POST,
         params: json, authenticated: true);
+  }
+
+  static RequestSettings saveRecommended(UserAddress address) {
+    return RequestSettings("/address/save-recommended", RequestMethod.POST, params: address.toJson(), authenticated: true);
   }
 
   static RequestSettings getAvailableCountries() {

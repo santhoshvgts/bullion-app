@@ -26,8 +26,7 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
 
   late BuildContext _buildContext;
 
-  ProductPage({Key? key, required this.productDetails, this.targetUrl})
-      : super(key: key);
+  ProductPage({Key? key, required this.productDetails, this.targetUrl}) : super(key: key);
 
   late ProductPageViewModel _productPageViewModel;
 
@@ -124,19 +123,7 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                                 ],
                               )
                             else
-                              const SizedBox(
-                                  height: double.infinity,
-                                  child: Center(
-                                    child: SizedBox(
-                                      height: 80,
-                                      width: 80,
-                                      child: CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation(
-                                            AppColor.primary),
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
-                                  )),
+                              LoadingData(loadingStyle: LoadingStyle.LOGO,),
 
                             if (viewModel.isBusy)
                               const SizedBox(
@@ -151,13 +138,14 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
                   ),
                 ),
 
-                Opacity(
-                  opacity: viewModel.isBusy ? 0.5 : 1,
-                  child: IgnorePointer(
-                    ignoring: viewModel.isBusy,
-                    child: BottomActionCard(viewModel.productDetail,  key: ValueKey("sectionBottom${viewModel.productDetail?.overview?.orderMin}")),
-                  ),
-                )
+                if (viewModel.productDetail != null)
+                  Opacity(
+                    opacity: viewModel.isBusy ? 0.5 : 1,
+                    child: IgnorePointer(
+                      ignoring: viewModel.isBusy,
+                      child: BottomActionCard(viewModel.productDetail,  key: ValueKey("sectionBottom${viewModel.productDetail?.overview?.orderMin}")),
+                    ),
+                  )
               ],
             ),
           ),

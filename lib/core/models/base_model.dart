@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/core/models/auth/forgot_password.dart';
+import 'package:bullion/core/models/auth/profile.dart';
 import 'package:bullion/core/models/auth/token.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/models/chart/spot_price.dart';
@@ -141,6 +142,9 @@ class BaseModel extends BaseObject {
 
       case ProductOverview:
         return ProductOverview() as T;
+
+      case Profile:
+        return Profile() as T;
     }
     throw "Requested Model not initialised in Base Model";
   }

@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/module/cart/cart_item.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
@@ -44,14 +45,12 @@ class CartItemCard extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(_item.targetUrl);
+                      locator<NavigationService>().pushNamed(_item.targetUrl,);
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: AppColor.divider, width: 0.5),
                       ),
-                      padding: const EdgeInsets.all(5),
                       child: NetworkImageLoader(
                         image: _item.primaryImageUrl,
                         fit: BoxFit.cover,

@@ -4,6 +4,10 @@ import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/ui/view/settings/account_settings/account_setings_page.dart';
+import 'package:bullion/ui/view/settings/account_settings/change_email/change_email_page.dart';
+import 'package:bullion/ui/view/settings/account_settings/change_password/change_password_page.dart';
+import 'package:bullion/ui/view/settings/account_settings/profile/profile_page.dart';
 import 'package:bullion/ui/view/settings/orders/detail/order_detail_page.dart';
 import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/checkout/checkout_page.dart';
@@ -20,8 +24,8 @@ import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
 import 'package:bullion/ui/view/settings/activity/recently_bought/recently_bought_page.dart';
-import 'package:bullion/ui/view/settings/add_edit_address_page.dart';
-import 'package:bullion/ui/view/settings/address_page.dart';
+import 'package:bullion/ui/view/settings/address/add_edit_address_page.dart';
+import 'package:bullion/ui/view/settings/address/address_page.dart';
 import 'package:bullion/ui/view/settings/alerts/add_edit_spot_price_page.dart';
 import 'package:bullion/ui/view/settings/alerts/alerts.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_alert_me_page.dart';
@@ -294,10 +298,10 @@ class AppRouter {
       //         builder: (_) => AddAddressBottomSheet(data),
       //         settings: RouteSettings(name: settings.name));
       //
-      //   case Routes.accountSetting:
-      //     return MaterialPageRoute(
-      //         builder: (_) => AccountSettingsPage(),
-      //         settings: RouteSettings(name: settings.name));
+        case Routes.accountSetting:
+          return MaterialPageRoute(
+              builder: (_) => AccountSettingsPage(),
+              settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myRewardTransactions:
       //     return MaterialPageRoute(
@@ -331,21 +335,21 @@ class AppRouter {
       //   //  -----------  END PORTFOLIO -----------
       //
       //   // Account
-      //   case Routes.myProfile:
-      //     return MaterialPageRoute(
-      //         builder: (_) => ProfilePage(),
-      //         settings: RouteSettings(name: settings.name));
-      //
-      //   case Routes.changeEmail:
-      //     return MaterialPageRoute(
-      //         builder: (_) => ChangeEmailPage(),
-      //         settings: RouteSettings(name: settings.name));
-      //
-      //   case Routes.changePassword:
-      //     return MaterialPageRoute(
-      //         builder: (_) => ChangePasswordPage(),
-      //         settings: RouteSettings(name: settings.name));
-      //
+        case Routes.myProfile:
+          return MaterialPageRoute(
+              builder: (_) => ProfilePage(),
+              settings: RouteSettings(name: settings.name));
+
+        case Routes.changeEmail:
+          return MaterialPageRoute(
+              builder: (_) => ChangeEmailPage(),
+              settings: RouteSettings(name: settings.name));
+
+        case Routes.changePassword:
+          return MaterialPageRoute(
+              builder: (_) => ChangePasswordPage(),
+              settings: RouteSettings(name: settings.name));
+
       case Routes.address:
         return MaterialPageRoute(builder: (_) => AddressPage(
           fromCheckout: (settings.arguments as bool?) ?? false,

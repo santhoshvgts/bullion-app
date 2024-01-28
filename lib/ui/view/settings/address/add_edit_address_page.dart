@@ -11,12 +11,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-import '../../../core/models/google/place_autocomplete.dart';
-import '../../../core/res/colors.dart';
-import '../../../core/res/styles.dart';
-import '../../../helper/utils.dart';
-import '../../widgets/animated_flexible_space.dart';
-import '../../widgets/loading_data.dart';
+import '../../../../core/models/google/place_autocomplete.dart';
+import '../../../../core/res/colors.dart';
+import '../../../../core/res/styles.dart';
+import '../../../../helper/utils.dart';
+import '../../../widgets/animated_flexible_space.dart';
+import '../../../widgets/loading_data.dart';
 import 'add_edit_address_view_model.dart';
 
 class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
@@ -215,17 +215,9 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                 "Save Address",
                 valueKey: const Key("btnConfirm"),
                 onPressed: () async {
-                  if (viewModel.addEditAddressGlobalKey.currentState!
-                      .validate()) {
-                    bool result = await viewModel.submitAddress();
-                    if (result) {
-                      Util.showSnackBar(context, "Address updated successfully");
-                      locator<NavigationService>().pop(returnValue: true);
-                    }
-                  } else {
-                    Util.showSnackBar(context, "Fill all the required fields");
-                  }
+                  viewModel.submitAddress();
                 },
+                loading: viewModel.isBusy,
                 disabled: viewModel.isBusy,
               )),
         ),
