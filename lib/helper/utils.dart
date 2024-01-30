@@ -206,7 +206,8 @@ class QtyAmountInputOutPut {
 }
 
 class Util {
-  static showSnackBar(BuildContext context, String content) {
+  static showSnackBar(BuildContext? context, String content) {
+    BuildContext context = locator<NavigationService>().navigatorKey.currentContext!;
     SnackBar snackBar =
         SnackBar(content: Text(content, style: AppTextStyle.titleSmall));
     ScaffoldMessenger.of(context).clearSnackBars();

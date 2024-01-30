@@ -21,6 +21,8 @@ import '../bottom_sheets/select_country_state_bottomsheet.dart';
 
 class AddEditAddressViewModel extends VGTSBaseViewModel {
 
+  bool loading = false;
+
   bool? fromCheckout = false;
 
   GooglePlaceApi? googlePlaceApi = locator<GooglePlaceApi>();
@@ -144,12 +146,17 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     userAddress.zip = pinFormFieldController.text;
     userAddress.primaryPhone = phoneFormFieldController.text;
 
-    setBusy(true);
+    setBusyForObject(loading, true);
     ShippingAddress? response = await request<ShippingAddress>(AddressRequest.addAddress(userAddress.toJson()));
-    setBusy(false);
+    setBusyForObject(loading, false);
     if (response != null) {
       _shippingAddress = response;
       notifyListeners();
+
+      if (_shippingAddress?.recommendedAddress == null) {
+        navigationService.pop(returnValue: _shippingAddress!.address!.id);
+        return;
+      }
 
       if (_shippingAddress!.recommendedAddress != null) {
         AlertResponse alertResponse = await locator<DialogService>()
@@ -160,14 +167,8 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
         if (alertResponse.status != true) {
           return;
         }
+        navigationService.pop(returnValue: alertResponse.data as int);
       }
-
-      Util.showSnackBar(navigationService.navigatorKey.currentContext!,
-          editUserAddress != null
-              ? "Your Address has been Saved !"
-              : "Your Address has been Updated !");
-
-      navigationService.pop(returnValue: _shippingAddress!.address!.id);
     }
   }
 
@@ -253,12 +254,14 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
   saveRecommended() async {
     shippingAddress!.recommendedAddress!.id = shippingAddress!.address!.id;
 
-    await requestList<UserAddress>(AddressRequest.saveRecommended(
+    setBusy(true);
+
+    List<UserAddress> recommendedAddress = await requestList<UserAddress>(AddressRequest.saveRecommended(
         _selectedAddress == SelectAddress.Suggested
             ? shippingAddress!.recommendedAddress!
-            : shippingAddress!.address!));
-
-    locator<DialogService>().dialogComplete(AlertResponse(status: true));
+            : shippingAddress!.address!)) ?? [];
+    setBusy(false);
+    locator<DialogService>().dialogComplete(AlertResponse(status: true, data: recommendedAddress.first.id));
     notifyListeners();
   }
 

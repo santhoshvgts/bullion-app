@@ -38,6 +38,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     Widget? child,
   ) {
     return Scaffold(
+      backgroundColor: AppColor.primary,
       appBar: AppBar(
         backgroundColor: AppColor.primary,
         elevation: 0,
@@ -88,30 +89,31 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   }
 
   Widget getAccountDetailsWidget(SettingsUserViewModel viewModel, BuildContext context) {
-    return Column(
-      children: [
+    return Container(
+      color: AppColor.secondaryBackground,
+      child: Column(
+        children: [
 
-        Stack(
-          children: [
+          Stack(
+            children: [
 
-            Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: double.infinity,
-                  height: 260,
-                  color: AppColor.primary,
-                )
-            ),
+              Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    width: double.infinity,
+                    height: 260,
+                    color: AppColor.primary,
+                  )
+              ),
 
-            SizedBox(
-              width: double.infinity,
-              child: Column(
+              Column(
                 children: [
                   VerticalSpacing.d10px(),
 
                   _buildOrderSection(),
+
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -169,215 +171,137 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   ),
                 ],
               ),
-            ),
 
+            ],
+          ),
 
+          VerticalSpacing.d15px(),
 
-            // Positioned(
-            //   top: 0,
-            //   left: 0,
-            //   right: 0,
-            //   bottom: 0,
-            //   child: Column(
-            //     children: [
-            //       Text(
-            //         locator<AuthenticationService>().getUser?.email ?? "",
-            //         style: AppTextStyle.bodyMedium.copyWith(color: AppColor.mercury),
-            //         textAlign: TextAlign.center,
-            //       ),
-            //
-            //       _buildOrderSection(),
-            //     ],
-            //   ),
-            // ),
-            //
-            // Positioned(
-            //   top: 0,
-            //   left: 0,
-            //   right: 0,
-            //   child: Container(
-            //     width: double.infinity,
-            //     margin: const EdgeInsets.symmetric(horizontal: 16),
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         boxShadow: AppStyle.elevatedCardShadow,
-            //         borderRadius: BorderRadius.circular(12),
-            //       ),
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(16.0),
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             const Padding(
-            //               padding: EdgeInsets.only(bottom: 16.0),
-            //               child: Text('Manage Account',
-            //                   style: AppTextStyle.titleMedium),
-            //             ),
-            //             getTextsLayout(
-            //               const Icon(FeatherIcons.user, size: 20),
-            //               "Personal Info",
-            //             ),
-            //             const Divider(
-            //               color: AppColor.platinumColor,
-            //             ),
-            //             InkWell(
-            //               onTap: () {
-            //                 locator<NavigationService>().pushNamed(Routes.address);
-            //               },
-            //               child: getTextsLayout(
-            //                 const Icon(Icons.pin_drop_outlined, size: 20),
-            //                 "Addresses",
-            //               ),
-            //             ),
-            //             const Divider(
-            //               color: AppColor.platinumColor,
-            //             ),
-            //             InkWell(
-            //               onTap: () {
-            //                 locator<NavigationService>()
-            //                     .pushNamed(Routes.favorites);
-            //               },
-            //               child: getTextsLayout(
-            //                 const Icon(Icons.favorite_border, size: 20),
-            //                 "Favorites",
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // )
-          ],
-        ),
-
-        VerticalSpacing.d15px(),
-
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: AppStyle.elevatedCardShadow,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 16.0),
-                    child: Text('Alerts', style: AppTextStyle.titleMedium),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      locator<NavigationService>()
-                          .pushNamed(Routes.alerts, arguments: 0);
-                    },
-                    child: getTextsLayout(
-                        const Icon(CupertinoIcons.alarm, size: 20),
-                        "Custom Spot Price"),
-                  ),
-                  const Divider(
-                    color: AppColor.platinumColor,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      locator<NavigationService>()
-                          .pushNamed(Routes.alerts, arguments: 1);
-                    },
-                    child: getTextsLayout(
-                      const Icon(Icons.attach_money, size: 20),
-                      "Price Alert",
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: AppStyle.elevatedCardShadow,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 16.0),
+                      child: Text('Alerts', style: AppTextStyle.titleMedium),
                     ),
-                  ),
-                  const Divider(
-                    color: AppColor.platinumColor,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      locator<NavigationService>()
-                          .pushNamed(Routes.alerts, arguments: 2);
-                    },
-                    child: getTextsLayout(
-                      const Icon(CupertinoIcons.bell, size: 20),
-                      "Alert Me!",
+                    InkWell(
+                      onTap: () {
+                        locator<NavigationService>()
+                            .pushNamed(Routes.alerts, arguments: 0);
+                      },
+                      child: getTextsLayout(
+                          const Icon(CupertinoIcons.alarm, size: 20),
+                          "Custom Spot Price"),
                     ),
-                  ),
-                ],
+                    const Divider(
+                      color: AppColor.platinumColor,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        locator<NavigationService>()
+                            .pushNamed(Routes.alerts, arguments: 1);
+                      },
+                      child: getTextsLayout(
+                        const Icon(Icons.attach_money, size: 20),
+                        "Price Alert",
+                      ),
+                    ),
+                    const Divider(
+                      color: AppColor.platinumColor,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        locator<NavigationService>()
+                            .pushNamed(Routes.alerts, arguments: 2);
+                      },
+                      child: getTextsLayout(
+                        const Icon(CupertinoIcons.bell, size: 20),
+                        "Alert Me!",
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
 
-        VerticalSpacing.d15px(),
+          VerticalSpacing.d15px(),
 
-        Container(
-          width: double.infinity,
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: AppStyle.elevatedCardShadow,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 16.0),
-                    child:
-                    Text('Activity', style: AppTextStyle.titleMedium),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.searchHistory);
-                    },
-                    child: getTextsLayout(
-                      const Icon(FeatherIcons.search, size: 20),
-                      "Search History",
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: AppStyle.elevatedCardShadow,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 16.0),
+                      child:
+                      Text('Activity', style: AppTextStyle.titleMedium),
                     ),
-                  ),
-                  const Divider(
-                    color: AppColor.platinumColor,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.recentlyViewed);
-                    },
-                    child: getTextsLayout(
-                      const Icon(FeatherIcons.activity, size: 20),
-                      "Recently Viewed",
+                    InkWell(
+                      onTap: () {
+                        locator<NavigationService>().pushNamed(Routes.searchHistory);
+                      },
+                      child: getTextsLayout(
+                        const Icon(FeatherIcons.search, size: 20),
+                        "Search History",
+                      ),
                     ),
-                  ),
-                  const Divider(
-                    color: AppColor.platinumColor,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.recentlyBought);
-                    },
-                    child: getTextsLayout(
-                      const Icon(FeatherIcons.shoppingCart, size: 20),
-                      "Buy Again",
+                    const Divider(
+                      color: AppColor.platinumColor,
                     ),
-                  ),
-                ],
+                    InkWell(
+                      onTap: () {
+                        locator<NavigationService>().pushNamed(Routes.recentlyViewed);
+                      },
+                      child: getTextsLayout(
+                        const Icon(FeatherIcons.activity, size: 20),
+                        "Recently Viewed",
+                      ),
+                    ),
+                    const Divider(
+                      color: AppColor.platinumColor,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        locator<NavigationService>().pushNamed(Routes.recentlyBought);
+                      },
+                      child: getTextsLayout(
+                        const Icon(FeatherIcons.shoppingCart, size: 20),
+                        "Buy Again",
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
 
-        VerticalSpacing.d15px(),
+          VerticalSpacing.d15px(),
 
-        getFooterSection(context, isAuthenticated: viewModel.isAuthenticated),
+          getFooterSection(context, isAuthenticated: viewModel.isAuthenticated),
 
-      ],
+        ],
+      ),
     );
   }
 

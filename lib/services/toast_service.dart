@@ -14,9 +14,10 @@ class ToastService {
       reverseAnimation: StyledToastAnimation.slideToBottom,
       position: StyledToastPosition.bottom,
       animDuration: const Duration(milliseconds: 300),
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 3),
       curve: Curves.easeIn,
       isIgnoring: false,
+      isHideKeyboard: true,
       reverseCurve: Curves.easeOut,
     );
   }

@@ -18,8 +18,7 @@ class CartItemCard extends StatelessWidget {
   final Function(CartItem, int)? onValueChange;
   final Function(CartItem)? onRemove;
 
-  CartItemCard(this._item,
-      {this.onDecrease, this.onIncrease, this.onValueChange, this.onRemove});
+  const CartItemCard(this._item, {this.onDecrease, this.onIncrease, this.onValueChange, this.onRemove});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class CartItemCard extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(_item.targetUrl,);
+                      locator<NavigationService>().pushNamed(_item.targetUrl, );
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -69,7 +68,6 @@ class CartItemCard extends StatelessWidget {
                           _item.productName!,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          textScaleFactor: 1,
                           style: AppTextStyle.bodyMedium,
                         ),
                         VerticalSpacing.d5px(),
@@ -81,7 +79,6 @@ class CartItemCard extends StatelessWidget {
                               child: Text(
                                 _item.formattedUnitPrice!,
                                 style: AppTextStyle.titleMedium,
-                                textScaleFactor: 1,
                               ),
                             ),
                             Expanded(

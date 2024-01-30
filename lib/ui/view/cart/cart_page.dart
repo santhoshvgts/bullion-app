@@ -44,7 +44,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
     return ViewModelBuilder<CartViewModel>.reactive(
       onViewModelReady: (viewModel) {
         _cartViewModel = viewModel;
-        viewModel.init();
+        viewModel.init(fromMain);
 
         WidgetsBinding.instance.addObserver(this);
         Future.delayed(const Duration(milliseconds: 300), () {
@@ -300,7 +300,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-
+print(state.name);
     if (state == AppLifecycleState.paused) {
       print('Cart Page state: Paused');
     }
@@ -312,7 +312,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
         print("Active ${ModalRoute.of(_buildContext)!.isActive}");
 
         if (ModalRoute.of(_buildContext)!.isCurrent) {
-          _cartViewModel.init();
+          _cartViewModel.init(fromMain);
         }
       }
       print('Cart Page state: Resumed');

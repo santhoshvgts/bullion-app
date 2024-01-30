@@ -117,7 +117,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                     ) : Icon(
                       setting!.isInUserWishList! ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
                       size: 20,
-                      color: setting!.isInUserWishList! ? Colors.red.shade400 : AppColor.outlineBorder,
+                      color: setting!.isInUserWishList! ? Colors.red.shade400 : Colors.black38,
                     ),
                   ),
                 ),
@@ -144,7 +144,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                         child: Icon(
                           setting!.isInUserPriceAlert! ? CupertinoIcons.bell_fill : CupertinoIcons.bell,
                           size: 20,
-                          color: setting!.isInUserPriceAlert! ? Colors.orange.shade400 : AppColor.outlineBorder,
+                          color: setting!.isInUserPriceAlert! ? Colors.orange.shade400 : Colors.black38,
                         ),
                       ),
                     ),
@@ -241,7 +241,9 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(viewModel.productDetails?.productPictures, viewModel.activeIndex)));
+                  if (viewModel.productDetails?.productPictures != null) {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => ProductImagesFullViewPage(viewModel.productDetails?.productPictures, viewModel.activeIndex)));
+                  }
                 },
                 child: Container(
                   alignment: Alignment.center,

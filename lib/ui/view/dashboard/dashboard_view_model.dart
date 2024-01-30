@@ -31,7 +31,7 @@ class DashboardViewModel extends VGTSBaseViewModel {
       key: const PageStorageKey('Charts'),
       path: "/spot-prices",
     ),
-    CartPage(),
+    CartPage(fromMain: true,),
     const SettingsUserPage()
   ];
 }

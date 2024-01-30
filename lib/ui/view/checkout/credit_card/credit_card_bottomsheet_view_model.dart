@@ -35,6 +35,33 @@ class CreditCardViewModel extends VGTSBaseViewModel {
   void _getCardTypeFrmNumber() {
     String input = CardUtils.getCleanedNumber(cardNumController.text);
     CardType cardType = CardUtils.getCardTypeFrmNumber(input);
+
+    if (cardType == CardType.AmericanExpress && _paymentCard != CardType.AmericanExpress) {
+      cvvController = FormFieldController(
+        const ValueKey("txtCVV"),
+        validator: (value) => CardUtils.validateCVV(value, cardType == CardType.AmericanExpress ? 4 : 3),
+        inputFormatter: [
+          LengthLimitingTextInputFormatter(cvv),
+          FilteringTextInputFormatter.deny(RegExp("[ ]{2}")),
+          FilteringTextInputFormatter.deny(RegExp("[,]{2}")),
+          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+        ],
+        textCapitalization: TextCapitalization.sentences,
+      );
+    } else if (_paymentCard == CardType.AmericanExpress && cardType != CardType.AmericanExpress) {
+      cvvController = FormFieldController(
+        const ValueKey("txtCVV"),
+        validator: (value) => CardUtils.validateCVV(value,cardType == CardType.AmericanExpress ? 4 : 3),
+        inputFormatter: [
+          LengthLimitingTextInputFormatter(cvv),
+          FilteringTextInputFormatter.deny(RegExp("[ ]{2}")),
+          FilteringTextInputFormatter.deny(RegExp("[,]{2}")),
+          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+        ],
+        textCapitalization: TextCapitalization.sentences,
+      );
+    }
+
     _paymentCard = cardType;
     print(cardType.name);
     notifyListeners();
@@ -60,6 +87,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
 
   CardDetails? cardScanResponse;
 
+  //
   FormFieldController cardNumController = FormFieldController(
     const ValueKey("txtCardNum"),
     inputFormatter: [
@@ -106,11 +134,11 @@ class CreditCardViewModel extends VGTSBaseViewModel {
     print(cardScanResponse.toString());
   }
 
-   String getCardNumber(String number) {
+  String getCardNumber(String number) {
     return "${number.substring(0,4)} ${number.substring(4, 8)} ${number.substring(8, 12)} ${number.substring(12, number.length)}";
    }
 
-  save(BuildContext context){
+  save(BuildContext context) {
     if (formKey.currentState?.validate() == true) {
       return;
     }
@@ -123,10 +151,8 @@ class CreditCardViewModel extends VGTSBaseViewModel {
 
     locator<DialogService>().dialogComplete(AlertResponse(data: response,status: true), key: const ValueKey("AddCreditCard"));
     notifyListeners();
-
     return;
   }
-
 
 }
 

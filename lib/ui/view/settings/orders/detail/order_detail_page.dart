@@ -61,8 +61,8 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    if (viewModel.fromSuccess)
-                      _FromSuccessCard(),
+                    // if (viewModel.fromSuccess)
+                    //   _FromSuccessCard(),
 
                     Container(
                       color: AppColor.white,
@@ -413,6 +413,7 @@ class _FromSuccessCard extends ViewModelWidget<OrderDetailViewModel>{
   Widget build(BuildContext context, OrderDetailViewModel viewModel) {
     return Container(
       alignment: Alignment.center,
+      color: AppColor.white,
       padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
       child: Column(
         children: [

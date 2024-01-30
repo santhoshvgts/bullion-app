@@ -63,6 +63,7 @@ class AddToCartViewModel extends VGTSBaseViewModel {
 
   decrease() {
     if (qtyValue <= (productDetails?.overview?.orderMin ?? 0)){
+      Util.showSnackBar(null, "Min Qty of ${productDetails?.overview?.orderMin} is required for purchase");
       return;
     }
 

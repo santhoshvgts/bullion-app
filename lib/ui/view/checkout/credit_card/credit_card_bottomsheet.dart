@@ -9,119 +9,109 @@ import '../../../../../core/res/colors.dart';
 import '../../../../../core/res/spacing.dart';
 import 'credit_card_bottomsheet_view_model.dart';
 
-class CreditCardPageBottomSheet extends VGTSBuilderWidget<CreditCardViewModel>{
 
+class CreditCardPageBottomSheet extends StatefulWidget {
   const CreditCardPageBottomSheet({super.key});
 
   @override
-  void onViewModelReady(CreditCardViewModel viewModel) {
-    viewModel.init();
-    super.onViewModelReady(viewModel);
-  }
-
-  @override
-  CreditCardViewModel viewModelBuilder(BuildContext context) => CreditCardViewModel();
-
-  @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale, CreditCardViewModel viewModel, Widget? child) {
-    return SafeArea(
-      child:  Wrap(
-        children: [
-
-          _CardInfo(),
-
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Button(
-                'Save',
-                valueKey: const Key("btnPlaceOrder"),
-                width: double.infinity,
-                borderRadius: BorderRadius.circular(5),
-                color: AppColor.primary,
-                borderColor: AppColor.primary,
-                onPressed: (){
-                  viewModel.save(context);
-                }),
-          ),
-        ],
-      ),
-    );
-  }
-
+  State<CreditCardPageBottomSheet> createState() => _CreditCardPageBottomSheetState();
 }
 
-class _CardInfo extends ViewModelWidget<CreditCardViewModel>{
+class _CreditCardPageBottomSheetState extends State<CreditCardPageBottomSheet> {
   @override
-  Widget build(BuildContext context, CreditCardViewModel viewModel) {
-    return Container(
-      padding: const EdgeInsets.only(top: 10,bottom: 10,left: 15,right: 15),
-      child: Column(
-        children: [
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<CreditCardViewModel>.reactive(
+        viewModelBuilder: ()=> CreditCardViewModel(),
+        onViewModelReady: (viewModel) {
+          viewModel.init();
+        },
+        builder: (context, viewModel, child) {
+          return SafeArea(
+            child:  Form(
+              key: viewModel.formKey,
+              child: Wrap(
+                children: [
 
-          Row(
-            children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 10,bottom: 10 ,left: 15,right: 15),
+                    child: Column(
+                      children: [
 
-              Expanded(
-                child: EditTextField(
-                  "Card Number",
-                  viewModel.cardNumController,
-                  autoFocus: true,
-                  placeholder: 'XXXX XXXX XXXX XXXX',
-                  margin: const EdgeInsets.only(bottom: 15.0),
-                ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+
+                            Expanded(
+                              child: EditTextField(
+                                "Card Number",
+                                viewModel.cardNumController,
+                                autoFocus: true,
+                                placeholder: 'xxxx xxxx xxxx xxxx',
+                                margin: const EdgeInsets.only(bottom: 15.0),
+                              ),
+                            ),
+
+                            IconButton(
+                              icon: const Icon(Icons.qr_code_scanner,color: AppColor.secondaryText),
+                              onPressed: (){
+                                viewModel.scanCard();
+                              },
+                            ),
+                          ],
+                        ),
+
+                        VerticalSpacing.d10px(),
+
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+                            Expanded(
+                              flex: 3,
+                              child: EditTextField(
+                                "Expiration Date",
+                                viewModel.expDateController,
+                                placeholder: 'MM/YYYY',
+                              ),
+                            ),
+
+                            HorizontalSpacing.custom(value: 15),
+
+                            Expanded(
+                              flex: 3,
+                              child: EditTextField(
+                                "CVV",
+                                viewModel.cvvController,
+                                placeholder: viewModel.placeholderCvv,
+                              ),
+                            ),
+
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Button(
+                        'Save',
+                        valueKey: const Key("btnCreate"),
+                        width: double.infinity,
+                        color: AppColor.primary,
+                        borderColor: AppColor.primary,
+                        onPressed: (){
+
+                          viewModel.save(context);
+                        }),
+                  ),
+                ],
               ),
-
-              // HorizontalSpacing.d10px(),
-              //
-              // Container(child: CardUtils.getCardIcon(viewModel.paymentCard!),),
-
-              HorizontalSpacing.d10px(),
-
-              InkWell(
-                child: const Padding(
-                  padding: EdgeInsets.only(top:10.0),
-                  child: Icon(Icons.qr_code_scanner,color: AppColor.secondaryText),
-                ),
-                onTap: (){
-                  viewModel.scanCard();
-                },
-              ),
-            ],
-          ),
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              Expanded(
-                flex: 3,
-                child: EditTextField(
-                  "Expiration Date",
-                  viewModel.expDateController,
-                  placeholder: 'MM/YYYY',
-                ),
-              ),
-
-              HorizontalSpacing.custom(value: 30),
-
-              Expanded(
-                flex: 3,
-                child: EditTextField(
-                  "CVV",
-                  viewModel.cvvController,
-                  placeholder: viewModel.placeholderCvv,
-                ),
-              ),
-
-            ],
-          ),
-
-        ],
-      ),
+            ),
+          );
+        }
     );
   }
 }
-
-
-
-

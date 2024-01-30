@@ -35,97 +35,101 @@ class AddToCartSection extends VGTSBuilderWidget<AddToCartViewModel> {
               valueColor: AlwaysStoppedAnimation(AppColor.primary),
             ),
           ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: const BoxDecoration(
-            color: AppColor.white,
-          ),
-          child: Stack(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(color: AppColor.border)
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.remove,
-                                size: 20,
-                                color: AppColor.text,
-                              ),
-                              onPressed: () => viewModel.decrease(),
-                            ),
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              height: 42,
-                              child: EditTextField(
-                                "",
-                                viewModel.qtyController,
-                                key: const ValueKey("txtQuantity"),
-                                textAlign: TextAlign.center,
-                                textInputAction: TextInputAction.done,
-                                isInputDecorationNone: true,
-                                textStyle: AppTextStyle.titleSmall,
-                                padding: EdgeInsets.zero,
-                                onChanged: (val) {
-                                  if (viewModel.qtyValidate) viewModel.qtyValidate = false;
-                                  viewModel.triggerProductUpdateEvent(int.tryParse(val) ?? 1);
-                                },
+        SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              boxShadow: AppStyle.topShadow
+            ),
+            child: Stack(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+          
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(color: AppColor.border)
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.remove,
+                                  size: 20,
+                                  color: AppColor.text,
+                                ),
+                                onPressed: () => viewModel.decrease(),
                               ),
                             ),
-                          ),
-
-                          SizedBox(
-                            height: 40,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.add,
-                                size: 20,
-                                color: AppColor.text,
+                            Expanded(
+                              child: SizedBox(
+                                height: 42,
+                                child: EditTextField(
+                                  "",
+                                  viewModel.qtyController,
+                                  key: const ValueKey("txtQuantity"),
+                                  textAlign: TextAlign.center,
+                                  textInputAction: TextInputAction.done,
+                                  isInputDecorationNone: true,
+                                  textStyle: AppTextStyle.titleSmall,
+                                  padding: EdgeInsets.zero,
+                                  onChanged: (val) {
+                                    if (viewModel.qtyValidate) viewModel.qtyValidate = false;
+                                    viewModel.triggerProductUpdateEvent(int.tryParse(val) ?? 1);
+                                  },
+                                ),
                               ),
-                              onPressed:
-                              viewModel.qtyValue >= 9999 ? null : () => viewModel.increase(),
                             ),
-                          )
-                        ],
+          
+                            SizedBox(
+                              height: 40,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.add,
+                                  size: 20,
+                                  color: AppColor.text,
+                                ),
+                                onPressed:
+                                viewModel.qtyValue >= 9999 ? null : () => viewModel.increase(),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-
-                  HorizontalSpacing.d5px(),
-
-                  Expanded(
-                    flex: 5,
-                    child: Button("Add to Cart",
+          
+                    HorizontalSpacing.d5px(),
+          
+                    Expanded(
+                      flex: 5,
+                      child: Button("Add to Cart",
                         width: double.infinity,
                         color: AppColor.secondary,
                         height: 45,
                         borderColor: AppColor.secondary,
-                        valueKey: const Key("btnAddToCart"), onPressed: () {
-                      viewModel.addProduct(viewModel);
-                    }),
+                        valueKey: const Key("btnAddToCart"),
+                        onPressed: () {
+                          viewModel.addProduct(viewModel);
+                        }),
+                    )
+                  ],
+                ),
+                if (viewModel.isBusy)
+                  Container(
+                    color: AppColor.white.withOpacity(0.7),
+                    height: 50,
                   )
-                ],
-              ),
-              if (viewModel.isBusy)
-                Container(
-                  color: AppColor.white.withOpacity(0.7),
-                  height: 50,
-                )
-            ],
+              ],
+            ),
           ),
         ),
       ],

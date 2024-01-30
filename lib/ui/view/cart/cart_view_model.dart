@@ -15,6 +15,7 @@ import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
@@ -75,9 +76,18 @@ class CartViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  init() async {
+  init(bool fromMain) async {
     _cart = await _cartService.getCart();
     notifyListeners();
+
+    if (fromMain) {
+      locator<EventBusService>().eventBus.registerTo<CartRefreshEvent>().listen((event) async {
+        setBusy(true);
+        await refresh();
+        setBusy(false);
+      });
+    }
+
 
     setBusy(true);
     await refresh();
@@ -245,23 +255,6 @@ class CartViewModel extends VGTSBaseViewModel {
       return;
     }
     locator<NavigationService>().pushNamed(Routes.checkout);
-
-    // if (!locator<AuthenticationService>().isAuthenticated) {
-    //   bool authenticated = await signInRequest(Images.iconCartBottom,
-    //       title: "Checkout",
-    //       content:
-    //           "Login or Create a free APMEX.com account for fast checkout and easy access to order history.",
-    //       showGuestLogin: true);
-    //   if (!authenticated) return;
-    // }
-    //
-    // navigationService!
-    //     .pushNamed(
-    //       Routes.checkout,
-    //     )!
-    //     .then(
-    //       (value) => init(),
-    //     );
   }
 
   refresh() async {

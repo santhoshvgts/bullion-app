@@ -96,8 +96,8 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                                             viewModel.deleteAddress(viewModel.userAddressList[index].id!);
                                           },
                                           onEdit: () async {
-                                            bool? result = await  locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: { "userAddress": viewModel.userAddressList[index] });
-                                            if (result == true) {
+                                            int? result = await  locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: { "userAddress": viewModel.userAddressList[index] });
+                                            if (result != null) {
                                               viewModel.refresh();
                                             }
                                           },
@@ -115,8 +115,8 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
                                 "+ Create Address",
                                 valueKey: const Key("addAddress"),
                                 onPressed: () async {
-                                  bool? result = await locator<NavigationService>().pushNamed(Routes.addEditAddress);
-                                  if (result == true) {
+                                  int? result = await locator<NavigationService>().pushNamed(Routes.addEditAddress);
+                                  if (result != null) {
                                     viewModel.refresh();
                                   }
                                 },

@@ -1,5 +1,7 @@
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/spacing.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_price_alert_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
@@ -115,12 +117,7 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
                                 onPressed: () async {
                                   if (viewModel.priceAlertGlobalKey.currentState!.validate()) {
                                     bool result = await viewModel.savePriceAlert();
-                                    if (result) {
-                                      Util.showSnackBar(context, 'Submitted successfully');
-                                      Navigator.of(context).pop();
-                                    }
-                                  } else {
-                                    Util.showSnackBar(context, "Fill all the required fields");
+                                    locator<NavigationService>().pop(returnValue: result);
                                   }
                                 },
                               )

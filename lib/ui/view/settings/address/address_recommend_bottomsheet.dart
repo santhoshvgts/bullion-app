@@ -32,48 +32,51 @@ class AddressRecommendBottomSheet extends VGTSBuilderWidget<AddEditAddressViewMo
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, AddEditAddressViewModel viewModel, Widget? child) {
-    return Container(
-      padding: const EdgeInsets.only(left: 15.0,right: 15.0,bottom: 15.0),
-      child: Wrap(
-        children: [
-          Container(padding: const EdgeInsets.only(top:10.0,bottom: 10.0),
-              child: const Text("We compared the shipping address you provided with postal service records and found some inconsistencies. Please edit or select the original address you provided, or click to proceed with the recommended address.",
-                textScaleFactor:1, style: AppTextStyle.bodyMedium,)),
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.only(left: 15.0,right: 15.0,bottom: 15.0),
+        child: Wrap(
+          children: [
+            Container(padding: const EdgeInsets.only(top:10.0,bottom: 10.0),
+                child: const Text("We compared the shipping address you provided with postal service records and found some inconsistencies. Please edit or select the original address you provided, or click to proceed with the recommended address.",
+                  textScaleFactor:1, style: AppTextStyle.bodyMedium,)),
 
-          const Padding(
-            padding: EdgeInsets.only(bottom: 10),
-            child: Text("Suggested Address",textScaleFactor: 1,style: AppTextStyle.titleMedium),
-          ),
-
-          _AddressItem(viewModel.shippingAddress!.recommendedAddress,isSelected: viewModel.selectedAddress==SelectAddress.Suggested ? true : false,
-            onTap:() {
-              viewModel.setAddress(SelectAddress.Suggested);
-              viewModel.notifyListeners();
-            },),
-
-          const Padding(
-            padding: EdgeInsets.only(bottom: 10, top: 15),
-            child: Text("Entered Address",textScaleFactor: 1,style: AppTextStyle.titleMedium),
-          ),
-
-          _AddressItem(viewModel.shippingAddress!.address,isEdit:true,isSelected: viewModel.selectedAddress==SelectAddress.Entered ? true : false,
-            onTap: () {
-              viewModel.setAddress(SelectAddress.Entered);
-              viewModel.notifyListeners();
-            },),
-
-
-          Padding(
-            padding: const EdgeInsets.only(top: 25),
-            child: Button("Save Address",
-              valueKey: const Key("saveAddressBtn"),
-              width: double.infinity,
-              onPressed: () {
-                viewModel.saveRecommended();
-              }
+            const Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text("Suggested Address",textScaleFactor: 1,style: AppTextStyle.titleMedium),
             ),
-          ),
-        ],
+
+            _AddressItem(viewModel.shippingAddress!.recommendedAddress,isSelected: viewModel.selectedAddress==SelectAddress.Suggested ? true : false,
+              onTap:() {
+                viewModel.setAddress(SelectAddress.Suggested);
+                viewModel.notifyListeners();
+              },),
+
+            const Padding(
+              padding: EdgeInsets.only(bottom: 10, top: 15),
+              child: Text("Entered Address", style: AppTextStyle.titleMedium),
+            ),
+
+            _AddressItem(viewModel.shippingAddress!.address,isEdit:true,isSelected: viewModel.selectedAddress==SelectAddress.Entered ? true : false,
+              onTap: () {
+                viewModel.setAddress(SelectAddress.Entered);
+                viewModel.notifyListeners();
+              },),
+
+
+            Padding(
+              padding: const EdgeInsets.only(top: 25),
+              child: Button("Save Address",
+                valueKey: const Key("saveAddressBtn"),
+                width: double.infinity,
+                loading: viewModel.isBusy,
+                onPressed: () {
+                  viewModel.saveRecommended();
+                }
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

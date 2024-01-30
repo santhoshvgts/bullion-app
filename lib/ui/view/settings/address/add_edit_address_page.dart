@@ -32,8 +32,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
   }
 
   @override
-  Widget viewBuilder(
-      BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, viewModel, Widget? child) {
     return TapOutsideUnFocus(
       child: Scaffold(
         body: SafeArea(
@@ -52,154 +51,170 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                       title: userAddress != null ? "Edit Address" : "Add Address"),
                 ),
                 SliverToBoxAdapter(
-                  child: viewModel.isBusy
-                      ? LoadingData(loadingStyle: LoadingStyle.LOGO,) : SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Form(
-                              key: viewModel.addEditAddressGlobalKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                  child: SingleChildScrollView(
+                          child: Form(
+                            key: viewModel.addEditAddressGlobalKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
 
-                                  VerticalSpacing.d10px(),
+                                if (viewModel.isBusy)
+                                  const SizedBox(height: 1, child: LinearProgressIndicator()),
 
-                                  Row(
+                                VerticalSpacing.d15px(),
+
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
+
+
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: EditTextField(
+                                              "First Name",
+                                              viewModel.firstNameFormFieldController,
+                                              key: const Key("txtFirstName"),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 16.0,
+                                          ),
+                                          Expanded(
+                                            child: EditTextField(
+                                              "Last Name",
+                                              viewModel.lastNameFormFieldController,
+                                              key: const Key("txtLastName"),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 16.0),
                                         child: EditTextField(
-                                          "First Name",
-                                          viewModel.firstNameFormFieldController,
-                                          key: const Key("txtFirstName"),
+                                          "Company Name",
+                                          viewModel.companyFormFieldController,
+                                          key: const Key("txtCompany"),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 16.0,
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.only(top: 16.0),
+                                        child: Text(
+                                          "Address Details",
+                                          style: AppTextStyle.titleMedium.copyWith(color: AppColor.primary),
+                                        ),
                                       ),
-                                      Expanded(
-                                        child: EditTextField(
-                                          "Last Name",
-                                          viewModel.lastNameFormFieldController,
-                                          key: const Key("txtLastName"),
+
+                                      StreetAutoCompleteTextField(viewModel),
+                                      const SizedBox(height: 16.0),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: EditTextField(
+                                              "City",
+                                              viewModel.cityFormFieldController,
+                                              key: const Key("txtCity"),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 16.0,
+                                          ),
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                viewModel.showCountries();
+                                              },
+                                              child: IgnorePointer(
+                                                ignoring: true,
+                                                child: EditTextField(
+                                                  "Country",
+                                                  viewModel.countryFormFieldController,
+                                                  key: const Key("txtCountry"),
+                                                  suffixIcon:
+                                                  const Icon(Icons.arrow_drop_down),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16.0),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: InkWell(
+                                              onTap: viewModel.stateEnable
+                                                  ? null
+                                                  : () => viewModel.showStates(),
+                                              child: IgnorePointer(
+                                                ignoring: !viewModel.stateEnable,
+                                                child: EditTextField(
+                                                  "State",
+                                                  viewModel.stateFormFieldController,
+                                                  key: const Key("txtState"),
+                                                  suffixIcon: viewModel.stateEnable
+                                                      ? Container()
+                                                      : const Icon(Icons.arrow_drop_down),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 16.0,
+                                          ),
+                                          Expanded(
+                                            child: EditTextField(
+                                              "Pin code",
+                                              viewModel.pinFormFieldController,
+                                              key: const Key("txtPincode"),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 16.0),
+                                      EditTextField(
+                                        "Contact Number",
+                                        viewModel.phoneFormFieldController,
+                                        key: const Key("txtContact"),
+                                      ),
+                                      const SizedBox(height: 16.0),
+
+                                      InkWell(
+                                        onTap: () {
+                                          FocusManager.instance.primaryFocus!.unfocus();
+                                          viewModel.selectDefaultAddress();
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Checkbox(
+                                                checkColor: AppColor.white,
+                                                value: viewModel.isDefaultAddress,
+                                                activeColor: AppColor.primary,
+                                                materialTapTargetSize:
+                                                MaterialTapTargetSize.shrinkWrap,
+                                                onChanged: (val) =>
+                                                    viewModel.selectDefaultAddress()),
+                                            const SizedBox(width: 4.0),
+                                            const Text(
+                                              "Make this my default shipping address.",
+                                              style: AppTextStyle.titleSmall,
+                                            ),
+                                          ],
                                         ),
                                       )
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16.0),
-                                    child: EditTextField(
-                                      "Company Name",
-                                      viewModel.companyFormFieldController,
-                                      key: const Key("txtCompany"),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets.only(top: 16.0),
-                                    child: Text(
-                                      "Address Details",
-                                      style: AppTextStyle.titleMedium.copyWith(color: AppColor.primary),
-                                    ),
-                                  ),
 
-                                  StreetAutoCompleteTextField(viewModel),
-                                  const SizedBox(height: 16.0),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: EditTextField(
-                                          "City",
-                                          viewModel.cityFormFieldController,
-                                          key: const Key("txtCity"),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 16.0,
-                                      ),
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () {
-                                            viewModel.showCountries();
-                                          },
-                                          child: EditTextField(
-                                            "Country",
-                                            viewModel.countryFormFieldController,
-                                            key: const Key("txtCountry"),
-                                            suffixIcon:
-                                            const Icon(Icons.arrow_drop_down),
-                                            enabled: false,
-                                          ),
-                                        ),
-                                      ),
                                     ],
                                   ),
-                                  const SizedBox(height: 16.0),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: viewModel.stateEnable
-                                              ? null
-                                              : () => viewModel.showStates(),
-                                          child: EditTextField(
-                                            "State",
-                                            viewModel.stateFormFieldController,
-                                            key: const Key("txtState"),
-                                            suffixIcon: viewModel.stateEnable
-                                                ? Container()
-                                                : const Icon(Icons.arrow_drop_down),
-                                            enabled: viewModel.stateEnable,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 16.0,
-                                      ),
-                                      Expanded(
-                                        child: EditTextField(
-                                          "Pin code",
-                                          viewModel.pinFormFieldController,
-                                          key: const Key("txtPincode"),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 16.0),
-                                  EditTextField(
-                                    "Contact Number",
-                                    viewModel.phoneFormFieldController,
-                                    key: const Key("txtContact"),
-                                  ),
-                                  const SizedBox(height: 16.0),
+                                )
 
-                                  InkWell(
-                                    onTap: () {
-                                      FocusManager.instance.primaryFocus!.unfocus();
-                                      viewModel.selectDefaultAddress();
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Checkbox(
-                                            checkColor: AppColor.white,
-                                            value: viewModel.isDefaultAddress,
-                                            activeColor: AppColor.primary,
-                                            materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                            onChanged: (val) =>
-                                                viewModel.selectDefaultAddress()),
-                                        const SizedBox(width: 4.0),
-                                        const Text(
-                                          "Make this my default shipping address.",
-                                          style: AppTextStyle.titleSmall,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
+
+                              ],
                             ),
                           ),
                       ),
@@ -217,8 +232,7 @@ class AddEditAddressPage extends VGTSBuilderWidget<AddEditAddressViewModel> {
                 onPressed: () async {
                   viewModel.submitAddress();
                 },
-                loading: viewModel.isBusy,
-                disabled: viewModel.isBusy,
+                loading: viewModel.busy(viewModel.loading),
               )),
         ),
       ),

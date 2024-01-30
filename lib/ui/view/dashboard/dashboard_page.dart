@@ -5,6 +5,7 @@ import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/dashboard/dashboard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -41,7 +42,9 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
               .toList()
         ],
         onItemSelected: (index) {
-          // viewModel.notifyListeners();
+          if (index == 3) {
+            locator<EventBusService>().eventBus.fire(CartRefreshEvent());
+          }
         },
         items: [
           _PersistentBottomNav(

@@ -139,8 +139,7 @@ class PaymentMethodViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  _addCreditCardInformation(
-      PaymentMethod paymentMethod, CreditCard card) async {
+  _addCreditCardInformation(PaymentMethod paymentMethod, CreditCard card) async {
     isUserPaymentLoading = true;
 
     var data = await BraintreeService().openCreditCard(card);
@@ -197,7 +196,6 @@ class PaymentMethodViewModel extends VGTSBaseViewModel {
         userPaymentMethodId: _paymentMethod.userPaymentMethodId,
       isNewAccount: isNewAccount
     );
-    navigationService.pop();
     isUserPaymentLoading = false;
     await Util.enableLockEvent();
   }

@@ -64,7 +64,6 @@ class ReviewOrderPage extends VGTSBuilderWidget<ReviewOrderViewModel> {
                 color: AppColor.white,
                 padding: const EdgeInsets.all(15),
                 child: Text(viewModel.shoppingCart!.expiredCartMessage!,
-                  textScaleFactor: 1,
                   style: AppTextStyle.bodyMedium,
                 ),
               ),
@@ -126,7 +125,7 @@ class ReviewOrderPage extends VGTSBuilderWidget<ReviewOrderViewModel> {
           ],
         ),
       ),
-      bottomNavigationBar: fromPriceExpiry! && viewModel.isBusy ? SafeArea(
+      bottomNavigationBar: fromPriceExpiry! && !viewModel.isBusy ? SafeArea(
         child: Container(
           color: AppColor.white,
           padding: const EdgeInsets.all(15),
