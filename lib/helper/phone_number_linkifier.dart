@@ -59,6 +59,5 @@ class PhoneNumberElement extends LinkableElement {
   bool equals(other) => other is PhoneNumberElement && super.equals(other) && other.phoneNumber == phoneNumber;
 
   @override
-  // TODO: implement hashCode
   int get hashCode => super.hashCode;
 }

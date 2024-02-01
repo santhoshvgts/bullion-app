@@ -29,7 +29,7 @@ class TrendingSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(settings!.title ?? "Trending Searches",
-              textScaleFactor: 1,
+              
               textAlign: TextAlign.start,
               style: AppTextStyle.titleMedium),
           VerticalSpacing.d15px(),
@@ -80,7 +80,7 @@ class _ItemCard extends StatelessWidget {
 
             Text(
               _item.name!,
-              textScaleFactor: 1,
+              
               style: AppTextStyle.labelLarge,
             ),
           ],

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/res/colors.dart';
@@ -11,7 +13,7 @@ import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CartItemCard extends StatelessWidget {
+class CartItemCard extends StatefulWidget {
   final CartItem _item;
   final Function(CartItem)? onIncrease;
   final Function(CartItem)? onDecrease;
@@ -19,6 +21,14 @@ class CartItemCard extends StatelessWidget {
   final Function(CartItem)? onRemove;
 
   const CartItemCard(this._item, {this.onDecrease, this.onIncrease, this.onValueChange, this.onRemove});
+
+  @override
+  State<CartItemCard> createState() => _CartItemCardState();
+}
+
+class _CartItemCardState extends State<CartItemCard> {
+
+  Timer? debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +54,14 @@ class CartItemCard extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(_item.targetUrl, );
+                      locator<NavigationService>().pushNamed(widget._item.targetUrl, );
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: NetworkImageLoader(
-                        image: _item.primaryImageUrl,
+                        image: widget._item.primaryImageUrl,
                         fit: BoxFit.cover,
                         width: 60,
                         height: 60,
@@ -65,7 +75,7 @@ class CartItemCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _item.productName!,
+                          widget._item.productName!,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyle.bodyMedium,
@@ -77,7 +87,7 @@ class CartItemCard extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Text(
-                                _item.formattedUnitPrice!,
+                                widget._item.formattedUnitPrice!,
                                 style: AppTextStyle.titleMedium,
                               ),
                             ),
@@ -108,8 +118,8 @@ class CartItemCard extends StatelessWidget {
                                                 color: AppColor.text,
                                               ),
                                               onPressed: () {
-                                                _item.loading = true;
-                                                onDecrease!(_item);
+                                                widget._item.loading = true;
+                                                widget.onDecrease!(widget._item);
                                               },
                                             ),
                                           ),
@@ -118,18 +128,31 @@ class CartItemCard extends StatelessWidget {
                                               height: 35,
                                               child: EditTextField(
                                                 "",
-                                                _item.qtyController,
+                                                widget._item.qtyController,
                                                 key: const ValueKey("txtQuantity"),
                                                 textAlign: TextAlign.center,
                                                 textInputAction: TextInputAction.done,
                                                 isInputDecorationNone: true,
                                                 textStyle: AppTextStyle.titleSmall,
                                                 padding: EdgeInsets.zero,
-                                                onSubmitted: (val) {
-                                                  if (!_item.loading){
-                                                    _item.loading = true;
-                                                    onValueChange!(_item, int.parse(val));
+                                                onChanged: (val) {
+                                                  if ( int.tryParse(val) == null) {
+                                                    return;
                                                   }
+                                                  if (debounce?.isActive ?? false) debounce?.cancel();
+                                                  debounce = Timer(const Duration(milliseconds: 600), () {
+                                                    if (!widget._item.loading){
+                                                      widget._item.loading = true;
+                                                      widget.onValueChange!(widget._item, int.tryParse(val) ?? 0);
+                                                      widget._item.qtyController.focusNode.unfocus();
+                                                    }
+                                                  });
+                                                },
+                                                onSubmitted: (val) {
+                                                  // if (!_item.loading){
+                                                  //   _item.loading = true;
+                                                  //   onValueChange!(_item, int.parse(val));
+                                                  // }
                                                 },
                                               ),
                                             ),
@@ -146,8 +169,8 @@ class CartItemCard extends StatelessWidget {
                                                 color: AppColor.text,
                                               ),
                                               onPressed: () {
-                                                _item.loading = true;
-                                                onIncrease!(_item);
+                                                widget._item.loading = true;
+                                                widget.onIncrease!(widget._item);
                                               },
                                             ),
                                           )
@@ -202,7 +225,7 @@ class CartItemCard extends StatelessWidget {
                                   //                 AppTextStyle.fontFamily,
                                   //           ),
                                   //           textAlign: TextAlign.center,
-                                  //           textScaleFactor: 1,
+                                  //
                                   //           overflow: TextOverflow.ellipsis,
                                   //         ),
                                   //       ),
@@ -228,8 +251,8 @@ class CartItemCard extends StatelessWidget {
                                   // ),
                                   IconButton(
                                     onPressed: () {
-                                      _item.loading = true;
-                                      onRemove!(_item);
+                                      widget._item.loading = true;
+                                      widget.onRemove!(widget._item);
                                     },
                                     icon: const Icon(
                                       CupertinoIcons.delete,
@@ -247,8 +270,8 @@ class CartItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              if (_item.offers != null)
-                ..._item.offers!.map((offer) {
+              if (widget._item.offers != null)
+                ...widget._item.offers!.map((offer) {
                   return Column(
                     children: [
                       AppStyle.dottedDivider,
@@ -265,7 +288,7 @@ class CartItemCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 offer,
-                                textScaleFactor: 1,
+
                                 style: AppTextStyle.bodySmall.copyWith(
                                   color: AppColor.green,
                                 ),
@@ -278,8 +301,8 @@ class CartItemCard extends StatelessWidget {
                   );
                 }).toList(),
               // VerticalSpacing.d5px(),
-              if (_item.warnings != null)
-                ..._item.warnings!.map((warning) {
+              if (widget._item.warnings != null)
+                ...widget._item.warnings!.map((warning) {
                   return Column(
                     children: [
                       AppStyle.dottedDivider,
@@ -296,7 +319,7 @@ class CartItemCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 warning,
-                                textScaleFactor: 1,
+
                                 style: AppTextStyle.bodySmall.copyWith(
                                   color: AppColor.redOrange,
                                 ),
@@ -311,7 +334,7 @@ class CartItemCard extends StatelessWidget {
             ],
           ),
         ),
-        if (_item.loading)
+        if (widget._item.loading)
           Positioned(
             top: 0,
             bottom: 0,
@@ -323,5 +346,11 @@ class CartItemCard extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
   }
 }

@@ -117,7 +117,7 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
                                     child: Text(
                                       viewModel.spotPriceTimeRangeFilters[index]
                                           .displayName,
-                                      textScaleFactor: 1,
+                                      
                                       style: AppTextStyle.labelMedium.copyWith(
                                         color: index ==
                                                 viewModel
@@ -157,7 +157,7 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
         children: <Widget>[
           Text(
             key,
-            textScaleFactor: 1,
+            
             style: const TextStyle(
               fontSize: 13,
               color: AppColor.text,
@@ -166,7 +166,7 @@ class SpotPriceChartView extends VGTSBuilderWidget<SpotPriceChartViewModel> {
           const Padding(padding: EdgeInsets.only(left: 5)),
           Text(
             value ?? "",
-            textScaleFactor: 1,
+            
             style: const TextStyle(
                 fontSize: 14,
                 color: AppColor.black,
@@ -198,13 +198,13 @@ class _SpotPriceBreakUp extends StatelessWidget {
         children: <Widget>[
           // Text(
           //   "${spotPrice.metalName} Spot Prices (${viewModel.selectedFilterValue.displayName})",
-          //   textScaleFactor: 1,
+          //   
           //   style: AppTextStyle.titleMedium,
           // ),
           // VerticalSpacing.d5px(),
           // Text(
           //   "${spotPrice.formattedLastUpdated}",
-          //   textScaleFactor: 1,
+          //   
           //   style: AppTextStyle.bodySmall,
           // ),
           // VerticalSpacing.d15px(),
@@ -259,7 +259,7 @@ class _BreakUpItem extends StatelessWidget {
               children: [
                 Text(
                   itemKey,
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.labelMedium.copyWith(
                     color: AppColor.secondaryText,
                   ),
@@ -268,12 +268,12 @@ class _BreakUpItem extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       value!,
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.titleMedium,
                     ),
                     Text(
                       "${formattedChange!}",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.titleMedium.copyWith(
                           color:
                               changeValue! < 0 ? AppColor.red : AppColor.green),
@@ -311,7 +311,7 @@ class _MetalChipItem extends StatelessWidget {
         children: [
           Text(
             item.metalName ?? '',
-            textScaleFactor: 1,
+            
             style: AppTextStyle.bodySmall,
           ),
           Row(
@@ -321,7 +321,7 @@ class _MetalChipItem extends StatelessWidget {
             children: <Widget>[
               Text(
                 item.formmatedChangePercentage,
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.labelSmall.copyWith(
                   color: item.changeColor,
                   fontWeight: FontWeight.w600,
@@ -329,7 +329,7 @@ class _MetalChipItem extends StatelessWidget {
               ),
               Text(
                 item.formattedChange!,
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.labelSmall.copyWith(
                   color: item.changeColor,
                   fontWeight: FontWeight.w600,

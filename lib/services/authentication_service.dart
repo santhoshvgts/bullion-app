@@ -5,6 +5,7 @@ import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/auth_request.dart';
+import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/api_model/error_response_exception.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
@@ -73,8 +74,6 @@ class AuthenticationService {
       _setUser(authResult);
       _analyticsService.loglogin();
 
-      // TODO - Refresh Page Storage Service
-      // await locator<PageStorageService>().write(locator<NavigationService>().navigatorKey.currentContext!, const PageStorageKey("Spot Price"), null);
       return authResult;
     } on ErrorResponseException catch (ex) {
       _showAlert(ex, "Error");
@@ -89,8 +88,7 @@ class AuthenticationService {
       _showAlert(ex, "Error");
     }
 
-    // TODO - Clear Cart Service
-    // await locator<CartService>().clear();
+    await locator<CartService>().clear();
     locator<PreferenceService>().clearData();
     locator<TokenService>().clearToken();
     _user = null;

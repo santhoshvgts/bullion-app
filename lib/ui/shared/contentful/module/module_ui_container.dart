@@ -116,7 +116,7 @@ class _ModuleHeadSection extends ViewModelWidget<ModuleUIContainerViewModel> {
                 children: [
                   if (viewModel.setting!.title != null)
                     Text(viewModel.setting!.title!,
-                        textScaleFactor: 1,
+                        
                         textAlign: UIAlignment.textAlign(
                             viewModel.displaySetting!.titleAlignment),
                         style: ModuleTextStyle.title(
@@ -124,7 +124,7 @@ class _ModuleHeadSection extends ViewModelWidget<ModuleUIContainerViewModel> {
                             color: viewModel.displaySetting!.textColor)),
                   if (viewModel.setting!.subtitle?.isNotEmpty ?? false)
                     Text(viewModel.setting!.subtitle!,
-                        textScaleFactor: 1,
+                        
                         textAlign: UIAlignment.textAlign(
                             viewModel.displaySetting!.titleAlignment),
                         style: ModuleTextStyle.subtitle(
@@ -172,7 +172,7 @@ class _MetaData extends ViewModelWidget<ModuleUIContainerViewModel> {
         if (viewModel.setting!.metaData!.saleEndDate != null)
           Text(
             "Ends In : ${viewModel.endTime.toString()}",
-            textScaleFactor: 1,
+            
             textAlign:
                 UIAlignment.textAlign(viewModel.displaySetting!.titleAlignment),
             style: AppTextStyle.titleMedium.copyWith(
@@ -183,7 +183,7 @@ class _MetaData extends ViewModelWidget<ModuleUIContainerViewModel> {
         if (viewModel.setting!.metaData!.saleStartDate != null)
           Text(
             "Sales Starts on : ${viewModel.setting!.metaData!.saleStartDate.toString()}",
-            textScaleFactor: 1,
+            
             textAlign:
                 UIAlignment.textAlign(viewModel.displaySetting!.titleAlignment),
             style: AppTextStyle.titleMedium.copyWith(

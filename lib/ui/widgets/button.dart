@@ -163,7 +163,7 @@ class Button extends StatelessWidget {
                             ),
                           Text(
                             text!,
-                            textScaleFactor: 1,
+                            
                             maxLines: 1,
                             style: (disabled
                                     ? textStyle?.copyWith(color: Colors.black26)

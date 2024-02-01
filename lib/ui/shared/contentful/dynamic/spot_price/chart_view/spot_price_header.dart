@@ -41,7 +41,7 @@ class SpotPriceHeader extends StatelessWidget {
                           (_mySpotPrice.formatedDate!),
                         ),
                       ),
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.bodySmall.copyWith(
                         fontSize: 13,
                         color: AppColor.secondaryText,
@@ -56,7 +56,7 @@ class SpotPriceHeader extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           _mySpotPrice.formatedPrice!,
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.headlineMedium.copyWith(
                             color: AppColor.black,
                           ),
@@ -73,7 +73,7 @@ class SpotPriceHeader extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 "${_mySpotPrice.changePct! > 0 ? "" : "-"} ${_mySpotPrice.formatedChange!}",
-                                textScaleFactor: 1,
+                                
                                 style: AppTextStyle.labelMedium.copyWith(
                                   color: _mySpotPrice.changeColor,
                                   fontWeight: FontWeight.w600,
@@ -84,7 +84,7 @@ class SpotPriceHeader extends StatelessWidget {
                               ),
                               Text(
                                 "(${_mySpotPrice.changePct! > 0 ? "+" : ""}${_mySpotPrice.formatedChangePercentage})",
-                                textScaleFactor: 1,
+                                
                                 style: AppTextStyle.labelMedium.copyWith(
                                   color: _mySpotPrice.changeColor,
                                   fontWeight: FontWeight.w600,
@@ -154,12 +154,12 @@ class SpotPriceHeader extends StatelessWidget {
                   children: [
                     const Text(
                       "Bid Price",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.labelMedium,
                     ),
                     Text(
                       _viewModel.spotPriceChartData?.formattedBid ?? '',
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.bodyLarge,
                     ),
                   ],
@@ -171,12 +171,12 @@ class SpotPriceHeader extends StatelessWidget {
                   children: [
                     const Text(
                       "Ask Price",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.labelMedium,
                     ),
                     Text(
                       _viewModel.spotPriceChartData?.formattedAsk ?? '',
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.bodyLarge,
                     ),
                   ],

@@ -1,10 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/models/module/product_detail/specifications.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
-import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
@@ -94,6 +94,54 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
   }
 }
 
+
+class SpecificationItem extends StatelessWidget {
+  Specifications data;
+
+  SpecificationItem(this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          children: [
+            Text(
+              data.key!,
+
+              style: AppTextStyle.bodyMedium,
+            ),
+            if (data.keyHelpText!.isNotEmpty)
+              InkWell(
+                onTap: () {
+                  // TODO - Volume Discount
+                  // locator<DialogService>().showBottomSheet(title: data.key, child: VolumeInfoBottomSheet(data.keyHelpText));
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Icon(
+                    Icons.info_outline,
+                    size: 16,
+                  ),
+                ),
+              ),
+            Expanded(
+                child: Text(
+                  data.value!,
+
+                  style:
+                  AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.right,
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _CompetitorPricing extends StatelessWidget {
 
   ProductOverview overview;
@@ -116,7 +164,7 @@ class _CompetitorPricing extends StatelessWidget {
 
          const Padding(
            padding: EdgeInsets.only(left: 15, top: 15),
-           child: Text("Lowest Price Guarantee", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+           child: Text("Lowest Price Guarantee",  style: AppTextStyle.titleMedium,),
          ),
 
          const Padding(
@@ -124,7 +172,7 @@ class _CompetitorPricing extends StatelessWidget {
            child: Text("Please see below how the pricing of 2023 1 oz American Silver Eagle Coin BU "
                "compares against some of other bullion dealers. Our rate comparison table is for your information only "
                "and is primarily used as a benchmark.",
-             textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+              style: AppTextStyle.bodyMedium,),
          ),
 
          SingleChildScrollView(
@@ -153,15 +201,15 @@ class _CompetitorPricing extends StatelessWidget {
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: [
 
-                         Text("Bullion.com", textScaleFactor: 1, style: AppTextStyle.bodyLarge.copyWith(color: AppColor.white),),
+                         Text("Bullion.com",  style: AppTextStyle.bodyLarge.copyWith(color: AppColor.white),),
 
                          VerticalSpacing.custom(value: 25),
 
                          Column(
                            crossAxisAlignment: CrossAxisAlignment.start,
                            children: [
-                             Text(overview.pricing?.badgeText ?? '', textScaleFactor: 1, style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),),
-                             Text(overview.pricing?.formattedNewPrice ?? '', textScaleFactor: 1, style: AppTextStyle.titleLarge.copyWith(color: AppColor.white)  ,),
+                             Text(overview.pricing?.badgeText ?? '',  style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),),
+                             Text(overview.pricing?.formattedNewPrice ?? '',  style: AppTextStyle.titleLarge.copyWith(color: AppColor.white)  ,),
 
                              VerticalSpacing.d5px(),
 
@@ -223,7 +271,7 @@ class CompetitorPricingSection extends StatelessWidget {
                           maxWidth: MediaQuery.of(context).size.width / 3,
                           minWidth: MediaQuery.of(context).size.width / 3,
                         ),
-                        child: Text(e.competitorName ?? '', textScaleFactor: 1, style: AppTextStyle.bodyLarge,)
+                        child: Text(e.competitorName ?? '',  style: AppTextStyle.bodyLarge,)
                       ),
 
                       VerticalSpacing.custom(value: 25),
@@ -246,9 +294,9 @@ class CompetitorPricingSection extends StatelessWidget {
 
                           VerticalSpacing.d5px(),
 
-                          Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+                          Text("As low as",  style: AppTextStyle.labelSmall,),
 
-                          Text(e.formattedPrice.toString(), textScaleFactor: 1, style: AppTextStyle.titleLarge,),
+                          Text(e.formattedPrice.toString(),  style: AppTextStyle.titleLarge,),
 
                           VerticalSpacing.d5px(),
 

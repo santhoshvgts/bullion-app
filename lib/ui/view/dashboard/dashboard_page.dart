@@ -94,7 +94,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                               padding: const EdgeInsets.all(5),
                               child: Text(
                                 snapshot.data?.shoppingCart?.totalItems?.toString() ?? '',
-                                textScaleFactor: 1,
+                                
                                 style: AppTextStyle.bodyMedium
                                     .copyWith(fontSize: 12, color: AppColor.white),
                               ),
@@ -124,7 +124,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                                 padding: const EdgeInsets.all(5),
                                 child: Text(
                                   snapshot.data?.shoppingCart?.totalItems?.toString() ?? '',
-                                  textScaleFactor: 1,
+                                  
                                   style: AppTextStyle.bodyMedium
                                       .copyWith(fontSize: 12, color: AppColor.white),
                                 ),

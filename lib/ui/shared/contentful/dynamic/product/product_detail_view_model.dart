@@ -5,6 +5,7 @@ import 'package:bullion/core/models/module/product_detail/volume_prcing.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/shared/toast/actionable_toast.dart';
@@ -133,6 +134,7 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
       if (response != null) {
         productDetails!.isInUserWishList = true;
         notifyListeners();
+        locator<AnalyticsService>().logAddToWishlist(productDetails!);
       }
     }
     setBusyForObject(productDetails!.isInUserWishList, false);

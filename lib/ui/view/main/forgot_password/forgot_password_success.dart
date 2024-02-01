@@ -31,7 +31,7 @@ class ForgotPasswordSuccessPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 const Text("Reset Password Link Sent \nSuccessfully !",
-                    textScaleFactor: 1,
+                    
                     textAlign: TextAlign.center,
                     style: AppTextStyle.titleLarge),
 

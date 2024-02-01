@@ -107,7 +107,7 @@ class _SpotPriceStripCard extends StatelessWidget {
         children: [
           Text(
             data.metalName!,
-            textScaleFactor: 1,
+            
             style: AppTextStyle.titleSmall,
           ),
           // VerticalSpacing.d5px(),
@@ -115,13 +115,13 @@ class _SpotPriceStripCard extends StatelessWidget {
           //   children: [
           //     Text(
           //       data.formattedAsk!,
-          //       textScaleFactor: 1,
+          //       
           //       style: AppTextStyle.bodySmall.copyWith(),
           //     ),
           //     HorizontalSpacing.d5px(),
           //     Text(
           //       (data.change! < 0 ? "-" : "+") + "${data.formattedChange}",
-          //       textScaleFactor: 1,
+          //       
           //       style: AppTextStyle.bodySmall.copyWith(
           //         color: data.change! < 0 ? AppColor.red : AppColor.green,
           //       ),

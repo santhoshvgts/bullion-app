@@ -46,15 +46,15 @@ class AddToCartSuccessBottomSheet extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
 
-                          Text(viewModel.productDetails!.overview!.name!, textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+                          Text(viewModel.productDetails!.overview!.name!,  style: AppTextStyle.titleMedium,),
 
                           VerticalSpacing.d5px(),
 
                           Row(
                             children: [
-                              Expanded(child: Text("${item!.formattedUnitPrice} x ${item!.quantity}",textScaleFactor: 1, style: AppTextStyle.labelLarge, overflow: TextOverflow.ellipsis,)),
+                              Expanded(child: Text("${item!.formattedUnitPrice} x ${item!.quantity}", style: AppTextStyle.labelLarge, overflow: TextOverflow.ellipsis,)),
 
-                              Text("${item!.formattedSubTotal}",textScaleFactor: 1, style: AppTextStyle.labelLarge, overflow: TextOverflow.ellipsis,)
+                              Text("${item!.formattedSubTotal}", style: AppTextStyle.labelLarge, overflow: TextOverflow.ellipsis,)
                             ],
                           )
 

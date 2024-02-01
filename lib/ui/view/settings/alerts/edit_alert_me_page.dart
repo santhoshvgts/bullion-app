@@ -120,11 +120,11 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
                       .validate()) {
                     bool result = await viewModel.editAlertMe();
                     if (result) {
-                      Util.showSnackBar(context, "Submitted successfully");
+                      Util.showSnackBar("Submitted successfully");
                       Navigator.of(context).pop();
                     }
                   } else {
-                    Util.showSnackBar(context, "Fill all the required fields");
+                    Util.showSnackBar("Fill all the required fields");
                   }
                 },
               )),

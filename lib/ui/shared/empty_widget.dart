@@ -28,7 +28,7 @@ class EmptyWidget extends StatelessWidget {
             image == null ? Container() : new Padding(padding: EdgeInsets.only(top: 30)),
             Text(
               message,
-              textScaleFactor: 1,
+              
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             )

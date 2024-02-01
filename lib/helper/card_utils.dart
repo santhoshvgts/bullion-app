@@ -25,8 +25,8 @@ class CardUtils {
     int month;
     // The value contains a forward slash if the month and year has been
     // entered.
-    if (value.contains(new RegExp(r'(/)'))) {
-      var split = value.split(new RegExp(r'(/)'));
+    if (value.contains(RegExp(r'(/)'))) {
+      var split = value.split(RegExp(r'(/)'));
       // The value before the slash is the month while the value to right of
       // it is the year.
       month = int.parse(split[0]);
@@ -76,7 +76,7 @@ class CardUtils {
   }
 
   static List<int> getExpiryDate(String value) {
-    var split = value.split(new RegExp(r'(/)'));
+    var split = value.split(RegExp(r'(/)'));
     return [int.parse(split[0]), int.parse(split[1])];
   }
 
@@ -100,7 +100,7 @@ class CardUtils {
   }
 
   static String getCleanedNumber(String text) {
-    RegExp regExp = new RegExp(r"[^0-9]");
+    RegExp regExp = RegExp(r"[^0-9]");
     return text.replaceAll(regExp, '');
   }
 
@@ -140,7 +140,7 @@ class CardUtils {
 
       widget = Padding(
         padding: const EdgeInsets.all(8.0),
-        child: new SvgPicture.asset(
+        child: SvgPicture.asset(
           'assets/images/v2/cards/$img',
          height: 20.0,
         ),
@@ -182,19 +182,19 @@ class CardUtils {
 
   static CardType getCardTypeFrmNumber(String input) {
     CardType cardType;
-    if (input.startsWith(new RegExp(r'((5[1-5])|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))'))) {
+    if (input.startsWith(RegExp(r'((5[1-5])|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720))'))) {
       cardType = CardType.Master;
-    } else if (input.startsWith(new RegExp(r'[4]'))) {
+    } else if (input.startsWith(RegExp(r'[4]'))) {
       cardType = CardType.Visa;
-    } else if (input.startsWith(new RegExp(r'((506(0|1))|(507(8|9))|(6500))'))) {
+    } else if (input.startsWith(RegExp(r'((506(0|1))|(507(8|9))|(6500))'))) {
       cardType = CardType.Verve;
-    } else if (input.startsWith(new RegExp(r'((34)|(37))'))) {
+    } else if (input.startsWith(RegExp(r'((34)|(37))'))) {
       cardType = CardType.AmericanExpress;
-    } else if (input.startsWith(new RegExp(r'((6[45])|(6011))'))) {
+    } else if (input.startsWith(RegExp(r'((6[45])|(6011))'))) {
       cardType = CardType.Discover;
-    } else if (input.startsWith(new RegExp(r'((30[0-5])|(3[89])|(36)|(3095))'))) {
+    } else if (input.startsWith(RegExp(r'((30[0-5])|(3[89])|(36)|(3095))'))) {
       cardType = CardType.DinersClub;
-    } else if (input.startsWith(new RegExp(r'(352[89]|35[3-8][0-9])'))) {
+    } else if (input.startsWith(RegExp(r'(352[89]|35[3-8][0-9])'))) {
       cardType = CardType.Jcb;
     } else if (input.length <= 8) {
       cardType = CardType.Others;

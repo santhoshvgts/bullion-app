@@ -62,7 +62,7 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
               const Padding(padding: EdgeInsets.only(top: 35)),
               const Text(
                 "Forgot Password",
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.headlineSmall,
               ),
               const Padding(padding: EdgeInsets.only(top: 10)),

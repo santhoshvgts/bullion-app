@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/core/models/module/cart/display_message.dart';
@@ -28,7 +30,8 @@ class CartViewModel extends VGTSBaseViewModel {
   final ToastService toastService = locator<ToastService>();
   final DialogService dialogService = locator<DialogService>();
 
-  TextFormFieldController promoCodeController = TextFormFieldController(const ValueKey("txtPromoCode"));
+  TextFormFieldController promoCodeController = TextFormFieldController(const ValueKey("txtPromoCode"),);
+  Timer? debounce;
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -44,13 +47,12 @@ class CartViewModel extends VGTSBaseViewModel {
 
   List<ModuleSettings?>? get modules => cart == null ? [] : cart!.moduleSetting;
 
-  ShoppingCart? get shoppingCart => cart == null ? null : cart!.shoppingCart;
+  ShoppingCart? get shoppingCart => cart?.shoppingCart;
 
   List<CartItem>? get cartItems =>
       shoppingCart == null ? [] : shoppingCart!.items;
 
-  List<OrderTotalSummary>? get orderSummary =>
-      shoppingCart == null ? null : shoppingCart!.orderTotalSummary;
+  List<OrderTotalSummary>? get orderSummary => shoppingCart?.orderTotalSummary;
 
   int? get totalItems => shoppingCart == null ? 0 : shoppingCart!.totalItems;
 
@@ -126,15 +128,15 @@ class CartViewModel extends VGTSBaseViewModel {
     _cart = await _cartService.removeItemFromCart(product.productId);
 
     //TODO Analytics
-    // locator<AnalyticsService>().removeFromCart(
-    //   itemId: product.productId.toString(),
-    //   itemName: product.productName ?? '',
-    //   itemCategory: '',
-    //   quantity: product.quantity ?? 0,
-    //   value: product.unitPrice! * product.quantity!,
-    //   price: product.unitPrice,
-    //   currency: 'USD',
-    // );
+    locator<AnalyticsService>().removeFromCart(
+      itemId: product.productId.toString(),
+      itemName: product.productName ?? '',
+      itemCategory: '',
+      quantity: product.quantity ?? 0,
+      value: product.unitPrice! * product.quantity!,
+      price: product.unitPrice,
+      currency: 'USD',
+    );
 
     setBusy(false);
 
@@ -142,22 +144,22 @@ class CartViewModel extends VGTSBaseViewModel {
   }
 
   applyCoupon(BuildContext context) async {
-    setBusy(true);
+    setBusyForObject(promoCodeController, true);
 
     PageSettings? settings =
         await _cartService.applyCoupon(promoCodeController.text);
 
-    if (settings?.isSuccess == false) {
-      _couponInlineMessage = settings?.displayMessage;
-      notifyListeners();
-    } else {
-      _cart = settings;
-      displayMessage(_cart?.displayMessage);
-
-      Navigator.pop(context);
+    if (settings != null) {
+      if (settings.isSuccess == false) {
+        _couponInlineMessage = settings.displayMessage;
+        notifyListeners();
+      } else {
+        _cart = settings;
+        displayMessage(_cart?.displayMessage);
+        Navigator.pop(context);
+      }
     }
-
-    setBusy(false);
+    setBusyForObject(promoCodeController, false);
 
     return;
   }
@@ -211,7 +213,7 @@ class CartViewModel extends VGTSBaseViewModel {
                       Expanded(
                         child: Text(
                           displayMessage.message ?? '',
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.bodyMedium,
                         ),
                       ),
@@ -236,14 +238,14 @@ class CartViewModel extends VGTSBaseViewModel {
 
     if (displayType == MessageDisplayType.BottomSheet) {
       await dialogService.showBottomSheet(
-          title: displayMessage.title == null ? '' : displayMessage.title,
+          title: displayMessage.title ?? '',
           child: DisplayMessageBottomSheet(displayMessage));
       return;
     }
 
     if (displayType == MessageDisplayType.AlertBox) {
       await dialogService.displayMessage(
-          title: displayMessage.title == null ? '' : displayMessage.title,
+          title: displayMessage.title ?? '',
           child: DisplayMessageBottomSheet(displayMessage));
       return;
     }
@@ -276,5 +278,11 @@ class CartViewModel extends VGTSBaseViewModel {
     if (_cart?.displayMessage != null) displayMessage(_cart?.displayMessage);
 
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
   }
 }

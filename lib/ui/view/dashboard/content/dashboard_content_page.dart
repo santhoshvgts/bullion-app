@@ -61,7 +61,7 @@ class DashboardContentPage extends StatelessWidget {
                         Expanded(
                           child: Text(
                             "Sign in for the best experience.",
-                            textScaleFactor: 1,
+                            
                             style: AppTextStyle.bodySmall.copyWith(
                               color: AppColor.white,
                             ),

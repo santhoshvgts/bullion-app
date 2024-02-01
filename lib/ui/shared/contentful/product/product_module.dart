@@ -195,7 +195,7 @@ class _HorizontalItem extends ViewModelWidget<ProductViewModel> {
                         Text(_item.name!,
                             textAlign: TextAlign.left,
                             maxLines: 2,
-                            textScaleFactor: 1,
+                            
                             overflow: TextOverflow.ellipsis,
                             style: ProductTextStyle.title(
                                 viewModel.itemDisplaySettings.gridCols,
@@ -229,7 +229,7 @@ class _HorizontalItem extends ViewModelWidget<ProductViewModel> {
                       _item.ribbonText!,
                       style:
                           const TextStyle(fontSize: 12, color: AppColor.white),
-                      textScaleFactor: 1,
+                      
                     ))),
         ],
       ),
@@ -247,12 +247,7 @@ class VerticalItem extends StatelessWidget {
   final String displayDirection;
   Function(ProductOverview) onItemTap;
 
-  VerticalItem(this._item, { required this.itemWidth, required this.wrapItems, required this.gridCols, required this.textColor, required this.onItemTap, this.displayDirection = DisplayDirection.vertical }) {
-    if (_item.dealEndsIn != null) {
-      Timer.periodic(const Duration(seconds: 1), (timer) {
-      });
-    }
-  }
+  VerticalItem(this._item, { required this.itemWidth, required this.wrapItems, required this.gridCols, required this.textColor, required this.onItemTap, this.displayDirection = DisplayDirection.vertical });
 
   @override
   Widget build(BuildContext context) {
@@ -311,7 +306,7 @@ class VerticalItem extends StatelessWidget {
                                 _item.ribbonText!,
                                 style: const TextStyle(
                                     fontSize: 12, color: AppColor.white),
-                                textScaleFactor: 1,
+                                
                               ))),
                   ],
                 ),
@@ -321,7 +316,7 @@ class VerticalItem extends StatelessWidget {
                     _item.name!,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    textScaleFactor: 1,
+                    
                     style: ProductTextStyle.title(
                       gridCols,
                       color: textColor,
@@ -358,11 +353,11 @@ class VerticalItem extends StatelessWidget {
 
                       VerticalSpacing.d2px(),
 
-                      Text("${(_item.soldPercentage * 100).round()}% Sold", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+                      Text("${(_item.soldPercentage * 100).round()}% Sold",  style: AppTextStyle.labelSmall,),
 
                       VerticalSpacing.d5px(),
 
-                      Text("Only ${_item.onHand} left", textScaleFactor: 1, style: AppTextStyle.labelMedium.copyWith(
+                      Text("Only ${_item.onHand} left",  style: AppTextStyle.labelMedium.copyWith(
                           color: AppColor.dealsRed,
                           fontWeight: FontWeight.w600
                       ),),
@@ -456,7 +451,7 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                               child: Text(
                                 _item.ribbonText!,
                                 style: const TextStyle(fontSize: 12, color: AppColor.white),
-                                textScaleFactor: 1,
+                                
                               ),
                           ),
                       ),
@@ -473,7 +468,7 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                           _item.name!,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          textScaleFactor: 1,
+                          
                           style: ProductTextStyle.title(2,
                             color: viewModel.itemDisplaySettings.textColor,
                           ),
@@ -570,12 +565,12 @@ class _PriceSection extends StatelessWidget {
                   color: item.pricing!.strikeThroughEnabled!
                       ? const Color(0xffC30000)
                       : AppColor.primaryDark),
-          textScaleFactor: 1,
+          
         ),
         if (item.pricing!.strikeThroughEnabled!)
           Text(
             item.pricing!.formattedOldPrice!,
-            textScaleFactor: 1,
+            
             style: ProductTextStyle.strikedPrice(
                     gridCols,
                     color: AppColor.green)
@@ -650,7 +645,7 @@ class _PriceSection extends StatelessWidget {
                           "productDetails": item
                         });
                   } else {
-                    Util.showSnackBar(context, "Please login to create an Alert");
+                    Util.showSnackBar("Please login to create an Alert");
                   }
 
                   //await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: item), showViewButton: true,));

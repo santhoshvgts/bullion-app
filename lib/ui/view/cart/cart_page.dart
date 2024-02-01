@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/cart/cart_item.dart';
@@ -65,7 +67,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
               elevation: 0,
               title: Text(
                 "Shopping Cart",
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.titleMedium.copyWith(
                     color: AppColor.text, fontFamily: AppTextStyle.fontFamily),
               ),
@@ -131,14 +133,14 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
                                             VerticalSpacing.d30px(),
                                             const Text(
                                               "Your Cart is Empty",
-                                              textScaleFactor: 1,
+                                              
                                               textAlign: TextAlign.center,
                                               style: AppTextStyle.titleLarge,
                                             ),
                                             VerticalSpacing.d10px(),
                                             const Text(
                                               "Browse our wide selection of products and add your favorites to the cart.",
-                                              textScaleFactor: 1,
+                                              
                                               textAlign: TextAlign.center,
                                               style: AppTextStyle.bodySmall,
                                             ),
@@ -184,8 +186,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
                                               CartItem item,
                                               int qty,
                                             ) {
-                                              viewModel.cartItems![index]
-                                                  .quantity = qty;
+                                              viewModel.cartItems![index].quantity = qty;
                                               viewModel.modifyItemQty(
                                                 item,
                                                 qty,
@@ -257,7 +258,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
                                     children: [
                                       Text(
                                         "${viewModel.totalItems.toString()} ${viewModel.totalItems! > 1 ? "Items" : "Item"}",
-                                        textScaleFactor: 1,
+                                        
                                         style: AppTextStyle.labelMedium,
                                       ),
                                       Text(
@@ -265,7 +266,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
                                                 ?.formattedOrderTotal
                                                 .toString() ??
                                             "",
-                                        textScaleFactor: 1,
+                                        
                                         style: AppTextStyle.titleMedium,
                                       ),
                                     ],
@@ -342,7 +343,7 @@ class _PotentialSavings extends ViewModelWidget<CartViewModel> {
             children: [
               Text(
                 "Potential Savings",
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),
                 // style: AppTextStyle.titleSmall,
               ),
@@ -351,7 +352,7 @@ class _PotentialSavings extends ViewModelWidget<CartViewModel> {
                 viewModel.shoppingCart!.potentialSavings!,
                 // style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),
                 style: AppTextStyle.titleSmall,
-                textScaleFactor: 1,
+                
               ),
             ],
           ),
@@ -367,6 +368,21 @@ class _PromoCodeSection extends ViewModelWidget<CartViewModel> {
     if (!viewModel.shoppingCart!.canAddPromoCode!) {
       return Container();
     }
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Button.mini("+ Add Promo Code",
+          width: 170,
+          borderColor: Colors.transparent,
+          textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.primary),
+          valueKey: const ValueKey("btnAddPromo"),
+          onPressed: () {
+            viewModel.couponInlineMessage = null;
+            locator<DialogService>().showBottomSheet(title: "Promo Code", child: _PromoCode(viewModel));
+          }
+      )
+    );
+
 
     return InkWell(
       onTap: () {
@@ -403,7 +419,6 @@ class _PromoCodeSection extends ViewModelWidget<CartViewModel> {
                 const Text(
                   "Apply Promo Code",
                   style: AppTextStyle.titleSmall,
-                  textScaleFactor: 1,
                 ),
                 const Spacer(),
                 const Icon(CupertinoIcons.forward, size: 22),
@@ -430,7 +445,7 @@ class _OrderSummary extends ViewModelWidget<CartViewModel> {
           ),
           child: Text(
             "Order Summary",
-            textScaleFactor: 1,
+            
             style: AppTextStyle.titleMedium,
           ),
         ),
@@ -468,7 +483,7 @@ class _OrderSummary extends ViewModelWidget<CartViewModel> {
                       children: [
                         Text(
                           item.key!,
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.bodyMedium,
                         ),
                         HorizontalSpacing.d5px(),
@@ -506,7 +521,7 @@ class _OrderSummary extends ViewModelWidget<CartViewModel> {
                 child: Row(
                   children: [
                     Text("Total",
-                        textScaleFactor: 1,
+                        
                         style: AppTextStyle.titleLarge.copyWith(fontSize: 17)),
                     Expanded(child: Container()),
                     Text(viewModel.shoppingCart!.formattedOrderTotal!,
@@ -609,15 +624,15 @@ class _PromoCode extends StatelessWidget {
                     left: 15.0, right: 15.0, bottom: 15.0, top: 10),
                 child: Button("Apply Promo Code",
                     width: double.infinity,
-                    loading: viewModel.isBusy,
-                    disabled: viewModel.promoCodeController.text.isEmpty,
+                    loading: viewModel.busy(viewModel.promoCodeController),
+                    disabled: viewModel.promoCodeController.text.trim().isEmpty,
                     valueKey: const Key("btnPromoCodeAdd"),
                     onPressed: () async {
-                  setState(() {});
-                  if (viewModel.promoCodeController.text.isNotEmpty) {
-                    await viewModel.applyCoupon(context);
-                  }
-                  setState(() {});
+                      setState(() {});
+                      if (viewModel.promoCodeController.text.isNotEmpty) {
+                        await viewModel.applyCoupon(context);
+                      }
+                      setState(() {});
                 }),
               ),
             ),

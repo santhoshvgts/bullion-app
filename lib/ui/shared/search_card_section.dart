@@ -59,7 +59,7 @@ class SearchCardSection extends PreferredSize {
                           fontFamily: AppTextStyle.fontFamily,
                         ),
                         textAlign: TextAlign.start,
-                        textScaleFactor: 1,
+                        
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),

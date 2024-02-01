@@ -82,7 +82,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
         //                         title ?? '',
         //                         style: AppTextStyle.bodyMedium,
         //                         textAlign: TextAlign.start,
-        //                         textScaleFactor: 1,
+        //                         
         //                       ),
         //                     ),
         //                   )

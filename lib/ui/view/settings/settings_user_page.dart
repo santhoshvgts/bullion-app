@@ -397,17 +397,17 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         null,
                         AppColor.blue),
                   ),
-                  const Divider(
-                    color: AppColor.platinumColor,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      launchUrlString("tel://${locator<AppConfigService>().config!.appLinks!.localNumber}");
-                    },
-                    child: getTextsLayout(null, "Local Number: ${locator<AppConfigService>().config?.appLinks?.localNumber}",
-                        null,
-                        AppColor.blue),
-                  ),
+                  // const Divider(
+                  //   color: AppColor.platinumColor,
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     launchUrlString("tel://${locator<AppConfigService>().config!.appLinks!.localNumber}");
+                  //   },
+                  //   child: getTextsLayout(null, "Local Number: ${locator<AppConfigService>().config?.appLinks?.localNumber}",
+                  //       null,
+                  //       AppColor.blue),
+                  // ),
                   const Divider(color: AppColor.platinumColor,),
                   InkWell(
                     onTap: () {
@@ -422,12 +422,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
 
                   const Divider(color: AppColor.platinumColor,),
 
-                  InkWell(
-                    onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.searchHistory);
-                    },
-                    child: getTextsLayout(null, "Monday - Thursday | 8 a.m - 8 p.m(EST)\nFriday | 8 a.m - 6 p.m(EST)",),
-                  ),
+                  getTextsLayout(null, locator<AppConfigService>().config?.appLinks?.hoursOfOperation ?? '',),
                 ],
               ),
             ),
@@ -496,16 +491,19 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   ) {
     return Stack(
       children: [
-        Column(
-          children: [
-            Container(
-              color: AppColor.primary,
-              height: 280,
-              width: double.infinity,
-            ),
-            const SizedBox(height: 64),
-            getFooterSection(context)
-          ],
+        Container(
+          color: AppColor.secondaryBackground,
+          child: Column(
+            children: [
+              Container(
+                color: AppColor.primary,
+                height: 280,
+                width: double.infinity,
+              ),
+              const SizedBox(height: 64),
+              getFooterSection(context)
+            ],
+          ),
         ),
         Positioned(
           top: 5,
@@ -642,30 +640,6 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 ),
               ))
           .toList(),
-    );
-  }
-
-  Widget showContactInfo(String key, String contactValue) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: Row(
-        children: [
-          Text(
-            key,
-            style:
-                AppTextStyle.bodyMedium.copyWith(color: AppColor.secondaryText),
-          ),
-          InkWell(
-            onTap: () => launchAnUrl(contactValue.contains('@')
-                ? "mailto:$contactValue"
-                : "tel:$contactValue"),
-            child: Text(
-              contactValue,
-              style: AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
-            ),
-          ),
-        ],
-      ),
     );
   }
 

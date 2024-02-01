@@ -38,7 +38,7 @@ class PageMiddleware extends VGTSBuilderWidget<PageMiddlewareViewModel> {
               //
               // VerticalSpacing.d15px(),
               //
-              // Center(child: Text("Redirecting", textScaleFactor: 1, style: AppTextStyle.labelMedium,))
+              // Center(child: Text("Redirecting",  style: AppTextStyle.labelMedium,))
             ],
           ),
         ),

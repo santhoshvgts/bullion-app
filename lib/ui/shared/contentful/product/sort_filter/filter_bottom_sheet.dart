@@ -152,7 +152,7 @@ class _FacetList extends ViewModelWidget<FilterViewModel> {
                                   child: Text(
                                     item.displayName!,
                                     maxLines: 2,
-                                    textScaleFactor: 1,
+                                    
                                     style: AppTextStyle.bodyMedium.copyWith(
                                         fontWeight: FontWeight.w600,
                                         color: viewModel.selectedFacetName ==
@@ -248,7 +248,7 @@ class _CheckBoxListWidget extends ViewModelWidget<FilterViewModel> {
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: RichText(
-              textScaleFactor: 1,
+              
               text: TextSpan(
                   text: _item.displayName,
                   style: AppTextStyle.bodyMedium
@@ -298,7 +298,7 @@ class Header extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 "Filter",
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.titleLarge.copyWith(
                   fontSize: 17,
                 ),
@@ -312,7 +312,7 @@ class Header extends StatelessWidget {
               padding: EdgeInsets.only(top: 15, bottom: 15.0),
               child: Text(
                 "Reset",
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.titleMedium
                     .copyWith(fontWeight: FontWeight.w600),
               ),

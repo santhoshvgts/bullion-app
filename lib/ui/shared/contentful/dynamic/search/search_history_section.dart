@@ -30,7 +30,7 @@ class SearchHistorySection extends StatelessWidget {
         children: [
           Text(
             settings!.title ?? "Recent Searches",
-            textScaleFactor: 1,
+            
             textAlign: TextAlign.start,
             style: AppTextStyle.titleMedium,
           ),
@@ -81,7 +81,7 @@ class _ItemCard extends StatelessWidget {
                   _item.name!,
                   style: AppTextStyle.bodyMedium
                       .copyWith(fontSize: 16, fontWeight: FontWeight.normal),
-                  textScaleFactor: 1,
+                  
                 ),
               ),
               const Icon(CupertinoIcons.arrow_up_right)

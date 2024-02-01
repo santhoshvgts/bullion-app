@@ -43,7 +43,7 @@ class AddressRecommendBottomSheet extends VGTSBuilderWidget<AddEditAddressViewMo
 
             const Padding(
               padding: EdgeInsets.only(bottom: 10),
-              child: Text("Suggested Address",textScaleFactor: 1,style: AppTextStyle.titleMedium),
+              child: Text("Suggested Address",style: AppTextStyle.titleMedium),
             ),
 
             _AddressItem(viewModel.shippingAddress!.recommendedAddress,isSelected: viewModel.selectedAddress==SelectAddress.Suggested ? true : false,
@@ -118,7 +118,7 @@ class _AddressItem extends  ViewModelWidget<AddEditAddressViewModel> {
 
                   Text(
                     _item!.name,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleMedium,
                   ),
 
@@ -126,13 +126,13 @@ class _AddressItem extends  ViewModelWidget<AddEditAddressViewModel> {
 
                   Text(
                     _item!.add1!,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.bodyMedium,
                   ),
                   VerticalSpacing.d2px(),
                   Text(
                     _item!.formattedSubAddress,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.bodyMedium,
                   ),
 
@@ -142,7 +142,7 @@ class _AddressItem extends  ViewModelWidget<AddEditAddressViewModel> {
 
 
           if(isEdit) TextButton(
-                child: Text("Edit", textScaleFactor: 1, style: AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w600,color: AppColor.primary),),
+                child: Text("Edit",  style: AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w600,color: AppColor.primary),),
                 onPressed: () async{
                   locator<DialogService>().dialogComplete(AlertResponse(status:false));
                 }

@@ -116,6 +116,11 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
                                 disabled: viewModel.busy(viewModel.productDetails),
                                 onPressed: () async {
                                   if (viewModel.priceAlertGlobalKey.currentState!.validate()) {
+                                    if ((double.tryParse(viewModel.targetPriceFormFieldController.text) ?? 0) == 0) {
+                                      Util.showSnackBar("Target Price cannot be less than or equal to zero");
+                                      return;
+                                    }
+
                                     bool result = await viewModel.savePriceAlert();
                                     locator<NavigationService>().pop(returnValue: result);
                                   }

@@ -42,7 +42,7 @@ class ChangeEmailViewModel extends VGTSBaseViewModel {
 
     if (response != null) {
       navigationService.pop(returnValue: true);
-      Util.showSnackBar(navigationService.navigatorKey.currentContext!, "Email Address Updated Successfully !");
+      Util.showSnackBar("Email Address Updated Successfully !");
     }
 
   }

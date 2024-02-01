@@ -33,7 +33,7 @@ class DisplayMessageToast extends StatelessWidget {
               children: [
                 Text(
                   _displayMessage.message!,
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.bodyLarge.copyWith(
                       color: AppColor.green, fontWeight: FontWeight.bold),
                 ),
@@ -70,7 +70,7 @@ class DisplayMessageBottomSheet extends StatelessWidget {
               padding: EdgeInsets.all(10),
               child: Text(
                 _displayMessage!.message!,
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.bodyLarge
                     .copyWith(color: _displayMessage!.textColor),
               ),
@@ -92,7 +92,7 @@ class DisplayMessageBottomSheet extends StatelessWidget {
                     linkStyle:
                         AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
                   )
-                  // child: Text(_displayMessage.subText, textScaleFactor: 1, textAlign: TextAlign.left, style: AppTextStyle.body),
+                  // child: Text(_displayMessage.subText,  textAlign: TextAlign.left, style: AppTextStyle.body),
                   ),
           ],
         ),

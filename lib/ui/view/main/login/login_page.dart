@@ -43,7 +43,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                   width: double.infinity,
                   alignment: Alignment.center,
                   child: Text("Explore as Guest",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.titleSmall
                           .copyWith(color: AppColor.primary)),
                 ),
@@ -54,7 +54,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
               width: double.infinity,
               alignment: Alignment.center,
               child: Text("@2023 Bullion.com All rights reserved",
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.bodyMedium.copyWith(
                       fontSize: 12,
                       color: AppColor.primaryText,
@@ -88,7 +88,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                     const Padding(padding: EdgeInsets.only(top: 12)),
                     const Text(
                       "Welcome back",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.headlineSmall,
                     ),
                     VerticalSpacing.custom(value: 70),
@@ -127,7 +127,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                               top: 10,
                             ),
                             child: Text("Forgot your Password?",
-                                textScaleFactor: 1,
+                                
                                 style: AppTextStyle.titleSmall
                                     .copyWith(color: AppColor.primary)),
                           ),

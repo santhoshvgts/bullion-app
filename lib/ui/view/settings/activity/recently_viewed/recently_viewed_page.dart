@@ -33,7 +33,7 @@ class RecentlyViewedPage extends VGTSBuilderWidget<RecentlyViewedViewModel> {
   Widget viewBuilder(BuildContext context, AppLocalizations locale, RecentlyViewedViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Recently Viewed", textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
+        title: Text("Recently Viewed",  style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
       ),
       backgroundColor: AppColor.secondaryBackground,
       body: RefreshIndicator(

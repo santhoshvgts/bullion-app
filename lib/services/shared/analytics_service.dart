@@ -149,6 +149,7 @@ class AnalyticsService {
     analytics.logAppOpen();
   }
 
+  //TODO log Search need to be implemented
   Future<void> logSearch(String searchTerm) async {
     await analytics.logSearch(searchTerm: searchTerm);
     KochavaTracker.instance.sendEventWithString("Search", searchTerm);
@@ -176,7 +177,6 @@ class AnalyticsService {
     );
   }
 
-
   Future<void> logProductView(ProductDetails? productDetails) async {
     locator<AnalyticsService>().logEvent('view_item', {
       'currency': productDetails?.overview!.pricing!.currency ?? 'USD',
@@ -198,6 +198,34 @@ class AnalyticsService {
 
     KochavaTracker.instance.sendEventWithDictionary("View Product", eventMapObject);
   }
+
+  Future<void> removeFromCart(
+      {required String itemId,
+        required String itemName,
+        required String itemCategory,
+        required int quantity,
+        double? price,
+        double? value,
+        String? currency}) async {
+    locator<AnalyticsService>().logEvent('remove_from_cart', {
+      'currency': 'USD',
+      'item_id': itemId,
+      'item_name': itemName,
+      'value': price
+    });
+    debugPrint('Analytics: Remove Cart');
+  }
+
+  logAddToWishlist(ProductDetails productDetails) {
+    analytics.logAddToWishlist(
+        currency: "USD",
+        value: productDetails.overview!.pricing!.newPrice,
+        items: [
+          productDetails.overview!.analyticEventItemObject()
+        ]
+    );
+  }
+
 
   Map<String, Object> filterOutNulls(Map<String, Object?> parameters) {
     final Map<String, Object> filtered = <String, Object>{};

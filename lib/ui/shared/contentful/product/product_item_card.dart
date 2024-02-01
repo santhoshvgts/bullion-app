@@ -56,7 +56,7 @@ class ProductItemCard extends StatelessWidget {
                     Text(item!.name!,
                         textAlign: TextAlign.left,
                         maxLines: 2,
-                        textScaleFactor: 1,
+                        
                         overflow: TextOverflow.ellipsis,
                         style: ProductTextStyle.title(2,
                             color: AppColor.black)),
@@ -67,7 +67,7 @@ class ProductItemCard extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 10, bottom: 15),
                         child: Text(
                           "Quantity: ${detail.requestedQty}",
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.titleMedium,
                         ),
                       )
@@ -76,7 +76,7 @@ class ProductItemCard extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 10, bottom: 15),
                         child: Text(
                           "Your Price: ${detail.formatedYourPrice}",
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.titleMedium,
                         ),
                       )
@@ -119,7 +119,7 @@ class ProductItemCard extends StatelessWidget {
                 children: [
                   Text(
                     "Edit",
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.labelMedium,
                   ),
                 ],
@@ -137,7 +137,7 @@ class ProductItemCard extends StatelessWidget {
                 children: [
                   Text(
                     "Remove",
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.labelMedium,
                   ),
                 ],
@@ -167,12 +167,12 @@ class _PriceSection extends StatelessWidget {
               color: item!.pricing!.strikeThroughEnabled!
                   ? const Color(0xffC30000)
                   : AppColor.primaryDark),
-          textScaleFactor: 1,
+          
         ),
         if (item!.pricing!.strikeThroughEnabled!)
           Text(
             item!.pricing!.formattedOldPrice!,
-            textScaleFactor: 1,
+            
             style: ProductTextStyle.strikedPrice(2, color: AppColor.green)
                 .copyWith(
                     fontWeight: FontWeight.normal,
@@ -199,7 +199,7 @@ class _PriceSection extends StatelessWidget {
               child: Text(
                 item!.pricing!.badgeText!,
                 textAlign: TextAlign.center,
-                textScaleFactor: 1,
+                
                 style: ProductTextStyle.badge(2, color: AppColor.black),
               ),
             ),
@@ -210,7 +210,7 @@ class _PriceSection extends StatelessWidget {
               child: Text(
                 item!.pricing!.discountText!,
                 textAlign: TextAlign.center,
-                textScaleFactor: 1,
+                
                 style: ProductTextStyle.badge(2, color: AppColor.black),
               ),
             ),
@@ -223,7 +223,7 @@ class _PriceSection extends StatelessWidget {
         child: Text(
           item!.availabilityText!,
           textAlign: TextAlign.left,
-          textScaleFactor: 1,
+          
           style: AppTextStyle.titleLarge
               .copyWith(color: AppColor.red, fontSize: 16),
         ));

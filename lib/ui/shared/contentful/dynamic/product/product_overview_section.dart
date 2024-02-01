@@ -4,32 +4,26 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_detail/product_price.dart';
 import 'package:bullion/core/models/module/product_detail/product_variant.dart';
 import 'package:bullion/core/res/colors.dart';
-import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
-import 'package:bullion/router.dart';
 import 'package:bullion/services/appconfig_service.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
-import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_section.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
-import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
 import 'package:bullion/ui/view/product/detail/volume_info_bottom_sheet.dart';
 import 'package:bullion/ui/view/product/product_images_full_view.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
-import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/chip_item.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:bullion/ui/widgets/shimmer_effect.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:stacked/stacked.dart';
 
@@ -86,7 +80,6 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                         fontSize: 12,
                         color: AppColor.white,
                       ),
-                      textScaleFactor: 1,
                     ),
                   ),
                 ),
@@ -99,6 +92,11 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                       Util.showLoginAlert();
                       return;
                     }
+
+                    if (setting?.productId == null) {
+                      return;
+                    }
+
                     viewModel.addAsFavorite(setting?.productId);
                   },
                   child: Container(
@@ -114,8 +112,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                           strokeWidth: 1.5,
                           valueColor: AlwaysStoppedAnimation(Colors.red.shade400)
                         )
-                    ) : Icon(
-                      setting!.isInUserWishList! ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                    ) : Icon(setting!.isInUserWishList! ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
                       size: 20,
                       color: setting!.isInUserWishList! ? Colors.red.shade400 : Colors.black38,
                     ),
@@ -133,6 +130,11 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                           Util.showLoginAlert();
                           return;
                         }
+
+                        if (setting?.productId == null) {
+                          return;
+                        }
+
                         viewModel.priceAlert(setting?.overview, context);
                       },
                       child: Container(
@@ -159,13 +161,17 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                   children: [
                     InkWell(
                       onTap: () {
+
+                        String shareContent = "Check out this product on BULLION.com:\n${viewModel.productDetails!.overview!.name!}\n\n${locator<AppConfigService>()
+                            .config!
+                            .appLinks!
+                            .webUrl!}${viewModel.productDetails!.overview!.targetUrl!}";
                         Share.share(
-                          "Check out this product on BULLION.com:\n${viewModel.productDetails!.overview!.name!}\n\n${locator<AppConfigService>()
-                                  .config!
-                                  .appLinks!
-                                  .webUrl!}${viewModel.productDetails!.overview!.targetUrl!}",
+                          shareContent,
                           subject: "Bullion.com",
                         );
+
+                        locator<AnalyticsService>().logShare(itemId: viewModel.productDetails!.overview!.productId!.toString(), contentType: shareContent);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),
@@ -216,7 +222,7 @@ class _Header extends ViewModelWidget<ProductDetailViewModel> {
           Text(
             viewModel.productDetails?.overview?.name ?? "-",
             style: AppTextStyle.titleMedium,
-            textScaleFactor: 1,
+            
           ),
 
         ],
@@ -295,7 +301,7 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
           Text(
             viewModel.productDetails?.overview?.name ?? "-",
             style: AppTextStyle.titleMedium,
-            textScaleFactor: 1,
+            
           ),
 
           VerticalSpacing.d10px(),
@@ -342,7 +348,7 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
                     viewModel.productDetails!.overview!.reviewCount == 0
                         ? ""
                         : "${viewModel.productDetails?.overview?.avgRatings} (${viewModel.productDetails!.overview!.reviewCount})",
-                    textScaleFactor: 1,
+                    
                     textAlign: TextAlign.left,
                     style: AppTextStyle.bodySmall,
                   )),
@@ -454,7 +460,7 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 children: [
                   const Text(
                     "Volume Discount Pricing",
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleMedium,
                   ),
                   const Spacer(),
@@ -633,7 +639,7 @@ class _VolumeDiscountCard extends StatelessWidget {
 
             VerticalSpacing.d2px(),
 
-            Text((offerText?.isEmpty == true) ? "" : "Save ${offerText!}", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.offerText),),
+            Text((offerText?.isEmpty == true) ? "" : "Save ${offerText!}",  style: AppTextStyle.bodySmall.copyWith(color: AppColor.offerText),),
           ],
         ),
       ),
@@ -732,7 +738,7 @@ class _CoinGradeSpecification extends ViewModelWidget<ProductDetailViewModel> {
                       children: [
                         const Text(
                           "Information Provided By ",
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.bodyMedium,
                         ),
                         NetworkImageLoader(
@@ -888,7 +894,7 @@ class _PriceInfo extends ViewModelWidget<ProductDetailViewModel> {
         Padding(
             padding: const EdgeInsets.only(top: 0, bottom: 2.0),
             child: RichText(
-              textScaleFactor: 1,
+              
               textAlign: TextAlign.left,
               text: TextSpan(
                   text:
@@ -986,14 +992,14 @@ class AlertToast extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.bodyMedium
                       .copyWith(color: titleColor, fontWeight: FontWeight.bold),
                 ),
                 VerticalSpacing.d2px(),
                 Text(
                   productDetails!.overview!.name!,
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.bodyMedium.copyWith(fontSize: 12),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -1008,7 +1014,7 @@ class AlertToast extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: Text(
                   "View",
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.bodyMedium
                       .copyWith(fontWeight: FontWeight.bold),
                 ),

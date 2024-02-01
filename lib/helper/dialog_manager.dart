@@ -58,7 +58,7 @@ class _DialogManagerState extends State<DialogManager> {
               actionsPadding: const EdgeInsets.only(bottom: 10, right: 20),
               title: Text(
                 request.title!,
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.bodyMedium,
               ),
               content: Text(request.description!, style: AppTextStyle.bodyMedium),
@@ -66,7 +66,7 @@ class _DialogManagerState extends State<DialogManager> {
                 TextButton(
                   child: const Text(
                     "OK",
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.labelMedium,
                   ),
                   onPressed: () {
@@ -96,15 +96,15 @@ class _DialogManagerState extends State<DialogManager> {
               actionsPadding: const EdgeInsets.only(bottom: 10, right: 20),
               title: Text(
                 request.title!,
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.titleMedium.copyWith(color: AppColor.primary),
               ),
-              content: Text(request.description!, textScaleFactor: 1, style: AppTextStyle.bodyMedium),
+              content: Text(request.description!,  style: AppTextStyle.bodyMedium),
               actions: <Widget>[
                 TextButton(
                   child: const Text(
                     "Cancel",
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.labelMedium,
                   ),
                   onPressed: () {
@@ -114,7 +114,7 @@ class _DialogManagerState extends State<DialogManager> {
                 TextButton(
                   child: Text(
                     request.buttonTitle!,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.labelMedium,
                   ),
                   onPressed: () {
@@ -162,7 +162,7 @@ class _DialogManagerState extends State<DialogManager> {
                                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                                       child: Text(
                                         request.title!,
-                                        textScaleFactor: 1,
+                                        
                                         style: AppTextStyle.titleLarge.copyWith(
                                           fontSize: 17,
                                         ),
@@ -298,7 +298,7 @@ class _DialogManagerState extends State<DialogManager> {
                                     ? Container()
                                     : Text(
                                         request.title!,
-                                        textScaleFactor: 1,
+                                        
                                         style: AppTextStyle.titleLarge.copyWith(
                                           fontSize: 17,
                                         ),

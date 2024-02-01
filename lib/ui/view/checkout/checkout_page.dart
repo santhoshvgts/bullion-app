@@ -59,7 +59,7 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
                children: [
                  Text(
                    "Checkout",
-                   textScaleFactor: 1,
+                   
                    style: AppTextStyle.titleMedium.copyWith(
                        color: AppColor.text, fontFamily: AppTextStyle.fontFamily),
                  ),
@@ -70,7 +70,7 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
                    },
                    child: Text(
                      "Review Order ${viewModel.checkout?.formattedOrderTotal ?? '-'}",
-                     textScaleFactor: 1,
+                     
                      style: AppTextStyle.labelMedium.copyWith(
                          color: AppColor.text, fontFamily: AppTextStyle.fontFamily, decoration: TextDecoration.underline),
                    ),
@@ -94,7 +94,7 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                  child: Text(
                    viewModel.formattedRemainingPricingTime,
-                   textScaleFactor: 1,
+                   
                    textAlign: TextAlign.center,
                    style: AppTextStyle.titleSmall.copyWith( color: AppColor.white),
                  ),
@@ -183,7 +183,7 @@ class CheckoutPage extends StatelessWidget with WidgetsBindingObserver {
                              ApmexWebView.open(locator<AppConfigService>().config!.appLinks!.checkoutTermCancelPolicy, title: "Cancellation Policy");
                            },
                            child: RichText(
-                             textScaleFactor: 1,
+                             
                              textAlign: TextAlign.center,
                              text: TextSpan(
                                text: 'By placing an order, I agree to ',
@@ -354,14 +354,14 @@ class _PriceTimingSection extends ViewModelWidget<CheckoutViewModel> {
 
                   Text(
                     viewModel.checkout!.formattedOrderTotal!,
-                    textScaleFactor: 1,
+                    
                     textAlign: TextAlign.center,
                     style: AppTextStyle.titleMedium.copyWith(color: AppColor.primary),
                   ),
 
                   Text(
                     "Order Total (${viewModel.checkout!.totalItems} Items)",
-                    textScaleFactor: 1,
+                    
                     textAlign: TextAlign.center,
                     style: AppTextStyle.bodySmall.copyWith(fontSize: 12,color: AppColor.primary, decoration: TextDecoration.underline),
                   ),
@@ -379,7 +379,7 @@ class _PriceTimingSection extends ViewModelWidget<CheckoutViewModel> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             child: Text(
               viewModel.formattedRemainingPricingTime,
-              textScaleFactor: 1,
+              
               textAlign: TextAlign.center,
               style: AppTextStyle.titleSmall.copyWith( color: AppColor.white),
             ),
@@ -428,15 +428,15 @@ print("viewModel.showAddressSelection ${viewModel.showAddressSelection}");
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Shipping Address", textScaleFactor: 1,style: AppTextStyle.bodySmall.copyWith(fontSize: 12),),
+                    Text("Shipping Address", style: AppTextStyle.bodySmall.copyWith(fontSize: 12),),
 
                     VerticalSpacing.d2px(),
 
-                    Text(userAddress!.name, textScaleFactor: 1,style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
+                    Text(userAddress!.name, style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
 
                     VerticalSpacing.d2px(),
 
-                    Text(userAddress!.formattedFullAddress ?? "",textScaleFactor: 1,style: AppTextStyle.bodySmall,),
+                    Text(userAddress!.formattedFullAddress ?? "",style: AppTextStyle.bodySmall,),
 
                   ],
                 ),
@@ -444,7 +444,7 @@ print("viewModel.showAddressSelection ${viewModel.showAddressSelection}");
 
               Container(
                   alignment: Alignment.bottomRight,
-                  child: Text("Change", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
+                  child: Text("Change",  style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
               ),
 
             ],
@@ -496,16 +496,16 @@ class _PaymentSection extends ViewModelWidget<CheckoutViewModel> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Payment Method", textScaleFactor: 1,style: AppTextStyle.bodySmall.copyWith(fontSize: 12),),
+                    Text("Payment Method", style: AppTextStyle.bodySmall.copyWith(fontSize: 12),),
 
                     VerticalSpacing.d2px(),
 
-                    Text(paymentMethod.displayName!, textScaleFactor: 1,style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
+                    Text(paymentMethod.displayName!, style: AppTextStyle.titleMedium.copyWith(fontSize: 16),),
 
                     if (paymentMethod.displaySubText != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 2),
-                        child: Text(paymentMethod.displaySubText!,textScaleFactor: 1,style: AppTextStyle.bodySmall,),
+                        child: Text(paymentMethod.displaySubText!,style: AppTextStyle.bodySmall,),
                       ),
 
                     if (paymentMethod.selectedInfoText != null)
@@ -522,7 +522,7 @@ class _PaymentSection extends ViewModelWidget<CheckoutViewModel> {
 
               Container(
                   alignment: Alignment.bottomRight,
-                  child: Text("Change", textScaleFactor: 1, style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
+                  child: Text("Change",  style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),)
               ),
 
             ],
@@ -641,7 +641,7 @@ class _OrderSummary extends ViewModelWidget<CheckoutViewModel> {
           ),
           child: Text(
             "Order Summary",
-            textScaleFactor: 1,
+            
             style: AppTextStyle.titleMedium,
           ),
         ),
@@ -678,7 +678,7 @@ class _OrderSummary extends ViewModelWidget<CheckoutViewModel> {
                       children: [
                         Text(
                           item.key!,
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.bodyMedium,
                         ),
                         HorizontalSpacing.d5px(),
@@ -716,7 +716,7 @@ class _OrderSummary extends ViewModelWidget<CheckoutViewModel> {
                 child: Row(
                   children: [
                     Text("Total",
-                        textScaleFactor: 1,
+                        
                         style: AppTextStyle.titleLarge.copyWith(fontSize: 17)),
                     Expanded(child: Container()),
                     Text(viewModel.checkout?.formattedOrderTotal ?? '',

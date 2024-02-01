@@ -206,10 +206,9 @@ class QtyAmountInputOutPut {
 }
 
 class Util {
-  static showSnackBar(BuildContext? context, String content) {
+  static showSnackBar(String content) {
     BuildContext context = locator<NavigationService>().navigatorKey.currentContext!;
-    SnackBar snackBar =
-        SnackBar(content: Text(content, style: AppTextStyle.titleSmall));
+    SnackBar snackBar = SnackBar(content: Text(content, style: AppTextStyle.titleSmall));
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
@@ -235,7 +234,7 @@ class Util {
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Item Added to Cart", textScaleFactor: 1, style: AppTextStyle.titleSmall.copyWith(color: AppColor.green),),
+          Text("Item Added to Cart",  style: AppTextStyle.titleSmall.copyWith(color: AppColor.green),),
 
           VerticalSpacing.d10px(),
 

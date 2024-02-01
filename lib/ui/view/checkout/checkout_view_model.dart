@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:bullion/core/models/module/dynamic.dart';
 import 'package:bullion/services/api_request/checkout_request.dart';
 import 'package:bullion/services/payment/bitpay_service.dart';
 import 'package:bullion/services/payment/braintree_service.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/checkout/checkout_steam_service.dart';
+import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -215,23 +217,26 @@ class CheckoutViewModel extends VGTSBaseViewModel {
 
     placeOrderLoading = true;
     debugPrint("Nonce $paymentMethodNonce");
-    var placeOrderResponse = await request<Order>(CheckoutRequest.placeOrder(
+    var response = (await request<DynamicModel>(CheckoutRequest.placeOrder(
         _checkout!.selectedShippingAddress,
         _checkout!.selectedPaymentMethod,
         paymentMethodNonce,
-        paymentMethodDeviceData));
+        paymentMethodDeviceData)))?.json;
     placeOrderLoading = false;
 
-    if (placeOrderResponse == null) {
+    if (response == null) {
       mounted = true;
       return;
     }
 
-    //TODO
-    // if (placeOrderResponse is Checkout) {
-    //   checkout = placeOrderResponse;
-    //   return;
-    // }
+    var placeOrderResponse = response.containsKey("order_id") ? Order.fromJson(response) : Checkout.fromJson(response);
+
+    if (placeOrderResponse is Checkout) {
+      checkout = placeOrderResponse;
+      return;
+    }
+
+    placeOrderResponse = placeOrderResponse as Order;
 
     if (placeOrderResponse.orderId != null) {
       locator<CartService>().clear();
@@ -253,6 +258,7 @@ class CheckoutViewModel extends VGTSBaseViewModel {
       }
 
       locator<AnalyticsService>().logPurchase(placeOrderResponse);
+      locator<EventBusService>().eventBus.fire(CartRefreshEvent());
 
       navigationService.pushAndPopUntil(
         "${Routes.orderPlaced}/${placeOrderResponse.orderId}",

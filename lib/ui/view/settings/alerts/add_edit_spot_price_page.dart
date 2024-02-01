@@ -193,11 +193,11 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                       .validate()) {
                     bool result = await viewModel.createEditMarketAlert();
                     if (result) {
-                      Util.showSnackBar(context, "Submitted successfully");
+                      Util.showSnackBar("Submitted successfully");
                       Navigator.of(context).pop();
                     }
                   } else {
-                    Util.showSnackBar(context, "Fill all the required fields");
+                    Util.showSnackBar("Fill all the required fields");
                   }
                 },
                 disabled: viewModel.operatorsResponse == null,

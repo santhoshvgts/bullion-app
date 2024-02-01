@@ -65,7 +65,7 @@ class ProfileViewModel extends VGTSBaseViewModel {
     if (response != null) {
       locator<AuthenticationService>().updateUserProfile(response.user);
       navigationService.pop(returnValue: true);
-      Util.showSnackBar(navigationService.navigatorKey.currentContext!, "Profile Updated Successfully !");
+      Util.showSnackBar("Profile Updated Successfully !");
     }
 
   }

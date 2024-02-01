@@ -53,7 +53,7 @@ class CartButton extends VGTSBuilderWidget<CartButtonViewModel> {
                 padding: const EdgeInsets.all(5),
                 child: Text(
                   viewModel.totalCartItem.toString(),
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.bodyMedium
                       .copyWith(fontSize: 12, color: AppColor.white),
                 ),

@@ -35,7 +35,7 @@ class ChangePasswordViewModel extends VGTSBaseViewModel {
 
     if (response != null) {
       navigationService.pop(returnValue: true);
-      Util.showSnackBar(navigationService.navigatorKey.currentContext!, "Password Updated Successfully !");
+      Util.showSnackBar("Password Updated Successfully !");
     }
 
   }

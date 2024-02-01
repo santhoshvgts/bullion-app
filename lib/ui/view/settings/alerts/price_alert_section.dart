@@ -132,7 +132,6 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                       children: [
                                         InkWell(
                                           onTap: () async {
-
                                             AlertResponse response = await locator<DialogService>().showConfirmationDialog(
                                                 title: "Delete",
                                                 description: "Do you want to delete this Alert ?",

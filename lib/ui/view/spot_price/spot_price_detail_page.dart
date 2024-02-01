@@ -50,7 +50,7 @@ class _SpotPriceDetailPageState extends State<SpotPriceDetailPage>
             elevation: 0.5,
             title: Text(
               "Spot Price",
-              textScaleFactor: 1,
+              
               style: AppTextStyle.titleMedium.copyWith(
                 color: AppColor.text,
                 fontFamily: AppTextStyle.fontFamily,

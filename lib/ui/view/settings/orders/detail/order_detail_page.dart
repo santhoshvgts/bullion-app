@@ -213,10 +213,10 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
         if (key != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 2),
-            child: Text(key, textScaleFactor: 1, style: AppTextStyle.labelLarge,),
+            child: Text(key,  style: AppTextStyle.labelLarge,),
           ),
 
-        Text(value, textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+        Text(value,  style: AppTextStyle.bodyMedium,),
 
       ],
     );
@@ -421,7 +421,7 @@ class _FromSuccessCard extends ViewModelWidget<OrderDetailViewModel>{
 
           VerticalSpacing.d5px(),
 
-          const Text("Order Placed Successfully.",textScaleFactor: 1,style: AppTextStyle.bodyMedium,)
+          const Text("Order Placed Successfully.",style: AppTextStyle.bodyMedium,)
         ],
       ),
 
@@ -447,7 +447,7 @@ class TrackOrderInfoBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 5.0,top: 5.0,left: 15.0,right: 15.0,),
                   child: Column(
                     children: [
-                      Text(e.message!,textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+                      Text(e.message!, style: AppTextStyle.bodyMedium,),
 
                       VerticalSpacing.d10px(),
 
@@ -460,9 +460,9 @@ class TrackOrderInfoBottomSheet extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
 
-                            Text("Tracking No: ",textScaleFactor: 1, style: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary, decoration: TextDecoration.underline),),
+                            Text("Tracking No: ", style: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary, decoration: TextDecoration.underline),),
 
-                            Expanded(child: Text(e.trackingNumber!, textScaleFactor: 1,style: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary,  decoration: TextDecoration.underline),)),
+                            Expanded(child: Text(e.trackingNumber!, style: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary,  decoration: TextDecoration.underline),)),
 
                           ],
                         ),
@@ -498,7 +498,7 @@ class _ItemListSection extends ViewModelWidget<OrderDetailViewModel> {
 
           const Padding(
             padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
-            child: Text("Non-Taxable Products", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+            child: Text("Non-Taxable Products",  style: AppTextStyle.titleMedium,),
           ),
 
           ListView.separated(
@@ -520,9 +520,9 @@ class _ItemListSection extends ViewModelWidget<OrderDetailViewModel> {
             child: Row(
               children: [
 
-                const Expanded(child: Text("Non-Taxable Subtotal", textScaleFactor: 1, style: AppTextStyle.titleSmall,)),
+                const Expanded(child: Text("Non-Taxable Subtotal",  style: AppTextStyle.titleSmall,)),
 
-                Text(viewModel.orderDetail!.formattedNonTaxableSubTotal!, textScaleFactor: 1, style: AppTextStyle.titleSmall,),
+                Text(viewModel.orderDetail!.formattedNonTaxableSubTotal!,  style: AppTextStyle.titleSmall,),
 
               ],
             ),
@@ -532,7 +532,7 @@ class _ItemListSection extends ViewModelWidget<OrderDetailViewModel> {
 
           const Padding(
             padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-            child: Text("Taxable Products", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+            child: Text("Taxable Products",  style: AppTextStyle.titleMedium,),
           ),
 
           ListView.separated(
@@ -553,9 +553,9 @@ class _ItemListSection extends ViewModelWidget<OrderDetailViewModel> {
             child: Row(
               children: [
 
-                const Expanded(child: Text("Taxable Subtotal", textScaleFactor: 1, style: AppTextStyle.titleSmall,)),
+                const Expanded(child: Text("Taxable Subtotal",  style: AppTextStyle.titleSmall,)),
 
-                Text(viewModel.orderDetail!.formattedTaxableSubTotal!, textScaleFactor: 1, style: AppTextStyle.titleSmall,),
+                Text(viewModel.orderDetail!.formattedTaxableSubTotal!,  style: AppTextStyle.titleSmall,),
 
               ],
             ),
@@ -568,9 +568,9 @@ class _ItemListSection extends ViewModelWidget<OrderDetailViewModel> {
             child: Row(
               children: [
 
-                const Expanded(child: Text("Tax", textScaleFactor: 1, style: AppTextStyle.titleSmall,)),
+                const Expanded(child: Text("Tax",  style: AppTextStyle.titleSmall,)),
 
-                Text(viewModel.orderDetail!.formattedTaxableItemsTax!, textScaleFactor: 1, style: AppTextStyle.titleSmall,),
+                Text(viewModel.orderDetail!.formattedTaxableItemsTax!,  style: AppTextStyle.titleSmall,),
 
               ],
             ),
@@ -586,7 +586,7 @@ class _ItemListSection extends ViewModelWidget<OrderDetailViewModel> {
 
         const Padding(
           padding: EdgeInsets.only(left: 15, right: 15, top: 10,),
-          child: Text("Items", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+          child: Text("Items",  style: AppTextStyle.titleMedium,),
         ),
 
         ListView.separated(
@@ -654,7 +654,7 @@ class _ItemCard extends StatelessWidget {
                         item.productName!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        textScaleFactor: 1,
+                        
                         style: AppTextStyle.bodyMedium,
                       ),
                       VerticalSpacing.d5px(),
@@ -664,14 +664,14 @@ class _ItemCard extends StatelessWidget {
 
                           Text("${item.formattedUnitPrice!} x ${item.quantity}",
                             style: AppTextStyle.titleSmall,
-                            textScaleFactor: 1,
+                            
                           ),
 
 
                           Expanded(
                             child:  Text(item.formattedSubTotal!,
                               style: AppTextStyle.titleSmall,
-                              textScaleFactor: 1,
+                              
                               textAlign: TextAlign.end,
                             ),
                           )
@@ -701,7 +701,7 @@ class _ItemCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               offer,
-                              textScaleFactor: 1,
+                              
                               style: AppTextStyle.bodySmall.copyWith(
                                 color: AppColor.green,
                               ),
@@ -732,7 +732,7 @@ class _ItemCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               warning,
-                              textScaleFactor: 1,
+                              
                               style: AppTextStyle.bodySmall.copyWith(
                                 color: AppColor.redOrange,
                               ),
@@ -766,7 +766,7 @@ class _OrderSummary extends ViewModelWidget<OrderDetailViewModel> {
           ),
           child: Text(
             "Order Summary",
-            textScaleFactor: 1,
+            
             style: AppTextStyle.titleMedium,
           ),
         ),
@@ -803,7 +803,7 @@ class _OrderSummary extends ViewModelWidget<OrderDetailViewModel> {
                       children: [
                         Text(
                           item.key!,
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.bodyMedium,
                         ),
                         HorizontalSpacing.d5px(),
@@ -840,7 +840,7 @@ class _OrderSummary extends ViewModelWidget<OrderDetailViewModel> {
                 const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                 child: Row(
                   children: [
-                    Text("Total", textScaleFactor: 1, style: AppTextStyle.titleLarge.copyWith(fontSize: 17)),
+                    Text("Total",  style: AppTextStyle.titleLarge.copyWith(fontSize: 17)),
                     Expanded(child: Container()),
                     Text(viewModel.orderDetail!.formattedOrderTotal!, style: AppTextStyle.titleLarge.copyWith(fontSize: 17))
                   ],
@@ -870,7 +870,7 @@ class _PaymentInstruction extends ViewModelWidget<OrderDetailViewModel> {
             padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
             child: Text(
               "Payment Instructions",
-              textScaleFactor: 1,
+              
               style: AppTextStyle.titleMedium.copyWith(fontSize: 17),
             ),
           ),
@@ -912,17 +912,17 @@ class PaymentAcknowledgementBottomSheet extends StatelessWidget {
 
                 VerticalSpacing.d15px(),
 
-                Text(info!.title!, textScaleFactor: 1, textAlign: TextAlign.center, style: AppTextStyle.titleMedium,),
+                Text(info!.title!,  textAlign: TextAlign.center, style: AppTextStyle.titleMedium,),
 
                 if (info!.subText != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
-                    child: Text(info!.subText, textScaleFactor: 1, textAlign: TextAlign.center, style: AppTextStyle.bodyMedium,),
+                    child: Text(info!.subText,  textAlign: TextAlign.center, style: AppTextStyle.bodyMedium,),
                   ),
 
                 VerticalSpacing.d5px(),
 
-                Text(info!.message!, textScaleFactor: 1, textAlign: TextAlign.center, style: AppTextStyle.bodyMedium,),
+                Text(info!.message!,  textAlign: TextAlign.center, style: AppTextStyle.bodyMedium,),
 
               ],
             ),

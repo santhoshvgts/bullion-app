@@ -26,7 +26,7 @@ class LoginAlertSection extends StatelessWidget {
 
                 Text(
                   "Sign In",
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.titleMedium.copyWith(
                     color: AppColor.white,
                   ),
@@ -36,7 +36,7 @@ class LoginAlertSection extends StatelessWidget {
 
                 Text(
                   "Authenticate using information to do more with your account",
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.bodySmall.copyWith(
                     color: AppColor.white,
                   ),

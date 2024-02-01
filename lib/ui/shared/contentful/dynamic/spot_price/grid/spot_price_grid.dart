@@ -46,7 +46,7 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
             padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
             child: Text(
               "Live Spot Price",
-              textScaleFactor: 1,
+              
               style: AppTextStyle.titleLarge.copyWith(color: AppColor.white),
             ),
           ),
@@ -55,7 +55,7 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
                 const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 15),
             child: Text(
               "Our charts show the real-time spot prices, as well as historical spot prices in various time frames. Investors use this data to make purchasing and investing decisions.",
-              textScaleFactor: 1,
+              
               style: AppTextStyle.bodySmall.copyWith(color: AppColor.white),
               textAlign: TextAlign.center,
             ),
@@ -149,14 +149,14 @@ class _SpotPriceTile extends StatelessWidget {
                 children: [
                   Text(
                     data.metalName!,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleSmall.copyWith(
                       color: data.color,
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(top: 5)),
                   Text(data.formattedAsk!,
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.headlineSmall.copyWith(fontSize: 20)),
                   const Padding(padding: EdgeInsets.only(top: 5)),
                   Container(
@@ -170,7 +170,7 @@ class _SpotPriceTile extends StatelessWidget {
                     ),
                     child: AutoSizeText(
                       "${data.formattedChange} (${data.changePct! > 0 ? "+" : ""}${data.changePct}%)",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.labelMedium.copyWith(
                           fontWeight: FontWeight.w600,
                           color:

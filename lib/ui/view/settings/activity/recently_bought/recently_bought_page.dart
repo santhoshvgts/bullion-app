@@ -30,7 +30,7 @@ class RecentlyBoughtPage extends VGTSBuilderWidget<RecentlyBoughtViewModel> {
   Widget viewBuilder(BuildContext context, AppLocalizations locale, RecentlyBoughtViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Buy Again", textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
+        title: Text("Buy Again",  style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
       ),
       backgroundColor: AppColor.secondaryBackground,
       body: RefreshIndicator(

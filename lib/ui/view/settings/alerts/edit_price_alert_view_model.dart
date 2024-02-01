@@ -25,7 +25,7 @@ class EditPriceAlertViewModel extends VGTSBaseViewModel {
       "USD",
       "en_US",
       "\$",
-      0
+      2
     )
   );
 

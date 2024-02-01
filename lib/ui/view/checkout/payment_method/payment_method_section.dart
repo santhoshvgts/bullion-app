@@ -149,11 +149,11 @@ class PaymentMethodCardItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(item.name ?? "",textScaleFactor: 1,style: AppTextStyle.titleMedium,),
+                      Text(item.name ?? "",style: AppTextStyle.titleMedium,),
 
                       VerticalSpacing.d2px(),
 
-                      Text(item.shortDescription ?? '-',textScaleFactor: 1,style: AppTextStyle.bodyMedium,),
+                      Text(item.shortDescription ?? '-',style: AppTextStyle.bodyMedium,),
 
                       if(!item.isEnabled!)
                         Container(
@@ -163,7 +163,7 @@ class PaymentMethodCardItem extends StatelessWidget {
                               borderRadius: BorderRadius.circular(25),
                               border: Border.all(color: AppColor.disabled)
                           ),
-                          child: const Text("Unavailable", textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+                          child: const Text("Unavailable",  style: AppTextStyle.bodyMedium,),
                         )
 
                     ],

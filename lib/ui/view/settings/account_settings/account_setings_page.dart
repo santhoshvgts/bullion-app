@@ -204,10 +204,10 @@ Widget _buildItemSection(String? key, String value) {
         if (key != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 2),
-            child: Text(key, textScaleFactor: 1, style: AppTextStyle.labelMedium.copyWith(color: AppColor.secondaryText),),
+            child: Text(key,  style: AppTextStyle.labelMedium.copyWith(color: AppColor.secondaryText),),
           ),
 
-        Text(value, textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+        Text(value,  style: AppTextStyle.bodyMedium,),
 
       ],
     ),

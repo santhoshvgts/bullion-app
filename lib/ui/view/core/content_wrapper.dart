@@ -211,7 +211,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                   HorizontalSpacing.d5px(),
                   const Text(
                     "Filter",
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleSmall,
                   ),
                   if (viewModel.productModel.selectedFacetsCount! > 0)
@@ -224,7 +224,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                       padding: const EdgeInsets.all(5),
                       child: Text(
                         viewModel.productModel.selectedFacetsCount!.toString(),
-                        textScaleFactor: 1,
+                        
                         style: AppTextStyle.labelSmall.copyWith(
                           color: AppColor.white,
                           fontSize: 10,
@@ -260,7 +260,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                   HorizontalSpacing.d5px(),
                   Text(
                     sortOption.isEmpty ? "Sort By" : sortOption,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleSmall,
                   )
                 ],
