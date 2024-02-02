@@ -19,6 +19,11 @@ class AlertsRequest {
         params: null, authenticated: true);
   }
 
+  static RequestSettings getAlertMeById(int productId) {
+    return RequestSettings("/product-alerts/get-product-alert?productId=${productId.toString()}", RequestMethod.GET,
+        params: null, authenticated: true);
+  }
+
   static RequestSettings getProductPriceAlerts() {
     return RequestSettings(Endpoints.getProductPriceAlerts, RequestMethod.GET,
         params: null, authenticated: true);

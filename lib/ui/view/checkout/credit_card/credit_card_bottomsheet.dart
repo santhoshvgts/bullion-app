@@ -54,7 +54,7 @@ class _CreditCardPageBottomSheetState extends State<CreditCardPageBottomSheet> {
 
                             IconButton(
                               icon: const Icon(Icons.qr_code_scanner,color: AppColor.secondaryText),
-                              onPressed: (){
+                              onPressed: () {
                                 viewModel.scanCard();
                               },
                             ),
@@ -102,8 +102,7 @@ class _CreditCardPageBottomSheetState extends State<CreditCardPageBottomSheet> {
                         width: double.infinity,
                         color: AppColor.primary,
                         borderColor: AppColor.primary,
-                        onPressed: (){
-
+                        onPressed: () {
                           viewModel.save(context);
                         }),
                   ),

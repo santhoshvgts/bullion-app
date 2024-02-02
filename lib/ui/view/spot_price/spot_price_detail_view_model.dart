@@ -2,6 +2,7 @@ import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/api_request/spot_price_request.dart';
+import 'package:bullion/services/chart/spotprice_service.dart';
 import 'package:bullion/services/filter_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -65,10 +66,8 @@ class SpotPriceDetailViewModel extends VGTSBaseViewModel {
 
   init(String metalName, vsync) async {
     setBusy(true);
-    _spotPriceList = await requestList<SpotPrice>(
-        SpotPriceRequest.fetchSpotPricePortfolioDayChart());
-    int? index = _spotPriceList?.indexWhere((element) =>
-        element.metalName?.toLowerCase() == metalName.toLowerCase());
+    _spotPriceList = await locator<SpotPriceService>().fetchSpotPriceDayChart();
+    int? index = _spotPriceList?.indexWhere((element) => element.metalName?.toLowerCase() == metalName.toLowerCase());
     _name = metalName;
     if (index == -1) {
       _selectedIndex = null;

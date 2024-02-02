@@ -18,7 +18,7 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
 
   final ProductDetails? setting;
 
-  const ProductDetailSection(this.setting);
+  const ProductDetailSection(this.setting, {super.key});
 
   @override
   void onViewModelReady(ProductDetailViewModel vm) {
@@ -37,10 +37,11 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
       child: Column(
         children: [
 
-          _CompetitorPricing(
-            viewModel.productDetails!.overview!,
-            viewModel.productDetails?.competitorPrices ?? []
-          ),
+          if (viewModel.productOverview?.showPrice == true)
+            _CompetitorPricing(
+              viewModel.productDetails!.overview!,
+              viewModel.productDetails?.competitorPrices ?? []
+            ),
 
           Container(
             margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
@@ -98,7 +99,7 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
 class SpecificationItem extends StatelessWidget {
   Specifications data;
 
-  SpecificationItem(this.data);
+  SpecificationItem(this.data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -167,9 +168,9 @@ class _CompetitorPricing extends StatelessWidget {
            child: Text("Lowest Price Guarantee",  style: AppTextStyle.titleMedium,),
          ),
 
-         const Padding(
-           padding: EdgeInsets.only(left: 15, top: 10),
-           child: Text("Please see below how the pricing of 2023 1 oz American Silver Eagle Coin BU "
+          Padding(
+           padding: const EdgeInsets.only(left: 15, top: 10),
+           child: Text("Please see below how the pricing of ${overview.name} "
                "compares against some of other bullion dealers. Our rate comparison table is for your information only "
                "and is primarily used as a benchmark.",
               style: AppTextStyle.bodyMedium,),
@@ -229,7 +230,6 @@ class _CompetitorPricing extends StatelessWidget {
                      ),
                    ),
 
-
                    CompetitorPricingSection(competitorPrice),
                  ],
                ),
@@ -248,7 +248,7 @@ class CompetitorPricingSection extends StatelessWidget {
 
   List<CompetitorPrice> competitorPrice;
 
-  CompetitorPricingSection(this.competitorPrice);
+  CompetitorPricingSection(this.competitorPrice, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -294,7 +294,7 @@ class CompetitorPricingSection extends StatelessWidget {
 
                           VerticalSpacing.d5px(),
 
-                          Text("As low as",  style: AppTextStyle.labelSmall,),
+                          const Text("As low as",  style: AppTextStyle.labelSmall,),
 
                           Text(e.formattedPrice.toString(),  style: AppTextStyle.titleLarge,),
 

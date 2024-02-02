@@ -11,6 +11,7 @@ class Images {
   static const String priceAlerts = "assets/images/price-alerts.png";
   static const String priceComparison = "assets/images/price_comparision.png";
   static const String vaultDeals = "assets/images/vault-deals.png";
+  static const String emptyOrder = "assets/images/vault-deals.png";
 
   static const String discountOffers = "assets/images/discount.png";
   static const String warning = "assets/images/warning.png";
@@ -32,6 +33,9 @@ class Images {
 
   static const String deals_active = "assets/images/deals_active.png";
   static const String deals = "assets/images/deals_inactive.png";
+
+  static const String cart_active = "assets/images/cart_active.png";
+  static const String cart_inactive = "assets/images/cart_inactive.png";
 
   static const String chart_active = "assets/images/chart_active.png";
   static const String chart_inactive = "assets/images/chart_inactive.png";
@@ -76,7 +80,7 @@ class Images {
 
   static const String iconEmptyAddress = "assets/images/icon_empty_address.png";
   static const String iconEmptyReview = "assets/images/icon_empty_review.png";
-  static const String iconEmptyOrders = "assets/images/icon_empty_orders.png";
+  static const String iconEmptyOrders = "assets/images/icon_empty_orders.webp";
   static const String iconEmptyPortfolio =
       "assets/images/icon_empty_portfolio.png";
   static const String iconEmptyNotification =

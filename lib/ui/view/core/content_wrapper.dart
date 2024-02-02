@@ -85,8 +85,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: SingleChildScrollView(
-                      controller:
-                          enableController! ? viewModel.scrollController : null,
+                      controller: enableController! ? viewModel.scrollController : null,
                       child: Column(children: [
                         AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),

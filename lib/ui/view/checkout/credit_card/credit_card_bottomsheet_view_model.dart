@@ -1,3 +1,4 @@
+import 'package:bullion/helper/utils.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:credit_card_scanner/credit_card_scanner.dart';
 import 'package:flutter/cupertino.dart';
@@ -139,7 +140,12 @@ class CreditCardViewModel extends VGTSBaseViewModel {
    }
 
   save(BuildContext context) {
-    if (formKey.currentState?.validate() == true) {
+    if (formKey.currentState?.validate() != true) {
+      return;
+    }
+
+    if (cardNumController.text.isEmpty || expDateController.text.isEmpty || cvvController.text.isEmpty) {
+
       return;
     }
 

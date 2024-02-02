@@ -55,7 +55,7 @@ class CartItem {
     targetUrl = json['target_url'];
     unitPrice = json['unit_price'];
     formattedUnitPrice = json['formatted_unit_price'];
-    subTotal = json['sub_total'];
+    subTotal = double.tryParse(json['sub_total'].toString());
     formattedSubTotal = json['formatted_sub_total'];
     quantity = json['quantity'];
 

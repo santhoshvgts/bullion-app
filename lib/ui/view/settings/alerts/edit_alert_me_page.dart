@@ -1,10 +1,14 @@
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
 import 'package:bullion/core/models/module/product_item.dart' as product_item;
 import 'package:bullion/core/models/module/product_item.dart';
+import 'package:bullion/core/res/spacing.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/loading_data.dart';
+import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,7 +36,7 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
     return TapOutsideUnFocus(
       child: Scaffold(
         body: SafeArea(
-            child: CustomScrollView(
+          child: CustomScrollView(
           slivers: [
             SliverAppBar(
               leading: IconButton(
@@ -43,92 +47,89 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
               ),
               expandedHeight: 100,
               pinned: true,
-              flexibleSpace:
-                  const AnimatedFlexibleSpace.withoutTab(title: "Alert Me"),
+              flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "AlertMe!®"),
             ),
             SliverToBoxAdapter(
-              child: viewModel.isBusy
-                  ? LoadingData(
-                      loadingStyle: LoadingStyle.LOGO,
-                    )
-                      : SingleChildScrollView(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 8),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      Row(
+                        children: [
+                          NetworkImageLoader(
+                            image: viewModel.productOverview?.primaryImageUrl ?? "",
+                            width: 80,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+
+                                Text(
+                                  "${viewModel.productOverview?.name}",
+                                  style: AppTextStyle.titleMedium,
+                                ),
+                                const SizedBox(height: 8),
                                 Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: AppColor.iconBG,
-                                        borderRadius:
-                                        BorderRadius.circular(8),
-                                      ),
-                                      width: 56,
-                                      height: 56,
-                                      child: Image.network(viewModel.productOverview
-                                          ?.primaryImageUrl ??
-                                          ""),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${viewModel.productOverview?.name}",
-                                            style: AppTextStyle
-                                                .titleMedium,
-                                          ),
-                                        ],
-                                      ),
+                                    Text(
+                                      "${viewModel.productOverview?.pricing?.formattedNewPrice.toString()}",
+                                      style: AppTextStyle.titleLarge,
                                     ),
                                   ],
-                                ),
-                                const SizedBox(height: 24),
-                                Form(
-                                  key: viewModel.priceAlertGlobalKey,
-                                  child: EditTextField(
-                                    "Quantity",
-                                    viewModel.quantityFormFieldController,
-                                    textStyle: AppTextStyle.titleLarge,
-                                    autoFocus: true,
-                                  ),
                                 ),
                               ],
                             ),
                           ),
+                        ],
+                      ),
+
+                      VerticalSpacing.d20px(),
+
+                      const Text("Please enter the quantity you are interested in and we will notify you when they become available.",
+                        style: AppTextStyle.bodyMedium,
+                      ),
+
+                      const SizedBox(height: 24),
+                      Form(
+                        key: viewModel.priceAlertGlobalKey,
+                        child: EditTextField(
+                          "Quantity",
+                          viewModel.quantityFormFieldController,
+                          textStyle: AppTextStyle.titleLarge,
+                          autoFocus: true,
+                          enabled: !viewModel.isBusy,
                         ),
+                      ),
+
+                      VerticalSpacing.d20px(),
+
+                      Button(
+                        "Save AlertMe!®",
+                        width: double.infinity,
+                        loading: viewModel.busy("LOADING"),
+                        valueKey: const Key("btnUpdate"),
+                        onPressed: () async {
+                          if (viewModel.priceAlertGlobalKey.currentState!.validate()) {
+                            bool result = await viewModel.editAlertMe();
+                            locator<NavigationService>().pop(returnValue: result);
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
             )
           ],
         )),
-        bottomNavigationBar: SafeArea(
-          child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Button(
-                "Save Alert",
-                valueKey: const Key("btnUpdate"),
-                onPressed: () async {
-                  if (viewModel.priceAlertGlobalKey.currentState!
-                      .validate()) {
-                    bool result = await viewModel.editAlertMe();
-                    if (result) {
-                      Util.showSnackBar("Submitted successfully");
-                      Navigator.of(context).pop();
-                    }
-                  } else {
-                    Util.showSnackBar("Fill all the required fields");
-                  }
-                },
-              )),
-        ),
       ),
     );
   }

@@ -20,16 +20,18 @@ class SplashPage extends VGTSBuilderWidget<SplashViewModel> {
         appBar: AppBar(
           elevation: 0,
           systemOverlayStyle: const SystemUiOverlayStyle(
-              statusBarBrightness: Brightness.dark,
-              statusBarIconBrightness: Brightness.light),
+            statusBarBrightness: Brightness.light,
+            statusBarIconBrightness: Brightness.light,
+            statusBarColor: AppColor.primary
+          ),
           toolbarHeight: 0,
-          backgroundColor: AppColor.white,
+          backgroundColor: AppColor.primary,
         ),
-        backgroundColor: AppColor.white,
+        backgroundColor: AppColor.primary,
         body: Center(
-          child: Image.asset(Images.appLogo,
+          child: Image.asset(Images.appLogoWhite,
               fit: BoxFit.fitWidth,
-              width: MediaQuery.of(context).size.width / 2),
+              width: MediaQuery.of(context).size.width / 1.3),
         ));
   }
 }

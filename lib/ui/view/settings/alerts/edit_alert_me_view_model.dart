@@ -17,28 +17,24 @@ class EditAlertMeViewModel extends VGTSBaseViewModel {
 
   GlobalKey<FormState> priceAlertGlobalKey = GlobalKey<FormState>();
 
-  NumberFormFieldController quantityFormFieldController =
-      NumberFormFieldController(const Key("quantity"),
-          required: true, requiredText: "Quantity can't be empty");
+  NumberFormFieldController quantityFormFieldController = NumberFormFieldController(const Key("quantity"), required: true, requiredText: "Quantity can't be empty");
 
   void init(ProductOverview? data) async {
     productOverview = data;
-    productDetails = await request<ProductDetails>(AlertsRequest.getPriceAlertById(data!.productId!));
+
+    setBusy(true);
+    productDetails = await request<ProductDetails>(AlertsRequest.getAlertMeById(data!.productId!));
+    setBusy(false);
 
     if (productDetails != null) {
-      quantityFormFieldController.text = productDetails?.requestedQty.toString();
+      quantityFormFieldController.text = productDetails?.requestedQty?.toString() ?? '';
     }
   }
 
   Future<bool> editAlertMe() async {
-    //setBusy(true);
-    locator<DialogService>().showLoader();
+    setBusyForObject("LOADING", true);
     ProductDetails? productAlert = await request<ProductDetails>(AlertsRequest.editAlertMe(productOverview!.productId, quantityFormFieldController.text));
-
-    //setBusy(false);
-    notifyListeners();
-    locator<DialogService>().dialogComplete(AlertResponse(status: true));
-
+    setBusyForObject("LOADING", false);
     return productAlert != null;
   }
 }

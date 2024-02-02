@@ -1,7 +1,9 @@
+import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/helper/utils.dart';
 import 'package:bullion/services/appconfig_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/view/settings/settings_user_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -9,12 +11,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
-import '../../../helper/url_launcher.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
 import '../../../services/authentication_service.dart';
@@ -103,7 +105,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   right: 0,
                   child: Container(
                     width: double.infinity,
-                    height: 260,
+                    height: locator<AuthenticationService>().isGuestUser ? 150 : 260,
                     color: AppColor.primary,
                   )
               ),
@@ -111,10 +113,13 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               Column(
                 children: [
                   VerticalSpacing.d10px(),
-
+                  if (locator<AuthenticationService>().isGuestUser)
+                    _SettingItemGuestUser()
+                  else
                   _buildOrderSection(),
 
-                  Container(
+                  if (!locator<AuthenticationService>().isGuestUser)
+                    Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: AppStyle.elevatedCardShadow,
@@ -175,126 +180,133 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
             ],
           ),
 
-          VerticalSpacing.d15px(),
+          if (!viewModel.isGuestUser)
+            Column(
+              children: [
 
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: AppStyle.elevatedCardShadow,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 16.0),
-                      child: Text('Alerts', style: AppTextStyle.titleMedium),
+                VerticalSpacing.d15px(),
+
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: AppStyle.elevatedCardShadow,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    InkWell(
-                      onTap: () {
-                        locator<NavigationService>()
-                            .pushNamed(Routes.alerts, arguments: 0);
-                      },
-                      child: getTextsLayout(
-                          const Icon(CupertinoIcons.alarm, size: 20),
-                          "Custom Spot Price"),
-                    ),
-                    const Divider(
-                      color: AppColor.platinumColor,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        locator<NavigationService>()
-                            .pushNamed(Routes.alerts, arguments: 1);
-                      },
-                      child: getTextsLayout(
-                        const Icon(Icons.attach_money, size: 20),
-                        "Price Alert",
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 16.0),
+                            child: Text('Alerts', style: AppTextStyle.titleMedium),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>()
+                                  .pushNamed(Routes.alerts, arguments: 0);
+                            },
+                            child: getTextsLayout(
+                                const Icon(CupertinoIcons.alarm, size: 20),
+                                "Custom Spot Price"),
+                          ),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>()
+                                  .pushNamed(Routes.alerts, arguments: 1);
+                            },
+                            child: getTextsLayout(
+                              const Icon(Icons.attach_money, size: 20),
+                              "Price Alert",
+                            ),
+                          ),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>()
+                                  .pushNamed(Routes.alerts, arguments: 2);
+                            },
+                            child: getTextsLayout(
+                              const Icon(CupertinoIcons.bell, size: 20),
+                              "Alert Me!",
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const Divider(
-                      color: AppColor.platinumColor,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        locator<NavigationService>()
-                            .pushNamed(Routes.alerts, arguments: 2);
-                      },
-                      child: getTextsLayout(
-                        const Icon(CupertinoIcons.bell, size: 20),
-                        "Alert Me!",
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
 
-          VerticalSpacing.d15px(),
+                VerticalSpacing.d15px(),
 
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: AppStyle.elevatedCardShadow,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 16.0),
-                      child:
-                      Text('Activity', style: AppTextStyle.titleMedium),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: AppStyle.elevatedCardShadow,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    InkWell(
-                      onTap: () {
-                        locator<NavigationService>().pushNamed(Routes.searchHistory);
-                      },
-                      child: getTextsLayout(
-                        const Icon(FeatherIcons.search, size: 20),
-                        "Search History",
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 16.0),
+                            child:
+                            Text('Activity', style: AppTextStyle.titleMedium),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>().pushNamed(Routes.searchHistory);
+                            },
+                            child: getTextsLayout(
+                              const Icon(FeatherIcons.search, size: 20),
+                              "Search History",
+                            ),
+                          ),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>().pushNamed(Routes.recentlyViewed);
+                            },
+                            child: getTextsLayout(
+                              const Icon(FeatherIcons.activity, size: 20),
+                              "Recently Viewed",
+                            ),
+                          ),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>().pushNamed(Routes.recentlyBought);
+                            },
+                            child: getTextsLayout(
+                              const Icon(FeatherIcons.shoppingCart, size: 20),
+                              "Buy Again",
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const Divider(
-                      color: AppColor.platinumColor,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        locator<NavigationService>().pushNamed(Routes.recentlyViewed);
-                      },
-                      child: getTextsLayout(
-                        const Icon(FeatherIcons.activity, size: 20),
-                        "Recently Viewed",
-                      ),
-                    ),
-                    const Divider(
-                      color: AppColor.platinumColor,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        locator<NavigationService>().pushNamed(Routes.recentlyBought);
-                      },
-                      child: getTextsLayout(
-                        const Icon(FeatherIcons.shoppingCart, size: 20),
-                        "Buy Again",
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+
+              ],
             ),
-          ),
 
           VerticalSpacing.d15px(),
 
@@ -445,28 +457,16 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: InkWell(
-                  onTap: () {
-                    showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        backgroundColor: Colors.white,
-                        title: const Text('Logout'),
-                        content: const Text("Do you want to logout?"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              locator<AuthenticationService>().logout("");
-                              Navigator.pop(context, 'OK');
-                            },
-                            child: const Text('Logout'),
-                          ),
-                        ],
-                      ),
+                  onTap: () async {
+                    AlertResponse response = await locator<DialogService>().showConfirmationDialog(
+                        title: "Logout",
+                        description: "Do you want to logout?",
+                        buttonTitle: "Logout"
                     );
+
+                    if (response.status == true) {
+                      locator<AuthenticationService>().logout("");
+                    }
                   },
                   child: getTextsLayout(const Icon(CupertinoIcons.power, size: 20,), "Logout",),
                 ),
@@ -666,6 +666,50 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class _SettingItemGuestUser extends ViewModelWidget<SettingsUserViewModel> {
+  @override
+  Widget build(BuildContext context, SettingsUserViewModel viewModel) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: AppStyle.elevatedCardShadow,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Register as User",
+            style: AppTextStyle.titleMedium,
+          ),
+          VerticalSpacing.d10px(),
+
+          const Text(
+            "Want to Check the Status of your Order?",
+            style: AppTextStyle.titleSmall,
+          ),
+          VerticalSpacing.d5px(),
+
+          const Text(
+            "Start by creating a password associated with your email address. This will allow you to check order status and tracking information.",
+            style: AppTextStyle.bodyMedium,
+          ),
+          VerticalSpacing.d20px(),
+          Button.outline("Register As User",
+              width: double.infinity,
+              textStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary),
+              valueKey: const ValueKey("btnRegisterAsUser"), onPressed: () {
+                viewModel.onGuestRegisterClick();
+              })
         ],
       ),
     );

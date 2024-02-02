@@ -10,6 +10,7 @@ import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/cart/cart_summary_help_text.dart';
 import 'package:bullion/ui/view/settings/orders/detail/order_detail_view_model.dart';
+import 'package:bullion/ui/view/settings/settings_user_page.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/animated_flexible_space.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
@@ -61,8 +62,14 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    // if (viewModel.fromSuccess)
-                    //   _FromSuccessCard(),
+                    if (viewModel.fromSuccess)
+                      Container(
+                        color: AppColor.white,
+                        child: _FromSuccessCard()
+                      ),
+
+                    if (viewModel.isGuestUser)
+                      _SettingItemGuestUser(),
 
                     Container(
                       color: AppColor.white,
@@ -99,7 +106,9 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
                                 HorizontalSpacing.d10px(),
 
                                 Expanded(child: _buildItemSection("Order Date", viewModel.orderDetail?.formattedPostedDate ?? '-')),
-                                Expanded(child: _buildItemSection("Shipping Date", viewModel.orderDetail?.formattedPostedDate ?? '-')),
+
+                                if (viewModel.orderDetail?.formattedShippingDate?.isNotEmpty == true)
+                                  Expanded(child: _buildItemSection("Shipping Date", viewModel.orderDetail?.formattedShippingDate ?? '-')),
 
                               ],
                             ),
@@ -180,6 +189,7 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
 
                     if (viewModel.orderDetail!.shipmentTracking != null)
                       TrackOrderInfoBottomSheet(viewModel.orderDetail!.shipmentTracking),
+
 
                     Container(
                       color: AppColor.secondaryBackground,
@@ -408,20 +418,28 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
 
 }
 
-class _FromSuccessCard extends ViewModelWidget<OrderDetailViewModel>{
+class _FromSuccessCard extends ViewModelWidget<OrderDetailViewModel> {
   @override
   Widget build(BuildContext context, OrderDetailViewModel viewModel) {
     return Container(
       alignment: Alignment.center,
-      color: AppColor.white,
-      padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
-      child: Column(
+      decoration: BoxDecoration(
+        color: AppColor.green.withOpacity(0.2),
+        border: Border.all(color: AppColor.green),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Icon(CupertinoIcons.check_mark_circled_solid,color: AppColor.green,size: 50,),
 
-          VerticalSpacing.d5px(),
+          Expanded(child: Text("Order Placed Successfully.", style: AppTextStyle.bodyMedium.copyWith(color: AppColor.greenText),)),
 
-          const Text("Order Placed Successfully.",style: AppTextStyle.bodyMedium,)
+          HorizontalSpacing.d10px(),
+
+          const Icon(CupertinoIcons.checkmark_seal_fill, color: AppColor.green, size: 30,),
+
         ],
       ),
 
@@ -934,4 +952,47 @@ class PaymentAcknowledgementBottomSheet extends StatelessWidget {
     );
   }
 
+}
+
+class _SettingItemGuestUser extends ViewModelWidget<OrderDetailViewModel> {
+  @override
+  Widget build(BuildContext context, OrderDetailViewModel viewModel) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: AppStyle.elevatedCardShadow,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Register as User",
+            style: AppTextStyle.titleMedium,
+          ),
+          VerticalSpacing.d10px(),
+
+          const Text(
+            "Want to Check the Status of your Order?",
+            style: AppTextStyle.titleSmall,
+          ),
+          VerticalSpacing.d5px(),
+
+          const Text(
+            "Start by creating a password associated with your email address. This will allow you to check order status and tracking information.",
+            style: AppTextStyle.bodyMedium,
+          ),
+          VerticalSpacing.d20px(),
+          Button.outline("Register As User",
+              width: double.infinity,
+              textStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary),
+              valueKey: const ValueKey("btnRegisterAsUser"), onPressed: () {
+                viewModel.onGuestRegisterClick();
+              })
+        ],
+      ),
+    );
+  }
 }

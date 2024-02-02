@@ -83,7 +83,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       ),
                       VerticalSpacing.custom(value: 28),
 
-                      EditTextField(
+                      EditTextField.password(
                         "Confirm Password",
                         viewModel.confirmPasswordController,
                         placeholder: "********",
@@ -116,9 +116,9 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                   Images.googleIcon,
                   height: 20,
                 ),
-                textStyle:
-                    AppTextStyle.titleSmall.copyWith(color: AppColor.text),
+                textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.text),
                 onPressed: () {
+                  viewModel.googleSignIn();
                 },
               ),
             ],

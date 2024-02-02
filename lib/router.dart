@@ -40,6 +40,7 @@ import 'package:flutter/material.dart';
 
 import 'ui/view/checkout/review_order/review_order_page.dart';
 import 'ui/view/dashboard/dashboard_page.dart';
+import 'ui/view/main/guest_register/guest_login_page.dart';
 import 'ui/view/settings/activity/recently_viewed/recently_viewed_page.dart';
 import 'ui/view/settings/activity/search_history/search_history_page.dart';
 
@@ -163,6 +164,14 @@ class AppRouter {
           settings: RouteSettings(
             name: settings.name,
           ),
+        );
+
+      case Routes.registerGuest:
+        return MaterialPageRoute(
+          builder: (_) => GuestLoginPage(
+            fromMain: settings.arguments == null ? true : false,
+          ),
+          settings: RouteSettings(name: settings.name),
         );
 
       case Routes.threeSixtyPage:

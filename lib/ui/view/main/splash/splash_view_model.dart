@@ -29,7 +29,7 @@ class SplashViewModel extends VGTSBaseViewModel {
         "Charts": request<PageSettings>(PageRequest.fetch(path: "/spot-prices"))
       };
 
-      Future.wait([...futures.values.toList()]).then((value) {
+      Future.wait([...futures.values.toList(),]).then((value) {
         for (int i = 0; i < value.length; i++) {
           locator<PageStorageService>().write(
               navigationService.navigatorKey.currentContext!,
@@ -42,7 +42,8 @@ class SplashViewModel extends VGTSBaseViewModel {
           return;
         }
         if (preferenceService.isFirstTimeAppOpen()) {
-          navigationService.popAllAndPushNamed(Routes.introPage);
+          //TODO - Revert to Intro Page, after entering the proper content in that page
+          navigationService.popAllAndPushNamed(Routes.dashboard);
         } else {
           navigationService.popAllAndPushNamed(Routes.dashboard);
         }

@@ -61,7 +61,6 @@ class DashboardContentPage extends StatelessWidget {
                         Expanded(
                           child: Text(
                             "Sign in for the best experience.",
-                            
                             style: AppTextStyle.bodySmall.copyWith(
                               color: AppColor.white,
                             ),
@@ -87,8 +86,7 @@ class DashboardContentPage extends StatelessWidget {
                   );
                 }
               ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
               body: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return <Widget>[
@@ -111,8 +109,7 @@ class DashboardContentPage extends StatelessWidget {
                               context,
                               constraints,
                             ) {
-                              _appBarExtendedHeight ??=
-                                  80 - constraints.biggest.height;
+                              _appBarExtendedHeight ??= 70 - constraints.biggest.height;
 
                               return FlexibleSpaceBar(
                                 centerTitle: true,
@@ -121,22 +118,18 @@ class DashboardContentPage extends StatelessWidget {
                                   bottom: 10.0,
                                 ),
                                 title: SearchCardSection(
-                                  rightPadding: 45 -
-                                      ((15 - 45) *
-                                          ((constraints.biggest.height - 80) /
-                                              _appBarExtendedHeight!)),
+                                  rightPadding: 60 - ((10 - 60) * (( constraints.biggest.height - 80) / _appBarExtendedHeight! )),
                                 ),
                                 background: AppBar(
                                   backgroundColor: AppColor.white,
-                                  centerTitle: false,
+                                  centerTitle: true,
                                   elevation: 1,
                                   shadowColor: AppColor.secondaryBackground,
                                   title: Image.asset(
                                     Images.appLogo,
                                     height: 20,
                                   ),
-                                  systemOverlayStyle:
-                                      const SystemUiOverlayStyle(
+                                  systemOverlayStyle: const SystemUiOverlayStyle(
                                     statusBarIconBrightness: Brightness.dark,
                                     statusBarColor: AppColor.white,
                                   ),
@@ -183,7 +176,7 @@ class _AppBar extends PreferredSize {
               elevation: 1,
               shadowColor: AppColor.secondaryBackground,
               title: SearchCardSection(
-                rightPadding: 0,
+                rightPadding: 7,
               ),
               systemOverlayStyle: const SystemUiOverlayStyle(
                 statusBarIconBrightness: Brightness.dark,
@@ -207,8 +200,7 @@ class _BodyContent extends ViewModelWidget<DashboardContentViewModel> {
         backgroundColor: path == "/spot-prices" ? AppColor.primary : null,
         onPageFetched: (pageSetting) {
           viewModel.pageSettings = pageSetting;
-          locator<PageStorageService>()
-              .write(context, pageKey, viewModel.pageSettings);
+          locator<PageStorageService>().write(context, pageKey, viewModel.pageSettings);
           viewModel.notifyListeners();
         });
   }

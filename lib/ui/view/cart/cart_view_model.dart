@@ -170,75 +170,14 @@ class CartViewModel extends VGTSBaseViewModel {
     String? displayType = displayMessage.messageDisplayType;
 
     if (displayType == MessageDisplayType.SnackBar) {
-      toastService.showWidget(
-          child: Container(
-        padding: const EdgeInsets.all(10.0),
-        width: double.infinity,
-        margin: EdgeInsets.only(bottom: 60, left: 10, right: 10),
-        decoration: BoxDecoration(
-            color: AppColor.white,
-            boxShadow: AppStyle.cardShadow,
-            borderRadius: BorderRadius.circular(5)),
-        child: Wrap(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (displayMessage.title != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 0),
-                    child: Text(displayMessage.title ?? '',
-                        style: AppTextStyle.titleSmall.copyWith(
-                            fontSize: 16, color: displayMessage.color),
-                        textAlign: TextAlign.start),
-                  ),
-                if (displayMessage.subText != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 0),
-                    child: Text(displayMessage.subText ?? '',
-                        style: AppTextStyle.titleSmall.copyWith(
-                            fontSize: 14, fontWeight: FontWeight.w600),
-                        textAlign: TextAlign.start),
-                  ),
-                VerticalSpacing.d5px(),
-                Container(
-                  decoration: BoxDecoration(
-                      color: AppColor.secondaryBackground,
-                      border: Border(
-                          left: BorderSide(
-                              color: displayMessage.color, width: 2))),
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          displayMessage.message ?? '',
-                          
-                          style: AppTextStyle.bodyMedium,
-                        ),
-                      ),
-                      Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.only(right: 10),
-                          child: Icon(
-                            displayMessage.icon,
-                            color: displayMessage.color,
-                            size: 35,
-                          )),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ));
+      toastService.showWidget(child: DisplayMessageToast(displayMessage), durationInSeconds: 5);
       return;
     }
 
     if (displayType == MessageDisplayType.BottomSheet) {
       await dialogService.showBottomSheet(
           title: displayMessage.title ?? '',
+          showActionBar: false,
           child: DisplayMessageBottomSheet(displayMessage));
       return;
     }
@@ -246,6 +185,7 @@ class CartViewModel extends VGTSBaseViewModel {
     if (displayType == MessageDisplayType.AlertBox) {
       await dialogService.displayMessage(
           title: displayMessage.title ?? '',
+          showActionBar: false,
           child: DisplayMessageBottomSheet(displayMessage));
       return;
     }

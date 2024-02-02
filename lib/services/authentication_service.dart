@@ -11,6 +11,8 @@ import 'package:bullion/services/shared/api_model/error_response_exception.dart'
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/shared/preference_service.dart';
 import 'package:bullion/services/token_service.dart';
+import 'package:firebase_auth/firebase_auth.dart' as FA;
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'shared/analytics_service.dart';
 import 'shared/dialog_service.dart';
@@ -97,7 +99,9 @@ class AuthenticationService {
     // TODO - Sentry Implementation
     // Sentry.configureScope((p0) => p0.setUser(null));
 
-    locator<NavigationService>().popAllAndPushNamed(Routes.introPage);
+    //TODO - Revert to Intro Page, after entering the proper content in that page
+    // locator<NavigationService>().popAllAndPushNamed(Routes.introPage);
+    locator<NavigationService>().popAllAndPushNamed(Routes.splash);
   }
 
   Future<AuthResponse?> register(
@@ -190,6 +194,24 @@ class AuthenticationService {
 
   _showAlert(ErrorResponseException error, String title) {
     _dialogService.showDialog(title: title, description: error.error?.getSingleMessage() ?? '-');
+  }
+
+  Future<FA.UserCredential?> signInWithGoogle() async {
+    if (await GoogleSignIn().isSignedIn()) {
+      await GoogleSignIn().signOut();
+    }
+
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    if (googleAuth != null) {
+      final credential = FA.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      return await FA.FirebaseAuth.instance.signInWithCredential(credential);
+    }
+    return null;
   }
 
   // TODO - Sentry Implementation

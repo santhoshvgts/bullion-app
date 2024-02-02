@@ -45,7 +45,7 @@ class AuthRequest {
   }
 
   static RequestSettings guestToAccount(String password, bool emailOptIn) {
-    return RequestSettings("/auth/guest-to-account?password=$password&emailOptIn=$emailOptIn", RequestMethod.GET, params: null, authenticated: true);
+    return RequestSettings("/auth/guest-to-account?password=$password&emailOptIn=$emailOptIn", RequestMethod.POST, params: null, authenticated: true);
   }
 
   static RequestSettings getUserInfo() {

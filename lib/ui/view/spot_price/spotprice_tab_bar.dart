@@ -24,17 +24,7 @@ class SpotPriceTabBar extends StatefulWidget {
 class _TabBarState extends State<SpotPriceTabBar> {
   @override
   void initState() {
-    setState(() {
-      if (widget.initialIndex != null) {
-        Future.delayed(const Duration(milliseconds: 110)).then((value) {
-          widget.controller.animateTo(
-            widget.initialIndex! * 100,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.fastOutSlowIn,
-          );
-        });
-      }
-    });
+
     super.initState();
   }
 

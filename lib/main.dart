@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riskified/flutter_riskified.dart';
 
 import 'core/res/styles.dart';
 import 'helper/dialog_manager.dart';
@@ -26,6 +27,7 @@ Future<void> main() async {
       configureLogger();
 
       await locator<DeviceService>().initPlatformPackageInfo();
+      await Riskified.startBeacon("bullion.com", locator<DeviceService>().getRiskifiedSessionId()!, debugInfo: true);
 
       FlutterError.onError = (FlutterErrorDetails details) {
         Logger.e(details.toString(), s: StackTrace.current);

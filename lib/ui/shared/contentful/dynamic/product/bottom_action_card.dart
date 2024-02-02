@@ -4,8 +4,10 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +28,7 @@ class BottomActionCard extends StatelessWidget {
           Util.showLoginAlert();
           return;
         }
-        // await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(productDetails, showViewButton: true,));
+        await locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": productDetails?.overview });
       });
     } else {
       return _Button(productDetails!.overview!.availabilityText);
@@ -49,9 +51,7 @@ class _AlertButton extends StatelessWidget {
       child: Button.outline(title,
           valueKey: const Key('btnSaveAlert'),
           width: double.infinity,
-          borderRadius: BorderRadius.circular(7.0),
-          textStyle:
-              AppTextStyle.titleSmall.copyWith(color: AppColor.primaryDark),
+          textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.primaryDark),
           borderColor: AppColor.primaryDark,
           onPressed: onTap as void Function()?),
     );
@@ -65,13 +65,16 @@ class _Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Button(title,
-        valueKey: const Key('btn'),
-        width: double.infinity,
-        borderRadius: BorderRadius.circular(7.0),
-        textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.black20),
-        color: Colors.black12,
-        borderColor: Colors.transparent,
-        onPressed: () {});
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Button(title,
+          valueKey: const Key('btn'),
+          width: double.infinity,
+          textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.black20),
+          color: Colors.black12,
+          borderColor: Colors.transparent,
+          onPressed: () {}
+      ),
+    );
   }
 }

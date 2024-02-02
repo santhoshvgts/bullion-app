@@ -1,10 +1,12 @@
 import 'package:bullion/core/models/module/cart/order_total_summary.dart';
 import 'package:bullion/core/models/module/order.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/staggered_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -61,7 +63,7 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                       tabAlignment: TabAlignment.start,
                       tabs: viewModel.tabs.values.map((e) => Tab(text: e,)).toList(),
                       onTap: (int index) {
-                        viewModel.selectedIndex = index;
+                        viewModel.onTabSelected(index);
                       },
                     ),
                     forceElevated: innerBoxIsScrolled,
@@ -76,7 +78,45 @@ class _OrdersPageState extends State<OrdersPage> with TickerProviderStateMixin {
                     child: LoadingData(
                       loadingStyle: LoadingStyle.LOGO,
                     ),
-                  ) else Flexible(
+                  ) else if (viewModel.ordersList?.isEmpty != false)
+                    Flexible(
+                        child: Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height / 1.5,
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                Images.iconEmptyOrders,
+                                width: 150,
+                              ),
+                              const SizedBox(height: 32.0),
+                              const Text(
+                                "No Orders Found!",
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.titleLarge,
+                              ),
+                              const SizedBox(height: 16.0),
+                              const Text(
+                                "Explore our metal collection and be among the first to shop. Shop now and add a touch of metal to your style!",
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.bodySmall,
+                              ),
+
+                              const SizedBox(height: 16.0),
+
+                              Button("Shop Now", valueKey: const ValueKey('btnShopNow'),
+                                  onPressed: () {
+                                    locator<NavigationService>().pushNamed(Routes.deals);
+                                  }
+                              )
+                            ],
+                          ),
+                        ),
+                    )
+                   else Flexible(
                     child: AnimationLimiter(
                       child: ListView.separated(
                         itemCount: viewModel.ordersList?.length ?? 0,

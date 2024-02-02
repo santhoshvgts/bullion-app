@@ -196,8 +196,6 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
             _ProductNotes(),
           if (viewModel.productDetails!.volumePricing == null)
             _VolumePriceLoading()
-          else if (viewModel.productDetails!.volumePricing!.isEmpty)
-            Container()
           else
             _VolumePricing(),
           if (viewModel.productDetails!.coinGradeSpecification.isNotEmpty)
@@ -306,8 +304,7 @@ class _ProductInfoSection extends ViewModelWidget<ProductDetailViewModel> {
 
           VerticalSpacing.d10px(),
 
-          if (viewModel.productDetails!.overview!.productAction ==
-              ProductInfoDisplayType.addToCart)
+          if (viewModel.productDetails!.overview!.productAction == ProductInfoDisplayType.addToCart)
             _PriceInfo()
           else
             _AlertText(),
@@ -447,8 +444,18 @@ class _VolumePriceLoading extends StatelessWidget {
 }
 
 class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
+
   @override
   Widget build(BuildContext context, ProductDetailViewModel viewModel) {
+
+    if (viewModel.productDetails!.volumePricing!.isEmpty) {
+      return const SizedBox();
+    }
+
+    if (viewModel.productDetails?.overview?.showPrice != true) {
+      return const SizedBox();
+    }
+
     return Container(
         color: AppColor.white,
         child: Column(

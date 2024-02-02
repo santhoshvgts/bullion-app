@@ -271,15 +271,15 @@ class _DialogManagerState extends State<DialogManager> {
     showDialog(
         context: context,
         builder: (context) {
-          return WillPopScope(
-            onWillPop: () async {
-              _dialogService.dialogComplete(AlertResponse(status: false));
-              return false;
+          return PopScope(
+            onPopInvoked: (status) async {
+              if (status) {
+                _dialogService.dialogComplete(AlertResponse(status: false));
+              }
+              return;
             },
             child: Dialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 child: Wrap(
                   children: [
                     if (request.showActionBar!)
@@ -298,7 +298,6 @@ class _DialogManagerState extends State<DialogManager> {
                                     ? Container()
                                     : Text(
                                         request.title!,
-                                        
                                         style: AppTextStyle.titleLarge.copyWith(
                                           fontSize: 17,
                                         ),

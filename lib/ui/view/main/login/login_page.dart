@@ -148,9 +148,12 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                         Images.googleIcon,
                         height: 20,
                       ),
+                      loading: viewModel.busy("GOOGLE"),
                       textStyle: AppTextStyle.titleSmall
                           .copyWith(color: AppColor.text),
-                      onPressed: () {},
+                      onPressed: () {
+                        viewModel.googleSignIn();
+                      },
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     Align(

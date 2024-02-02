@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/add_to_cart/add_to_cart_view_model.dart';
 import 'package:bullion/ui/shared/contentful/product/product_text_style.dart';
 import 'package:flutter/material.dart';
@@ -94,12 +95,16 @@ class AddToCartSuccessBottomSheet extends StatelessWidget {
                           borderColor: AppColor.secondary,
                           onPressed: () async {
                             locator<DialogService>().dialogComplete(AlertResponse());
-                            
                             if (!locator<AuthenticationService>().isAuthenticated) {
-                              bool authenticated = await locator<NavigationService>().pushNamed(Routes.login, arguments: { 'fromMain': false });
+
+                              bool authenticated = await signInRequest(
+                                  Images.iconCartBottom,
+                                  title: "Checkout",
+                                  content: "Login or Create a free BULLION.com account for fast checkout and easy access to order history.",
+                                  showGuestLogin: true
+                              );
                               if (!authenticated) return;
                             }
-
                             locator<NavigationService>().pushNamed(Routes.checkout);
                           }
                       ),

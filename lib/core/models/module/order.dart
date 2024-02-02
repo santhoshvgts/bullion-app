@@ -24,6 +24,8 @@ class Order extends BaseModel {
   int? totalItems;
   num? orderTotal;
   String? formattedOrderTotal;
+  String? shippingDate;
+  String? formattedShippingDate;
   bool? hasTaxableItems;
   String? formattedTaxableSubTotal;
   String? formattedTaxableItemsTax;
@@ -90,11 +92,13 @@ class Order extends BaseModel {
     currency = json['currency'];
     orderStatus = json['order_status'];
     formattedPostedDate = json['formatted_posted_date'];
+    shippingDate = json['shipping_date'];
+    formattedShippingDate = json['formatted_shipping_date'];
     shippingAddress = json['shipping_address'] != null
-        ? new ShippingAddress.fromJson(json['shipping_address'])
+        ? ShippingAddress.fromJson(json['shipping_address'])
         : null;
     paymentMethod = json['payment_method'] != null
-        ? new PaymentMethod.fromJson(json['payment_method'])
+        ? PaymentMethod.fromJson(json['payment_method'])
         : null;
     quickShipEligible = json['quick_ship_eligible'];
     totalItems = json['total_items'];
@@ -108,13 +112,13 @@ class Order extends BaseModel {
     if (json['order_total_summary'] != null) {
       orderTotalSummary = <OrderTotalSummary>[];
       json['order_total_summary'].forEach((v) {
-        orderTotalSummary!.add(new OrderTotalSummary.fromJson(v));
+        orderTotalSummary!.add(OrderTotalSummary.fromJson(v));
       });
     }
     if (json['order_summary'] != null) {
       orderSummary = <OrderTotalSummary>[];
       json['order_summary'].forEach((v) {
-        orderSummary!.add(new OrderTotalSummary.fromJson(v));
+        orderSummary!.add(OrderTotalSummary.fromJson(v));
       });
     }
     showPaymentAcknowledge = json['show_payment_acknowledge'];
@@ -134,21 +138,21 @@ class Order extends BaseModel {
     if (json['order_line_items'] != null) {
       orderLineItems = <CartItem>[];
       json['order_line_items'].forEach((v) {
-        orderLineItems!.add(new CartItem.fromJson(v));
+        orderLineItems!.add(CartItem.fromJson(v));
       });
     }
 
     if (json['simple_image_ctas'] != null) {
       simpleImageCTAs = <SimpleImageCTA>[];
       json['simple_image_ctas'].forEach((v) {
-        simpleImageCTAs!.add(new SimpleImageCTA.fromJson(v));
+        simpleImageCTAs!.add(SimpleImageCTA.fromJson(v));
       });
     }
 
     if (json['shipment_tracking'] != null) {
       shipmentTracking = <TrackingInfo>[];
       json['shipment_tracking'].forEach((v) {
-        shipmentTracking!.add(new TrackingInfo.fromJson(v));
+        shipmentTracking!.add(TrackingInfo.fromJson(v));
       });
     }
     // shipmentTracking = json[''];
@@ -167,68 +171,70 @@ class Order extends BaseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['order_id'] = this.orderId;
-    data['currency'] = this.currency;
-    data['order_status'] = this.orderStatus;
-    data['formatted_posted_date'] = this.formattedPostedDate;
-    if (this.shippingAddress != null) {
-      data['shipping_address'] = this.shippingAddress!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['order_id'] = orderId;
+    data['currency'] = currency;
+    data['order_status'] = orderStatus;
+    data['formatted_posted_date'] = formattedPostedDate;
+    data['formatted_shipping_date'] = formattedShippingDate;
+    data['shipping_date'] = shippingDate;
+    if (shippingAddress != null) {
+      data['shipping_address'] = shippingAddress!.toJson();
     }
-    if (this.paymentMethod != null) {
-      data['payment_method'] = this.paymentMethod!.toJson();
+    if (paymentMethod != null) {
+      data['payment_method'] = paymentMethod!.toJson();
     }
-    data['quick_ship_eligible'] = this.quickShipEligible;
-    data['total_items'] = this.totalItems;
-    data['order_total'] = this.orderTotal;
-    data['request_rating'] = this.requestRating;
-    data['formatted_order_total'] = this.formattedOrderTotal;
-    data['has_taxable_items'] = this.hasTaxableItems;
-    data['formatted_taxable_sub_total'] = this.formattedTaxableSubTotal;
-    data['formatted_taxable_items_tax'] = this.formattedTaxableItemsTax;
-    data['formatted_non_taxable_sub_total'] = this.formattedNonTaxableSubTotal;
-    if (this.orderTotalSummary != null) {
+    data['quick_ship_eligible'] = quickShipEligible;
+    data['total_items'] = totalItems;
+    data['order_total'] = orderTotal;
+    data['request_rating'] = requestRating;
+    data['formatted_order_total'] = formattedOrderTotal;
+    data['has_taxable_items'] = hasTaxableItems;
+    data['formatted_taxable_sub_total'] = formattedTaxableSubTotal;
+    data['formatted_taxable_items_tax'] = formattedTaxableItemsTax;
+    data['formatted_non_taxable_sub_total'] = formattedNonTaxableSubTotal;
+    if (orderTotalSummary != null) {
       data['order_total_summary'] =
-          this.orderTotalSummary!.map((v) => v.toJson()).toList();
+          orderTotalSummary!.map((v) => v.toJson()).toList();
     }
-    if (this.orderSummary != null) {
+    if (orderSummary != null) {
       data['order_summary'] =
-          this.orderSummary!.map((v) => v.toJson()).toList();
+          orderSummary!.map((v) => v.toJson()).toList();
     }
-    data['show_payment_acknowledge'] = this.showPaymentAcknowledge;
-    data['has_shipment_info'] = this.hasShipmentInfo;
-    if (this.paymentInstructions != null) {
-      data['payment_instructions'] = this.paymentInstructions!.toList();
+    data['show_payment_acknowledge'] = showPaymentAcknowledge;
+    data['has_shipment_info'] = hasShipmentInfo;
+    if (paymentInstructions != null) {
+      data['payment_instructions'] = paymentInstructions!.toList();
     }
-    if (this.warnings != null) {
-      data['warnings'] = this.warnings!.toList();
+    if (warnings != null) {
+      data['warnings'] = warnings!.toList();
     }
-    if (this.orderLineItems != null) {
+    if (orderLineItems != null) {
       data['order_line_items'] =
-          this.orderLineItems!.map((v) => v.toJson()).toList();
+          orderLineItems!.map((v) => v.toJson()).toList();
     }
 
-    if (this.simpleImageCTAs != null) {
+    if (simpleImageCTAs != null) {
       data['simple_image_ctas'] =
-          this.simpleImageCTAs!.map((v) => v.toJson()).toList();
+          simpleImageCTAs!.map((v) => v.toJson()).toList();
     }
 
-    if (this.shipmentTracking != null) {
+    if (shipmentTracking != null) {
       data['shipment_tracking'] =
-          this.shipmentTracking!.map((v) => v.toJson()).toList();
+          shipmentTracking!.map((v) => v.toJson()).toList();
     }
     data['coupon'] = coupon;
     data['customer_type'] = customerType;
     data['predictive_margin'] = predictiveMargin;
     data['shippingAmount'] = shippingAmount;
     data['tax'] = tax;
-    data['primary_image'] = this.primaryImage;
-    data['items_count'] = this.itemsCount;
-    data['sub_title'] = this.subTitle;
-    data['title'] = this.title;
-    data['color_code'] = this.colorCode;
-    data['step'] = this.step;
-    data['action_required'] = this.actionRequired;
+    data['primary_image'] = primaryImage;
+    data['items_count'] = itemsCount;
+    data['sub_title'] = subTitle;
+    data['title'] = title;
+    data['color_code'] = colorCode;
+    data['step'] = step;
+    data['action_required'] = actionRequired;
     return data;
   }
 

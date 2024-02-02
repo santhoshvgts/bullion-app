@@ -7,17 +7,17 @@ class CardUtils {
 
   static String? validateCVV(String? value, int cvvLength) {
 
-    if (value == null || value.isEmpty) {
+    if (value?.isEmpty != false) {
       return Strings.fieldReq;
     }
-    if (value.length < cvvLength) {
+    if (value!.length < cvvLength) {
       return "CVV is invalid";
     }
     return null;
   }
 
   static String? validateDate(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value?.isEmpty != false) {
       return Strings.fieldReq;
     }
 
@@ -25,7 +25,7 @@ class CardUtils {
     int month;
     // The value contains a forward slash if the month and year has been
     // entered.
-    if (value.contains(RegExp(r'(/)'))) {
+    if (value!.contains(RegExp(r'(/)'))) {
       var split = value.split(RegExp(r'(/)'));
       // The value before the slash is the month while the value to right of
       // it is the year.
@@ -150,11 +150,11 @@ class CardUtils {
   }
 
   static String? validateCardNum(String? input) {
-    if (input == null || input.isEmpty) {
+    if (input?.isEmpty != false) {
       return Strings.fieldReq;
     }
 
-    input = getCleanedNumber(input);
+    input = getCleanedNumber(input!);
 
     if (input.length < 8) {
       return Strings.numberIsInvalid;

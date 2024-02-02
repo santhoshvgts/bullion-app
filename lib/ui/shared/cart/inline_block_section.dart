@@ -13,7 +13,7 @@ class InlineBlockSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      margin: const EdgeInsets.only(top: 5),
+      margin: const EdgeInsets.only(top: 10),
       width: double.infinity,
       child: Container(
         decoration: BoxDecoration(
@@ -47,13 +47,14 @@ class InlineBlockSection extends StatelessWidget {
 
               HorizontalSpacing.d5px(),
 
-              Text(
-                data.message!,
-                style: AppTextStyle.bodySmall.copyWith(
-                  color: data.color,
-                  fontWeight: data.title == null ? FontWeight.w600 : null,
+              Expanded(
+                child: Text(
+                  data.message!,
+                  style: AppTextStyle.bodySmall.copyWith(
+                    color: data.color,
+                  ),
+                  textAlign: TextAlign.start,
                 ),
-                textAlign: TextAlign.start,
               ),
             ],
           ),

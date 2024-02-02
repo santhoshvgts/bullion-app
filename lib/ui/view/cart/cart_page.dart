@@ -100,31 +100,22 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
                                 return await viewModel.refresh();
                               },
                               child: SingleChildScrollView(
-                                padding: EdgeInsets.zero,
                                 child: Column(
                                   children: [
-                                    if (redirectDisplayMessage
-                                            ?.messageDisplayType ==
-                                        MessageDisplayType.Inline)
-                                      InlineBlockSection(
-                                          redirectDisplayMessage!),
+                                    if (redirectDisplayMessage?.messageDisplayType == MessageDisplayType.Inline)
+                                      InlineBlockSection(redirectDisplayMessage!),
                                     if (viewModel.shoppingCart?.errors != null)
                                       _ErrorNotes(),
                                     if (viewModel.inlineMessage != null)
-                                      InlineBlockSection(
-                                          viewModel.inlineMessage!),
+                                      InlineBlockSection(viewModel.inlineMessage!),
                                     if (viewModel.totalItems == 0)
                                       Container(
                                         width: double.infinity,
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                1.5,
+                                        height: MediaQuery.of(context).size.height / 1.5,
                                         padding: const EdgeInsets.all(20),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Image.asset(
                                               Images.cartIcon,
@@ -133,14 +124,12 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
                                             VerticalSpacing.d30px(),
                                             const Text(
                                               "Your Cart is Empty",
-                                              
                                               textAlign: TextAlign.center,
                                               style: AppTextStyle.titleLarge,
                                             ),
                                             VerticalSpacing.d10px(),
                                             const Text(
                                               "Browse our wide selection of products and add your favorites to the cart.",
-                                              
                                               textAlign: TextAlign.center,
                                               style: AppTextStyle.bodySmall,
                                             ),
@@ -158,8 +147,7 @@ class CartPage extends StatelessWidget with WidgetsBindingObserver {
                                       )
                                     else
                                       ListView.separated(
-                                        itemCount:
-                                            viewModel.cartItems?.length ?? 0,
+                                        itemCount: viewModel.cartItems?.length ?? 0,
                                         shrinkWrap: true,
                                         primary: false,
                                         padding: const EdgeInsets.all(15),

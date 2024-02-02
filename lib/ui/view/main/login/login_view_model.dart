@@ -6,6 +6,7 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
@@ -44,6 +45,14 @@ class LoginViewModel extends VGTSBaseViewModel {
   register() {
     navigationService.pushNamed(Routes.register,
         arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+  }
+
+  googleSignIn() async {
+    setBusyForObject("GOOGLE", true);
+    UserCredential? userCredential = await _authenticationService.signInWithGoogle();
+    setBusyForObject("GOOGLE", false);
+    print("userCredential?.credential?.accessToken");
+    print(userCredential?.credential?.accessToken);
   }
 
   login() async {

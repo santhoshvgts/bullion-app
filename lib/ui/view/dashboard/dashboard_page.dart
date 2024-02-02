@@ -1,4 +1,3 @@
-import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
@@ -29,6 +28,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
         context,
         key: locator<NavigationService>().tabBarKey,
         controller: viewModel.bottomNavController,
+        backgroundColor: AppColor.secondaryBackground,
         screens: [
           ...viewModel.pages
               .asMap()
@@ -67,7 +67,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
           ),
           _PersistentBottomNav(
             inactiveIcon: Image.asset(Images.chart_inactive, width: 22,),
-            icon: Image.asset(Images.chart_active, width: 22,),
+            icon: Image.asset(Images.chart_active, width: 22, color: AppColor.primary,),
             title: "Charts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/spot-price",
@@ -83,7 +83,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                   height: 24,
                   child: Stack(
                     children: [
-                      const Positioned.fill(child: Icon(CupertinoIcons.cart, size: 22,)),
+                      Positioned.fill(child: Center(child: Image.asset(Images.cart_inactive, width: 22, height: 22,))),
                       if (snapshot.hasData)
                         if ((snapshot.data?.shoppingCart?.totalItems ?? 0) != 0)
                           Positioned(
@@ -113,7 +113,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                     height: 24,
                     child: Stack(
                       children: [
-                        const Positioned.fill(child: Icon(CupertinoIcons.cart, size: 22,)),
+                        Positioned.fill(child: Center(child: Image.asset(Images.cart_active, width: 22, height: 22, color: AppColor.primary,))),
                         if (snapshot.hasData)
                           if ((snapshot.data?.shoppingCart?.totalItems ?? 0) != 0)
                             Positioned(
@@ -142,8 +142,8 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            inactiveIcon: Image.asset(Images.account, width: 22,),
-            icon: Image.asset(Images.account_active, width: 22,),
+            inactiveIcon: Image.asset(Images.account, width: 26,),
+            icon: Image.asset(Images.account_active, width: 26, color: AppColor.primary,),
             title: "Accounts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/accounts",
@@ -155,7 +155,10 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
         hideNavigationBarWhenKeyboardShows: true,
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,
-        decoration: NavBarDecoration(boxShadow: AppStyle.topShadow),
+        decoration: const NavBarDecoration(
+            // boxShadow: AppStyle.topShadow,
+          border: Border(top: BorderSide(color: AppColor.outlineBorder, width: 0.5))
+        ),
         screenTransitionAnimation: const ScreenTransitionAnimation(
           animateTabTransition: true,
           curve: Curves.ease,

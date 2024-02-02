@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bullion/core/constants/display_direction.dart';
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/constants/module_type.dart';
@@ -65,8 +66,7 @@ class ProductModule extends VGTSBuilderWidget<ProductViewModel> {
   ProductViewModel viewModelBuilder(BuildContext context) => ProductViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      ProductViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, ProductViewModel viewModel, Widget? child) {
     return ModuleUIContainer(
       viewModel.settings,
       hideHeadSection: viewModel.settings!.moduleType == ModuleType.productList,
@@ -90,16 +90,14 @@ class _ProductPriceComparisonDisplay extends ViewModelWidget<ProductViewModel> {
   Widget build(BuildContext context, ProductViewModel viewModel) {
     return ProductWrapItemList(
       wrap: viewModel.itemDisplaySettings.wrapItems,
-      spacing: viewModel.spacing,
-      runSpacing: viewModel.runSpacing,
+      spacing: 0,
+      runSpacing: 0,
       gridCols: viewModel.itemDisplaySettings.gridCols,
       children: viewModel.items!
           .asMap()
           .map((index, item) {
-        return MapEntry(index, _PriceComparisonItemCard(item));
-      })
-          .values
-          .toList(),
+        return MapEntry(index, _PriceComparisonItemCard(item, index));
+      }).values.toList(),
     );
   }
 }
@@ -258,9 +256,10 @@ class VerticalItem extends StatelessWidget {
       child: Container(
         width: itemWidth,
         decoration: BoxDecoration(
-          color: AppColor.secondaryBackground.withOpacity(0.7),
-          border: wrapItems ? null : Border.all(color: AppColor.border),
-          borderRadius: BorderRadius.circular(0),
+          // color: AppColor.secondaryBackground.withOpacity(0.7),
+          color: AppColor.white,
+          border: Border.all(color: AppColor.border, width: 0.5),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,13 +271,14 @@ class VerticalItem extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(0),
-                          topRight: Radius.circular(0)),
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)
+                      ),
                       child: Container(
-                        color: AppColor.white,
                         padding: const EdgeInsets.all(5),
                         width: itemWidth,
                         height: itemWidth + 20,
+                        color: AppColor.secondaryBackground,
                         child: NetworkImageLoader(
                           image: _item.primaryImageUrl,
                           fit: BoxFit.fitWidth,
@@ -299,7 +299,10 @@ class VerticalItem extends StatelessWidget {
                                     ),
                                   ],
                                   borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(8))),
+                                      topRight: Radius.circular(8),
+                                      // bottomLeft: Radius.circular(10),
+                                  )
+                              ),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 2),
                               child: Text(
@@ -314,9 +317,8 @@ class VerticalItem extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   child: Text(
                     _item.name!,
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    
                     style: ProductTextStyle.title(
                       gridCols,
                       color: textColor,
@@ -368,9 +370,9 @@ class VerticalItem extends StatelessWidget {
                         StreamBuilder(
                           stream: Stream.periodic(const Duration(seconds: 1)),
                           builder: (context, snapshot) {
-                            return Text("Ends in ${_item.formattedDealEndsIn}", style: AppTextStyle.bodySmall.copyWith(
-                                color: AppColor.dealsRed
-                            ),);
+                            return Text(
+                              "Ends in ${_item.formattedDealEndsIn}", style: AppTextStyle.bodySmall.copyWith(fontSize: 11, color: AppColor.dealsRed),
+                            );
                           }
                         ),
 
@@ -390,8 +392,9 @@ class VerticalItem extends StatelessWidget {
 
 class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
   final ProductOverview _item;
+  final int index;
 
-  _PriceComparisonItemCard(this._item);
+  _PriceComparisonItemCard(this._item, this.index);
 
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
@@ -403,10 +406,11 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
       child: Container(
         width: _itemWidth,
         decoration: BoxDecoration(
-          color: AppColor.white,
+          color: index %2 == 0 ? AppColor.white : AppColor.secondaryBackground,
           border: viewModel.itemDisplaySettings.wrapItems ? null : Border.all(color: AppColor.border),
           borderRadius: BorderRadius.circular(0),
         ),
+        padding: EdgeInsets.symmetric(vertical: index %2 != 0 ? 10 : 0 ),
         margin: const EdgeInsets.only(bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -420,9 +424,9 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(0),
-                          topRight: Radius.circular(0)),
+                          topRight: Radius.circular(0)
+                      ),
                       child: Container(
-                        color: AppColor.white,
                         padding: const EdgeInsets.all(5),
                         width: 110,
                         height: 110,
@@ -637,19 +641,17 @@ class _PriceSection extends StatelessWidget {
                         ? 100
                         : double.infinity,
                     textStyle: AppTextStyle.titleLarge.copyWith(fontSize: 14),
-                    borderColor: AppColor.primaryDark, onPressed: () async {
-                  if (locator<AuthenticationService>().isAuthenticated){
-                    locator<NavigationService>()
-                        .pushNamed(Routes.editAlertMe,
-                        arguments: {
-                          "productDetails": item
-                        });
-                  } else {
-                    Util.showSnackBar("Please login to create an Alert");
-                  }
+                    borderColor: AppColor.primaryDark,
+                    onPressed: () async {
+                      if (!locator<AuthenticationService>().isAuthenticated) {
+                        Util.showLoginAlert();
+                        return;
+                      }
 
-                  //await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(ProductDetails(overview: item), showViewButton: true,));
-                })),
+                      locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": item });
+                  }
+                )
+            ),
           )
         else
           Container(
@@ -703,14 +705,16 @@ class ProductWrapItemList extends StatelessWidget {
         child: SingleChildScrollView(
             scrollDirection: direction,
             controller: ScrollController(keepScrollOffset: false),
-            padding:
-                EdgeInsets.symmetric(horizontal: spacing, vertical: spacing,),
+            padding: EdgeInsets.symmetric(horizontal: spacing, vertical: spacing,),
             child: IntrinsicHeight(
               child: Row(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: children.map(
-                        (e) => e,
+                        (e) => Padding(
+                          padding: EdgeInsets.only(right: spacing),
+                          child: e,
+                        ),
                       ).toList()),
             )),
       );
@@ -748,7 +752,7 @@ class ProductWrapItemList extends StatelessWidget {
                       e,
                       SizedBox(
                         height: spacing,
-                      )
+                      ),
                     ])
                 .toList(),
           ),
@@ -764,12 +768,6 @@ class ProductWrapItemList extends StatelessWidget {
               Row(
                 children: [
                   e,
-                  if (index % 2 == 0)
-                    const VerticalDivider(
-                      color: AppColor.divider,
-                      thickness: 0.7,
-                      width: 0.7,
-                    )
                 ],
               ),
             )).values.toList(),
@@ -793,6 +791,9 @@ class ProductWrapItemList extends StatelessWidget {
     return items.expand((element) {
       return [
         element,
+        SizedBox(
+          height: spacing,
+        )
         // const Divider(
         //   color: AppColor.divider,
         //   thickness: 1,

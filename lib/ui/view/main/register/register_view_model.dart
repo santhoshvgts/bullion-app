@@ -7,6 +7,7 @@ import 'package:bullion/services/shared/api_model/request_settings.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
@@ -32,8 +33,14 @@ class RegisterViewModel extends VGTSBaseViewModel {
   EmailFormFieldController emailController = EmailFormFieldController(
     const ValueKey("txtEmail"),
   );
-  PasswordFormFieldController passwordController = PasswordFormFieldController(
+  FormFieldController passwordController = FormFieldController(
     const ValueKey("txtPassword"),
+    validator: (String? value) {
+      if ((value?.length ?? 0) < 7) {
+        return "Password should have minimum 7 characters";
+      }
+      return null;
+    }
   );
   late FormFieldController confirmPasswordController;
 
@@ -102,6 +109,13 @@ class RegisterViewModel extends VGTSBaseViewModel {
     await navigationService.pushReplacementNamed(Routes.login,
         arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute
     });
+  }
+  googleSignIn() async {
+    setBusyForObject("GOOGLE", true);
+    UserCredential? userCredential = await _authenticationService.signInWithGoogle();
+    setBusyForObject("GOOGLE", false);
+    print("userCredential?.credential?.accessToken");
+    print(userCredential?.credential?.accessToken);
   }
 
   @override

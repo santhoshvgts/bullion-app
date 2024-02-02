@@ -52,7 +52,7 @@ class ProductPage extends StatelessWidget with WidgetsBindingObserver {
               titleSpacing: 0,
               title: SearchCardSection(
                 leftPadding: 0,
-                rightPadding: 0,
+                rightPadding: 7,
               ),
               actions: const [
                  CartButton.light()
