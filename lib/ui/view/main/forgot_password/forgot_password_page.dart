@@ -48,57 +48,58 @@ class ForgotPasswordPage extends VGTSBuilderWidget<ForgotPasswordViewModel> {
             }),
       ),
       body: SafeArea(
-        child: TapOutsideUnFocus(
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-            children: <Widget>[
-              Container(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  Images.appLogo,
-                  height: 40.0,
+        child: Form(
+          key: viewModel.formKey,
+          child: TapOutsideUnFocus(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    Images.appLogo,
+                    height: 40.0,
+                  ),
                 ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 35)),
-              const Text(
-                "Forgot Password",
-                
-                style: AppTextStyle.headlineSmall,
-              ),
-              const Padding(padding: EdgeInsets.only(top: 10)),
-              Linkify(
-                onOpen: (link) async {
-                  launchAnUrl(link.url);
-                },
-                linkifiers: const [
-                  PhoneNumberLinkifier(),
-                  EmailLinkifier(),
-                  UrlLinkifier()
-                ],
-                text:
-                    "Enter the email address associated with your account and we'll email you a secure link to reset your password."
-                "If you do not receive an email, please try resubmitting your request or contacting customer service at support@bullion.com for assistance.",
-                style: AppTextStyle.bodyMedium,
-                linkStyle: AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
-              ),
-              EditTextField(
-                "Email Address",
-                viewModel.emailController,
-                margin: const EdgeInsets.only(top: 30),
-                onSubmitted: (value) {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                onChanged: (value) {},
-              ),
-              const Padding(padding: EdgeInsets.only(top: 20)),
-              Button(
-                "Submit",
-                valueKey: const Key("btnSubmit"),
-                loading: viewModel.isBusy,
-                disabled: viewModel.emailController.text.isEmpty,
-                onPressed: () => viewModel.submit(),
-              ),
-            ],
+                const Padding(padding: EdgeInsets.only(top: 35)),
+                const Text(
+                  "Forgot Password",
+                  style: AppTextStyle.headlineSmall,
+                ),
+                const Padding(padding: EdgeInsets.only(top: 10)),
+                Linkify(
+                  onOpen: (link) async {
+                    launchAnUrl(link.url);
+                  },
+                  linkifiers: const [
+                    PhoneNumberLinkifier(),
+                    EmailLinkifier(),
+                    UrlLinkifier()
+                  ],
+                  text:
+                      "Enter the email address associated with your account and we'll email you a secure link to reset your password."
+                  "If you do not receive an email, please try resubmitting your request or contacting customer service at support@bullion.com for assistance.",
+                  style: AppTextStyle.bodyMedium,
+                  linkStyle: AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
+                ),
+                EditTextField(
+                  "Email Address",
+                  viewModel.emailController,
+                  margin: const EdgeInsets.only(top: 30),
+                  onSubmitted: (value) {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  onChanged: (value) {},
+                ),
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                Button(
+                  "Submit",
+                  valueKey: const Key("btnSubmit"),
+                  loading: viewModel.isBusy,
+                  onPressed: () => viewModel.submit(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

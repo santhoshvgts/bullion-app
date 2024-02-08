@@ -531,9 +531,9 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         height: 16,
                       ),
                       getTextsWithBullets([
-                        'Easily manage your orders',
-                        'Customize your profile',
-                        'Track your portfolio and rewards',
+                        'Faster checkout and Exclusive offers',
+                        'Order history and tracking',
+                        'Set up Price and Product Alerts'
                       ]),
                       const SizedBox(
                         height: 16,

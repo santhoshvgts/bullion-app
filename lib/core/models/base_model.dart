@@ -145,6 +145,7 @@ class BaseModel extends BaseObject {
 
       case Profile:
         return Profile() as T;
+
     }
     throw "Requested Model not initialised in Base Model";
   }

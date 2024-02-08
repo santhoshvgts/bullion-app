@@ -48,7 +48,7 @@ class SearchCardSection extends PreferredSize {
                         right: 2.0,
                       ),
                       child: Text(
-                        placeholder ?? "Search Products and Deals",
+                        placeholder ?? "Search Bullion.com",
                         style: AppTextStyle.bodyMedium.copyWith(
                           color: AppColor.text,
                           fontFamily: AppTextStyle.fontFamily,

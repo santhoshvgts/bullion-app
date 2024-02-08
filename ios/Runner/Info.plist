@@ -22,6 +22,9 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+
+    <key>GIDClientID</key>
+    <string>$(GCLIENT_ID)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -31,15 +34,15 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com</string>
+				<string>$(GRESERVED_CLIENT_ID)</string>
 			</array>
 		</dict>
 		<dict/>
 	</array>
+
+
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>GIDClientID</key>
-	<string>$(GRESERVED_CLIENT_ID)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>tel</string>

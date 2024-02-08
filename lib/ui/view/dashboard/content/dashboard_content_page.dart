@@ -110,6 +110,8 @@ class DashboardContentPage extends StatelessWidget {
                               constraints,
                             ) {
                               _appBarExtendedHeight ??= 70 - constraints.biggest.height;
+                              double padRight = 65;
+                              print(MediaQuery.of(context).devicePixelRatio);
 
                               return FlexibleSpaceBar(
                                 centerTitle: true,
@@ -118,7 +120,7 @@ class DashboardContentPage extends StatelessWidget {
                                   bottom: 10.0,
                                 ),
                                 title: SearchCardSection(
-                                  rightPadding: 60 - ((10 - 60) * (( constraints.biggest.height - 80) / _appBarExtendedHeight! )),
+                                  rightPadding: padRight - ((10 - padRight) * (( constraints.biggest.height - 80) / _appBarExtendedHeight! )),
                                 ),
                                 background: AppBar(
                                   backgroundColor: AppColor.white,

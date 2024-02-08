@@ -29,7 +29,7 @@ class SearchPage extends VGTSBuilderWidget<SearchViewModel> {
       appBar: AppBar(
         titleSpacing: 0,
         elevation: 1,
-        title: Text("Search for Product & Deals",  style: AppTextStyle.titleSmall.copyWith(color: AppColor.title, fontFamily: AppTextStyle.fontFamily),),
+        title: Text("Search Bullion.com",  style: AppTextStyle.titleSmall.copyWith(color: AppColor.title, fontFamily: AppTextStyle.fontFamily),),
         bottom: PreferredSize(
             preferredSize: const Size(double.infinity, 45),
             child: Padding(

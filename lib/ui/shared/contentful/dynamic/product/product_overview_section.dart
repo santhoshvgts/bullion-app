@@ -165,6 +165,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                             .config!
                             .appLinks!
                             .webUrl!}${viewModel.productDetails!.overview!.targetUrl!}";
+
                         Share.share(
                           shareContent,
                           subject: "Bullion.com",
