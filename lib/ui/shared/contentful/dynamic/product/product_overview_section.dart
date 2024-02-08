@@ -60,10 +60,9 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
         children: [
           Stack(
             children: [
-              _ImageList(
-                viewModel.productDetails?.productPictures?.map((e) => e.imageUrl ?? '').toList() ??
-                    [viewModel.productDetails!.overview!.primaryImageUrl!],
-              ),
+
+              _ImageList(viewModel.productDetails?.overview?.productPictures?.map((e) => e.imageUrl ?? '').toList() ?? []),
+
               if (viewModel.productDetails?.overview?.ribbonText?.isNotEmpty == true)
                 Positioned(
                   top: 10,
@@ -262,7 +261,7 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
             onIndexChanged: (index) {
               viewModel.activeIndex = index;
             },
-            itemCount: images!.length,
+            itemCount: images?.length ?? 0,
             loop: false,
             layout: SwiperLayout.DEFAULT,
             controller: viewModel.productImageController,

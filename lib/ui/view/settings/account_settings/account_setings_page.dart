@@ -110,13 +110,13 @@ class _PersonalInfoSection extends ViewModelWidget<AccountSettingsViewModel> {
 
           _buildItemSection("Phone Number", viewModel.profile?.phoneNumber ?? '-'),
 
-          AppStyle.customDivider,
-
-          _buildItemSection("Alternate Number", viewModel.profile?.alternatePhoneNumber ?? '-'),
-
-          AppStyle.customDivider,
-
-          _buildItemSection("Company", viewModel.profile?.companyName ?? '-'),
+          // AppStyle.customDivider,
+          //
+          // _buildItemSection("Alternate Number", viewModel.profile?.alternatePhoneNumber ?? '-'),
+          //
+          // AppStyle.customDivider,
+          //
+          // _buildItemSection("Company", viewModel.profile?.companyName ?? '-'),
 
         ],
       ),

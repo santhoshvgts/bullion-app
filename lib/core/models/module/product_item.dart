@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/base_model.dart';
 import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
+import 'package:bullion/core/models/module/product_detail/product_picture.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/helper/utils.dart';
@@ -35,6 +36,7 @@ class ProductOverview extends BaseModel {
   bool? quickShip;
   bool? recurringEligible;
 
+  List<ProductPicture>? productPictures;
   List<CompetitorPrice>? competitorPrices;
 
   String get formattedDealEndsIn {
@@ -159,6 +161,13 @@ class ProductOverview extends BaseModel {
       });
     }
 
+    if (json['product_pictures'] != null) {
+      productPictures = <ProductPicture>[];
+      json['product_pictures'].forEach((v) {
+        productPictures!.add(ProductPicture.fromJson(v));
+      });
+    }
+
     primaryImageUrl = json['primary_image_url'];
     imageDesc = json['image_desc'];
     productAction = json['product_action'];
@@ -195,6 +204,9 @@ class ProductOverview extends BaseModel {
       data['competitor_prices'] = competitorPrices!.map((v) => v.toJson()).toList();
     }
 
+    if (productPictures != null) {
+      data['product_pictures'] = productPictures!.map((v) => v.toJson()).toList();
+    }
     data['deal_ends_in'] = dealEndsIn;
     data['show_price'] = showPrice;
     data['on_presale'] = onPresale;

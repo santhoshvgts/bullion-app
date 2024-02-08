@@ -1,4 +1,4 @@
-package com.bullion
+package com.bullion.app
 
 import io.flutter.embedding.android.FlutterActivity
 

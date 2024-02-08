@@ -51,7 +51,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField(
                         "First Name",
                         viewModel.nameController,
-                        placeholder: "john",
+                        placeholder: "",
                         onSubmitted: (value) {},
                         onChanged: (value) {},
                       ),
@@ -59,7 +59,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField(
                         "Last Name",
                         viewModel.lnameController,
-                        placeholder: 'Paul',
+                        placeholder: '',
                         onSubmitted: (value) {},
                         onChanged: (value) {},
                       ),
@@ -67,7 +67,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField(
                         "Email Address",
                         viewModel.emailController,
-                        placeholder: "john@bullion.com",
+                        placeholder: "",
                         onSubmitted: (value) {},
                         onChanged: (value) {},
                       ),
@@ -75,7 +75,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField.password(
                         "Password",
                         viewModel.passwordController,
-                        placeholder: "********",
+                        placeholder: "",
                         onSubmitted: (value) {
                           FocusScope.of(context).requestFocus(viewModel.confirmPasswordController.focusNode);
                         },
@@ -86,7 +86,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField.password(
                         "Confirm Password",
                         viewModel.confirmPasswordController,
-                        placeholder: "********",
+                        placeholder: "",
                         onSubmitted: (value) {
                           FocusScope.of(context).unfocus();
                         },

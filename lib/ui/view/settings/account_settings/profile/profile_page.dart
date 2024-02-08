@@ -61,19 +61,19 @@ class ProfilePage extends VGTSBuilderWidget<ProfileViewModel> {
 
                   ),
 
-                  EditTextField(
-                    "Alternative Phone No",
-                    viewModel.alternativePhoneNoController,
-                    margin: const EdgeInsets.only(top: 20),
+                  // EditTextField(
+                  //   "Alternative Phone No",
+                  //   viewModel.alternativePhoneNoController,
+                  //   margin: const EdgeInsets.only(top: 20),
+                  //
+                  // ),
 
-                  ),
-
-                  EditTextField(
-                    "Company Name",
-                    viewModel.companyNameController,
-                    margin: const EdgeInsets.only(top: 20),
-
-                  ),
+                  // EditTextField(
+                  //   "Company Name",
+                  //   viewModel.companyNameController,
+                  //   margin: const EdgeInsets.only(top: 20),
+                  //
+                  // ),
 
                 ],
               ),

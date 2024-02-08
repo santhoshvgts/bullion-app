@@ -77,20 +77,6 @@ class RegisterViewModel extends VGTSBaseViewModel {
       confirmPasswordController.text,
     );
 
-    if (result != null) {
-      if (fromMain) {
-        navigationService.popAllAndPushNamed(Routes.dashboard);
-      } else if (redirectRoute != null) {
-        navigationService.pushReplacementNamed(redirectRoute!);
-      } else {
-        navigationService.pop(returnValue: true);
-        locator<EventBusService>()
-            .eventBus
-            .fire(RefreshDataEvent(RefreshType.homeRefresh));
-      }
-      preferenceService.setFirstTimeAppOpen(false);
-    }
-    notifyListeners();
      setBusy(false);
   }
 
@@ -112,10 +98,9 @@ class RegisterViewModel extends VGTSBaseViewModel {
   }
   googleSignIn() async {
     setBusyForObject("GOOGLE", true);
-    UserCredential? userCredential = await _authenticationService.signInWithGoogle();
+    AuthResponse? result = await _authenticationService.signInWithGoogle();
+    handleAuthResponse(result);
     setBusyForObject("GOOGLE", false);
-    print("userCredential?.credential?.accessToken");
-    print(userCredential?.credential?.accessToken);
   }
 
   @override
@@ -125,5 +110,21 @@ class RegisterViewModel extends VGTSBaseViewModel {
   ) {
     locator<DialogService>().showDialog(description: exception.error?.message);
     super.handleErrorResponse(settings, exception);
+  }
+
+  handleAuthResponse(AuthResponse? result) {
+    if (result != null) {
+      if (fromMain) {
+        navigationService.popAllAndPushNamed(Routes.dashboard);
+      } else if (redirectRoute != null) {
+        navigationService.pushReplacementNamed(redirectRoute!);
+      } else {
+        navigationService.pop(returnValue: true);
+        locator<EventBusService>()
+            .eventBus
+            .fire(RefreshDataEvent(RefreshType.homeRefresh));
+      }
+      preferenceService.setFirstTimeAppOpen(false);
+    }
   }
 }

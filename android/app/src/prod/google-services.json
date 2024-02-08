@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:342393830785:android:dcdf799564ae164f35fc80",
+        "mobilesdk_app_id": "1:342393830785:android:515b41a43b20ba3035fc80",
         "android_client_info": {
-          "package_name": "com.bullion"
+          "package_name": "com.bullion.app"
         }
       },
       "oauth_client": [

@@ -31,7 +31,7 @@ class ProfileViewModel extends VGTSBaseViewModel {
   EmailFormFieldController emailController = EmailFormFieldController(const ValueKey("txtEmail"));
   PhoneFormFieldController phoneNoController = PhoneFormFieldController(const ValueKey("txtPhone"), maxLength: 15);
   PhoneFormFieldController alternativePhoneNoController = PhoneFormFieldController(const ValueKey("txtAlterPhoneNo"), maxLength: 15);
-  TextFormFieldController companyNameController = TextFormFieldController(const ValueKey("txtCompany"));
+  TextFormFieldController companyNameController = TextFormFieldController(const ValueKey("txtCompany"), required: false);
 
   @override
   Future onInit() async {

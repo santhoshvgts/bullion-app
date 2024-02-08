@@ -100,7 +100,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                           EditTextField(
                             "Email Address",
                             viewModel.emailController,
-                            placeholder: "john@bullion.com",
+                            placeholder: "",
                             key: const Key("txtEmailAddress"),
                             onChanged: (value) {},
                           ),
@@ -108,7 +108,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                           EditTextField.password(
                             "Password",
                             viewModel.passwordController,
-                            placeholder: "********",
+                            placeholder: "",
                             margin: const EdgeInsets.only(top: 25),
                             onSubmitted: (value) {
                               FocusScope.of(context).unfocus();
@@ -127,7 +127,6 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                               top: 10,
                             ),
                             child: Text("Forgot your Password?",
-                                
                                 style: AppTextStyle.titleSmall
                                     .copyWith(color: AppColor.primary)),
                           ),

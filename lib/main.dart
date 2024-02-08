@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bullion/router.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
 import 'package:firebase_core/firebase_core.dart';

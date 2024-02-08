@@ -111,6 +111,7 @@ class ApiBaseService extends ApiBaseHelper {
       if (body is HTTP.MultipartRequest) body.headers.addAll(requestMessage.headers);
 
       Logger.d(requestMessage.headers.toString());
+      Logger.d(body.toString());
 
       // Stream Response using HTTP
       // Send body if it is a Multipart Request, else send Request Message

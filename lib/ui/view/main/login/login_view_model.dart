@@ -49,10 +49,9 @@ class LoginViewModel extends VGTSBaseViewModel {
 
   googleSignIn() async {
     setBusyForObject("GOOGLE", true);
-    UserCredential? userCredential = await _authenticationService.signInWithGoogle();
+    AuthResponse? result = await _authenticationService.signInWithGoogle();
+    handleAuthResponse(result);
     setBusyForObject("GOOGLE", false);
-    print("userCredential?.credential?.accessToken");
-    print(userCredential?.credential?.accessToken);
   }
 
   login() async {
@@ -64,20 +63,7 @@ class LoginViewModel extends VGTSBaseViewModel {
       emailController.text,
       passwordController.text,
     );
-    if (result != null) {
-      if (fromMain) {
-        navigationService.popAllAndPushNamed(Routes.dashboard);
-      } else if (redirectRoute != null) {
-        navigationService.pushReplacementNamed(redirectRoute!);
-      } else {
-        navigationService.pop(returnValue: true);
-        locator<EventBusService>()
-            .eventBus
-            .fire(RefreshDataEvent(RefreshType.accountRefresh));
-      }
-      preferenceService.setFirstTimeAppOpen(false);
-    }
-    notifyListeners();
+    handleAuthResponse(result);
     setBusy(false);
   }
 
@@ -88,4 +74,19 @@ class LoginViewModel extends VGTSBaseViewModel {
         .eventBus
         .fire(RefreshDataEvent(RefreshType.homeRefresh));
   }
+
+  handleAuthResponse(AuthResponse? result) {
+    if (result != null) {
+      if (fromMain) {
+        navigationService.popAllAndPushNamed(Routes.dashboard);
+      } else if (redirectRoute != null) {
+        navigationService.pushReplacementNamed(redirectRoute!);
+      } else {
+        navigationService.pop(returnValue: true);
+        locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
+      }
+      preferenceService.setFirstTimeAppOpen(false);
+    }
+  }
+
 }

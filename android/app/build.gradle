@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.bullion"
+    namespace "com.bullion.app"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.bullion"
+        applicationId "com.bullion.app"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -58,13 +58,13 @@ android {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
             manifestPlaceholders["appName"] = "Bullion Dev"
-            manifestPlaceholders["deepLinkHost"] = "bulliondev.page.link"
+            manifestPlaceholders["deepLinkHost"] = "testsite.bullion.com"
 //            manifestPlaceholders["kochavaSmartLink"] = "apmexdev.smart.link"
         }
         create("prod") {
             dimension = "flavor-type"
             manifestPlaceholders["appName"] = "Bullion"
-            manifestPlaceholders["deepLinkHost"] = "bullion.page.link"
+            manifestPlaceholders["deepLinkHost"] = "bullion.com"
 //            manifestPlaceholders["kochavaSmartLink"] = "apmexdev.smart.link"
         }
     }
