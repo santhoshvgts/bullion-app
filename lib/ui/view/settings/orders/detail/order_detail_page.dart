@@ -6,6 +6,7 @@ import 'package:bullion/core/models/module/tracking_info_module.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/cart/cart_summary_help_text.dart';
@@ -68,8 +69,16 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
                         child: _FromSuccessCard()
                       ),
 
-                    if (viewModel.isGuestUser)
-                      _SettingItemGuestUser(),
+                    StreamBuilder(
+                        stream: locator<AuthenticationService>().userController.stream,
+                        builder: (context, snapshot) {
+                          if (locator<AuthenticationService>().isGuestUser) {
+                            return _SettingItemGuestUser();
+                          }
+
+                          return Container();
+                        }
+                    ),
 
                     Container(
                       color: AppColor.white,

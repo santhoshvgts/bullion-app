@@ -147,6 +147,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                         Images.googleIcon,
                         height: 20,
                       ),
+                      progressColor: AppColor.primary,
                       loading: viewModel.busy("GOOGLE"),
                       textStyle: AppTextStyle.titleSmall
                           .copyWith(color: AppColor.text),

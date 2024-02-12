@@ -5,10 +5,12 @@ import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riskified/flutter_riskified.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'core/res/styles.dart';
 import 'helper/dialog_manager.dart';
@@ -35,6 +37,20 @@ Future<void> main() async {
       };
 
       runApp(const MyApp());
+
+      String devDsn = 'https://a6c53009b152945a1ba552b0752c404d@o4504257190821888.ingest.sentry.io/4506715221524480';
+      String dsn = 'https://d5997437f41a06c4ca118856ab998585@o4504257190821888.ingest.sentry.io/4506715234893824';
+
+      await SentryFlutter.init((options) async {
+          options.dsn = await locator<DeviceService>().getEnvironment() == "DEVELOP"
+              ? devDsn
+              : dsn;
+          options.debug = !kReleaseMode;
+          options.tracesSampleRate = 1.0;
+          // options.enableOutOfMemoryTracking = false;
+        },
+        appRunner: () => runApp(const MyApp()),
+      );
     },
     (error, stack) {
       Logger.e("Zoned Error", e: error, s: stack);

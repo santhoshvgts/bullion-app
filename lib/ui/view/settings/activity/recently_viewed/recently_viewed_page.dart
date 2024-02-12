@@ -35,14 +35,13 @@ class RecentlyViewedPage extends VGTSBuilderWidget<RecentlyViewedViewModel> {
       appBar: AppBar(
         title: Text("Recently Viewed",  style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
       ),
-      backgroundColor: AppColor.secondaryBackground,
       body: RefreshIndicator(
         onRefresh: () async {
           return await viewModel.getRecentlyViewed();
         },
         child: SizedBox(
           height: double.infinity,
-          child: !viewModel.isBusy && viewModel.productList!.length == 0
+          child: !viewModel.isBusy && viewModel.productList!.isEmpty
               ?  Container(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height / 1.5,
@@ -78,14 +77,14 @@ class RecentlyViewedPage extends VGTSBuilderWidget<RecentlyViewedViewModel> {
 
                       ProductWrapItemList(
                         wrap: true,
-                        spacing: 0,
-                        runSpacing: 0,
+                        spacing: 10,
+                        runSpacing: 10,
                         gridCols: 2,
                         children: viewModel.productList!
                             .asMap()
                             .map((index, item) {
                           return MapEntry(index, VerticalItem(item,
-                            itemWidth: (MediaQuery.of(context).size.width/2) - 1,
+                            itemWidth: (MediaQuery.of(context).size.width/2) - 15,
                             wrapItems: true,
                             gridCols: 2,
                             textColor: AppColor.text,

@@ -112,6 +112,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
               Button.outline(
                 "Continue with Google",
                 valueKey: const Key('btnGoogle'),
+                progressColor: AppColor.primary,
                 iconWidget: Image.asset(
                   Images.googleIcon,
                   height: 20,

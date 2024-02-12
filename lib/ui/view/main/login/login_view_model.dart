@@ -42,9 +42,11 @@ class LoginViewModel extends VGTSBaseViewModel {
     navigationService.pushNamed(Routes.forgotPassword, arguments: fromMain);
   }
 
-  register() {
-    navigationService.pushNamed(Routes.register,
-        arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+  register() async {
+    var result = await navigationService.pushNamed(Routes.register, arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+    if (result == true) {
+      navigationService.pop(returnValue: true);
+    }
   }
 
   googleSignIn() async {

@@ -17,6 +17,7 @@ class Button extends StatelessWidget {
   final VoidCallback? onPressed;
   final Color color;
   final Color borderColor;
+  final Color progressColor;
   final BorderRadius? borderRadius;
   final bool disabled;
   final bool loading;
@@ -32,6 +33,7 @@ class Button extends StatelessWidget {
     required this.onPressed,
     this.color = AppColor.primary,
     this.borderColor = AppColor.primary,
+    this.progressColor = AppColor.white,
     this.borderRadius,
     this.iconWidget,
     this.disabled = false,
@@ -48,6 +50,7 @@ class Button extends StatelessWidget {
     required this.onPressed,
     this.color = Colors.transparent,
     this.borderColor = AppColor.outlineBorder,
+    this.progressColor = AppColor.white,
     this.borderRadius,
     this.disabled = false,
     this.iconWidget,
@@ -66,6 +69,7 @@ class Button extends StatelessWidget {
     required this.onPressed,
     this.color = Colors.transparent,
     this.borderColor = AppColor.primary,
+    this.progressColor = AppColor.white,
     this.borderRadius,
     this.disabled = false,
     this.iconWidget,
@@ -82,6 +86,7 @@ class Button extends StatelessWidget {
         required this.onPressed,
         this.color = Colors.transparent,
         this.borderColor = AppColor.primary,
+        this.progressColor = AppColor.white,
         this.borderRadius,
         this.disabled = false,
         this.iconWidget,
@@ -145,12 +150,12 @@ class Button extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: loading
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation(AppColor.white),
+                          valueColor: AlwaysStoppedAnimation(progressColor),
                         ),
                       )
                     : Row(

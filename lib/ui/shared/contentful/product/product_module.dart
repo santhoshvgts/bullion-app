@@ -455,7 +455,6 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                               child: Text(
                                 _item.ribbonText!,
                                 style: const TextStyle(fontSize: 12, color: AppColor.white),
-                                
                               ),
                           ),
                       ),
@@ -491,20 +490,15 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
 
                             VerticalSpacing.d10px(),
 
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: CircleAvatar(
-                                    backgroundColor: AppColor.secondary,
-                                    child: IconButton(
-                                      onPressed: () {
-                                        locator<NavigationService>().pushNamed(_item.targetUrl, arguments: ProductDetails(overview: _item));
-                                      },
-                                      icon: const Icon(Icons.navigate_next,  color: AppColor.white,)
-                                    ),
-                                  )
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: CircleAvatar(
+                                backgroundColor: AppColor.secondary,
+                                child: IconButton(
+                                  onPressed: () {
+                                    locator<NavigationService>().pushNamed(_item.targetUrl, arguments: ProductDetails(overview: _item));
+                                  },
+                                  icon: const Icon(Icons.navigate_next,  color: AppColor.white,)
                                 ),
                               )
                             )
@@ -615,7 +609,7 @@ class _PriceSection extends StatelessWidget {
               alignment: alignment,
               child: Text(
                 item.pricing!.discountText!,
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.left,
                 style: ProductTextStyle.badge(
                     gridCols,
                     color: AppColor.offerText),

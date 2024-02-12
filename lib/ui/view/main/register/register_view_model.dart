@@ -76,7 +76,7 @@ class RegisterViewModel extends VGTSBaseViewModel {
       passwordController.text,
       confirmPasswordController.text,
     );
-
+    handleAuthResponse(result);
      setBusy(false);
   }
 

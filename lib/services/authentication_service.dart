@@ -14,6 +14,7 @@ import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/shared/preference_service.dart';
 import 'package:bullion/services/token_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'shared/analytics_service.dart';
 import 'shared/dialog_service.dart';
@@ -47,11 +48,8 @@ class AuthenticationService {
       _user = authResult.user;
       _analyticsService.setUserId(_user!.userId);
 
-      // TODO - Push Implementation
       _pushService.setUser(_user!.userId);
-
-      // TODO - Sentry Implementation
-      // configureSentryScope();
+      configureSentryScope();
     }
   }
 
@@ -62,11 +60,8 @@ class AuthenticationService {
     _user = user;
     _analyticsService.setUserId(_user!.userId);
 
-    // TODO - Push Implementation
     _pushService.setUser(_user!.userId);
-
-    // TODO - Sentry Implementation
-    // configureSentryScope();
+    configureSentryScope();
   }
 
   Future<AuthResponse?> login(String email, String password) async {
@@ -136,8 +131,7 @@ class AuthenticationService {
     _user = null;
     userController.add(null);
 
-    // TODO - Sentry Implementation
-    // Sentry.configureScope((p0) => p0.setUser(null));
+    Sentry.configureScope((p0) => p0.setUser(null));
 
     //TODO - Revert to Intro Page, after entering the proper content in that page
     // locator<NavigationService>().popAllAndPushNamed(Routes.introPage);
@@ -236,19 +230,18 @@ class AuthenticationService {
     _dialogService.showDialog(title: title, description: error.error?.getSingleMessage() ?? '-');
   }
 
-  // TODO - Sentry Implementation
-  // configureSentryScope() {
-  //   if (isAuthenticated) {
-  //     Sentry.configureScope(
-  //       (scope) => scope.setUser(SentryUser(
-  //           id: _user?.userId.toString(),
-  //           email: _user?.email,
-  //           username: _user?.email,
-  //           name: "${_user?.firstName ?? ''} ${_user?.lastName ?? ''}",
-  //           data: _user?.toJson())),
-  //     );
-  //   } else {
-  //     Sentry.configureScope((scope) => scope.setUser(null));
-  //   }
-  // }
+  configureSentryScope() {
+    if (isAuthenticated) {
+      Sentry.configureScope(
+        (scope) => scope.setUser(SentryUser(
+            id: _user?.userId.toString(),
+            email: _user?.email,
+            username: _user?.email,
+            name: "${_user?.firstName ?? ''} ${_user?.lastName ?? ''}",
+            data: _user?.toJson())),
+      );
+    } else {
+      Sentry.configureScope((scope) => scope.setUser(null));
+    }
+  }
 }

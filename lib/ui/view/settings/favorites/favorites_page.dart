@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
@@ -82,7 +83,33 @@ class FavoritesPage extends VGTSBuilderWidget<FavoritesViewModel> {
                                 ),
                               ),
                             )
-                          : Container(),
+                          : Container(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height / 1.5,
+                              padding: const EdgeInsets.all(24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    Images.cartIcon,
+                                    width: 150,
+                                  ),
+                                  const SizedBox(height: 32.0),
+                                  const Text(
+                                    "Favorites",
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyle.titleLarge,
+                                  ),
+                                  const SizedBox(height: 16.0),
+                                  const Text(
+                                    "You don’t have any favorite products to display.",
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyle.bodySmall,
+                                  ),
+                                ],
+                              ),
+                            )
             )
           ],
         ),

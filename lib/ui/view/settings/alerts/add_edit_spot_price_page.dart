@@ -64,18 +64,9 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Form(
-                                  key: viewModel.customSpotPriceGlobalKey,
-                                  child: EditTextField(
-                                    "Alert Price",
-                                    viewModel.alertPriceFormFieldController,
-                                    textStyle: AppTextStyle.titleLarge,
-                                    autoFocus: true,
-                                  ),
-                                ),
+
                                 const Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 16.0, bottom: 8.0),
+                                  padding: EdgeInsets.only( bottom: 8.0),
                                   child: Text(
                                     "Metal",
                                     style: AppTextStyle.titleSmall,
@@ -135,9 +126,7 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                     viewModel.operatorsResponse!.operators!.length,
                                     (int index) {
                                       return ChoiceChip(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(24),
-                                        ),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24),),
                                         label: Text(viewModel.operatorsResponse!.operators![index].description!),
                                         labelStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primaryText),
                                         color: MaterialStateProperty.resolveWith((states) {
@@ -172,7 +161,18 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                       );
                                     },
                                   ),
-                                )
+                                ),
+
+                                Form(
+                                  key: viewModel.customSpotPriceGlobalKey,
+                                  child: EditTextField(
+                                    "${viewModel.operatorsResponse?.operators?[viewModel.optionsSelectedIndex].description}",
+                                    viewModel.alertPriceFormFieldController,
+                                    textStyle: AppTextStyle.titleLarge,
+                                    autoFocus: true,
+                                    margin: const EdgeInsets.only(top: 30, right: 10, left: 5),
+                                  ),
+                                ),
                               ],
                             ),
                           ),

@@ -96,30 +96,33 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
       child: Column(
         children: [
 
-          Stack(
-            children: [
-
-              Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    width: double.infinity,
-                    height: locator<AuthenticationService>().isGuestUser ? 150 : 260,
-                    color: AppColor.primary,
-                  )
-              ),
-
-              Column(
+            StreamBuilder(
+              stream: locator<AuthenticationService>().userController.stream,
+              builder: (context, snapshot) {
+              return Stack(
                 children: [
-                  VerticalSpacing.d10px(),
-                  if (locator<AuthenticationService>().isGuestUser)
-                    _SettingItemGuestUser()
-                  else
+
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: locator<AuthenticationService>().isGuestUser ? 150 : 260,
+                        color: AppColor.primary,
+                      )
+                  ),
+
+                  Column(
+                    children: [
+                VerticalSpacing.d10px(),
+                if (locator<AuthenticationService>().isGuestUser)
+                  _SettingItemGuestUser()
+                else
                   _buildOrderSection(),
 
-                  if (!locator<AuthenticationService>().isGuestUser)
-                    Container(
+                if (!locator<AuthenticationService>().isGuestUser)
+                  Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: AppStyle.elevatedCardShadow,
@@ -174,10 +177,12 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                       ),
                     ),
                   ),
-                ],
-              ),
+              ],
+                  )
 
-            ],
+                ],
+              );
+            }
           ),
 
           if (!viewModel.isGuestUser)

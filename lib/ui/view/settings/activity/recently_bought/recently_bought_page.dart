@@ -32,98 +32,97 @@ class RecentlyBoughtPage extends VGTSBuilderWidget<RecentlyBoughtViewModel> {
       appBar: AppBar(
         title: Text("Buy Again",  style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
       ),
-      backgroundColor: AppColor.secondaryBackground,
       body: RefreshIndicator(
         onRefresh: () async {
           return await viewModel.getRecentlyBought();
         },
-        child: Container(
+        child: SizedBox(
           height: double.infinity,
-          child: !viewModel.isBusy && viewModel.productList!.length == 0
+          child: !viewModel.isBusy && viewModel.productList!.isEmpty
               ? Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height / 1.5,
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  Images.cartIcon,
-                  width: 150,
-                ),
-                const SizedBox(height: 32.0),
-                const Text(
-                  "Buy Again",
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.titleLarge,
-                ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  "You don’t have any recently bought products to display.",
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.bodySmall,
-                ),
-              ],
-            ),
-          )
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 1.5,
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        Images.cartIcon,
+                        width: 150,
+                      ),
+                      const SizedBox(height: 32.0),
+                      const Text(
+                        "Buy Again",
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.titleLarge,
+                      ),
+                      const SizedBox(height: 16.0),
+                      const Text(
+                        "You don’t have any recently bought products to display.",
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.bodySmall,
+                      ),
+                    ],
+                  ),
+                )
               : SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: viewModel.scrollController,
-            child: Column(
-              children: [
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  controller: viewModel.scrollController,
+                  child: Column(
+                    children: [
 
-                ProductWrapItemList(
-                  wrap: true,
-                  spacing: 0,
-                  runSpacing: 0,
-                  gridCols: 2,
-                  children: viewModel.productList!
-                      .asMap()
-                      .map((index, item) {
-                    return MapEntry(index, VerticalItem(item,
-                      itemWidth: (MediaQuery.of(context).size.width/2) - 1,
-                      wrapItems: true,
-                      gridCols: 2,
-                      textColor: AppColor.text,
-                      onItemTap: (ProductOverview overview) {
-                        locator<NavigationService>().pushNamed(overview.targetUrl, arguments: ProductDetails(overview: overview));
-                      },
-                    ));
-                  }).values.toList(),
+                      ProductWrapItemList(
+                        wrap: true,
+                        spacing: 10,
+                        runSpacing: 10,
+                        gridCols: 2,
+                        children: viewModel.productList!
+                            .asMap()
+                            .map((index, item) {
+                          return MapEntry(index, VerticalItem(item,
+                            itemWidth: (MediaQuery.of(context).size.width/2) - 15,
+                            wrapItems: true,
+                            gridCols: 2,
+                            textColor: AppColor.text,
+                            onItemTap: (ProductOverview overview) {
+                              locator<NavigationService>().pushNamed(overview.targetUrl, arguments: ProductDetails(overview: overview));
+                            },
+                          ));
+                        }).values.toList(),
+                      ),
+
+                      // ListView.separated(
+                      //     itemCount: viewModel.isBusy ? 4 : viewModel.productList!.length,
+                      //     primary: false,
+                      //     shrinkWrap: true,
+                      //     padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                      //     separatorBuilder: (context, index) {
+                      //       return const SizedBox(height: 10,);
+                      //     },
+                      //     itemBuilder: (context, index) {
+                      //       if (viewModel.isBusy) {
+                      //         return ShimmerEffect(height: 130,);
+                      //       }
+                      //       return ProductItemCard(ProductDetails(overview: viewModel.productList![index]), ProductItemCardType.Favorite,
+                      //         onPressed: (ProductDetails detail) {
+                      //           locator<NavigationService>().pushNamed(detail.overview!.targetUrl, arguments: detail);
+                      //         },
+                      //       );
+                      //     }),
+
+
+                      if (viewModel.isPaginationLoading)
+                        Container(
+                          padding: const EdgeInsets.all(15),
+                          height: 60,
+                          width: 60,
+                          child: const CircularProgressIndicator(strokeWidth: 1.5, valueColor: AlwaysStoppedAnimation(AppColor.primary),),
+                        )
+
+                    ],
+                  ),
                 ),
-
-                // ListView.separated(
-                //     itemCount: viewModel.isBusy ? 4 : viewModel.productList!.length,
-                //     primary: false,
-                //     shrinkWrap: true,
-                //     padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                //     separatorBuilder: (context, index) {
-                //       return const SizedBox(height: 10,);
-                //     },
-                //     itemBuilder: (context, index) {
-                //       if (viewModel.isBusy) {
-                //         return ShimmerEffect(height: 130,);
-                //       }
-                //       return ProductItemCard(ProductDetails(overview: viewModel.productList![index]), ProductItemCardType.Favorite,
-                //         onPressed: (ProductDetails detail) {
-                //           locator<NavigationService>().pushNamed(detail.overview!.targetUrl, arguments: detail);
-                //         },
-                //       );
-                //     }),
-
-
-                if (viewModel.isPaginationLoading)
-                  Container(
-                    padding: const EdgeInsets.all(15),
-                    height: 60,
-                    width: 60,
-                    child: const CircularProgressIndicator(strokeWidth: 1.5, valueColor: AlwaysStoppedAnimation(AppColor.primary),),
-                  )
-
-              ],
-            ),
-          ),
         ),
       ),
     );
