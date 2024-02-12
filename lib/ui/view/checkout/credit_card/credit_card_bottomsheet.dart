@@ -52,12 +52,12 @@ class _CreditCardPageBottomSheetState extends State<CreditCardPageBottomSheet> {
                               ),
                             ),
 
-                            IconButton(
-                              icon: const Icon(Icons.qr_code_scanner,color: AppColor.secondaryText),
-                              onPressed: () {
-                                viewModel.scanCard();
-                              },
-                            ),
+                            // IconButton(
+                            //   icon: const Icon(Icons.qr_code_scanner,color: AppColor.secondaryText),
+                            //   onPressed: () {
+                            //     viewModel.scanCard();
+                            //   },
+                            // ),
                           ],
                         ),
 

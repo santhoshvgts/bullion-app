@@ -110,8 +110,12 @@ class DashboardContentPage extends StatelessWidget {
                               constraints,
                             ) {
                               _appBarExtendedHeight ??= 70 - constraints.biggest.height;
-                              double padRight = 65;
+                              double padRight = constraints.biggest.height - 15;
+                              double padRightValue = padRight - ((10 - padRight) * (( constraints.biggest.height - 80) / _appBarExtendedHeight! ));
                               print(MediaQuery.of(context).devicePixelRatio);
+                              print(padRightValue);
+                              print(_appBarExtendedHeight);
+                              print(constraints.biggest.height);
 
                               return FlexibleSpaceBar(
                                 centerTitle: true,
@@ -120,7 +124,7 @@ class DashboardContentPage extends StatelessWidget {
                                   bottom: 10.0,
                                 ),
                                 title: SearchCardSection(
-                                  rightPadding: padRight - ((10 - padRight) * (( constraints.biggest.height - 80) / _appBarExtendedHeight! )),
+                                  rightPadding: padRightValue,
                                 ),
                                 background: AppBar(
                                   backgroundColor: AppColor.white,
@@ -141,7 +145,10 @@ class DashboardContentPage extends StatelessWidget {
                           ),
                         ),
                         actions: const [
-                          CartButton.light()
+                          SizedBox(
+                            width: 60,
+                            child: CartButton.light()
+                          )
                         ],
                       );
                     })
@@ -184,7 +191,7 @@ class _AppBar extends PreferredSize {
                 statusBarIconBrightness: Brightness.dark,
                 statusBarColor: AppColor.white,
               ),
-              actions: const [  CartButton.light() ],
+              actions: const [  SizedBox(width: 60, child: CartButton.light()) ],
             ));
 }
 
