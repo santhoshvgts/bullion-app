@@ -636,8 +636,8 @@ class _PriceSection extends StatelessWidget {
                     width: displayDirection == DisplayDirection.horizontal
                         ? 100
                         : double.infinity,
-                    textStyle: AppTextStyle.titleLarge.copyWith(fontSize: 14),
-                    borderColor: AppColor.primaryDark,
+                    textStyle: AppTextStyle.titleLarge.copyWith(fontSize: 14, color: AppColor.primary),
+                    borderColor: AppColor.primary,
                     onPressed: () async {
                       if (!locator<AuthenticationService>().isAuthenticated) {
                         bool authenticated = await signInRequest(

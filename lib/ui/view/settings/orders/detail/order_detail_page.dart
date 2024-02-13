@@ -31,14 +31,13 @@ import '../../../../../helper/utils.dart';
 class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
 
   final Map<String,dynamic> data;
-  static const double _expandedHeight = 100;
+  static const double _expandedHeight = 154;
 
   const OrderDetailPage(this.data, {super.key});
 
   @override
   Widget viewBuilder(BuildContext context, AppLocalizations locale, OrderDetailViewModel viewModel, Widget? child) {
     return Scaffold(
-      backgroundColor: AppColor.secondaryBackground,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -49,7 +48,7 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
                   Navigator.of(context).maybePop();
                 },
               ),
-              expandedHeight: _expandedHeight,
+              expandedHeight: 100,
               pinned: true,
               flexibleSpace: AnimatedFlexibleSpace.withoutTab(title: '#${viewModel.orderDetail?.orderId ?? ""}'),
             ),
@@ -59,157 +58,160 @@ class OrderDetailPage extends VGTSBuilderWidget<OrderDetailViewModel> {
                 loadingStyle: LoadingStyle.LOGO,
               ) : viewModel.orderDetail == null ? const Center(child: Text("No data available"))
               : SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                child: Container(
+                  color: AppColor.secondaryBackground,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
-                    if (viewModel.fromSuccess)
+                      if (viewModel.fromSuccess)
+                        Container(
+                          color: AppColor.white,
+                          child: _FromSuccessCard()
+                        ),
+
+                      StreamBuilder(
+                          stream: locator<AuthenticationService>().userController.stream,
+                          builder: (context, snapshot) {
+                            if (locator<AuthenticationService>().isGuestUser) {
+                              return _SettingItemGuestUser();
+                            }
+
+                            return Container();
+                          }
+                      ),
+
                       Container(
                         color: AppColor.white,
-                        child: _FromSuccessCard()
-                      ),
-
-                    StreamBuilder(
-                        stream: locator<AuthenticationService>().userController.stream,
-                        builder: (context, snapshot) {
-                          if (locator<AuthenticationService>().isGuestUser) {
-                            return _SettingItemGuestUser();
-                          }
-
-                          return Container();
-                        }
-                    ),
-
-                    Container(
-                      color: AppColor.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-
-                          VerticalSpacing.d10px(),
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                            child: Row(
-                              children: [
-
-                                const Icon(CupertinoIcons.checkmark_alt_circle, color: AppColor.primary,),
-
-                                HorizontalSpacing.d10px(),
-
-                                Expanded(child: _buildItemSection(null, viewModel.orderDetail?.orderStatus ?? '-')),
-
-                              ],
-                            ),
-                          ),
-
-                          AppStyle.customDivider,
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                            child: Row(
-                              children: [
-
-                                const Icon(CupertinoIcons.calendar_today, color: AppColor.primary,),
-
-                                HorizontalSpacing.d10px(),
-
-                                Expanded(child: _buildItemSection("Order Date", viewModel.orderDetail?.formattedPostedDate ?? '-')),
-
-                                if (viewModel.orderDetail?.formattedShippingDate?.isNotEmpty == true)
-                                  Expanded(child: _buildItemSection("Shipping Date", viewModel.orderDetail?.formattedShippingDate ?? '-')),
-
-                              ],
-                            ),
-                          ),
-
-                          AppStyle.customDivider,
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                            child: Row(
-                              children: [
-
-                                if (viewModel.orderDetail?.paymentMethod?.icon != null)
-                                  Icon(FAIcon(viewModel.orderDetail?.paymentMethod?.icon), color: AppColor.primary, size: 22,)
-                                else
-                                  const Icon(CupertinoIcons.creditcard, color: AppColor.primary,),
-
-                                HorizontalSpacing.d10px(),
-
-                                Expanded(child: _buildItemSection("Payment Method", viewModel.orderDetail?.paymentMethod?.displayText ?? '-')),
-
-                              ],
-                            ),
-                          ),
-
-                          AppStyle.customDivider,
-
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-
-                                const Icon(Icons.share_location_outlined, size: 24, color: AppColor.primary,),
-
-                                HorizontalSpacing.d10px(),
-
-                                Expanded(child: _buildItemSection("Address", viewModel.orderDetail?.shippingAddress?.displayText ?? '-')),
-
-                              ],
-                            ),
-                          ),
-
-                          VerticalSpacing.d15px(),
-
-                        ],
-                      ),
-                    ),
-
-                    if (viewModel.orderDetail?.showPaymentAcknowledge == true)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Sent your Payment ?",style: AppTextStyle.bodyMedium.copyWith(fontSize:14,),textAlign: TextAlign.start,),
-
-
-                                InkWell(
-                                    onTap: (){
-                                      // viewModel.submitPaymentAcknowledge(item);
-                                    },
-                                    child: Text("Click here",style: AppTextStyle.bodyMedium.copyWith(fontSize:14, color: AppColor.blue),textAlign: TextAlign.start,)
-                                ),
-                              ],
-                            ),
 
                             VerticalSpacing.d10px(),
 
-                            Container(height:1,child: AppStyle.customDivider),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                              child: Row(
+                                children: [
+
+                                  const Icon(CupertinoIcons.checkmark_alt_circle, color: AppColor.primary,),
+
+                                  HorizontalSpacing.d10px(),
+
+                                  Expanded(child: _buildItemSection(null, viewModel.orderDetail?.orderStatus ?? '-')),
+
+                                ],
+                              ),
+                            ),
+
+                            AppStyle.customDivider,
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                              child: Row(
+                                children: [
+
+                                  const Icon(CupertinoIcons.calendar_today, color: AppColor.primary,),
+
+                                  HorizontalSpacing.d10px(),
+
+                                  Expanded(child: _buildItemSection("Order Date", viewModel.orderDetail?.formattedPostedDate ?? '-')),
+
+                                  if (viewModel.orderDetail?.formattedShippingDate?.isNotEmpty == true)
+                                    Expanded(child: _buildItemSection("Shipping Date", viewModel.orderDetail?.formattedShippingDate ?? '-')),
+
+                                ],
+                              ),
+                            ),
+
+                            AppStyle.customDivider,
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                              child: Row(
+                                children: [
+
+                                  if (viewModel.orderDetail?.paymentMethod?.icon != null)
+                                    Icon(FAIcon(viewModel.orderDetail?.paymentMethod?.icon), color: AppColor.primary, size: 22,)
+                                  else
+                                    const Icon(CupertinoIcons.creditcard, color: AppColor.primary,),
+
+                                  HorizontalSpacing.d10px(),
+
+                                  Expanded(child: _buildItemSection("Payment Method", viewModel.orderDetail?.paymentMethod?.displayText ?? '-')),
+
+                                ],
+                              ),
+                            ),
+
+                            AppStyle.customDivider,
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  const Icon(Icons.share_location_outlined, size: 24, color: AppColor.primary,),
+
+                                  HorizontalSpacing.d10px(),
+
+                                  Expanded(child: _buildItemSection("Address", viewModel.orderDetail?.shippingAddress?.displayText ?? '-')),
+
+                                ],
+                              ),
+                            ),
+
+                            VerticalSpacing.d15px(),
 
                           ],
                         ),
                       ),
 
-                    if (viewModel.orderDetail!.shipmentTracking != null)
-                      TrackOrderInfoBottomSheet(viewModel.orderDetail!.shipmentTracking),
+                      if (viewModel.orderDetail?.showPaymentAcknowledge == true)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Column(
+                            children: [
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Sent your Payment ?",style: AppTextStyle.bodyMedium.copyWith(fontSize:14,),textAlign: TextAlign.start,),
 
 
-                    Container(
-                      color: AppColor.secondaryBackground,
-                      child: _ItemListSection()
-                    ),
+                                  InkWell(
+                                      onTap: (){
+                                        // viewModel.submitPaymentAcknowledge(item);
+                                      },
+                                      child: Text("Click here",style: AppTextStyle.bodyMedium.copyWith(fontSize:14, color: AppColor.blue),textAlign: TextAlign.start,)
+                                  ),
+                                ],
+                              ),
 
-                    _OrderSummary(),
+                              VerticalSpacing.d10px(),
 
-                    if ((viewModel.orderDetail?.paymentInstructions?.length ?? 0) > 0)
-                      _PaymentInstruction()
-                  ],
+                              Container(height:1,child: AppStyle.customDivider),
+
+                            ],
+                          ),
+                        ),
+
+                      if (viewModel.orderDetail!.shipmentTracking != null)
+                        TrackOrderInfoBottomSheet(viewModel.orderDetail!.shipmentTracking),
+
+
+                      Container(
+                        color: AppColor.secondaryBackground,
+                        child: _ItemListSection()
+                      ),
+
+                      _OrderSummary(),
+
+                      if ((viewModel.orderDetail?.paymentInstructions?.length ?? 0) > 0)
+                        _PaymentInstruction()
+                    ],
+                  ),
                 ),
               ),
             )

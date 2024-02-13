@@ -46,16 +46,17 @@ class _AlertButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration:
-          BoxDecoration(color: AppColor.white, boxShadow: AppStyle.topShadow),
-      child: Button.outline(title,
-          valueKey: const Key('btnSaveAlert'),
-          width: double.infinity,
-          textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.primaryDark),
-          borderColor: AppColor.primaryDark,
-          onPressed: onTap as void Function()?),
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(color: AppColor.white, boxShadow: AppStyle.topShadow),
+        child: Button.outline(title,
+            valueKey: const Key('btnSaveAlert'),
+            width: double.infinity,
+            textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.primary),
+            borderColor: AppColor.primary,
+            onPressed: onTap as void Function()?),
+      ),
     );
   }
 }

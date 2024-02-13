@@ -60,6 +60,10 @@
 	<string>Main</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
+
+    <key>NSUserTrackingUsageDescription</key>
+    <string>To provide you with a personalized and improved user experience, we collect usage data to understand how you use our app.</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
