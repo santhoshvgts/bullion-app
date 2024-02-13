@@ -35,7 +35,7 @@ class AccountRequest  {
     Map<String, String> params = {};
     params['old_password'] = oldPassword;
     params['new_password'] = newPassword;
-    params['confirm_password'] = confirmPassword;
+    params['confirm_new_password'] = confirmPassword;
     return RequestSettings( "/auth/change-password", RequestMethod.POST, params: params, authenticated: true);
   }
 

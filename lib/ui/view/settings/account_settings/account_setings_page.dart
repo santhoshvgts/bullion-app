@@ -47,10 +47,10 @@ class AccountSettingsPage extends VGTSBuilderWidget<AccountSettingsViewModel> {
                     _PersonalInfoSection(),
 
                     VerticalSpacing.d15px(),
-
-                    _EmailInfoSection(),
-
-                    VerticalSpacing.d15px(),
+                    //
+                    // _EmailInfoSection(),
+                    //
+                    // VerticalSpacing.d15px(),
 
                     _PasswordInfoSection()
                   ],
@@ -110,9 +110,9 @@ class _PersonalInfoSection extends ViewModelWidget<AccountSettingsViewModel> {
 
           _buildItemSection("Phone Number", viewModel.profile?.phoneNumber ?? '-'),
 
-          // AppStyle.customDivider,
-          //
-          // _buildItemSection("Alternate Number", viewModel.profile?.alternatePhoneNumber ?? '-'),
+          AppStyle.customDivider,
+
+          _buildItemSection("Email Id", viewModel.profile?.user?.email ?? '-'),
           //
           // AppStyle.customDivider,
           //

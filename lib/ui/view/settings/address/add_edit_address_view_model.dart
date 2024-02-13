@@ -42,7 +42,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  UserAddress? editUserAddress;
+  // UserAddress? editUserAddress;
   ShippingAddress? _shippingAddress;
 
   GlobalKey<FormState> addEditAddressGlobalKey = GlobalKey<FormState>();
@@ -84,24 +84,23 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
 
   AddEditAddressViewModel(this.fromCheckout);
 
-  init(UserAddress? editUserAddress) async {
+  init(UserAddress? userAddress) async {
     setBusy(true);
 
-    this.editUserAddress = editUserAddress;
+    _shippingAddress = userAddress != null ? await request<ShippingAddress>(AddressRequest.getAddressById(userAddress!.id!)) : await request<ShippingAddress>(AddressRequest.addAddress());
 
-    _shippingAddress = await request<ShippingAddress>(AddressRequest.getAvailableCountries());
-
-    if (editUserAddress != null) {
-      firstNameFormFieldController.text = editUserAddress.firstName ?? "";
-      lastNameFormFieldController.text = editUserAddress.lastName ?? "";
-      companyFormFieldController.text = editUserAddress.company ?? "";
-      streetTextEditingController.text = editUserAddress.add1 ?? "";
-      cityFormFieldController.text = editUserAddress.city ?? "";
-      countryFormFieldController.text = editUserAddress.country ?? "";
-      stateFormFieldController.text = editUserAddress.state ?? "";
-      pinFormFieldController.text = editUserAddress.zip ?? "";
-      phoneFormFieldController.text = editUserAddress.primaryPhone?.trimRight() ?? "";
-      _isDefaultAddress = editUserAddress.isDefault;
+    if (_shippingAddress?.address != null) {
+      UserAddress address = _shippingAddress!.address!;
+      firstNameFormFieldController.text = address.firstName ?? "";
+      lastNameFormFieldController.text = address.lastName ?? "";
+      companyFormFieldController.text = address.company ?? "";
+      streetTextEditingController.text = address.add1 ?? "";
+      cityFormFieldController.text = address.city ?? "";
+      countryFormFieldController.text = address.country ?? "";
+      stateFormFieldController.text = address.state ?? "";
+      pinFormFieldController.text = address.zip ?? "";
+      phoneFormFieldController.text = address.primaryPhone?.trimRight() ?? "";
+      _isDefaultAddress = address.isDefault;
     } else {
       initAddAddress();
     }
@@ -130,7 +129,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     }
 
     UserAddress userAddress = UserAddress();
-    userAddress.id = editUserAddress != null ? editUserAddress?.id : 0;
+    userAddress.id = _shippingAddress?.address?.id ?? 0;
     userAddress.isValidated = true;
     userAddress.overrideValidation = false;
 
@@ -147,7 +146,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     userAddress.primaryPhone = phoneFormFieldController.text;
 
     setBusyForObject(loading, true);
-    ShippingAddress? response = await request<ShippingAddress>(AddressRequest.addAddress(userAddress.toJson()));
+    ShippingAddress? response = await request<ShippingAddress>(AddressRequest.saveAddress(userAddress.toJson()));
     setBusyForObject(loading, false);
     if (response != null) {
       _shippingAddress = response;

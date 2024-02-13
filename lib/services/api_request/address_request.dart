@@ -12,14 +12,20 @@ class AddressRequest {
         params: null, authenticated: true);
   }
 
+  static RequestSettings getAddressById(int addressId) {
+    return RequestSettings("/address/get?addressId=$addressId", RequestMethod.GET,
+        params: null, authenticated: true);
+  }
+
+
   static RequestSettings deleteAddress(int addressId) {
     return RequestSettings(
         "/address/remove?addressId=$addressId", RequestMethod.POST,
         params: null, authenticated: true);
   }
 
-  static RequestSettings addAddress(Map<String, dynamic> json) {
-    return RequestSettings(Endpoints.addAddress, RequestMethod.POST,
+  static RequestSettings saveAddress(Map<String, dynamic> json) {
+    return RequestSettings(Endpoints.saveAddress, RequestMethod.POST,
         params: json, authenticated: true);
   }
 
@@ -27,9 +33,8 @@ class AddressRequest {
     return RequestSettings("/address/save-recommended", RequestMethod.POST, params: address.toJson(), authenticated: true);
   }
 
-  static RequestSettings getAvailableCountries() {
-    return RequestSettings(Endpoints.getCountries, RequestMethod.GET,
-        params: null, authenticated: true);
+  static RequestSettings addAddress() {
+    return RequestSettings("/address/add", RequestMethod.GET, params: null, authenticated: true);
   }
 
   static RequestSettings getAvailableStates(String country) {

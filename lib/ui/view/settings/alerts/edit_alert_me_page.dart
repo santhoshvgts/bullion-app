@@ -47,7 +47,7 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
               ),
               expandedHeight: 100,
               pinned: true,
-              flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "AlertMe!®"),
+              flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "Notify Me"),
             ),
             SliverToBoxAdapter(
               child: SingleChildScrollView(
@@ -112,7 +112,7 @@ class EditAlertMePage extends VGTSBuilderWidget<EditAlertMeViewModel> {
                       VerticalSpacing.d20px(),
 
                       Button(
-                        "Save AlertMe!®",
+                        "Save Alert",
                         width: double.infinity,
                         loading: viewModel.busy("LOADING"),
                         valueKey: const Key("btnUpdate"),

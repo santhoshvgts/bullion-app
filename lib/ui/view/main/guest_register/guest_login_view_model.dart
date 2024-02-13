@@ -31,8 +31,7 @@ class GuestLoginViewModel extends VGTSBaseViewModel {
       return "Success";
     }
     setBusy(true);
-    AuthResponse? result = await authenticationService.registerAsGuest(
-        emailController.text);
+    AuthResponse? result = await authenticationService.registerAsGuest(emailController.text);
 
     if (result != null) {
       if (fromMain) {
@@ -41,7 +40,7 @@ class GuestLoginViewModel extends VGTSBaseViewModel {
         navigationService.pop(returnValue: true);
       }
     }
-    setBusy(true);
+    setBusy(false);
     return "Success";
   }
 }

@@ -10,7 +10,10 @@ import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/shared/sign_in_request.dart';
+import 'package:bullion/services/toast_service.dart';
+import 'package:bullion/ui/shared/toast/actionable_toast.dart';
 import 'package:bullion/ui/widgets/button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'add_to_cart/add_to_cart.dart';
@@ -25,12 +28,25 @@ class BottomActionCard extends StatelessWidget {
     if (productDetails!.overview!.productAction == ProductInfoDisplayType.addToCart) {
       return AddToCartSection(productDetails, key: ValueKey("sectionAddToCart${productDetails?.overview?.orderMin}"));
     } else if (productDetails!.overview!.alertMe!) {
-      return _AlertButton("Setup AlertMe!®", onTap: () async {
+      return _AlertButton("Notify Me", onTap: () async {
         if (!locator<AuthenticationService>().isAuthenticated){
-          bool authenticated = await signInRequest(Images.iconAlertBottom, title: "AlertMe!®", content: "Add you Item to Price Alert. Get live update of item availability.");
+          bool authenticated = await signInRequest(Images.iconAlertBottom, title: "Notify Me", content: "Add you Item to Alert. Get live update of item availability.");
           if (!authenticated) return;
         }
-        await locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": productDetails?.overview });
+        var result = await locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": productDetails?.overview });
+
+        if (result == true) {
+          locator<ToastService>().showWidget(child: ActionableToast(
+            title: "Notify Me",
+            content: "Added Successfully",
+            onActionTap: () {
+              locator<NavigationService>().pushNamed(Routes.alerts, arguments: 2);
+            },
+            icon: CupertinoIcons.check_mark_circled_solid,
+            actionText: "View",
+          ));
+        }
+
       });
     } else {
       return _Button(productDetails!.overview!.availabilityText);

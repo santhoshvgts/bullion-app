@@ -88,7 +88,7 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                           );
 
                                           if (response.status == true) {
-                                            viewModel.removeSpotPriceAlert(viewModel.productAlerts?[index].overview?.productId);
+                                            viewModel.removeSpotPriceAlert(alertResponseModel.id);
                                           }
                                         },
                                         child: Row(
@@ -108,37 +108,37 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 16,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          locator<NavigationService>().pushNamed(
-                                              Routes.editSpotPrice,
-                                              arguments: {
-                                                "alertResponse": viewModel
-                                                    .alertResponse!
-                                                    .alertResponseModels?[index]
-                                              });
-                                        },
-                                        child: Row(
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: 4.0),
-                                              child: Icon(
-                                                Icons.edit,
-                                                size: 18,
-                                                color: AppColor.blue,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Edit",
-                                              style: AppTextStyle.titleSmall.copyWith(color: AppColor.blue),
-                                            )
-                                          ],
-                                        ),
-                                      ),
+                                      // const SizedBox(
+                                      //   width: 16,
+                                      // ),
+                                      // InkWell(
+                                      //   onTap: () {
+                                      //     locator<NavigationService>().pushNamed(
+                                      //         Routes.editSpotPrice,
+                                      //         arguments: {
+                                      //           "alertResponse": viewModel
+                                      //               .alertResponse!
+                                      //               .alertResponseModels?[index]
+                                      //         });
+                                      //   },
+                                      //   child: Row(
+                                      //     children: [
+                                      //       const Padding(
+                                      //         padding: EdgeInsets.only(
+                                      //             right: 4.0),
+                                      //         child: Icon(
+                                      //           Icons.edit,
+                                      //           size: 18,
+                                      //           color: AppColor.blue,
+                                      //         ),
+                                      //       ),
+                                      //       Text(
+                                      //         "Edit",
+                                      //         style: AppTextStyle.titleSmall.copyWith(color: AppColor.blue),
+                                      //       )
+                                      //     ],
+                                      //   ),
+                                      // ),
 
                                       Expanded(
                                         child: Text(alertResponseModel.formattedPostedDate ?? '',
@@ -191,9 +191,11 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                 "Create New Alert",
                 valueKey: const Key("btnCreateAlert"),
                 borderRadius: BorderRadius.circular(24),
-                onPressed: () {
-                  locator<NavigationService>()
-                      .pushNamed(Routes.addEditAlert);
+                onPressed: () async {
+                  var result = await locator<NavigationService>().pushNamed(Routes.addEditAlert);
+                  if (result != null) {
+                    viewModel.refreshSpotPriceAlert();
+                  }
                 },
               )),
         ),

@@ -20,8 +20,24 @@ class ChangePasswordViewModel extends VGTSBaseViewModel {
     notifyListeners();
   }
 
-  PasswordFormFieldController newPasswordController = PasswordFormFieldController(const ValueKey("txtPassword"));
-  PasswordFormFieldController confirmPasswordController =  PasswordFormFieldController(const ValueKey("txtCPassword"));
+  FormFieldController newPasswordController = FormFieldController(
+      const ValueKey("txtPassword"),
+      validator: (String? value) {
+        if ((value?.length ?? 0) < 7) {
+          return "Password should have minimum 7 characters";
+        }
+        return null;
+      }
+  );
+  FormFieldController confirmPasswordController = FormFieldController(
+      const ValueKey("txtCPassword"),
+      validator: (String? value) {
+        if ((value?.length ?? 0) < 7) {
+          return "Password should have minimum 7 characters";
+        }
+        return null;
+      }
+  );
   TextFormFieldController oldPasswordController = TextFormFieldController(const ValueKey("txtOldPassword"));
 
   onSaveChangePassword() async {

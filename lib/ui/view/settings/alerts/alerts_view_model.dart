@@ -65,6 +65,12 @@ class AlertsViewModel extends VGTSBaseViewModel {
 
   List<ProductDetails>? get alertMeAlerts => _alertMeAlerts;
 
+
+  refreshSpotPriceAlert() async {
+    _alertResponse =  await request<AlertGetResponse>(AlertsRequest.getMarketAlerts());
+    notifyListeners();
+  }
+
   refreshProductAlert() async {
     _productAlerts = await requestList<ProductDetails>(AlertsRequest.getProductPriceAlerts());
     notifyListeners();

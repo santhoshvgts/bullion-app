@@ -45,6 +45,7 @@ class ProfileViewModel extends VGTSBaseViewModel {
 
     nameController.text = profile!.firstName!;
     lnameController.text = profile!.lastName!;
+    emailController.text = profile!.user!.email!;
     phoneNoController.text = profile!.phoneNumber?.trim() ?? '';
     alternativePhoneNoController.text = profile!.alternatePhoneNumber ?? '';
     companyNameController.text = profile!.companyName ?? '';

@@ -32,10 +32,18 @@ class ProfilePage extends VGTSBuilderWidget<ProfileViewModel> {
               child: Column(
                 children: [
 
+
+                  EditTextField(
+                    "Email Address",
+                    viewModel.emailController,
+                    enabled: false,
+                    margin: const EdgeInsets.only(top: 30),
+                  ),
+
                   DropdownField<SelectedItemList>(
                     "Salutation *",
                     viewModel.salutationController,
-                    margin: const EdgeInsets.only(top: 30),
+                    margin: const EdgeInsets.only(top: 20),
                     onChange: (SelectedItemList? data) {
                     },
                   ),
@@ -60,13 +68,6 @@ class ProfilePage extends VGTSBuilderWidget<ProfileViewModel> {
                     margin: const EdgeInsets.only(top: 20),
 
                   ),
-
-                  // EditTextField(
-                  //   "Alternative Phone No",
-                  //   viewModel.alternativePhoneNoController,
-                  //   margin: const EdgeInsets.only(top: 20),
-                  //
-                  // ),
 
                   // EditTextField(
                   //   "Company Name",

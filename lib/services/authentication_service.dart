@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/core/models/auth/user.dart';
@@ -86,8 +87,7 @@ class AuthenticationService {
 
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
-        // clientId: "836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com",
-        // serverClientId: "836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com"
+        clientId: Platform.isIOS ? null : "836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com",
       ).signIn();
       final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 

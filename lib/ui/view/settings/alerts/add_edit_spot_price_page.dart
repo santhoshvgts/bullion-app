@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:bullion/core/models/alert/alert_add_response_model.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
@@ -189,12 +191,10 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                 valueKey: const Key("btnCreate"),
                 borderRadius: BorderRadius.circular(24),
                 onPressed: () async {
-                  if (viewModel.customSpotPriceGlobalKey.currentState!
-                      .validate()) {
+                  if (viewModel.customSpotPriceGlobalKey.currentState!.validate()) {
                     bool result = await viewModel.createEditMarketAlert();
                     if (result) {
-                      Util.showSnackBar("Submitted successfully");
-                      Navigator.of(context).pop();
+                      locator<NavigationService>().pop(returnValue: result);
                     }
                   } else {
                     Util.showSnackBar("Fill all the required fields");

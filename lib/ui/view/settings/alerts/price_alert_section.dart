@@ -163,10 +163,14 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                           width: 16,
                                         ),
                                         InkWell(
-                                          onTap: () {
-                                            locator<NavigationService>().pushNamed(Routes.editPriceAlert, arguments: {
+                                          onTap: () async  {
+                                            var result = await locator<NavigationService>().pushNamed(Routes.editPriceAlert, arguments: {
                                               "productDetails": viewModel.productAlerts![index].overview
                                             });
+
+                                            if (result != null) {
+                                              viewModel.refreshProductAlert();
+                                            }
                                           },
                                           child: Row(
                                             children: [

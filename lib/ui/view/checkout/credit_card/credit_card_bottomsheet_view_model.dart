@@ -42,11 +42,12 @@ class CreditCardViewModel extends VGTSBaseViewModel {
         const ValueKey("txtCVV"),
         validator: (value) => CardUtils.validateCVV(value, cardType == CardType.AmericanExpress ? 4 : 3),
         inputFormatter: [
-          LengthLimitingTextInputFormatter(cvv),
+          LengthLimitingTextInputFormatter(cardType == CardType.AmericanExpress ? 4 : 3),
           FilteringTextInputFormatter.deny(RegExp("[ ]{2}")),
           FilteringTextInputFormatter.deny(RegExp("[,]{2}")),
           FilteringTextInputFormatter.allow(RegExp('[0-9]')),
         ],
+        required: true,
         textCapitalization: TextCapitalization.sentences,
       );
     } else if (_paymentCard == CardType.AmericanExpress && cardType != CardType.AmericanExpress) {
@@ -54,11 +55,12 @@ class CreditCardViewModel extends VGTSBaseViewModel {
         const ValueKey("txtCVV"),
         validator: (value) => CardUtils.validateCVV(value,cardType == CardType.AmericanExpress ? 4 : 3),
         inputFormatter: [
-          LengthLimitingTextInputFormatter(cvv),
+          LengthLimitingTextInputFormatter(cardType == CardType.AmericanExpress ? 4 : 3),
           FilteringTextInputFormatter.deny(RegExp("[ ]{2}")),
           FilteringTextInputFormatter.deny(RegExp("[,]{2}")),
           FilteringTextInputFormatter.allow(RegExp('[0-9]')),
         ],
+        required: true,
         textCapitalization: TextCapitalization.sentences,
       );
     }
@@ -82,6 +84,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
         FilteringTextInputFormatter.deny(RegExp("[,]{2}")),
         FilteringTextInputFormatter.allow(RegExp('[0-9]')),
       ],
+      required: true,
       textCapitalization: TextCapitalization.sentences,
     );
   }
@@ -98,6 +101,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
       FilteringTextInputFormatter.deny(RegExp("[,]{2}")),
       CardNumberInputFormatter(),
     ],
+    required: true,
     textCapitalization: TextCapitalization.sentences,
     validator: (value) => CardUtils.validateCardNum(value),
   );
@@ -112,6 +116,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
       LengthLimitingTextInputFormatter(6),
       CardMonthInputFormatter(),
     ],
+    required: true,
     textCapitalization: TextCapitalization.sentences,
   );
 
@@ -141,12 +146,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
 
   save(BuildContext context) {
     if (formKey.currentState?.validate() != true) {
-      return;
-    }
-
-    if (cardNumController.text.isEmpty || expDateController.text.isEmpty || cvvController.text.isEmpty) {
-
-      return;
+      return false;
     }
 
     CreditCard response = CreditCard(cardNumber: cardNumController.text,
@@ -157,7 +157,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
 
     locator<DialogService>().dialogComplete(AlertResponse(data: response,status: true), key: const ValueKey("AddCreditCard"));
     notifyListeners();
-    return;
+    return true;
   }
 
 }

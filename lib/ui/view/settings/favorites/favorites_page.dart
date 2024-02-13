@@ -234,7 +234,7 @@ class _FavoriteCard extends StatelessWidget {
                 onTap: () async {
                   AlertResponse response = await locator<DialogService>().showConfirmationDialog(
                       title: "Delete",
-                      description: "Do you want to delete this Alert ?",
+                      description: "Do you want to remove this product from favorites ?",
                       buttonTitle: "Delete"
                   );
 

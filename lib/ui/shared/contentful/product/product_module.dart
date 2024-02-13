@@ -12,13 +12,16 @@ import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/services/shared/sign_in_request.dart';
+import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_section.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/product/product_text_style.dart';
 import 'package:bullion/ui/shared/contentful/product/product_view_model.dart';
+import 'package:bullion/ui/shared/toast/actionable_toast.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
@@ -630,7 +633,7 @@ class _PriceSection extends StatelessWidget {
                 : const EdgeInsets.only(top: 10.0),
             child: Container(
                 alignment: alignment,
-                child: Button.outline("AlertMe!®",
+                child: Button.outline("Notify Me",
                     valueKey: const Key('btnAlert'),
                     height: 35,
                     width: displayDirection == DisplayDirection.horizontal
@@ -642,12 +645,25 @@ class _PriceSection extends StatelessWidget {
                       if (!locator<AuthenticationService>().isAuthenticated) {
                         bool authenticated = await signInRequest(
                             Images.iconAlertBottom,
-                            title: "AlertMe!®",
+                            title: "Notify Me",
                             content:
                             "Add you Item to Price Alert. Get live update of item availability.");
                         if (!authenticated) return;
                       }
-                      locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": item });
+
+                      var result = await locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": item });
+
+                      if (result == true) {
+                        locator<ToastService>().showWidget(child: ActionableToast(
+                          title: "Notify Me",
+                          content: "Added Successfully",
+                          onActionTap: () {
+                            locator<NavigationService>().pushNamed(Routes.alerts, arguments: 2);
+                          },
+                          icon: CupertinoIcons.check_mark_circled_solid,
+                          actionText: "View",
+                        ));
+                      }
                   }
                 )
             ),

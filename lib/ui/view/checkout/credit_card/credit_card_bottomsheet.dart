@@ -102,8 +102,11 @@ class _CreditCardPageBottomSheetState extends State<CreditCardPageBottomSheet> {
                         width: double.infinity,
                         color: AppColor.primary,
                         borderColor: AppColor.primary,
-                        onPressed: () {
-                          viewModel.save(context);
+                        onPressed: () async {
+                          var result = await viewModel.save(context);
+                          if (result == false) {
+                            setState(() {});
+                          }
                         }),
                   ),
                 ],

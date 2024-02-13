@@ -1,5 +1,6 @@
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
+import 'package:bullion/ui/widgets/loading_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/core/res/images.dart';
@@ -28,9 +29,7 @@ class GuestLoginPage extends VGTSBuilderWidget<GuestLoginViewModel> {
 
   @override
   Widget builder(BuildContext context, GuestLoginViewModel viewModel, Widget? child) {
-  return viewModel.isBusy
-      ? LoadingWidget(message: "Authenticating...",)
-      : Scaffold(
+  return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
@@ -40,7 +39,9 @@ class GuestLoginPage extends VGTSBuilderWidget<GuestLoginViewModel> {
                 viewModel.navigationService.pop(returnValue: false);
               }),
         ),
-        body: Form(
+        body: viewModel.isBusy
+            ? const LoadingSection()
+            : Form(
           key: viewModel.formKey,
           child: SafeArea(
             child: TapOutsideUnFocus(
@@ -83,13 +84,13 @@ class GuestLoginPage extends VGTSBuilderWidget<GuestLoginViewModel> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
+                      const Text(
                         "Don't have an Account?",
                         style: AppTextStyle.bodySmall,
                       ),
                       TextButton(
                           key: const Key("btnRegister"),
-                          child: Text("Register",
+                          child: const Text("Register",
                               style: AppTextStyle.bodyMedium),
                           onPressed: () => viewModel.register()),
                     ],
