@@ -8,8 +8,10 @@ import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_section.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/shared/contentful/product/product_text_style.dart';
@@ -638,10 +640,13 @@ class _PriceSection extends StatelessWidget {
                     borderColor: AppColor.primaryDark,
                     onPressed: () async {
                       if (!locator<AuthenticationService>().isAuthenticated) {
-                        Util.showLoginAlert();
-                        return;
+                        bool authenticated = await signInRequest(
+                            Images.iconAlertBottom,
+                            title: "AlertMe!®",
+                            content:
+                            "Add you Item to Price Alert. Get live update of item availability.");
+                        if (!authenticated) return;
                       }
-
                       locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": item });
                   }
                 )

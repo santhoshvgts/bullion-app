@@ -1,6 +1,7 @@
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
@@ -8,6 +9,7 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:flutter/material.dart';
 
@@ -24,9 +26,9 @@ class BottomActionCard extends StatelessWidget {
       return AddToCartSection(productDetails, key: ValueKey("sectionAddToCart${productDetails?.overview?.orderMin}"));
     } else if (productDetails!.overview!.alertMe!) {
       return _AlertButton("Setup AlertMe!®", onTap: () async {
-        if (!locator<AuthenticationService>().isAuthenticated) {
-          Util.showLoginAlert();
-          return;
+        if (!locator<AuthenticationService>().isAuthenticated){
+          bool authenticated = await signInRequest(Images.iconAlertBottom, title: "AlertMe!®", content: "Add you Item to Price Alert. Get live update of item availability.");
+          if (!authenticated) return;
         }
         await locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": productDetails?.overview });
       });

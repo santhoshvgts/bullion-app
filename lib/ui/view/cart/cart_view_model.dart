@@ -8,6 +8,7 @@ import 'package:bullion/core/models/module/cart/shopping_cart.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/utils.dart';
@@ -19,6 +20,7 @@ import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -193,9 +195,14 @@ class CartViewModel extends VGTSBaseViewModel {
 
   onCheckoutClick() async {
     if (!locator<AuthenticationService>().isAuthenticated) {
-      Util.showLoginAlert();
-      return;
+      bool authenticated = await signInRequest(Images.iconCartBottom,
+          title: "Checkout",
+          content:
+          "Login or Create a free BULLION.com account for fast checkout and easy access to order history.",
+          showGuestLogin: true);
+      if (!authenticated) return;
     }
+
     locator<NavigationService>().pushNamed(Routes.checkout);
   }
 

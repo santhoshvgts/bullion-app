@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/utils.dart';
@@ -9,6 +10,7 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/filter_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/ui/shared/chart/spotprice_sparkline.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/spot_price_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -104,11 +106,28 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
             child: Button.outline("Create Spot Price Alert",
               width: double.infinity,
               valueKey: const ValueKey("txtCreateSpotPrice"),
-              onPressed: () {
+              onPressed: () async {
                 if (!locator<AuthenticationService>().isAuthenticated) {
-                  Util.showLoginAlert();
-                  return;
+                  bool isLogged = await signInRequest(Images.userIcon,
+                      title: "Spot Price Alert", content: "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price.");
+                  if (!isLogged) {
+                    return;
+                  }
                 }
+
+                String title;
+                String description;
+
+                title = "Custom Spot Price Alerts";
+                description =
+                "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
+                    "\n\n Allow push notification to get notified instantly of price movements.";
+
+                // bool hasNotificationPermission = await locator<PushNotificationService>()
+                //     .checkPermissionAndPromptSettings(title, description: description);
+                // if (!hasNotificationPermission) {
+                //   return false;
+                // }
                 locator<NavigationService>().pushNamed(Routes.addEditAlert);
               }
             ),

@@ -1,5 +1,6 @@
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/appconfig_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -65,13 +66,10 @@ class PushNotificationService {
   }
 
   // checkPermissionAndPromptSettings(String title, {String description = "Never miss an update with push notifications"}) async {
-  //   OSDeviceState? status = await (OneSignal.getDeviceState());
-  //   if (status!.hasNotificationPermission) {
+  //   if (OneSignal.Notifications.permission) {
   //     return true;
   //   }
-  //
-  //   locator<DialogService>().showBottomSheet(
-  //       child: NotificationPromptBottomSheet(title, description));
+  //   locator<DialogService>().showBottomSheet(child: NotificationPromptBottomSheet(title, description));
   //   return false;
   // }
 

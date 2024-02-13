@@ -4,12 +4,14 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_detail/product_price.dart';
 import 'package:bullion/core/models/module/product_detail/product_variant.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_section.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
 import 'package:bullion/ui/shared/web_view/apmex_web_view.dart';
@@ -86,10 +88,12 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                 top: 10,
                 right: 15,
                 child: InkWell(
-                  onTap: () {
+                  onTap: () async {
                     if (!locator<AuthenticationService>().isAuthenticated) {
-                      Util.showLoginAlert();
-                      return;
+                      bool authenticated = await signInRequest(Images.iconFavBottom,
+                          title: "Favorites",
+                          content: "Login or register to save this product to your favorites.");
+                      if (!authenticated) return;
                     }
 
                     if (setting?.productId == null) {
@@ -124,17 +128,19 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                 child: Column(
                   children: [
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         if (!locator<AuthenticationService>().isAuthenticated) {
-                          Util.showLoginAlert();
-                          return;
+                          bool authenticated = await signInRequest(Images.iconPriceAlertBottom,
+                              title: "Price Alert",
+                              content:
+                              "Login or register to be notified when this product reaches your indicated price point.");
+                          if (!authenticated) return;
                         }
-
                         if (setting?.productId == null) {
                           return;
                         }
 
-                        viewModel.priceAlert(setting?.overview, context);
+                        viewModel.priceAlert(setting?.overview);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),

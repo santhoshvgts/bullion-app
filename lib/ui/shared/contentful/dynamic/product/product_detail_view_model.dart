@@ -92,12 +92,7 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
     locator<EventBusService>().eventBus.fire(ProductApplyVariationEvent(_productDetails!, targetUrl));
   }
 
-  void priceAlert(ProductOverview? overview, BuildContext context) async {
-
-    if (!authenticationService.isAuthenticated) {
-      Util.showLoginAlert();
-      return;
-    }
+  void priceAlert(ProductOverview? overview) async {
     var result = await locator<NavigationService>().pushNamed(Routes.editPriceAlert, arguments: { "productDetails": overview });
 
     if (result != null) {
@@ -116,11 +111,6 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
   }
 
   Future<void> addAsFavorite(int? productId) async {
-    if (!authenticationService.isAuthenticated) {
-      Util.showLoginAlert();
-       return;
-    }
-
     setBusyForObject(productDetails!.isInUserWishList, true);
 
     if (productDetails!.isInUserWishList! == true) {

@@ -4,9 +4,12 @@ import 'package:bullion/core/models/chart/chart_selection_info.dart';
 import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/models/chart/spot_price_time_range_filter.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/services/chart/spotprice_service.dart';
+import 'package:bullion/services/push_notification_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 
 import '../../../../../../router.dart';
@@ -127,39 +130,31 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
     }
   }
 
-  createSpotPrice() {
-    if (authenticationService!.isAuthenticated) {
-      navigationService.pushNamed(Routes.editSpotPrice,
-          arguments: {"metalName": spotPriceChartData?.metalName});
-      return true;
-    }
-    return false;
-  }
-
   onCreateSpotPriceClick() async {
-    // if (!locator<AuthenticationService>()!.isAuthenticated) {
-    //   bool isLogged = await signInRequest(Images.userIcon,
-    //       title: "Spot Price Alert", content: "");
-    //   if (!isLogged) {
-    //     return;
-    //   }
-    // }
-    //
-    // String title;
-    // String description;
-    //
-    // title = "Custom Spot Price Alerts";
-    // description =
-    //     "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
-    //     "\n\n Allow push notification to get notified instantly of price movements.";
-    //
+    if (!authenticationService.isAuthenticated) {
+      bool isLogged = await signInRequest(Images.userIcon,
+          title: "Spot Price Alert", content: "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price.");
+      if (!isLogged) {
+        return;
+      }
+    }
+
+    String title;
+    String description;
+
+    title = "Custom Spot Price Alerts";
+    description =
+    "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
+        "\n\n Allow push notification to get notified instantly of price movements.";
+
     // bool hasNotificationPermission = await locator<PushNotificationService>()
     //     .checkPermissionAndPromptSettings(title, description: description);
     // if (!hasNotificationPermission) {
     //   return false;
     // }
-    //
-    // navigationService.pushNamed(
-    //     "${Routes.myMarketAlerts}/${locator<FilterService>().alertMetal}");
+
+    navigationService.pushNamed(Routes.editSpotPrice,
+        arguments: {"metalName": spotPriceChartData?.metalName});
   }
+
 }

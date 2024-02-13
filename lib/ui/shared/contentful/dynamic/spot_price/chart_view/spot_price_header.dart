@@ -114,11 +114,7 @@ class SpotPriceHeader extends StatelessWidget {
                   height: 35,
                   valueKey: const ValueKey("btnAlert"),
                   onPressed: () {
-                    if (!locator<AuthenticationService>().isAuthenticated) {
-                      Util.showLoginAlert();
-                      return;
-                    }
-                    bool isAuthenticated = _viewModel.createSpotPrice();
+                    _viewModel.onCreateSpotPriceClick();
                   },
                 ),
               ),

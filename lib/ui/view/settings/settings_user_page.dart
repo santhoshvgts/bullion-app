@@ -608,7 +608,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     valueKey: const Key("btnSignInCreate"),
                     onPressed: () {
                       if (!locator<AuthenticationService>().isAuthenticated) {
-                        Util.showLoginAlert();
+                        locator<NavigationService>().pushNamed(Routes.login, arguments: {"fromMain": false});
                         return;
                       }
                       locator<NavigationService>().pushNamed(Routes.myOrders);
