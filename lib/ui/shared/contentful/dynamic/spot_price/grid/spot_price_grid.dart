@@ -105,13 +105,13 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Button.outline("Create Spot Price Alert",
+            child: Button.outline("Create Market Price Alert",
               width: double.infinity,
               valueKey: const ValueKey("txtCreateSpotPrice"),
               onPressed: () async {
                 if (!locator<AuthenticationService>().isAuthenticated) {
                   bool isLogged = await signInRequest(Images.userIcon,
-                      title: "Spot Price Alert", content: "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price.");
+                      title: "Market Price Alert", content: "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price.");
                   if (!isLogged) {
                     return;
                   }
@@ -120,7 +120,7 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
                 String title;
                 String description;
 
-                title = "Custom Spot Price Alerts";
+                title = "Market Price Alert";
                 description =
                 "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
                     "\n\n Allow push notification to get notified instantly of price movements.";

@@ -133,7 +133,7 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
   onCreateSpotPriceClick() async {
     if (!authenticationService.isAuthenticated) {
       bool isLogged = await signInRequest(Images.userIcon,
-          title: "Spot Price Alert", content: "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price.");
+          title: "Market Price Alert", content: "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price.");
       if (!isLogged) {
         return;
       }
@@ -142,7 +142,7 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
     String title;
     String description;
 
-    title = "Custom Spot Price Alerts";
+    title = "Market Price Alert";
     description =
     "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
         "\n\n Allow push notification to get notified instantly of price movements.";

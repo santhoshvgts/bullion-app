@@ -49,7 +49,7 @@ class EditPriceAlertViewModel extends VGTSBaseViewModel {
     setBusy(false);
 
     bool hasNotificationPermission = await locator<PushNotificationService>().checkPermissionAndPromptSettings(
-        "Price Alert Created",
+        "Product Price Alert Created",
         description: "Know instantly when your price alerts get triggered. Please enable push notifications to get notified instantly."
     );
     return productAlert != null;

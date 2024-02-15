@@ -99,7 +99,7 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
       productDetails!.isInUserPriceAlert = true;
       notifyListeners();
       locator<ToastService>().showWidget(child: ActionableToast(
-        title: "Price Alert",
+        title: "Product Price Alert",
         content: "Added Successfully",
         onActionTap: () {
           locator<NavigationService>().pushNamed(Routes.alerts, arguments: 1);

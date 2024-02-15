@@ -131,7 +131,7 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                       onTap: () async {
                         if (!locator<AuthenticationService>().isAuthenticated) {
                           bool authenticated = await signInRequest(Images.iconPriceAlertBottom,
-                              title: "Price Alert",
+                              title: "Product Price Alert",
                               content:
                               "Login or register to be notified when this product reaches your indicated price point.");
                           if (!authenticated) return;

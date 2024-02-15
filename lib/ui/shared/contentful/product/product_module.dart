@@ -647,7 +647,7 @@ class _PriceSection extends StatelessWidget {
                             Images.iconAlertBottom,
                             title: "Notify Me",
                             content:
-                            "Add you Item to Price Alert. Get live update of item availability.");
+                            "Add you Item to Alert. Get live update of item availability.");
                         if (!authenticated) return;
                       }
 

@@ -171,7 +171,7 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                     ),
                     const SizedBox(height: 32.0),
                     const Text(
-                      "Spot Price alerts are empty",
+                      "Market Price Alert",
                       textAlign: TextAlign.center,
                       style: AppTextStyle.titleLarge,
                     ),
@@ -197,7 +197,7 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                   String title;
                   String description;
 
-                  title = "Custom Spot Price Alerts";
+                  title = "Market Price Alert";
                   description =
                   "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
                       "\n\n Allow push notification to get notified instantly of price movements.";

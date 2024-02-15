@@ -216,7 +216,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                             },
                             child: getTextsLayout(
                                 const Icon(CupertinoIcons.alarm, size: 20),
-                                "Custom Spot Price"),
+                                "Market Price Alert"),
                           ),
                           const Divider(
                             color: AppColor.platinumColor,
@@ -228,7 +228,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                             },
                             child: getTextsLayout(
                               const Icon(Icons.attach_money, size: 20),
-                              "Price Alert",
+                              "Product Price Alert",
                             ),
                           ),
                           const Divider(
@@ -241,7 +241,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                             },
                             child: getTextsLayout(
                               const Icon(CupertinoIcons.bell, size: 20),
-                              "Alert Me!",
+                              "Notify Me",
                             ),
                           ),
                         ],

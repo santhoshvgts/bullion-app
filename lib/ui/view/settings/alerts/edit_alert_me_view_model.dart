@@ -38,7 +38,7 @@ class EditAlertMeViewModel extends VGTSBaseViewModel {
     setBusyForObject("LOADING", false);
 
     bool hasNotificationPermission = await locator<PushNotificationService>().checkPermissionAndPromptSettings(
-        "AlertMe!® Created",
+        "Notify Me Created",
         description: "Know instantly when this product becomes available. Please enable push notifications to get notified instantly."
     );
     if (hasNotificationPermission) {}

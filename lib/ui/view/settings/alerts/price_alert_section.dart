@@ -108,7 +108,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              const Text("Your Price Alert Amount", style: AppTextStyle.labelSmall,),
+                                              const Text("Your Price", style: AppTextStyle.labelSmall,),
 
                                               Text("\$${viewModel.productAlerts?[index].yourPrice}", style: AppTextStyle.titleLarge),
                                             ],
@@ -217,7 +217,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                         ),
                         const SizedBox(height: 32.0),
                         const Text(
-                          "Price alerts are empty",
+                          "Product Price Alert",
                           textAlign: TextAlign.center,
                           style: AppTextStyle.titleLarge,
                         ),

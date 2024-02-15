@@ -46,7 +46,7 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
                 ),
                 expandedHeight: 100,
                 pinned: true,
-                flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "Price Alert"),
+                flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "Product Price Alert"),
               ),
               SliverToBoxAdapter(
                 child: SingleChildScrollView(
@@ -109,7 +109,7 @@ class EditPriceAlertPage extends VGTSBuilderWidget<EditPriceAlertViewModel> {
                               VerticalSpacing.d20px(),
 
                               Button(
-                                "Save Price Alert",
+                                "Save",
                                 valueKey: const Key("btnUpdate"),
                                 width: double.infinity,
                                 loading: viewModel.isBusy,
