@@ -64,6 +64,13 @@
     <key>NSUserTrackingUsageDescription</key>
     <string>To provide you with a personalized and improved user experience, we collect usage data to understand how you use our app.</string>
 
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Bullion needs access to the microphone to be able to attach voice notes.</string>
+
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Bullion needs access to your photo library for you to be able to attach images.</string>
+
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
