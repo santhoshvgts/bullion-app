@@ -16,9 +16,12 @@ dependencies:
 
   cupertino_icons: ^1.0.2
 
+  instabug_flutter: ^12.5.0
+
   #core
   stacked: ^3.4.1
   stacked_themes: ^0.3.12
+  permission_handler: ^11.3.0
 
   #Firebase
   firebase_core: ^2.21.0

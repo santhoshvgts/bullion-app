@@ -120,9 +120,6 @@ class RegisterViewModel extends VGTSBaseViewModel {
         navigationService.pushReplacementNamed(redirectRoute!);
       } else {
         navigationService.pop(returnValue: true);
-        locator<EventBusService>()
-            .eventBus
-            .fire(RefreshDataEvent(RefreshType.homeRefresh));
       }
       preferenceService.setFirstTimeAppOpen(false);
     }

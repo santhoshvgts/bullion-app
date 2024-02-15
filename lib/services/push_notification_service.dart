@@ -1,10 +1,16 @@
+import 'package:bullion/core/models/alert/alert_response.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/appconfig_service.dart';
+import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:bullion/router.dart';
+
+import '../ui/view/settings/notification_prompt_bottom_sheet.dart';
 
 class PushNotificationService {
   final AppConfigService _appConfigService = locator<AppConfigService>();
@@ -14,6 +20,8 @@ class PushNotificationService {
   //Remove these when v1 is removed
   getReturnTab() => _tab;
   setReturnTab(int tab) => _tab = tab;
+
+  bool hasPermission = false;
 
 
   Future<void> configure() async {
@@ -34,6 +42,16 @@ class PushNotificationService {
           if (uriPath == "/") {
             uri = uri.replace(path: Routes.home);
           }
+
+          if (Routes.authRoute.where((e)=> e.startsWith(uri.path)).isNotEmpty == true) {
+            if (!locator<AuthenticationService>().isAuthenticated) {
+              bool authenticated = await signInRequest(Images.iconPriceAlertBottom,
+                  title: "Account",
+                  content: "Sign in to do more with your account");
+              if (!authenticated) return;
+            }
+          }
+
           locator<NavigationService>().pushNamed(uri.path + (uri.hasQuery ? "?${uri.query}" : ""),);
         }
       } on Exception catch (e) {
@@ -41,11 +59,16 @@ class PushNotificationService {
       }
     });
 
+    hasPermission = OneSignal.Notifications.permission;
+
+    OneSignal.Notifications.addPermissionObserver((permission) {
+      hasPermission = permission;
+    });
 
     OneSignal.InAppMessages.addClickListener((OSInAppMessageClickEvent action) {
       try {
-        if (action.result.url != null) {
-          Uri? uri = Uri.tryParse(action.result.url!);
+        if (action.result.actionId != null) {
+          Uri? uri = Uri.tryParse(action.result.actionId!);
           if (uri != null) {
             locator<NavigationService>().pushNamed(uri.path + (uri.hasQuery ? "?${uri.query}" : ""),);
           }
@@ -65,12 +88,13 @@ class PushNotificationService {
     return await OneSignal.Notifications.requestPermission(fallbackToSettings);
   }
 
-  // checkPermissionAndPromptSettings(String title, {String description = "Never miss an update with push notifications"}) async {
-  //   if (OneSignal.Notifications.permission) {
-  //     return true;
-  //   }
-  //   locator<DialogService>().showBottomSheet(child: NotificationPromptBottomSheet(title, description));
-  //   return false;
-  // }
+  checkPermissionAndPromptSettings(String title, {String description = "Never miss an update with push notifications"}) async {
+    if (hasPermission) {
+      return true;
+    }
+
+    AlertResponse response = await locator<DialogService>().showBottomSheet(child: NotificationPromptBottomSheet(title, description));
+    return false;
+  }
 
 }

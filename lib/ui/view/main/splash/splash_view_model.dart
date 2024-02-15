@@ -28,8 +28,8 @@ class SplashViewModel extends VGTSBaseViewModel {
 
       Map<String, Future<PageSettings?>> futures = {
         "Home": request<PageSettings>(PageRequest.fetch(path: "/pages/home")),
-        "Deals": request<PageSettings>(PageRequest.fetch(path: "/pages/deals")),
-        "Charts": request<PageSettings>(PageRequest.fetch(path: "/spot-prices"))
+        // "Deals": request<PageSettings>(PageRequest.fetch(path: "/pages/deals")),
+        // "Charts": request<PageSettings>(PageRequest.fetch(path: "/spot-prices"))
       };
 
       Future.wait([...futures.values.toList(),]).then((value) {

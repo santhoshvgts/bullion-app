@@ -147,11 +147,11 @@ class SpotPriceChartViewModel extends VGTSBaseViewModel {
     "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
         "\n\n Allow push notification to get notified instantly of price movements.";
 
-    // bool hasNotificationPermission = await locator<PushNotificationService>()
-    //     .checkPermissionAndPromptSettings(title, description: description);
-    // if (!hasNotificationPermission) {
-    //   return false;
-    // }
+    bool hasNotificationPermission = await locator<PushNotificationService>()
+        .checkPermissionAndPromptSettings(title, description: description);
+    if (!hasNotificationPermission) {
+      return false;
+    }
 
     navigationService.pushNamed(Routes.editSpotPrice,
         arguments: {"metalName": spotPriceChartData?.metalName});

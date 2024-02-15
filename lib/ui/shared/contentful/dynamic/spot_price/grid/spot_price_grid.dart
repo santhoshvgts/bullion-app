@@ -19,6 +19,8 @@ import 'package:bullion/ui/widgets/shimmer_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../../../services/push_notification_service.dart';
+
 class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
   final dynamic spotPriceList;
 
@@ -123,11 +125,11 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
                 "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
                     "\n\n Allow push notification to get notified instantly of price movements.";
 
-                // bool hasNotificationPermission = await locator<PushNotificationService>()
-                //     .checkPermissionAndPromptSettings(title, description: description);
-                // if (!hasNotificationPermission) {
-                //   return false;
-                // }
+                bool hasNotificationPermission = await locator<PushNotificationService>()
+                    .checkPermissionAndPromptSettings(title, description: description);
+                if (!hasNotificationPermission) {
+                  return;
+                }
                 locator<NavigationService>().pushNamed(Routes.addEditAlert);
               }
             ),

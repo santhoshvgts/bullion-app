@@ -2,6 +2,7 @@ import 'package:bullion/core/models/alert/product_alert_response_model.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/services/api_request/alerts_request.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/api_model/request_settings.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,11 @@ class EditPriceAlertViewModel extends VGTSBaseViewModel {
     setBusy(true);
     ProductDetails? productAlert = await request<ProductDetails>(AlertsRequest.editPriceAlert(productOverview!.productId, targetPriceFormFieldController.text));
     setBusy(false);
+
+    bool hasNotificationPermission = await locator<PushNotificationService>().checkPermissionAndPromptSettings(
+        "Price Alert Created",
+        description: "Know instantly when your price alerts get triggered. Please enable push notifications to get notified instantly."
+    );
     return productAlert != null;
   }
 

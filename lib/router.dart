@@ -61,15 +61,7 @@ class Routes {
   // 360 Page
   static const String threeSixtyPage = "/threeSixtyPage";
 
-  // Cart & Checkout
-  static const String viewCart = "/cart/viewcart";
-  static const String reviewCart = "/checkout/review";
-  static const String expiredCart = "/cart/expiredcart";
-  static const String checkout = "/checkout";
-  static const String orderPlaced = "/orders/success";
-  static const String checkoutAddress = "/checkout/address";
-  static const String checkoutPayments = "/checkout/payments";
-
+  static const String introPage = "/main/intro";
   static const String splash = "/";
   static const String login = "/account/login";
   static const String register = "/account/register";
@@ -82,34 +74,19 @@ class Routes {
   static const String search = "/search";
   static const String main = "/main";
 
-  static String productDesc(id) => "/product/details/$id";
-
-  static String productSpec(id) => "/product/specs/$id";
-
-  static String productReview(id) => "/product/reviews/$id";
-
-  static String productWriteReview(id) => "/product/reviews/add/$id";
-
   static const String addAddress = "/addAddress";
 
-  static const String introPage = "/main/intro";
   static const String marketAlertEntry = "/market_alert/entry";
   static const String marketNews = "/market_news";
 
   static const String accountSetting = "/accountSetting";
   static const String orderSuccess = "/orderSuccess";
-  static const String portfolioAsset = "/portfolioAsset";
-  static const String portfolioAddAsset = "/portfolioAddAsset";
-  static const String portfolioEditAsset = "/portfolioEditAsset";
 
   //Accounts
   static const String myProfile = "/account/myprofile";
   static const String changeEmail = "/account/changeemail";
   static const String changePassword = "/account/changepassword";
-  static const String myAddressBook = "/account/addressbook";
-  static const String myPortfolio = "/account/portfolio";
   static const String myOrders = "/account/orders";
-  static const String orderDetails = "/account/orderDetails";
   static const String address = "/account/address";
   static const String addEditAddress = "/account/addEditAddress";
   static const String favorites = "/account/favorites";
@@ -117,26 +94,48 @@ class Routes {
   static const String addEditAlert = "/account/createAlert";
   static const String editPriceAlert = "/account/editPriceAlert";
   static const String editAlertMe = "/account/editAlertMe";
-  static const String myRewards = "/account/myrewards";
-  static const String myRewardTransactions = "/account/myrewards/transaction";
 
   static const String myOrderDetails = "/account/orderdetails";
   static const String editSpotPrice = "/account/editSpotPrice";
-  static const String myFavorites = "/account/myfavorites";
-  static const String myProductAlert = "/account/productalerts";
-  static const String myProductPriceAlert = "/account/myproductpricealerts";
-  static const String myClubStatus = "/account/myclubstatus";
-  static const String myClub = "/account/myclub";
   static const String myMarketAlerts = "/account/marketalerts";
-
-  static const String customizeHomePage = "/account/customizeHomePage";
 
   static const String searchHistory = "/search/history";
   static const String recentlyViewed = "recentlyviewed";
   static const String recentlyBought = "recentlybought";
-  static const String recentSearches = "recentsearches";
 
-  static const String myProductReviews = "/account/productreviews";
+  // Cart & Checkout
+  static const String viewCart = "/cart/viewcart";
+  static const String reviewCart = "/checkout/review";
+  static const String expiredCart = "/cart/expiredcart";
+  static const String checkout = "/checkout";
+  static const String orderPlaced = "/orders/success";
+  static const String checkoutAddress = "/checkout/address";
+  static const String checkoutPayments = "/checkout/payments";
+
+  static const authRoute = [
+    myProfile,
+    changeEmail,
+    changePassword,
+    myOrders,
+    address,
+    addEditAddress,
+    favorites,
+    alerts,
+    addEditAlert,
+    editPriceAlert,
+    editAlertMe,
+    myOrderDetails,
+    editSpotPrice,
+    myMarketAlerts,
+    searchHistory,
+    recentlyViewed,
+    recentlyBought,
+    checkout,
+    orderPlaced,
+    checkoutAddress,
+    checkoutPayments,
+  ];
+
 }
 
 class AppRouter {

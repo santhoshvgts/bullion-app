@@ -47,7 +47,7 @@ Future<void> main() async {
               : dsn;
           options.debug = !kReleaseMode;
           options.tracesSampleRate = 1.0;
-          // options.enableOutOfMemoryTracking = false;
+
         },
         appRunner: () => runApp(const MyApp()),
       );

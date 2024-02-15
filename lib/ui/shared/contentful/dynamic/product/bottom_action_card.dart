@@ -29,7 +29,7 @@ class BottomActionCard extends StatelessWidget {
       return AddToCartSection(productDetails, key: ValueKey("sectionAddToCart${productDetails?.overview?.orderMin}"));
     } else if (productDetails!.overview!.alertMe!) {
       return _AlertButton("Notify Me", onTap: () async {
-        if (!locator<AuthenticationService>().isAuthenticated){
+        if (!locator<AuthenticationService>().isAuthenticated) {
           bool authenticated = await signInRequest(Images.iconAlertBottom, title: "Notify Me", content: "Add you Item to Alert. Get live update of item availability.");
           if (!authenticated) return;
         }

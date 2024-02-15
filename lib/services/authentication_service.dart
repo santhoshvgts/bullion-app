@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/helper/logger.dart';
@@ -11,6 +12,7 @@ import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/api_model/error_response_exception.dart';
+import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/shared/preference_service.dart';
 import 'package:bullion/services/token_service.dart';
@@ -72,6 +74,9 @@ class AuthenticationService {
       _setUser(authResult);
       _analyticsService.loglogin();
 
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
+
       return authResult;
     } on ErrorResponseException catch (ex) {
       _showAlert(ex, "Error");
@@ -87,7 +92,8 @@ class AuthenticationService {
 
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
-        clientId: Platform.isIOS ? null : "836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com",
+        // clientId: "836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com",
+        // serverClientId: "836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com",
       ).signIn();
       final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
@@ -95,6 +101,9 @@ class AuthenticationService {
         var authResult = await _apiBaseService
             .request<AuthResponse>(AuthRequest.googleAuth(googleUser!.email, googleAuth.accessToken!));
         _setUser(authResult);
+
+        locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+        locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
 
         return authResult;
       }
@@ -157,6 +166,8 @@ class AuthenticationService {
       );
       _setUser(authResult);
       _analyticsService.logSignUp();
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
       return authResult;
     } on ErrorResponseException catch (ex) {
       _showAlert(ex, "Error");
@@ -169,6 +180,9 @@ class AuthenticationService {
       var authResult = await _apiBaseService
           .request<AuthResponse>(AuthRequest.registerAsGuest(email));
       _setUser(authResult);
+
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
 
       return authResult;
     } on ErrorResponseException catch (ex) {

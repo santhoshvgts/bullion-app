@@ -1,6 +1,7 @@
 import 'package:bullion/core/models/alert/alert_add_response_model.dart';
 import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/res/spacing.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/staggered_animation.dart';
@@ -192,6 +193,21 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                 valueKey: const Key("btnCreateAlert"),
                 borderRadius: BorderRadius.circular(24),
                 onPressed: () async {
+
+                  String title;
+                  String description;
+
+                  title = "Custom Spot Price Alerts";
+                  description =
+                  "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
+                      "\n\n Allow push notification to get notified instantly of price movements.";
+
+                  bool hasNotificationPermission =
+                  await locator<PushNotificationService>().checkPermissionAndPromptSettings(title, description: description);
+                  if (!hasNotificationPermission) {
+                    return;
+                  }
+
                   var result = await locator<NavigationService>().pushNamed(Routes.addEditAlert);
                   if (result != null) {
                     viewModel.refreshSpotPriceAlert();

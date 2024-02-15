@@ -115,69 +115,69 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
 
                   Column(
                     children: [
-                VerticalSpacing.d10px(),
-                if (locator<AuthenticationService>().isGuestUser)
-                  _SettingItemGuestUser()
-                else
-                  _buildOrderSection(),
+                      VerticalSpacing.d10px(),
+                      if (locator<AuthenticationService>().isGuestUser)
+                        _SettingItemGuestUser()
+                      else
+                        _buildOrderSection(),
 
-                if (!locator<AuthenticationService>().isGuestUser)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: AppStyle.elevatedCardShadow,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(bottom: 16.0),
-                            child: Text('Manage Account',
-                                style: AppTextStyle.titleMedium),
+                      if (!locator<AuthenticationService>().isGuestUser)
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: AppStyle.elevatedCardShadow,
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          InkWell(
-                            onTap: () {
-                              locator<NavigationService>().pushNamed(Routes.accountSetting);
-                            },
-                            child: getTextsLayout(
-                              const Icon(FeatherIcons.user, size: 20),
-                              "Personal Info",
+                          margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Text('Manage Account',
+                                      style: AppTextStyle.titleMedium),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    locator<NavigationService>().pushNamed(Routes.accountSetting);
+                                  },
+                                  child: getTextsLayout(
+                                    const Icon(FeatherIcons.user, size: 20),
+                                    "Personal Info",
+                                  ),
+                                ),
+                                const Divider(
+                                  color: AppColor.platinumColor,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    locator<NavigationService>().pushNamed(Routes.address);
+                                  },
+                                  child: getTextsLayout(
+                                    const Icon(Icons.pin_drop_outlined, size: 20),
+                                    "Saved Address",
+                                  ),
+                                ),
+                                const Divider(
+                                  color: AppColor.platinumColor,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    locator<NavigationService>()
+                                        .pushNamed(Routes.favorites);
+                                  },
+                                  child: getTextsLayout(
+                                    const Icon(Icons.favorite_border, size: 20),
+                                    "Favorites",
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const Divider(
-                            color: AppColor.platinumColor,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              locator<NavigationService>().pushNamed(Routes.address);
-                            },
-                            child: getTextsLayout(
-                              const Icon(Icons.pin_drop_outlined, size: 20),
-                              "Saved Address",
-                            ),
-                          ),
-                          const Divider(
-                            color: AppColor.platinumColor,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              locator<NavigationService>()
-                                  .pushNamed(Routes.favorites);
-                            },
-                            child: getTextsLayout(
-                              const Icon(Icons.favorite_border, size: 20),
-                              "Favorites",
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
+                        ),
+                    ],
                   )
 
                 ],

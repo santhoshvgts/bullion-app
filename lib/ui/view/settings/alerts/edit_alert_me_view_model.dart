@@ -3,6 +3,7 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart' as product_item;
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/services/api_request/alerts_request.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
@@ -35,6 +36,12 @@ class EditAlertMeViewModel extends VGTSBaseViewModel {
     setBusyForObject("LOADING", true);
     ProductDetails? productAlert = await request<ProductDetails>(AlertsRequest.editAlertMe(productOverview!.productId, quantityFormFieldController.text));
     setBusyForObject("LOADING", false);
+
+    bool hasNotificationPermission = await locator<PushNotificationService>().checkPermissionAndPromptSettings(
+        "AlertMe!® Created",
+        description: "Know instantly when this product becomes available. Please enable push notifications to get notified instantly."
+    );
+    if (hasNotificationPermission) {}
     return productAlert != null;
   }
 }

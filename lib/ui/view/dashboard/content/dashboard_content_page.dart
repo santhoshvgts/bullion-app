@@ -112,10 +112,6 @@ class DashboardContentPage extends StatelessWidget {
                               _appBarExtendedHeight ??= 70 - constraints.biggest.height;
                               double padRight = constraints.biggest.height - 15;
                               double padRightValue = padRight - ((-5 - padRight) * (( constraints.biggest.height - 80) / _appBarExtendedHeight! ));
-                              print(MediaQuery.of(context).devicePixelRatio);
-                              print(padRightValue);
-                              print(_appBarExtendedHeight);
-                              print(constraints.biggest.height);
 
                               return FlexibleSpaceBar(
                                 centerTitle: true,
