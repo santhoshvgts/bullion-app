@@ -36,17 +36,17 @@ class SpotPriceHeader extends StatelessWidget {
                   children: [
 
                     Text(
-                      DateFormat("dd-MMM-yy hh:mm a").format(
+                      DateFormat("MM/dd/yy hh:mm a").format(
                         DateFormat("yyyy-MM-dd hh:mm:ss a").parse(
                           (_mySpotPrice.formatedDate!),
                         ),
                       ),
-                      
                       style: AppTextStyle.bodySmall.copyWith(
                         fontSize: 13,
                         color: AppColor.secondaryText,
                       ),
                     ),
+
 
                     VerticalSpacing.d2px(),
                     Row(

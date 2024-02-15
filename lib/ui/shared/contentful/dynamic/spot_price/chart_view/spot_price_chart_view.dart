@@ -268,11 +268,10 @@ class _BreakUpItem extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       value!,
-                      
                       style: AppTextStyle.titleMedium,
                     ),
                     Text(
-                      "${formattedChange!}",
+                      " ${formattedChange!}",
                       
                       style: AppTextStyle.titleMedium.copyWith(
                           color:

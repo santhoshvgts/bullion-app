@@ -364,7 +364,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     },
                     child: getTextsLayout(
                       null,
-                      "User Agreements",
+                      "User Agreement",
                     ),
                   ),
                   const Divider(

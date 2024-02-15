@@ -246,7 +246,7 @@ class _ImageList extends ViewModelWidget<ProductDetailViewModel> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height / 1.8,
+          height: MediaQuery.of(context).size.height / 2,
           child: Swiper(
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
@@ -564,7 +564,7 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
               ),
             ),
 
-            if (viewModel.productOverview?.orderMin?.toString().isNotEmpty == true)
+            if ((viewModel.productOverview?.orderMin ?? 0) > 1)
               Container(
                 decoration: BoxDecoration(
                   color: AppColor.primary.withOpacity(0.05),
