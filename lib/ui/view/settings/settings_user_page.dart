@@ -599,8 +599,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     ),
                   ),
                   Button(
-                    "Track Order",
-                    width: 104,
+                    "View Orders",
+                    width: 110,
                     color: Colors.white,
                     textStyle: AppTextStyle.titleSmall,
                     height: 32,
