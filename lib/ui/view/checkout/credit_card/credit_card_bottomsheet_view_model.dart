@@ -1,7 +1,7 @@
 import 'package:bullion/helper/utils.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
-import 'package:credit_card_scanner/credit_card_scanner.dart';
-import 'package:credit_card_scanner/models/card_details.dart';
+// import 'package:credit_card_scanner/credit_card_scanner.dart';
+// import 'package:credit_card_scanner/models/card_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:bullion/core/models/alert/alert_response.dart';
@@ -89,7 +89,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
     );
   }
 
-  CardDetails? cardScanResponse;
+  // CardDetails? cardScanResponse;
 
   //
   FormFieldController cardNumController = FormFieldController(
@@ -122,23 +122,23 @@ class CreditCardViewModel extends VGTSBaseViewModel {
 
   late FormFieldController cvvController;
 
-  scanCard() async {
-    cardScanResponse = await CardScanner.scanCard(
-        scanOptions: const CardScanOptions(
-          scanExpiryDate: true,
-          enableDebugLogs: true,
-          cardScannerTimeOut: 60,
-        ));
-
-    if(cardScanResponse != null){
-      cardNumController.text = getCardNumber(cardScanResponse!.cardNumber);
-      expDateController.text = cardScanResponse!.expiryDate;
-    }
-
-    notifyListeners();
-
-    print(cardScanResponse.toString());
-  }
+  // scanCard() async {
+  //   cardScanResponse = await CardScanner.scanCard(
+  //       scanOptions: const CardScanOptions(
+  //         scanExpiryDate: true,
+  //         enableDebugLogs: true,
+  //         cardScannerTimeOut: 60,
+  //       ));
+  //
+  //   if(cardScanResponse != null){
+  //     cardNumController.text = getCardNumber(cardScanResponse!.cardNumber);
+  //     expDateController.text = cardScanResponse!.expiryDate;
+  //   }
+  //
+  //   notifyListeners();
+  //
+  //   print(cardScanResponse.toString());
+  // }
 
   String getCardNumber(String number) {
     return "${number.substring(0,4)} ${number.substring(4, 8)} ${number.substring(8, 12)} ${number.substring(12, number.length)}";

@@ -53,8 +53,8 @@ dependencies:
     git:
       url: https://github.com/santhoshvgts/flutter-braintree.git
       ref: 0.0.1+1  
-  plaid_flutter: ^3.1.1
-  credit_card_scanner: ^1.0.5
+  plaid_flutter: ^3.1.4
+#  credit_card_scanner: ^1.0.5
 
   #local
   shared_preferences: ^2.2.1
