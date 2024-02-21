@@ -580,40 +580,61 @@ class _ShippingOptionSection extends ViewModelWidget<CheckoutViewModel> {
 
             VerticalSpacing.d20px(),
 
-            ListView.separated(
-                primary: false,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
+            Stack(
+              children: [
+                ListView.separated(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
 
-                  ShippingOption? option = viewModel.checkout?.selectedShippingOption?.shippingOptions?[index];
-                  bool selected = viewModel.checkout?.selectedShippingOption?.selectedShippingOption == option?.id;
-                  return InkWell(
-                    onTap: () {
-                      viewModel.onShippingOptionSelect(option!);
-                    },
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Radio(
-                          value: selected,
-                          activeColor: AppColor.primary,
-                          onChanged: (value) {
-                          },
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, groupValue: true,
+                      ShippingOption? option = viewModel.checkout?.selectedShippingOption?.shippingOptions?[index];
+                      bool selected = viewModel.checkout?.selectedShippingOption?.selectedShippingOption == option?.id;
+                      return InkWell(
+                        onTap: () {
+                          viewModel.onShippingOptionSelect(option!);
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Radio(
+                              value: selected,
+                              activeColor: AppColor.primary,
+                              onChanged: (value) {
+                                viewModel.onShippingOptionSelect(option!);
+                              },
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, groupValue: true,
+                            ),
+                            Expanded(child: Text(option?.name ?? '', style: AppTextStyle.bodyMedium.copyWith(color: selected ? AppColor.primary : null, fontWeight: selected ? FontWeight.w500 : null))),
+                            Text(option?.formattedShipCharge.toString() ?? '', style: AppTextStyle.bodyMedium.copyWith(color: selected ? AppColor.primary : null, fontWeight: selected ? FontWeight.w500 : null)),
+                            HorizontalSpacing.d15px(),
+                          ],
                         ),
-                        Expanded(child: Text(option?.name ?? '', style: AppTextStyle.bodyMedium.copyWith(color: selected ? AppColor.primary : null, fontWeight: selected ? FontWeight.w500 : null))),
-                        Text('\$${option?.shipCharge.toString() ?? ''}', style: AppTextStyle.bodyMedium.copyWith(color: selected ? AppColor.primary : null, fontWeight: selected ? FontWeight.w500 : null)),
-                        HorizontalSpacing.d15px(),
-                      ],
+                      );
+                    },
+                    separatorBuilder: (context, index) => const Divider(
+                      color: AppColor.divider,
+                      thickness: 0.3,
+                      height: 15,
                     ),
-                  );
-                },
-                separatorBuilder: (context, index) => const Divider(
-                  color: AppColor.divider,
-                  thickness: 0.3,
-                  height: 15,
+                    itemCount: viewModel.checkout?.selectedShippingOption?.shippingOptions?.length ?? 0
                 ),
-                itemCount: viewModel.checkout?.selectedShippingOption?.shippingOptions?.length ?? 0
+
+                if (viewModel.isBusy)
+                  Positioned.fill(
+                    child: Container(
+                      color: AppColor.white.withOpacity(0.7),
+                      child: const Center(
+                        child: SizedBox(
+                          height: 40,
+                          width: 40,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+              ],
             ),
           ],
         )

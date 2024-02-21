@@ -42,7 +42,7 @@ class AddressPage extends VGTSBuilderWidget<AddressViewModel> {
               ),
               expandedHeight: 100,
               pinned: true,
-              flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "Saved Address"),
+              flexibleSpace: const AnimatedFlexibleSpace.withoutTab(title: "Saved Addresses"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy

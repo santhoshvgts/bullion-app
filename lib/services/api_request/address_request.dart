@@ -13,7 +13,7 @@ class AddressRequest {
   }
 
   static RequestSettings getAddressById(int addressId) {
-    return RequestSettings("/address/get?addressId=$addressId", RequestMethod.GET,
+    return RequestSettings("/address/edit?addressId=$addressId", RequestMethod.GET,
         params: null, authenticated: true);
   }
 

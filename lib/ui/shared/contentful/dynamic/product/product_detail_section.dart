@@ -311,7 +311,7 @@ class CompetitorPricingSection extends StatelessWidget {
                                 children: [
 
                                   if (e.inStock == true)
-                                    Icon( e.isLower == true ? Icons.arrow_downward : Icons.arrow_upward, size: 12, color: e.isLower != true ? AppColor.red : AppColor.greenText,),
+                                    Icon(e.isLower == true ? Icons.arrow_downward : Icons.arrow_upward, size: 12, color: e.isLower == true ? AppColor.greenText : AppColor.red,),
 
                                   Text(e.badgeText ?? '',
                                     style: AppTextStyle.labelSmall.copyWith(

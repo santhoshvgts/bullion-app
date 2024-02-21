@@ -404,7 +404,6 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
     double _itemWidth = viewModel.itemWidth(context);
-
     return InkWell(
       key: Key("actionProduct${_item.productId}"),
       onTap: () => viewModel.onItemTap(_item),
@@ -476,7 +475,6 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                           _item.name!,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          
                           style: ProductTextStyle.title(2,
                             color: viewModel.itemDisplaySettings.textColor,
                           ),
@@ -493,22 +491,40 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
                               displayDirection: viewModel.itemDisplaySettings.displayDirection,
                             ),),
 
-                            VerticalSpacing.d10px(),
+                            HorizontalSpacing.d10px(),
 
                             Padding(
                               padding: const EdgeInsets.only(top: 10),
-                              child: CircleAvatar(
-                                backgroundColor: AppColor.secondary,
-                                child: IconButton(
-                                  onPressed: () {
-                                    locator<NavigationService>().pushNamed(_item.targetUrl, arguments: ProductDetails(overview: _item));
-                                  },
-                                  icon: const Icon(Icons.navigate_next,  color: AppColor.white,)
+                              child: SizedBox(
+                                height: 35,
+                                child: CircleAvatar(
+                                  backgroundColor: AppColor.secondary,
+                                  child: IconButton(
+                                    onPressed: () {
+                                      locator<NavigationService>().pushNamed(_item.targetUrl, arguments: ProductDetails(overview: _item));
+                                    },
+                                    padding: EdgeInsets.zero,
+                                    icon: const Icon(Icons.navigate_next,  color: AppColor.white,)
+                                  ),
                                 ),
                               )
                             )
                           ],
-                        )
+                        ),
+
+                        if (_item.competitorPrices?.where((element) => element.isLowest == true).isEmpty == true && _item.productAction == ProductInfoDisplayType.addToCart)
+                          Container(
+                            decoration: BoxDecoration(
+                                color: AppColor.greenText,
+                                borderRadius: BorderRadius.circular(5)
+                            ),
+                            margin: const EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                            child: Text("Lowest Price",
+                              style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),
+                            )
+                          ),
+
                       ],
                     ),
                   ),

@@ -84,13 +84,11 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
 
   AddEditAddressViewModel(this.fromCheckout);
 
-  init(UserAddress? userAddress) async {
+  init(UserAddress? address) async {
     setBusy(true);
 
-    _shippingAddress = userAddress != null ? await request<ShippingAddress>(AddressRequest.getAddressById(userAddress!.id!)) : await request<ShippingAddress>(AddressRequest.addAddress());
-
-    if (_shippingAddress?.address != null) {
-      UserAddress address = _shippingAddress!.address!;
+    if (address != null) {
+      // UserAddress address = _shippingAddress!.address!;
       firstNameFormFieldController.text = address.firstName ?? "";
       lastNameFormFieldController.text = address.lastName ?? "";
       companyFormFieldController.text = address.company ?? "";
@@ -101,9 +99,19 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       pinFormFieldController.text = address.zip ?? "";
       phoneFormFieldController.text = address.primaryPhone?.trimRight() ?? "";
       _isDefaultAddress = address.isDefault;
+
+      _shippingAddress = await request<ShippingAddress>(AddressRequest.getAddressById(address.id!));
     } else {
+      _shippingAddress = await request<ShippingAddress>(AddressRequest.addAddress());
       initAddAddress();
     }
+
+    // _shippingAddress = userAddress != null ? (await requestList<ShippingAddress>(AddressRequest.getAddressById(userAddress.id!)))?.first : await request<ShippingAddress>(AddressRequest.addAddress());
+    // if (_shippingAddress?.address != null) {
+    //
+    // } else {
+    //
+    // }
 
     setBusy(false);
   }

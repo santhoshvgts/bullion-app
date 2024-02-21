@@ -473,7 +473,6 @@ class _VolumePricing extends ViewModelWidget<ProductDetailViewModel> {
                 children: [
                   const Text(
                     "Volume Discount Pricing",
-                    
                     style: AppTextStyle.titleMedium,
                   ),
                   const Spacer(),
@@ -874,7 +873,9 @@ class _VariationSelection extends ViewModelWidget<ProductDetailViewModel> {
                                   color: option.isSelected!
                                       ? AppColor.primary
                                       : AppColor.border,
-                                )),
+                                  width: option.isSelected! ? 2 : 1
+                                )
+                            ),
                             child: Text(
                               option.variantOptionName ?? '',
                               style: AppTextStyle.bodyMedium.copyWith(

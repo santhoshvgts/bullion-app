@@ -157,7 +157,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                                   },
                                   child: getTextsLayout(
                                     const Icon(Icons.pin_drop_outlined, size: 20),
-                                    "Saved Address",
+                                    "Saved Addresses",
                                   ),
                                 ),
                                 const Divider(
@@ -447,6 +447,30 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
         ),
 
         VerticalSpacing.d15px(),
+
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: AppStyle.elevatedCardShadow,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: InkWell(
+                onTap: () async {
+                  locator<NavigationService>().pushNamed(locator<AppConfigService>().config?.appLinks?.fAQUrl);
+                },
+                child: getTextsLayout(const Icon(CupertinoIcons.question_circle, size: 20,), "FAQs",),
+              ),
+            ),
+          ),
+        ),
+
+        VerticalSpacing.d15px(),
+
 
         Visibility(
           visible: isAuthenticated,

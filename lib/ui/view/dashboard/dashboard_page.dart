@@ -144,7 +144,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
           _PersistentBottomNav(
             inactiveIcon: Image.asset(Images.account, width: 26,),
             icon: Image.asset(Images.account_active, width: 26, color: AppColor.primary,),
-            title: "Accounts",
+            title: "Account",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/accounts",
               navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),

@@ -142,65 +142,70 @@ class _FavoriteCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 55,
-                height: 55,
-                child: NetworkImageLoader(
-                  image: details.overview?.primaryImageUrl ?? "",
-                  fit: BoxFit.cover,
-                  height: 100,
-                  width: 100,
+          InkWell(
+            onTap: () {
+              locator<NavigationService>().pushNamed(details.overview?.targetUrl, arguments: details);
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 55,
+                  height: 55,
+                  child: NetworkImageLoader(
+                    image: details.overview?.primaryImageUrl ?? "",
+                    fit: BoxFit.cover,
+                    height: 100,
+                    width: 100,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("${details.overview?.name}", style: AppTextStyle.titleSmall,),
-                    VerticalSpacing.d5px(),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("${details.overview?.name}", style: AppTextStyle.titleSmall,),
+                      VerticalSpacing.d5px(),
 
-                    IgnorePointer(
-                      ignoring: true,
-                      child: RatingBar(
-                        initialRating: details.overview?.avgRatings ?? 0,
-                        allowHalfRating: true,
-                        itemSize: 15,
-                        glow: true,
-                        glowColor: Colors.red,
-                        maxRating: 5,
-                        unratedColor: AppColor.disabled,
-                        ratingWidget: RatingWidget(
-                          full: const Icon(
-                            CupertinoIcons.star_fill,
-                            color: AppColor.primary,
+                      IgnorePointer(
+                        ignoring: true,
+                        child: RatingBar(
+                          initialRating: details.overview?.avgRatings ?? 0,
+                          allowHalfRating: true,
+                          itemSize: 15,
+                          glow: true,
+                          glowColor: Colors.red,
+                          maxRating: 5,
+                          unratedColor: AppColor.disabled,
+                          ratingWidget: RatingWidget(
+                            full: const Icon(
+                              CupertinoIcons.star_fill,
+                              color: AppColor.primary,
+                            ),
+                            half: const Icon(
+                              CupertinoIcons.star_lefthalf_fill,
+                              color: AppColor.primary,
+                            ),
+                            empty: const Icon(
+                              CupertinoIcons.star,
+                              color: AppColor.primary,
+                            ),
                           ),
-                          half: const Icon(
-                            CupertinoIcons.star_lefthalf_fill,
-                            color: AppColor.primary,
-                          ),
-                          empty: const Icon(
-                            CupertinoIcons.star,
-                            color: AppColor.primary,
-                          ),
+                          onRatingUpdate: (double value) {},
                         ),
-                        onRatingUpdate: (double value) {},
                       ),
-                    ),
 
-                    VerticalSpacing.custom(value: 7),
+                      VerticalSpacing.custom(value: 7),
 
-                    Text("${details.overview?.pricing?.badgeText} : ${details.overview?.pricing?.formattedNewPrice.toString()}", style: AppTextStyle.titleSmall),
+                      Text("${details.overview?.pricing?.badgeText} : ${details.overview?.pricing?.formattedNewPrice.toString()}", style: AppTextStyle.titleSmall),
 
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-            ],
+              ],
+            ),
           ),
 
           const SizedBox(height: 4.0),
