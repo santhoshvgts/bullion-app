@@ -137,6 +137,7 @@ class AuthenticationService {
     await locator<CartService>().clear();
     locator<PreferenceService>().clearData();
     locator<TokenService>().clearToken();
+    locator<PushNotificationService>().logout();
     _user = null;
     userController.add(null);
 

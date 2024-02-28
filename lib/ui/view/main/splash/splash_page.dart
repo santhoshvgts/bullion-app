@@ -14,8 +14,7 @@ class SplashPage extends VGTSBuilderWidget<SplashViewModel> {
   SplashViewModel viewModelBuilder(BuildContext context) => SplashViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      SplashViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, SplashViewModel viewModel, Widget? child) {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
