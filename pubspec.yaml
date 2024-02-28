@@ -98,7 +98,7 @@ dependencies:
       url: https://github.com/santhoshvgts/vgts_plugin.git
       ref: 1.0.0+10
   sentry_flutter: ^7.12.0
-
+  uni_links: ^0.5.1
 
   #Analytics
   kochava_tracker: ^2.4.0

@@ -37,8 +37,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>FlutterDeepLinkingEnabled</key>
-	<true/>
 	<key>GIDClientID</key>
 	<string>$(GCLIENT_ID)</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -48,6 +46,12 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Bullion needs access to the microphone to be able to attach voice notes.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Bullion needs access to your photo library for you to be able to attach images.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>To provide you with a personalized and improved user experience, we collect usage data to understand how you use our app.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -60,17 +64,6 @@
 	<string>Main</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
-
-    <key>NSUserTrackingUsageDescription</key>
-    <string>To provide you with a personalized and improved user experience, we collect usage data to understand how you use our app.</string>
-
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Bullion needs access to the microphone to be able to attach voice notes.</string>
-
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Bullion needs access to your photo library for you to be able to attach images.</string>
-
-
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

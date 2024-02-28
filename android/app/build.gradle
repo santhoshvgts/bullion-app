@@ -59,13 +59,13 @@ android {
             versionNameSuffix = "-dev"
             manifestPlaceholders["appName"] = "Bullion Dev"
             manifestPlaceholders["deepLinkHost"] = "testsite.bullion.com"
-//            manifestPlaceholders["kochavaSmartLink"] = "apmexdev.smart.link"
+            manifestPlaceholders["deepFBLinkHost"] = "bulliondev.page.link"
         }
         create("prod") {
             dimension = "flavor-type"
             manifestPlaceholders["appName"] = "Bullion"
             manifestPlaceholders["deepLinkHost"] = "bullion.com"
-//            manifestPlaceholders["kochavaSmartLink"] = "apmexdev.smart.link"
+            manifestPlaceholders["deepFBLinkHost"] = "bullion.page.link"
         }
     }
 

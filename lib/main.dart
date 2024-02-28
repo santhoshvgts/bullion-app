@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/services/shared/deep_linking_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -133,6 +134,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     //locator<NetworkService>().dispose();
+    DeepLinkingService.instance.cancel();
     super.dispose();
   }
 }

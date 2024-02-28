@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/res/spacing.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -504,11 +507,16 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           ),
         ),
 
-        Padding(
-          padding: const EdgeInsets.only(top: 48.0, bottom: 15),
-          child: Text('App Version - 1.0.3 (10)',
-              style: AppTextStyle.bodySmall
-                  .copyWith(color: AppColor.secondaryText)),
+        FutureBuilder(
+          future: PackageInfo.fromPlatform(),
+          builder: (context, snapshot) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 48.0, bottom: 15),
+              child: Text('App Version - ${snapshot.data?.version}',
+                  style: AppTextStyle.bodySmall
+                      .copyWith(color: AppColor.secondaryText)),
+            );
+          }
         )
       ],
     );
