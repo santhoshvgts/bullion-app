@@ -41,7 +41,7 @@ class ModuleSettings extends BaseModel {
         this.subtitle,
         this.metaData,
         this.actions,
-        this.displaySettings});
+        this.displaySettings, this.productModel});
 
   setProductModel(ProductModel productModel){
     print("Product Length");

@@ -1,10 +1,10 @@
-import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/dashboard/dashboard_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -26,7 +26,9 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
     return Scaffold(
       body: PersistentTabView(
         context,
+        key: locator<NavigationService>().tabBarKey,
         controller: viewModel.bottomNavController,
+        backgroundColor: AppColor.secondaryBackground,
         screens: [
           ...viewModel.pages
               .asMap()
@@ -40,7 +42,9 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
               .toList()
         ],
         onItemSelected: (index) {
-          // viewModel.notifyListeners();
+          if (index == 3) {
+            locator<EventBusService>().eventBus.fire(CartRefreshEvent());
+          }
         },
         items: [
           _PersistentBottomNav(
@@ -62,8 +66,8 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.chart_bar,),
-            inactiveIcon: const Icon(CupertinoIcons.chart_bar),
+            inactiveIcon: Image.asset(Images.chart_inactive, width: 22,),
+            icon: Image.asset(Images.chart_active, width: 22, color: AppColor.primary,),
             title: "Charts",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/spot-price",
@@ -79,7 +83,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                   height: 24,
                   child: Stack(
                     children: [
-                      const Positioned.fill(child: Icon(CupertinoIcons.cart, size: 22,)),
+                      Positioned.fill(child: Center(child: Image.asset(Images.cart_inactive, width: 22, height: 22,))),
                       if (snapshot.hasData)
                         if ((snapshot.data?.shoppingCart?.totalItems ?? 0) != 0)
                           Positioned(
@@ -90,7 +94,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                               padding: const EdgeInsets.all(5),
                               child: Text(
                                 snapshot.data?.shoppingCart?.totalItems?.toString() ?? '',
-                                textScaleFactor: 1,
+                                
                                 style: AppTextStyle.bodyMedium
                                     .copyWith(fontSize: 12, color: AppColor.white),
                               ),
@@ -109,7 +113,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                     height: 24,
                     child: Stack(
                       children: [
-                        const Positioned.fill(child: Icon(CupertinoIcons.cart, size: 22,)),
+                        Positioned.fill(child: Center(child: Image.asset(Images.cart_active, width: 22, height: 22, color: AppColor.primary,))),
                         if (snapshot.hasData)
                           if ((snapshot.data?.shoppingCart?.totalItems ?? 0) != 0)
                             Positioned(
@@ -120,7 +124,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
                                 padding: const EdgeInsets.all(5),
                                 child: Text(
                                   snapshot.data?.shoppingCart?.totalItems?.toString() ?? '',
-                                  textScaleFactor: 1,
+                                  
                                   style: AppTextStyle.bodyMedium
                                       .copyWith(fontSize: 12, color: AppColor.white),
                                 ),
@@ -138,9 +142,9 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
             ),
           ),
           _PersistentBottomNav(
-            icon: const Icon(CupertinoIcons.person, size: 22,),
-            inactiveIcon: const Icon(CupertinoIcons.person, size: 22),
-            title: "Accounts",
+            inactiveIcon: Image.asset(Images.account, width: 26,),
+            icon: Image.asset(Images.account_active, width: 26, color: AppColor.primary,),
+            title: "Account",
             routeAndNavigatorSettings: RouteAndNavigatorSettings(
               initialRoute: "/pages/accounts",
               navigatorKey: locator<NavigationService>().getBottomKeyByIndex(4),
@@ -151,7 +155,10 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
         hideNavigationBarWhenKeyboardShows: true,
         popAllScreensOnTapOfSelectedTab: true,
         popActionScreens: PopActionScreensType.all,
-        decoration: NavBarDecoration(boxShadow: AppStyle.topShadow),
+        decoration: const NavBarDecoration(
+            // boxShadow: AppStyle.topShadow,
+          border: Border(top: BorderSide(color: AppColor.outlineBorder, width: 0.5))
+        ),
         screenTransitionAnimation: const ScreenTransitionAnimation(
           animateTabTransition: true,
           curve: Curves.ease,

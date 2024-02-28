@@ -1,12 +1,18 @@
 import 'dart:async';
 
 import 'package:bullion/router.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/services/shared/deep_linking_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_riskified/flutter_riskified.dart';
+import 'package:instabug_flutter/instabug_flutter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'core/res/styles.dart';
 import 'helper/dialog_manager.dart';
@@ -26,12 +32,29 @@ Future<void> main() async {
       configureLogger();
 
       await locator<DeviceService>().initPlatformPackageInfo();
+      await Riskified.startBeacon("bullion.com", locator<DeviceService>().getRiskifiedSessionId()!, debugInfo: true);
 
       FlutterError.onError = (FlutterErrorDetails details) {
         Logger.e(details.toString(), s: StackTrace.current);
       };
 
-      runApp(const MyApp());
+      String devDsn = 'https://a6c53009b152945a1ba552b0752c404d@o4504257190821888.ingest.sentry.io/4506715221524480';
+      String dsn = 'https://d5997437f41a06c4ca118856ab998585@o4504257190821888.ingest.sentry.io/4506715234893824';
+
+      if (await locator<DeviceService>().getEnvironment() == "DEVELOP") {
+        await Instabug.init(token: '840d9615fd4fa8a526238586c3ff1116', invocationEvents: [InvocationEvent.floatingButton]);
+      }
+
+      await SentryFlutter.init((options) async {
+          options.dsn = await locator<DeviceService>().getEnvironment() == "DEVELOP"
+              ? devDsn
+              : dsn;
+          options.debug = !kReleaseMode;
+          options.tracesSampleRate = 1.0;
+
+        },
+        appRunner: () => runApp(const MyApp()),
+      );
     },
     (error, stack) {
       Logger.e("Zoned Error", e: error, s: stack);
@@ -111,6 +134,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     //locator<NetworkService>().dispose();
+    DeepLinkingService.instance.cancel();
     super.dispose();
   }
 }

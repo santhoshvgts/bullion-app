@@ -108,10 +108,6 @@ class UserPaymentViewModel extends VGTSBaseViewModel {
        notifyListeners();
 
        locator<CheckoutStreamService>().refresh();
-
-       if (userPaymentMethodList!.isEmpty) {
-        dialogService.dialogComplete(AlertResponse(status: true, data: "REMOVE_PAYMENT"), key: const ValueKey("bsUserPaymentMethod"),);
-      }
      }
   }
 
@@ -138,10 +134,9 @@ class UserPaymentViewModel extends VGTSBaseViewModel {
 
   }
 
-
   _creditCardPage() async {
     AlertResponse _res = await locator<DialogService>().showBottomSheet(child: const CreditCardPageBottomSheet(),title:"Add Credit Card",key: const ValueKey("AddCreditCard"));
-    if(_res.status == true){
+    if(_res.status == true) {
       _addCreditCardInformation(_res.data);
     }
   }
@@ -191,13 +186,13 @@ class UserPaymentViewModel extends VGTSBaseViewModel {
 
   savePaymentToCheckout(int? paymentMethodId, PaymentMethod? _paymentMethod, { bool isNewAccount = false }) async {
     loading = true;
-    if (_paymentMethod == null){
+    if (_paymentMethod == null) {
       loading = false;
       return;
     }
-     locator<CheckoutStreamService>().savePaymentAndRefreshCheckout(paymentMethodId, userPaymentMethodId: _paymentMethod.userPaymentMethodId, isNewAccount: isNewAccount);
-     dialogService.dialogMaybeComplete(AlertResponse(status: true), key: const ValueKey("bsUserPaymentMethod"));
+    locator<CheckoutStreamService>().savePaymentAndRefreshCheckout(paymentMethodId, userPaymentMethodId: _paymentMethod.userPaymentMethodId, isNewAccount: isNewAccount);
     loading = false;
+    navigationService.pop(returnValue: true);
   }
 
 

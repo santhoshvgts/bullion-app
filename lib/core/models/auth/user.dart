@@ -20,7 +20,7 @@ class User extends BaseModel {
   String? clubStatus;
   String? clubImage;
 
-  String get fullName => "${firstName ?? '${lastName!}'}";
+  String get fullName => "${firstName ?? ''} ${lastName ?? ''}";
 
   User(
       {this.userId,

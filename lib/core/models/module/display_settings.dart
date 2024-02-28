@@ -48,6 +48,12 @@ class DisplaySettings {
 
   Color get textColor => getColorFromString(_textColor, fallbackColor: Colors.black);
 
+
+  DisplaySettings(
+      {
+        required this.fullBleed,
+        required this.itemDisplaySettings});
+
   DisplaySettings.fromJson(Map<String, dynamic> json) {
     titleAlignment = json['title_alignnment'] ?? titleAlignment;
     titleStyle = json['title_style'] ?? titleStyle;

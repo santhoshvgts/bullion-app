@@ -6,7 +6,8 @@ class AppColor {
 
   static const Color indicatorColor = Color(0xFFB8F5D4);
   static const Color primaryDark = Color(0xFF002539);
-  static const Color secondary = Color(0xFFf25d0d);
+  // static const Color secondary = Color(0xFFf25d0d);
+  static const Color secondary = Color(0xFF006936);
   static const Color accent = Color(0xFF000000);
   static const Color divider = Color(0x2B495A14);
   static const Color border = Color(0xffDADADA);

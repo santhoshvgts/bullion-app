@@ -59,7 +59,7 @@ class MarketNewsList extends StatelessWidget {
                   },
                   child: Text(
                     "View More",
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleSmall,
                   )),
               Padding(padding: EdgeInsets.only(bottom: 15)),

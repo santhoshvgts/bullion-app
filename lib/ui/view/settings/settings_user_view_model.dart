@@ -1,3 +1,7 @@
+import 'package:bullion/services/authentication_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:bullion/ui/view/main/guest_register/guest_register_bottom_sheet.dart';
+
 import '../../../core/constants/module_type.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
@@ -6,6 +10,7 @@ import '../vgts_base_view_model.dart';
 
 class SettingsUserViewModel extends VGTSBaseViewModel {
   bool _isAuthenticated = false;
+  bool isGuestUser = false;
   int pageNum = 1;
 
   SettingsUserViewModel() {
@@ -27,24 +32,32 @@ class SettingsUserViewModel extends VGTSBaseViewModel {
   }
 
   void initialize() {
-    _isAuthenticated = authenticationService!.isAuthenticated;
+    _isAuthenticated = authenticationService.isAuthenticated;
     notifyListeners();
   }
 
   bool get isAuthenticated => _isAuthenticated;
 
   Future<void> refreshData() async {
-    //setState(ViewState.Busy);
-
-    if (authenticationService!.isAuthenticated) {
-      await authenticationService!.getUserInfo();
+    if (authenticationService.isAuthenticated) {
+      await authenticationService.getUserInfo();
+      isGuestUser = locator<AuthenticationService>().isGuestUser;
     }
     notifyListeners();
-
-    //setState(ViewState.Idle);
   }
 
   showIntroScreen() {
     navigationService.pushNamed(Routes.login, arguments: {"fromMain": false});
+  }
+
+  onGuestRegisterClick() async {
+    var alertResponse = await locator<DialogService>().showBottomSheet(
+        title: "Register As User",
+        child: const GuestRegisterBottomSheet()
+    );
+
+    if (alertResponse.status == true) {
+      refreshData();
+    }
   }
 }

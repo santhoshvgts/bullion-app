@@ -6,7 +6,7 @@ import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 class ToastService {
   final NavigationService _navigationService = locator<NavigationService>();
 
-  showWidget({required Widget child}) {
+  showWidget({required Widget child, int? durationInSeconds}) {
     return showToastWidget(
       child,
       context: _navigationService.navigatorKey.currentContext,
@@ -14,9 +14,10 @@ class ToastService {
       reverseAnimation: StyledToastAnimation.slideToBottom,
       position: StyledToastPosition.bottom,
       animDuration: const Duration(milliseconds: 300),
-      duration: const Duration(seconds: 4),
+      duration: Duration(seconds: durationInSeconds ?? 3),
       curve: Curves.easeIn,
       isIgnoring: false,
+      isHideKeyboard: true,
       reverseCurve: Curves.easeOut,
     );
   }

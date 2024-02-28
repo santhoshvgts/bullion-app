@@ -24,17 +24,7 @@ class SpotPriceTabBar extends StatefulWidget {
 class _TabBarState extends State<SpotPriceTabBar> {
   @override
   void initState() {
-    setState(() {
-      if (widget.initialIndex != null) {
-        Future.delayed(const Duration(milliseconds: 110)).then((value) {
-          widget.controller.animateTo(
-            widget.initialIndex! * 100,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.fastOutSlowIn,
-          );
-        });
-      }
-    });
+
     super.initState();
   }
 
@@ -107,7 +97,7 @@ class _SpotPriceStripCard extends StatelessWidget {
         children: [
           Text(
             data.metalName!,
-            textScaleFactor: 1,
+            
             style: AppTextStyle.titleSmall,
           ),
           // VerticalSpacing.d5px(),
@@ -115,13 +105,13 @@ class _SpotPriceStripCard extends StatelessWidget {
           //   children: [
           //     Text(
           //       data.formattedAsk!,
-          //       textScaleFactor: 1,
+          //       
           //       style: AppTextStyle.bodySmall.copyWith(),
           //     ),
           //     HorizontalSpacing.d5px(),
           //     Text(
           //       (data.change! < 0 ? "-" : "+") + "${data.formattedChange}",
-          //       textScaleFactor: 1,
+          //       
           //       style: AppTextStyle.bodySmall.copyWith(
           //         color: data.change! < 0 ? AppColor.red : AppColor.green,
           //       ),

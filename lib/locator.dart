@@ -10,6 +10,7 @@ import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/checkout/checkout_steam_service.dart';
 import 'package:bullion/services/filter_service.dart';
 import 'package:bullion/services/payment/payment_gateway_service.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
@@ -49,7 +50,7 @@ void setupLocator() {
   // locator.registerLazySingleton(() => AuthRepo());
   locator.registerLazySingleton(() => UpdateChecker());
   locator.registerLazySingleton(() => PageStorageService());
-  // locator.registerLazySingleton(() => PushNotificationService());
+  locator.registerLazySingleton(() => PushNotificationService());
   // locator.registerLazySingleton(() => LogService());
   locator.registerLazySingleton(() => ToastService());
   locator.registerLazySingleton(() => DeviceService());

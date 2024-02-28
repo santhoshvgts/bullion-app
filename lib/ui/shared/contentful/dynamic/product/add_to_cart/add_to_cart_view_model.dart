@@ -1,10 +1,13 @@
+import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/product/add_to_cart/success_bottom_sheet.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +22,7 @@ class AddToCartViewModel extends VGTSBaseViewModel {
 
   ProductDetails? get productDetails => _productDetails;
 
-
-  NumberFormFieldController qtyController = NumberFormFieldController(const ValueKey("txtQty"));
+  NumberFormFieldController qtyController = NumberFormFieldController(const ValueKey("txtQty"), maxLength: 4);
 
   int get qtyValue => qtyController.text.isEmpty ? 0 : int.parse(qtyController.text);
   FocusNode qtyFocus = FocusNode();
@@ -60,6 +62,7 @@ class AddToCartViewModel extends VGTSBaseViewModel {
 
   decrease() {
     if (qtyValue <= (productDetails?.overview?.orderMin ?? 0)){
+      Util.showSnackBar("Min Qty of ${productDetails?.overview?.orderMin} is required for purchase");
       return;
     }
 
@@ -92,9 +95,8 @@ class AddToCartViewModel extends VGTSBaseViewModel {
 
       CartItem? item = response.shoppingCart!.items!.where((element) =>
       element.productId == productDetails!.overview!.productId).firstOrNull;
-      // AlertResponse result = await locator<DialogService>().showBottomSheet(title: "Added to Cart", child: AddToCartSuccessBottomSheet(vm, item));
-
-      Util.showProductCheckout(productDetails!.overview!);
+      FocusManager.instance.primaryFocus?.unfocus();
+      AlertResponse result = await locator<DialogService>().showBottomSheet(title: "Added to Cart", child: AddToCartSuccessBottomSheet(vm, item));
     }
   }
 

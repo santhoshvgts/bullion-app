@@ -1,5 +1,6 @@
 import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
@@ -45,7 +46,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                       },
                       itemBuilder: (context, index) {
 
-                        ProductAlert productAlert = viewModel.productAlerts![index];
+                        ProductDetails productAlert = viewModel.productAlerts![index];
 
                         return StaggeredAnimation.staggeredList(
                             index: index,
@@ -73,7 +74,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                           width: 55,
                                           height: 55,
                                           child: NetworkImageLoader(
-                                            image: productAlert.productOverview?.primaryImageUrl ?? '',
+                                            image: productAlert.overview?.primaryImageUrl ?? '',
                                             fit: BoxFit.cover,
                                             height: 100,
                                             width: 100,
@@ -85,11 +86,11 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text("${productAlert.productOverview?.name}", style: AppTextStyle.titleSmall,),
+                                              Text("${productAlert.overview?.name}", style: AppTextStyle.titleSmall,),
 
                                               VerticalSpacing.custom(value: 7),
 
-                                              Text("${productAlert.productOverview?.pricing?.badgeText} : ${productAlert.productOverview?.pricing?.formattedNewPrice.toString()}", style: AppTextStyle.titleSmall),
+                                              Text("${productAlert.overview?.pricing?.badgeText} : ${productAlert.overview?.pricing?.formattedNewPrice.toString()}", style: AppTextStyle.titleSmall),
 
                                             ],
                                           ),
@@ -107,7 +108,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                           child: Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              const Text("Your Price Alert Amount", style: AppTextStyle.labelSmall,),
+                                              const Text("Your Price", style: AppTextStyle.labelSmall,),
 
                                               Text("\$${viewModel.productAlerts?[index].yourPrice}", style: AppTextStyle.titleLarge),
                                             ],
@@ -115,7 +116,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                         ),
 
                                         Text(
-                                            "${viewModel.productAlerts?[index].formattedPostedDate}",
+                                            "${viewModel.productAlerts?[index].formatedPostedDate}",
                                             style: AppTextStyle.bodyMedium.copyWith(color: AppColor.primaryText)
                                         ),
                                       ],
@@ -131,7 +132,6 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                       children: [
                                         InkWell(
                                           onTap: () async {
-
                                             AlertResponse response = await locator<DialogService>().showConfirmationDialog(
                                                 title: "Delete",
                                                 description: "Do you want to delete this Alert ?",
@@ -139,7 +139,7 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                             );
 
                                             if (response.status == true) {
-                                              viewModel.removePriceAlert(viewModel.productAlerts?[index].productOverview?.productId);
+                                              viewModel.removePriceAlert(viewModel.productAlerts?[index].overview?.productId);
                                             }
                                           },
                                           child: Row(
@@ -163,10 +163,14 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                           width: 16,
                                         ),
                                         InkWell(
-                                          onTap: () {
-                                            locator<NavigationService>().pushNamed(Routes.editPriceAlert, arguments: {
-                                              "productAlert": viewModel.productAlerts![index]
+                                          onTap: () async  {
+                                            var result = await locator<NavigationService>().pushNamed(Routes.editPriceAlert, arguments: {
+                                              "productDetails": viewModel.productAlerts![index].overview
                                             });
+
+                                            if (result != null) {
+                                              viewModel.refreshProductAlert();
+                                            }
                                           },
                                           child: Row(
                                             children: [
@@ -194,37 +198,38 @@ class PriceAlertPage extends VGTSBuilderWidget<AlertsViewModel> {
                                   ],
                                 ),
                               ),
-                            ));
+                            )
+                        );
                       },
                     ),
                   )
                 : Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height / 1.5,
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    Images.cartIcon,
-                    width: 150,
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Images.cartIcon,
+                          width: 150,
+                        ),
+                        const SizedBox(height: 32.0),
+                        const Text(
+                          "Product Price Alert",
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.titleLarge,
+                        ),
+                        const SizedBox(height: 16.0),
+                        const Text(
+                          "Our price notification tool makes it easy to know when a product has reached your ideal price for purchase. You can manage your price alerts on this page. We will send you an email and/or SMS when the product has reached your price alert set price. Sign up to be notified for price alerts by clicking the bell icon on a product page.",
+                          textAlign: TextAlign.center,
+                          style: AppTextStyle.bodySmall,
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 32.0),
-                  const Text(
-                    "Price alerts are empty",
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.titleLarge,
-                  ),
-                  const SizedBox(height: 16.0),
-                  const Text(
-                    "Our price notification tool makes it easy to know when a product has reached your ideal price for purchase. You can manage your price alerts on this page. We will send you an email and/or SMS when the product has reached your price alert set price. Sign up to be notified for price alerts by clicking the bell icon on a product page.",
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.bodySmall,
-                  ),
-                ],
-              ),
-            ),
           );
   }
 

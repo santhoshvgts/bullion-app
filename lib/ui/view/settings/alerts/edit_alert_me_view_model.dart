@@ -1,6 +1,9 @@
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart' as product_item;
+import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/services/api_request/alerts_request.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
@@ -10,40 +13,35 @@ import '../../../../locator.dart';
 import '../../../../services/shared/dialog_service.dart';
 
 class EditAlertMeViewModel extends VGTSBaseViewModel {
-  bool _isCreateAlertMe = true;
-  ProductAlert? productAlert;
-  int? productId;
+  ProductOverview? productOverview;
+  ProductDetails? productDetails;
 
   GlobalKey<FormState> priceAlertGlobalKey = GlobalKey<FormState>();
 
-  NumberFormFieldController quantityFormFieldController =
-      NumberFormFieldController(const Key("quantity"),
-          required: true, requiredText: "Quantity can't be empty");
+  NumberFormFieldController quantityFormFieldController = NumberFormFieldController(const Key("quantity"), required: true, requiredText: "Quantity can't be empty");
 
-  void init(ProductAlert? productAlert, product_item.ProductOverview? productDetails) async {
-    if(productDetails?.productId != null) {
-      _isCreateAlertMe = true;
-      productId = productDetails?.productId;
-    } else {
-      _isCreateAlertMe = false;
-      this.productAlert = productAlert;
-      quantityFormFieldController.text = productAlert?.requestedQuantity.toString();
+  void init(ProductOverview? data) async {
+    productOverview = data;
+
+    setBusy(true);
+    productDetails = await request<ProductDetails>(AlertsRequest.getAlertMeById(data!.productId!));
+    setBusy(false);
+
+    if (productDetails != null) {
+      quantityFormFieldController.text = productDetails?.requestedQty?.toString() ?? '';
     }
   }
 
   Future<bool> editAlertMe() async {
-    //setBusy(true);
-    locator<DialogService>().showLoader();
-    ProductAlert? productAlert = await request<ProductAlert>(
-        AlertsRequest.editAlertMe(_isCreateAlertMe ? productId : this.productAlert?.productOverview?.productId, quantityFormFieldController.text
-                ));
+    setBusyForObject("LOADING", true);
+    ProductDetails? productAlert = await request<ProductDetails>(AlertsRequest.editAlertMe(productOverview!.productId, quantityFormFieldController.text));
+    setBusyForObject("LOADING", false);
 
-    //setBusy(false);
-    notifyListeners();
-    locator<DialogService>().dialogComplete(AlertResponse(status: true));
-
+    bool hasNotificationPermission = await locator<PushNotificationService>().checkPermissionAndPromptSettings(
+        "Notify Me Created",
+        description: "Know instantly when this product becomes available. Please enable push notifications to get notified instantly."
+    );
+    if (hasNotificationPermission) {}
     return productAlert != null;
   }
-
-  bool get isCreateAlertMe => _isCreateAlertMe;
 }

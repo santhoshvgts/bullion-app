@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/helper/utils.dart';
@@ -9,6 +10,7 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/filter_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/ui/shared/chart/spotprice_sparkline.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/spot_price_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -16,6 +18,8 @@ import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/shimmer_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../../../../services/push_notification_service.dart';
 
 class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
   final dynamic spotPriceList;
@@ -46,7 +50,7 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
             padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
             child: Text(
               "Live Spot Price",
-              textScaleFactor: 1,
+              
               style: AppTextStyle.titleLarge.copyWith(color: AppColor.white),
             ),
           ),
@@ -55,7 +59,7 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
                 const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 15),
             child: Text(
               "Our charts show the real-time spot prices, as well as historical spot prices in various time frames. Investors use this data to make purchasing and investing decisions.",
-              textScaleFactor: 1,
+              
               style: AppTextStyle.bodySmall.copyWith(color: AppColor.white),
               textAlign: TextAlign.center,
             ),
@@ -101,12 +105,29 @@ class SpotPriceGrid extends VGTSBuilderWidget<SpotPriceViewModel> {
 
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Button.outline("Create Spot Price Alert",
+            child: Button.outline("Create Market Price Alert",
               width: double.infinity,
               valueKey: const ValueKey("txtCreateSpotPrice"),
-              onPressed: () {
+              onPressed: () async {
                 if (!locator<AuthenticationService>().isAuthenticated) {
-                  Util.showLoginAlert();
+                  bool isLogged = await signInRequest(Images.userIcon,
+                      title: "Market Price Alert", content: "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price.");
+                  if (!isLogged) {
+                    return;
+                  }
+                }
+
+                String title;
+                String description;
+
+                title = "Market Price Alert";
+                description =
+                "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
+                    "\n\n Allow push notification to get notified instantly of price movements.";
+
+                bool hasNotificationPermission = await locator<PushNotificationService>()
+                    .checkPermissionAndPromptSettings(title, description: description);
+                if (!hasNotificationPermission) {
                   return;
                 }
                 locator<NavigationService>().pushNamed(Routes.addEditAlert);
@@ -149,14 +170,14 @@ class _SpotPriceTile extends StatelessWidget {
                 children: [
                   Text(
                     data.metalName!,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleSmall.copyWith(
                       color: data.color,
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(top: 5)),
                   Text(data.formattedAsk!,
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.headlineSmall.copyWith(fontSize: 20)),
                   const Padding(padding: EdgeInsets.only(top: 5)),
                   Container(
@@ -170,7 +191,7 @@ class _SpotPriceTile extends StatelessWidget {
                     ),
                     child: AutoSizeText(
                       "${data.formattedChange} (${data.changePct! > 0 ? "+" : ""}${data.changePct}%)",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.labelMedium.copyWith(
                           fontWeight: FontWeight.w600,
                           color:

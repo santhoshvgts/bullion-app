@@ -1,8 +1,19 @@
 import 'package:bullion/core/constants/display_type.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/helper/utils.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/router.dart';
+import 'package:bullion/services/authentication_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
+import 'package:bullion/services/toast_service.dart';
+import 'package:bullion/ui/shared/toast/actionable_toast.dart';
 import 'package:bullion/ui/widgets/button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'add_to_cart/add_to_cart.dart';
@@ -10,25 +21,36 @@ import 'add_to_cart/add_to_cart.dart';
 class BottomActionCard extends StatelessWidget {
   final ProductDetails? productDetails;
 
-  BottomActionCard(this.productDetails);
+  BottomActionCard(this.productDetails, { Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (productDetails!.overview!.productAction ==
-        ProductInfoDisplayType.addToCart) {
-      return AddToCartSection(productDetails);
-    } else if (productDetails!.overview!.alertMe!)
-      return _AlertButton("Setup AlertMe!®", onTap: () async {
-        // TODO - ALERT ME AUTHENTICATION VALIDATION
-        // if (!locator<AuthenticationService>().isAuthenticated){
-        //   bool authenticated = await signInRequest(Images.iconAlertBottom, title: "AlertMe!®", content: "Add you Item to Price Alert. Get live update of item availability.");
-        //   if (!authenticated) return;
-        // }
+    if (productDetails!.overview!.productAction == ProductInfoDisplayType.addToCart) {
+      return AddToCartSection(productDetails, key: ValueKey("sectionAddToCart${productDetails?.overview?.orderMin}"));
+    } else if (productDetails!.overview!.alertMe!) {
+      return _AlertButton("Notify Me", onTap: () async {
+        if (!locator<AuthenticationService>().isAuthenticated) {
+          bool authenticated = await signInRequest(Images.iconAlertBottom, title: "Notify Me", content: "Add you Item to Alert. Get live update of item availability.");
+          if (!authenticated) return;
+        }
+        var result = await locator<NavigationService>().pushNamed(Routes.editAlertMe, arguments: { "productDetails": productDetails?.overview });
 
-        // await locator<DialogService>().showBottomSheet(title: "AlertMe!®", child: AlertMeBottomSheet(productDetails, showViewButton: true,));
+        if (result == true) {
+          locator<ToastService>().showWidget(child: ActionableToast(
+            title: "Notify Me",
+            content: "Added Successfully",
+            onActionTap: () {
+              locator<NavigationService>().pushNamed(Routes.alerts, arguments: 2);
+            },
+            icon: CupertinoIcons.check_mark_circled_solid,
+            actionText: "View",
+          ));
+        }
+
       });
-    else
+    } else {
       return _Button(productDetails!.overview!.availabilityText);
+    }
   }
 }
 
@@ -40,18 +62,17 @@ class _AlertButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration:
-          BoxDecoration(color: AppColor.white, boxShadow: AppStyle.topShadow),
-      child: Button.outline(title,
-          valueKey: const Key('btnSaveAlert'),
-          width: double.infinity,
-          borderRadius: BorderRadius.circular(7.0),
-          textStyle:
-              AppTextStyle.titleSmall.copyWith(color: AppColor.primaryDark),
-          borderColor: AppColor.primaryDark,
-          onPressed: onTap as void Function()?),
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(color: AppColor.white, boxShadow: AppStyle.topShadow),
+        child: Button.outline(title,
+            valueKey: const Key('btnSaveAlert'),
+            width: double.infinity,
+            textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.primary),
+            borderColor: AppColor.primary,
+            onPressed: onTap as void Function()?),
+      ),
     );
   }
 }
@@ -63,13 +84,16 @@ class _Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Button(title,
-        valueKey: const Key('btn'),
-        width: double.infinity,
-        borderRadius: BorderRadius.circular(7.0),
-        textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.black20),
-        color: Colors.black12,
-        borderColor: Colors.transparent,
-        onPressed: () {});
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Button(title,
+          valueKey: const Key('btn'),
+          width: double.infinity,
+          textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.black20),
+          color: Colors.black12,
+          borderColor: Colors.transparent,
+          onPressed: () {}
+      ),
+    );
   }
 }

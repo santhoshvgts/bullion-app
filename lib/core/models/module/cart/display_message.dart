@@ -1,4 +1,5 @@
 import 'package:bullion/core/constants/display_type.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DisplayMessage {
@@ -39,9 +40,9 @@ class DisplayMessage {
       case MessageType.info:
         return Icons.info_outline;
       case MessageType.success:
-        return Icons.check_circle_outline_outlined;
+        return CupertinoIcons.checkmark_alt_circle;
       case MessageType.warning:
-        return Icons.warning_amber_outlined;
+        return Icons.warning_amber_rounded;
       default:
         return Icons.info_outline;
     }

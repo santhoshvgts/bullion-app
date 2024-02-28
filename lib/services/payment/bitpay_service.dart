@@ -13,7 +13,7 @@ class BitPayService {
   final PaymentGatewayService _paymentGatewayApi = locator<PaymentGatewayService>();
 
   openBitPayPayment() async {
-    var transactionUrl = await _paymentGatewayApi!.createBitPayInvoice();
+    var transactionUrl = await _paymentGatewayApi.createBitPayInvoice();
 
     if (transactionUrl == null) {
       return null;
@@ -29,7 +29,7 @@ class _BitPayPaymentGateway extends StatefulWidget {
 
   final String transactionUrl;
 
-  _BitPayPaymentGateway(this.transactionUrl);
+  const _BitPayPaymentGateway(this.transactionUrl);
 
   @override
   State<_BitPayPaymentGateway> createState() => _BitPayPaymentGatewayState();

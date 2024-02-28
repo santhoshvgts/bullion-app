@@ -4,10 +4,13 @@ import 'package:bullion/core/models/user_address.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/analytics_service.dart';
-import 'package:bullion/ui/order_details.dart';
+import 'package:bullion/ui/view/settings/account_settings/account_setings_page.dart';
+import 'package:bullion/ui/view/settings/account_settings/change_email/change_email_page.dart';
+import 'package:bullion/ui/view/settings/account_settings/change_password/change_password_page.dart';
+import 'package:bullion/ui/view/settings/account_settings/profile/profile_page.dart';
+import 'package:bullion/ui/view/settings/orders/detail/order_detail_page.dart';
 import 'package:bullion/ui/view/cart/cart_page.dart';
 import 'package:bullion/ui/view/checkout/checkout_page.dart';
-import 'package:bullion/ui/view/checkout_bk/views/expired_cart/expired_cart_view.dart';
 
 import 'package:bullion/ui/view/core/page/main_page.dart';
 import 'package:bullion/ui/view/core/page_middleware.dart';
@@ -20,14 +23,14 @@ import 'package:bullion/ui/view/main/register/register_page.dart';
 import 'package:bullion/ui/view/main/splash/splash_page.dart';
 import 'package:bullion/ui/view/product/product_page.dart';
 import 'package:bullion/ui/view/settings/activity/recently_bought/recently_bought_page.dart';
-import 'package:bullion/ui/view/settings/add_edit_address_page.dart';
-import 'package:bullion/ui/view/settings/address_page.dart';
+import 'package:bullion/ui/view/settings/address/add_edit_address_page.dart';
+import 'package:bullion/ui/view/settings/address/address_page.dart';
 import 'package:bullion/ui/view/settings/alerts/add_edit_spot_price_page.dart';
 import 'package:bullion/ui/view/settings/alerts/alerts.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_alert_me_page.dart';
 import 'package:bullion/ui/view/settings/alerts/edit_price_alert_page.dart';
 import 'package:bullion/ui/view/settings/favorites/favorites_page.dart';
-import 'package:bullion/ui/view/settings/orders_page.dart';
+import 'package:bullion/ui/view/settings/orders/orders_page.dart';
 import 'package:bullion/ui/view/settings/settings_user_page.dart';
 import 'package:bullion/ui/view/spot_price/spot_price_detail_page.dart';
 import 'package:bullion/ui/widgets/three_sixty_degree.dart';
@@ -37,6 +40,8 @@ import 'package:flutter/material.dart';
 
 import 'ui/view/checkout/review_order/review_order_page.dart';
 import 'ui/view/dashboard/dashboard_page.dart';
+import 'ui/view/main/forgot_password/forgot_password_success.dart';
+import 'ui/view/main/guest_register/guest_login_page.dart';
 import 'ui/view/settings/activity/recently_viewed/recently_viewed_page.dart';
 import 'ui/view/settings/activity/search_history/search_history_page.dart';
 
@@ -56,15 +61,7 @@ class Routes {
   // 360 Page
   static const String threeSixtyPage = "/threeSixtyPage";
 
-  // Cart & Checkout
-  static const String viewCart = "/cart/viewcart";
-  static const String reviewCart = "/checkout/review";
-  static const String expiredCart = "/cart/expiredcart";
-  static const String checkout = "/checkout";
-  static const String orderPlaced = "/orders/success";
-  static const String checkoutAddress = "/checkout/address";
-  static const String checkoutPayments = "/checkout/payments";
-
+  static const String introPage = "/main/intro";
   static const String splash = "/";
   static const String login = "/account/login";
   static const String register = "/account/register";
@@ -77,34 +74,19 @@ class Routes {
   static const String search = "/search";
   static const String main = "/main";
 
-  static String productDesc(id) => "/product/details/$id";
-
-  static String productSpec(id) => "/product/specs/$id";
-
-  static String productReview(id) => "/product/reviews/$id";
-
-  static String productWriteReview(id) => "/product/reviews/add/$id";
-
   static const String addAddress = "/addAddress";
 
-  static const String introPage = "/main/intro";
   static const String marketAlertEntry = "/market_alert/entry";
   static const String marketNews = "/market_news";
 
   static const String accountSetting = "/accountSetting";
   static const String orderSuccess = "/orderSuccess";
-  static const String portfolioAsset = "/portfolioAsset";
-  static const String portfolioAddAsset = "/portfolioAddAsset";
-  static const String portfolioEditAsset = "/portfolioEditAsset";
 
   //Accounts
   static const String myProfile = "/account/myprofile";
   static const String changeEmail = "/account/changeemail";
   static const String changePassword = "/account/changepassword";
-  static const String myAddressBook = "/account/addressbook";
-  static const String myPortfolio = "/account/portfolio";
   static const String myOrders = "/account/orders";
-  static const String orderDetails = "/account/orderDetails";
   static const String address = "/account/address";
   static const String addEditAddress = "/account/addEditAddress";
   static const String favorites = "/account/favorites";
@@ -112,26 +94,48 @@ class Routes {
   static const String addEditAlert = "/account/createAlert";
   static const String editPriceAlert = "/account/editPriceAlert";
   static const String editAlertMe = "/account/editAlertMe";
-  static const String myRewards = "/account/myrewards";
-  static const String myRewardTransactions = "/account/myrewards/transaction";
 
-  static String myOrderDetails(id) => "/account/my-orders/info/$id";
+  static const String myOrderDetails = "/account/orderdetails";
   static const String editSpotPrice = "/account/editSpotPrice";
-  static const String myFavorites = "/account/myfavorites";
-  static const String myProductAlert = "/account/productalerts";
-  static const String myProductPriceAlert = "/account/myproductpricealerts";
-  static const String myClubStatus = "/account/myclubstatus";
-  static const String myClub = "/account/myclub";
   static const String myMarketAlerts = "/account/marketalerts";
-
-  static const String customizeHomePage = "/account/customizeHomePage";
 
   static const String searchHistory = "/search/history";
   static const String recentlyViewed = "recentlyviewed";
   static const String recentlyBought = "recentlybought";
-  static const String recentSearches = "recentsearches";
 
-  static const String myProductReviews = "/account/productreviews";
+  // Cart & Checkout
+  static const String viewCart = "/cart/viewcart";
+  static const String reviewCart = "/checkout/review";
+  static const String expiredCart = "/cart/expiredcart";
+  static const String checkout = "/checkout";
+  static const String orderPlaced = "/orders/success";
+  static const String checkoutAddress = "/checkout/address";
+  static const String checkoutPayments = "/checkout/payments";
+
+  static const authRoute = [
+    myProfile,
+    changeEmail,
+    changePassword,
+    myOrders,
+    address,
+    addEditAddress,
+    favorites,
+    alerts,
+    addEditAlert,
+    editPriceAlert,
+    editAlertMe,
+    myOrderDetails,
+    editSpotPrice,
+    myMarketAlerts,
+    searchHistory,
+    recentlyViewed,
+    recentlyBought,
+    checkout,
+    orderPlaced,
+    checkoutAddress,
+    checkoutPayments,
+  ];
+
 }
 
 class AppRouter {
@@ -160,6 +164,20 @@ class AppRouter {
           settings: RouteSettings(
             name: settings.name,
           ),
+        );
+
+      case Routes.forgotPasswordSuccess:
+        return MaterialPageRoute(
+          builder: (_) => ForgotPasswordSuccessPage(settings.arguments as String?),
+          settings: RouteSettings(name: settings.name),
+        );
+
+      case Routes.registerGuest:
+        return MaterialPageRoute(
+          builder: (_) => GuestLoginPage(
+            fromMain: settings.arguments == null ? true : false,
+          ),
+          settings: RouteSettings(name: settings.name),
         );
 
       case Routes.threeSixtyPage:
@@ -264,7 +282,6 @@ class AppRouter {
         Map? data = settings.arguments as Map?;
         return MaterialPageRoute(
           builder: (_) => EditPriceAlertPage(
-            productAlert: data?['productAlert'],
             productDetails: data?['productDetails'],
           ),
           settings: RouteSettings(name: settings.name),
@@ -274,7 +291,6 @@ class AppRouter {
         Map? data = settings.arguments as Map?;
         return MaterialPageRoute(
           builder: (_) => EditAlertMePage(
-            productAlert: data?['productAlert'],
             productDetails: data?['productDetails'],
           ),
           settings: RouteSettings(name: settings.name),
@@ -296,10 +312,10 @@ class AppRouter {
       //         builder: (_) => AddAddressBottomSheet(data),
       //         settings: RouteSettings(name: settings.name));
       //
-      //   case Routes.accountSetting:
-      //     return MaterialPageRoute(
-      //         builder: (_) => AccountSettingsPage(),
-      //         settings: RouteSettings(name: settings.name));
+        case Routes.accountSetting:
+          return MaterialPageRoute(
+              builder: (_) => AccountSettingsPage(),
+              settings: RouteSettings(name: settings.name));
       //
       //   case Routes.myRewardTransactions:
       //     return MaterialPageRoute(
@@ -333,21 +349,21 @@ class AppRouter {
       //   //  -----------  END PORTFOLIO -----------
       //
       //   // Account
-      //   case Routes.myProfile:
-      //     return MaterialPageRoute(
-      //         builder: (_) => ProfilePage(),
-      //         settings: RouteSettings(name: settings.name));
-      //
-      //   case Routes.changeEmail:
-      //     return MaterialPageRoute(
-      //         builder: (_) => ChangeEmailPage(),
-      //         settings: RouteSettings(name: settings.name));
-      //
-      //   case Routes.changePassword:
-      //     return MaterialPageRoute(
-      //         builder: (_) => ChangePasswordPage(),
-      //         settings: RouteSettings(name: settings.name));
-      //
+        case Routes.myProfile:
+          return MaterialPageRoute(
+              builder: (_) => ProfilePage(),
+              settings: RouteSettings(name: settings.name));
+
+        case Routes.changeEmail:
+          return MaterialPageRoute(
+              builder: (_) => ChangeEmailPage(),
+              settings: RouteSettings(name: settings.name));
+
+        case Routes.changePassword:
+          return MaterialPageRoute(
+              builder: (_) => ChangePasswordPage(),
+              settings: RouteSettings(name: settings.name));
+
       case Routes.address:
         return MaterialPageRoute(builder: (_) => AddressPage(
           fromCheckout: (settings.arguments as bool?) ?? false,
@@ -462,6 +478,17 @@ class AppRouter {
       //       builder: (context) =>
       //           PageMiddleware(settings.name, settings.arguments));
 
+      case "orders":
+        if (uri.pathSegments[1] == "success") {
+          Map<String, dynamic> data = {};
+          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
+          data['from_success'] = true;
+          return MaterialPageRoute(
+              builder: (_) => OrderDetailPage(data),
+              settings: RouteSettings(name: settings.name));
+        }
+        return TransparentRoute(builder: (context) => PageMiddleware(settings.name, settings.arguments));
+
       case "spot-prices":
       case "spotprices":
         String metalName = "gold";
@@ -520,18 +547,11 @@ class AppRouter {
     Uri uri = Uri.parse(settings.name!);
     if (uri.pathSegments.length > 1) {
       switch (uri.pathSegments[1].toLowerCase()) {
-        case "my-orders":
-          Map<String, dynamic> data = {};
-          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-          data['from_success'] = false;
-          return MaterialPageRoute(builder: (_) => OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]), settings: RouteSettings(name: settings.name));
-
-        // Order Details
-        case "my-orders":
-          Map<String, dynamic> data = {};
-          data['order_id'] = uri.pathSegments[uri.pathSegments.length - 1];
-          data['from_success'] = false;
-          return MaterialPageRoute(builder: (_) => OrderDetails(uri.pathSegments[uri.pathSegments.length - 1]), settings: RouteSettings(name: settings.name));
+        case "orderdetails":
+          Map<String, dynamic> data = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+              builder: (_) => OrderDetailPage(data),
+              settings: RouteSettings(name: settings.name));
 
         //   case "resetpassword":
         //     return MaterialPageRoute(

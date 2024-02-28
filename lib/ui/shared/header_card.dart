@@ -37,7 +37,7 @@ class HeaderCard extends StatelessWidget {
                 Expanded(
                     child: Text(
                   title,
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.headlineSmall,
                 )),
                 trailing == null ? Container() : trailing!,

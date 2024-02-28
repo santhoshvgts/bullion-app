@@ -1,23 +1,34 @@
+import 'dart:async';
+
 import 'package:bullion/core/models/module/cart/cart_item.dart';
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CartItemCard extends StatelessWidget {
+class CartItemCard extends StatefulWidget {
   final CartItem _item;
   final Function(CartItem)? onIncrease;
   final Function(CartItem)? onDecrease;
   final Function(CartItem, int)? onValueChange;
   final Function(CartItem)? onRemove;
 
-  CartItemCard(this._item,
-      {this.onDecrease, this.onIncrease, this.onValueChange, this.onRemove});
+  const CartItemCard(this._item, {this.onDecrease, this.onIncrease, this.onValueChange, this.onRemove});
+
+  @override
+  State<CartItemCard> createState() => _CartItemCardState();
+}
+
+class _CartItemCardState extends State<CartItemCard> {
+
+  Timer? debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -43,16 +54,14 @@ class CartItemCard extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(_item.targetUrl);
+                      locator<NavigationService>().pushNamed(widget._item.targetUrl, );
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: AppColor.divider, width: 0.5),
                       ),
-                      padding: const EdgeInsets.all(5),
                       child: NetworkImageLoader(
-                        image: _item.primaryImageUrl,
+                        image: widget._item.primaryImageUrl,
                         fit: BoxFit.cover,
                         width: 60,
                         height: 60,
@@ -66,10 +75,9 @@ class CartItemCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _item.productName!,
+                          widget._item.productName!,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          textScaleFactor: 1,
                           style: AppTextStyle.bodyMedium,
                         ),
                         VerticalSpacing.d5px(),
@@ -79,9 +87,8 @@ class CartItemCard extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: Text(
-                                _item.formattedUnitPrice!,
-                                style: AppTextStyle.titleSmall,
-                                textScaleFactor: 1,
+                                widget._item.formattedUnitPrice!,
+                                style: AppTextStyle.titleMedium,
                               ),
                             ),
                             Expanded(
@@ -90,81 +97,162 @@ class CartItemCard extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: AppColor.secondaryBackground,
-                                      border: Border.all(
-                                        color: Colors.black12,
-                                        width: 0.25,
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(50),
+                                          border: Border.all(color: AppColor.border)
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 35,
+                                            width: 40,
+                                            child: IconButton(
+                                              padding: const EdgeInsets.all(2),
+                                              icon: const Icon(
+                                                Icons.remove,
+                                                size: 20,
+                                                color: AppColor.text,
+                                              ),
+                                              onPressed: () {
+                                                widget._item.loading = true;
+                                                widget.onDecrease!(widget._item);
+                                              },
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: SizedBox(
+                                              height: 35,
+                                              child: EditTextField(
+                                                "",
+                                                widget._item.qtyController,
+                                                key: const ValueKey("txtQuantity"),
+                                                textAlign: TextAlign.center,
+                                                textInputAction: TextInputAction.done,
+                                                isInputDecorationNone: true,
+                                                textStyle: AppTextStyle.titleSmall,
+                                                padding: EdgeInsets.zero,
+                                                onChanged: (val) {
+                                                  if ( int.tryParse(val) == null) {
+                                                    return;
+                                                  }
+                                                  if (debounce?.isActive ?? false) debounce?.cancel();
+                                                  debounce = Timer(const Duration(milliseconds: 600), () {
+                                                    if (!widget._item.loading){
+                                                      widget._item.loading = true;
+                                                      widget.onValueChange!(widget._item, int.tryParse(val) ?? 0);
+                                                      widget._item.qtyController.focusNode.unfocus();
+                                                    }
+                                                  });
+                                                },
+                                                onSubmitted: (val) {
+                                                  // if (!_item.loading){
+                                                  //   _item.loading = true;
+                                                  //   onValueChange!(_item, int.parse(val));
+                                                  // }
+                                                },
+                                              ),
+                                            ),
+                                          ),
+
+                                          SizedBox(
+                                            height: 35,
+                                            width: 40,
+                                            child: IconButton(
+                                              padding: const EdgeInsets.all(2),
+                                              icon: const Icon(
+                                                Icons.add,
+                                                size: 20,
+                                                color: AppColor.text,
+                                              ),
+                                              onPressed: () {
+                                                widget._item.loading = true;
+                                                widget.onIncrease!(widget._item);
+                                              },
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            _item.loading = true;
-                                            onDecrease!(_item);
-                                          },
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 2,
-                                              horizontal: 5,
-                                            ),
-                                            child: Icon(
-                                              CupertinoIcons.minus_circle,
-                                              size: 20,
-                                              color: AppColor.primary,
-                                            ),
-                                          ),
-                                        ),
-                                        HorizontalSpacing.d10px(),
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                            bottom: 2.0,
-                                            right: 5,
-                                          ),
-                                          width: 35,
-                                          child: Text(
-                                            _item.qtyController.text,
-                                            style: AppTextStyle.bodyMedium
-                                                .copyWith(
-                                              color: AppColor.text,
-                                              fontFamily:
-                                                  AppTextStyle.fontFamily,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            textScaleFactor: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            _item.loading = true;
-                                            onIncrease!(_item);
-                                          },
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 5,
-                                              vertical: 2,
-                                            ),
-                                            child: Icon(
-                                              CupertinoIcons.add_circled,
-                                              size: 20,
-                                              color: AppColor.primary,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
+                                  // Container(
+                                  //   height: 30,
+                                  //   decoration: BoxDecoration(
+                                  //     borderRadius: BorderRadius.circular(50),
+                                  //     color: AppColor.secondaryBackground,
+                                  //     border: Border.all(
+                                  //       color: Colors.black12,
+                                  //       width: 0.25,
+                                  //     ),
+                                  //   ),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.center,
+                                  //     children: [
+                                  //       InkWell(
+                                  //         onTap: () {
+                                  //           _item.loading = true;
+                                  //           onDecrease!(_item);
+                                  //         },
+                                  //         child: const Padding(
+                                  //           padding: EdgeInsets.symmetric(
+                                  //             vertical: 2,
+                                  //             horizontal: 5,
+                                  //           ),
+                                  //           child: Icon(
+                                  //             CupertinoIcons.minus_circle,
+                                  //             size: 20,
+                                  //             color: AppColor.primary,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //       HorizontalSpacing.d10px(),
+                                  //       Container(
+                                  //         padding: const EdgeInsets.only(
+                                  //           bottom: 2.0,
+                                  //           right: 5,
+                                  //         ),
+                                  //         width: 35,
+                                  //         child: Text(
+                                  //           _item.qtyController.text,
+                                  //           style: AppTextStyle.bodyMedium
+                                  //               .copyWith(
+                                  //             color: AppColor.text,
+                                  //             fontFamily:
+                                  //                 AppTextStyle.fontFamily,
+                                  //           ),
+                                  //           textAlign: TextAlign.center,
+                                  //
+                                  //           overflow: TextOverflow.ellipsis,
+                                  //         ),
+                                  //       ),
+                                  //       InkWell(
+                                  //         onTap: () {
+                                  //           _item.loading = true;
+                                  //           onIncrease!(_item);
+                                  //         },
+                                  //         child: const Padding(
+                                  //           padding: EdgeInsets.symmetric(
+                                  //             horizontal: 5,
+                                  //             vertical: 2,
+                                  //           ),
+                                  //           child: Icon(
+                                  //             CupertinoIcons.add_circled,
+                                  //             size: 20,
+                                  //             color: AppColor.primary,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                   IconButton(
                                     onPressed: () {
-                                      _item.loading = true;
-                                      onRemove!(_item);
+                                      widget._item.loading = true;
+                                      widget.onRemove!(widget._item);
                                     },
                                     icon: const Icon(
                                       CupertinoIcons.delete,
@@ -182,8 +270,8 @@ class CartItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              if (_item.offers != null)
-                ..._item.offers!.map((offer) {
+              if (widget._item.offers != null)
+                ...widget._item.offers!.map((offer) {
                   return Column(
                     children: [
                       AppStyle.dottedDivider,
@@ -200,7 +288,7 @@ class CartItemCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 offer,
-                                textScaleFactor: 1,
+
                                 style: AppTextStyle.bodySmall.copyWith(
                                   color: AppColor.green,
                                 ),
@@ -213,8 +301,8 @@ class CartItemCard extends StatelessWidget {
                   );
                 }).toList(),
               // VerticalSpacing.d5px(),
-              if (_item.warnings != null)
-                ..._item.warnings!.map((warning) {
+              if (widget._item.warnings != null)
+                ...widget._item.warnings!.map((warning) {
                   return Column(
                     children: [
                       AppStyle.dottedDivider,
@@ -231,7 +319,7 @@ class CartItemCard extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 warning,
-                                textScaleFactor: 1,
+
                                 style: AppTextStyle.bodySmall.copyWith(
                                   color: AppColor.redOrange,
                                 ),
@@ -246,7 +334,7 @@ class CartItemCard extends StatelessWidget {
             ],
           ),
         ),
-        if (_item.loading)
+        if (widget._item.loading)
           Positioned(
             top: 0,
             bottom: 0,
@@ -258,5 +346,11 @@ class CartItemCard extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
   }
 }

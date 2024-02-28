@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:bullion/core/models/alert/alert_add_response_model.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/button.dart';
 import 'package:bullion/ui/widgets/edit_text_field.dart';
@@ -47,7 +49,7 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
               expandedHeight: 100,
               pinned: true,
               flexibleSpace:
-                  const AnimatedFlexibleSpace.withoutTab(title: "Custom Spot Price"),
+                  const AnimatedFlexibleSpace.withoutTab(title: "Market Price Alert"),
             ),
             SliverToBoxAdapter(
               child: viewModel.isBusy
@@ -64,18 +66,9 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Form(
-                                  key: viewModel.customSpotPriceGlobalKey,
-                                  child: EditTextField(
-                                    "Alert Price",
-                                    viewModel.alertPriceFormFieldController,
-                                    textStyle: AppTextStyle.titleLarge,
-                                    autoFocus: true,
-                                  ),
-                                ),
+
                                 const Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 16.0, bottom: 8.0),
+                                  padding: EdgeInsets.only( bottom: 8.0),
                                   child: Text(
                                     "Metal",
                                     style: AppTextStyle.titleSmall,
@@ -135,9 +128,7 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                     viewModel.operatorsResponse!.operators!.length,
                                     (int index) {
                                       return ChoiceChip(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(24),
-                                        ),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24),),
                                         label: Text(viewModel.operatorsResponse!.operators![index].description!),
                                         labelStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primaryText),
                                         color: MaterialStateProperty.resolveWith((states) {
@@ -172,7 +163,18 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                                       );
                                     },
                                   ),
-                                )
+                                ),
+
+                                Form(
+                                  key: viewModel.customSpotPriceGlobalKey,
+                                  child: EditTextField(
+                                    "${viewModel.operatorsResponse?.operators?[viewModel.optionsSelectedIndex].description}",
+                                    viewModel.alertPriceFormFieldController,
+                                    textStyle: AppTextStyle.titleLarge,
+                                    autoFocus: true,
+                                    margin: const EdgeInsets.only(top: 30, right: 10, left: 5),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -189,15 +191,13 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                 valueKey: const Key("btnCreate"),
                 borderRadius: BorderRadius.circular(24),
                 onPressed: () async {
-                  if (viewModel.customSpotPriceGlobalKey.currentState!
-                      .validate()) {
+                  if (viewModel.customSpotPriceGlobalKey.currentState!.validate()) {
                     bool result = await viewModel.createEditMarketAlert();
                     if (result) {
-                      Util.showSnackBar(context, "Submitted successfully");
-                      Navigator.of(context).pop();
+                      locator<NavigationService>().pop(returnValue: result);
                     }
                   } else {
-                    Util.showSnackBar(context, "Fill all the required fields");
+                    Util.showSnackBar("Fill all the required fields");
                   }
                 },
                 disabled: viewModel.operatorsResponse == null,

@@ -119,10 +119,10 @@ class ContentViewModel extends VGTSBaseViewModel {
 
     onPageFetched(pageSettingData);
 
-    // if (refresh) {
-    //   _pageSetting = null;
-    //   await Future.delayed(const Duration(milliseconds: 100));
-    // }
+    if (refresh) {
+      _pageSetting = null;
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
 
     _pageSetting = pageSettingData;
     productListingModule = modules!.singleWhere((element) => element!.moduleType == ModuleType.productList, orElse: () => null);

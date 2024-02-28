@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/helper/utils.dart';
+import 'package:bullion/services/appconfig_service.dart';
+import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/view/settings/settings_user_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:feather_icons/feather_icons.dart';
@@ -8,10 +13,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:stacked/stacked.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../core/res/colors.dart';
 import '../../../core/res/styles.dart';
-import '../../../helper/url_launcher.dart';
 import '../../../locator.dart';
 import '../../../router.dart';
 import '../../../services/authentication_service.dart';
@@ -35,6 +43,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     Widget? child,
   ) {
     return Scaffold(
+      backgroundColor: AppColor.primary,
       appBar: AppBar(
         backgroundColor: AppColor.primary,
         elevation: 0,
@@ -45,6 +54,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           statusBarBrightness: Brightness.dark,
         ),
         title: StreamBuilder<User?>(
+          initialData: locator<AuthenticationService>().getUser,
           stream: locator<AuthenticationService>().userController.stream,
           builder: (context, snapshot) {
             User? user = snapshot.data;
@@ -55,7 +65,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
 
             return Column(
               children: [
-                Text("Hi, ${locator<AuthenticationService>().getUser?.firstName ?? ""}",
+                Text("Hi, ${locator<AuthenticationService>().getUser?.fullName ?? ""}",
                   style: AppTextStyle.titleMedium.copyWith(
                     fontFamily: AppTextStyle.fontFamily,
                   ),
@@ -84,37 +94,115 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   }
 
   Widget getAccountDetailsWidget(SettingsUserViewModel viewModel, BuildContext context) {
-    return Column(
-      children: [
+    return Container(
+      color: AppColor.secondaryBackground,
+      child: Column(
+        children: [
 
-        Stack(
-          children: [
-
-            Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: double.infinity,
-                  height: 260,
-                  color: AppColor.primary,
-                )
-            ),
-
-            SizedBox(
-              width: double.infinity,
-              child: Column(
+            StreamBuilder(
+              stream: locator<AuthenticationService>().userController.stream,
+              builder: (context, snapshot) {
+              return Stack(
                 children: [
-                  VerticalSpacing.d10px(),
 
-                  _buildOrderSection(),
-                  Container(
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        width: double.infinity,
+                        height: locator<AuthenticationService>().isGuestUser ? 150 : 260,
+                        color: AppColor.primary,
+                      )
+                  ),
+
+                  Column(
+                    children: [
+                      VerticalSpacing.d10px(),
+                      if (locator<AuthenticationService>().isGuestUser)
+                        _SettingItemGuestUser()
+                      else
+                        _buildOrderSection(),
+
+                      if (!locator<AuthenticationService>().isGuestUser)
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: AppStyle.elevatedCardShadow,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: Text('Manage Account',
+                                      style: AppTextStyle.titleMedium),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    locator<NavigationService>().pushNamed(Routes.accountSetting);
+                                  },
+                                  child: getTextsLayout(
+                                    const Icon(FeatherIcons.user, size: 20),
+                                    "Personal Info",
+                                  ),
+                                ),
+                                const Divider(
+                                  color: AppColor.platinumColor,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    locator<NavigationService>().pushNamed(Routes.address);
+                                  },
+                                  child: getTextsLayout(
+                                    const Icon(Icons.pin_drop_outlined, size: 20),
+                                    "Saved Addresses",
+                                  ),
+                                ),
+                                const Divider(
+                                  color: AppColor.platinumColor,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    locator<NavigationService>()
+                                        .pushNamed(Routes.favorites);
+                                  },
+                                  child: getTextsLayout(
+                                    const Icon(Icons.favorite_border, size: 20),
+                                    "Favorites",
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                    ],
+                  )
+
+                ],
+              );
+            }
+          ),
+
+          if (!viewModel.isGuestUser)
+            Column(
+              children: [
+
+                VerticalSpacing.d15px(),
+
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: AppStyle.elevatedCardShadow,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -122,23 +210,28 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         children: [
                           const Padding(
                             padding: EdgeInsets.only(bottom: 16.0),
-                            child: Text('Manage Account',
-                                style: AppTextStyle.titleMedium),
+                            child: Text('Alerts', style: AppTextStyle.titleMedium),
                           ),
-                          getTextsLayout(
-                            const Icon(FeatherIcons.user, size: 20),
-                            "Personal Info",
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>()
+                                  .pushNamed(Routes.alerts, arguments: 0);
+                            },
+                            child: getTextsLayout(
+                                const Icon(CupertinoIcons.alarm, size: 20),
+                                "Market Price Alert"),
                           ),
                           const Divider(
                             color: AppColor.platinumColor,
                           ),
                           InkWell(
                             onTap: () {
-                              locator<NavigationService>().pushNamed(Routes.address);
+                              locator<NavigationService>()
+                                  .pushNamed(Routes.alerts, arguments: 1);
                             },
                             child: getTextsLayout(
-                              const Icon(Icons.pin_drop_outlined, size: 20),
-                              "Addresses",
+                              const Icon(Icons.attach_money, size: 20),
+                              "Product Price Alert",
                             ),
                           ),
                           const Divider(
@@ -147,103 +240,98 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                           InkWell(
                             onTap: () {
                               locator<NavigationService>()
-                                  .pushNamed(Routes.favorites);
+                                  .pushNamed(Routes.alerts, arguments: 2);
                             },
                             child: getTextsLayout(
-                              const Icon(Icons.favorite_border, size: 20),
-                              "Favorites",
+                              const Icon(CupertinoIcons.bell, size: 20),
+                              "Notify Me",
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                VerticalSpacing.d15px(),
+
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: AppStyle.elevatedCardShadow,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 16.0),
+                            child:
+                            Text('Activity', style: AppTextStyle.titleMedium),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>().pushNamed(Routes.searchHistory);
+                            },
+                            child: getTextsLayout(
+                              const Icon(FeatherIcons.search, size: 20),
+                              "Search History",
+                            ),
+                          ),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>().pushNamed(Routes.recentlyViewed);
+                            },
+                            child: getTextsLayout(
+                              const Icon(FeatherIcons.activity, size: 20),
+                              "Recently Viewed",
+                            ),
+                          ),
+                          const Divider(
+                            color: AppColor.platinumColor,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              locator<NavigationService>().pushNamed(Routes.recentlyBought);
+                            },
+                            child: getTextsLayout(
+                              const Icon(FeatherIcons.shoppingCart, size: 20),
+                              "Buy Again",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+              ],
             ),
 
+          VerticalSpacing.d15px(),
 
+          getFooterSection(context, isAuthenticated: viewModel.isAuthenticated),
 
-            // Positioned(
-            //   top: 0,
-            //   left: 0,
-            //   right: 0,
-            //   bottom: 0,
-            //   child: Column(
-            //     children: [
-            //       Text(
-            //         locator<AuthenticationService>().getUser?.email ?? "",
-            //         style: AppTextStyle.bodyMedium.copyWith(color: AppColor.mercury),
-            //         textAlign: TextAlign.center,
-            //       ),
-            //
-            //       _buildOrderSection(),
-            //     ],
-            //   ),
-            // ),
-            //
-            // Positioned(
-            //   top: 0,
-            //   left: 0,
-            //   right: 0,
-            //   child: Container(
-            //     width: double.infinity,
-            //     margin: const EdgeInsets.symmetric(horizontal: 16),
-            //     child: Container(
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         boxShadow: AppStyle.elevatedCardShadow,
-            //         borderRadius: BorderRadius.circular(12),
-            //       ),
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(16.0),
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             const Padding(
-            //               padding: EdgeInsets.only(bottom: 16.0),
-            //               child: Text('Manage Account',
-            //                   style: AppTextStyle.titleMedium),
-            //             ),
-            //             getTextsLayout(
-            //               const Icon(FeatherIcons.user, size: 20),
-            //               "Personal Info",
-            //             ),
-            //             const Divider(
-            //               color: AppColor.platinumColor,
-            //             ),
-            //             InkWell(
-            //               onTap: () {
-            //                 locator<NavigationService>().pushNamed(Routes.address);
-            //               },
-            //               child: getTextsLayout(
-            //                 const Icon(Icons.pin_drop_outlined, size: 20),
-            //                 "Addresses",
-            //               ),
-            //             ),
-            //             const Divider(
-            //               color: AppColor.platinumColor,
-            //             ),
-            //             InkWell(
-            //               onTap: () {
-            //                 locator<NavigationService>()
-            //                     .pushNamed(Routes.favorites);
-            //               },
-            //               child: getTextsLayout(
-            //                 const Icon(Icons.favorite_border, size: 20),
-            //                 "Favorites",
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // )
-          ],
-        ),
+        ],
+      ),
+    );
+  }
 
-        VerticalSpacing.d15px(),
+  Widget getFooterSection(
+    BuildContext context, {
+    bool isAuthenticated = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
 
         Container(
           width: double.infinity,
@@ -261,28 +349,25 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(bottom: 16.0),
-                    child: Text('Alerts', style: AppTextStyle.titleMedium),
+                    child:
+                    Text('Privacy', style: AppTextStyle.titleMedium),
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>()
-                          .pushNamed(Routes.alerts, arguments: 0);
+                      launchUrlString("https://www.bullion.com", mode: LaunchMode.externalApplication);
                     },
-                    child: getTextsLayout(
-                        const Icon(CupertinoIcons.alarm, size: 20),
-                        "Custom Spot Price"),
+                    child: getTextsLayout(null, "Visit Bullion.com",),
                   ),
                   const Divider(
                     color: AppColor.platinumColor,
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>()
-                          .pushNamed(Routes.alerts, arguments: 1);
+                      locator<NavigationService>().pushNamed(locator<AppConfigService>().config?.appLinks?.userAgreement);
                     },
                     child: getTextsLayout(
-                      const Icon(Icons.attach_money, size: 20),
-                      "Price Alert",
+                      null,
+                      "User Agreement",
                     ),
                   ),
                   const Divider(
@@ -290,12 +375,11 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>()
-                          .pushNamed(Routes.alerts, arguments: 2);
+                      locator<NavigationService>().pushNamed(locator<AppConfigService>().config?.appLinks?.privacy);
                     },
                     child: getTextsLayout(
-                      const Icon(CupertinoIcons.bell, size: 20),
-                      "Alert Me!",
+                      null,
+                      "Privacy Policy",
                     ),
                   ),
                 ],
@@ -323,41 +407,42 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                   const Padding(
                     padding: EdgeInsets.only(bottom: 16.0),
                     child:
-                    Text('Activity', style: AppTextStyle.titleMedium),
+                    Text('Contact Us', style: AppTextStyle.titleMedium),
                   ),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.searchHistory);
+                      launchUrlString("tel://${locator<AppConfigService>().config!.appLinks!.tollFree}");
                     },
-                    child: getTextsLayout(
-                      const Icon(FeatherIcons.search, size: 20),
-                      "Search History",
-                    ),
+                    child: getTextsLayout(null, "Toll Free: ${locator<AppConfigService>().config?.appLinks?.tollFree}",
+                        null,
+                        AppColor.blue),
                   ),
-                  const Divider(
-                    color: AppColor.platinumColor,
-                  ),
+                  // const Divider(
+                  //   color: AppColor.platinumColor,
+                  // ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     launchUrlString("tel://${locator<AppConfigService>().config!.appLinks!.localNumber}");
+                  //   },
+                  //   child: getTextsLayout(null, "Local Number: ${locator<AppConfigService>().config?.appLinks?.localNumber}",
+                  //       null,
+                  //       AppColor.blue),
+                  // ),
+                  const Divider(color: AppColor.platinumColor,),
                   InkWell(
                     onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.recentlyViewed);
+                      launchUrlString("mailto:${locator<AppConfigService>().config!.appLinks!.supportEmail}");
                     },
-                    child: getTextsLayout(
-                      const Icon(FeatherIcons.activity, size: 20),
-                      "Recently Viewed",
+                    child: getTextsLayout(null,
+                      "Email: ${locator<AppConfigService>().config?.appLinks?.supportEmail}",
+                      null,
+                      AppColor.blue
                     ),
                   ),
-                  const Divider(
-                    color: AppColor.platinumColor,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      locator<NavigationService>().pushNamed(Routes.recentlyBought);
-                    },
-                    child: getTextsLayout(
-                      const Icon(FeatherIcons.shoppingCart, size: 20),
-                      "Buy Again",
-                    ),
-                  ),
+
+                  const Divider(color: AppColor.platinumColor,),
+
+                  getTextsLayout(null, locator<AppConfigService>().config?.appLinks?.hoursOfOperation ?? '',),
                 ],
               ),
             ),
@@ -366,113 +451,74 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
 
         VerticalSpacing.d15px(),
 
-        getFooterSection(context, isAuthenticated: viewModel.isAuthenticated),
+        Container(
+          width: double.infinity,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: AppStyle.elevatedCardShadow,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: InkWell(
+                onTap: () async {
+                  locator<NavigationService>().pushNamed(locator<AppConfigService>().config?.appLinks?.fAQUrl);
+                },
+                child: getTextsLayout(const Icon(CupertinoIcons.question_circle, size: 20,), "FAQs",),
+              ),
+            ),
+          ),
+        ),
 
-      ],
-    );
-  }
+        VerticalSpacing.d15px(),
 
-  Widget getFooterSection(
-    BuildContext context, {
-    bool isAuthenticated = false,
-  }) {
-    return Container(
-      color: AppColor.accountBg,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 16.0),
-              child: Text('Privacy', style: AppTextStyle.titleMedium),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Text('Visit Bullion.com',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Text("User Agreements",
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Text('Privacy Policy',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 24.0),
-              child: Text('Contact Us', style: AppTextStyle.titleMedium),
-            ),
-            showContactInfo('Toll Free : ', '8003759006'),
-            showContactInfo('Local Number : ', '405.595.2100'),
-            showContactInfo('Email : ', 'service@bullion.com'),
-            const Padding(
-              padding: EdgeInsets.only(top: 24.0),
-              child:
-                  Text('Hours of Operation', style: AppTextStyle.titleMedium),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text('Monday - Thursday | 8 a.m - 8 p.m(EST)',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text('Friday | 8 a.m - 6 p.m(EST)',
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(color: AppColor.secondaryText)),
-            ),
-            Visibility(
-              visible: isAuthenticated,
+
+        Visibility(
+          visible: isAuthenticated,
+          child: Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: AppStyle.elevatedCardShadow,
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 child: InkWell(
-                  onTap: () {
-                    showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        backgroundColor: Colors.white,
-                        title: const Text('Logout'),
-                        content: const Text("Do you want to logout?"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              locator<AuthenticationService>().logout("");
-                              Navigator.pop(context, 'OK');
-                            },
-                            child: const Text('Logout'),
-                          ),
-                        ],
-                      ),
+                  onTap: () async {
+                    AlertResponse response = await locator<DialogService>().showConfirmationDialog(
+                        title: "Logout",
+                        description: "Do you want to logout?",
+                        buttonTitle: "Logout"
                     );
+
+                    if (response.status == true) {
+                      locator<AuthenticationService>().logout("");
+                    }
                   },
-                  child: Text('Logout',
-                      style: AppTextStyle.bodyMedium
-                          .copyWith(color: AppColor.secondaryText)),
+                  child: getTextsLayout(const Icon(CupertinoIcons.power, size: 20,), "Logout",),
                 ),
               ),
             ),
-            Padding(
+          ),
+        ),
+
+        FutureBuilder(
+          future: PackageInfo.fromPlatform(),
+          builder: (context, snapshot) {
+            return Padding(
               padding: const EdgeInsets.only(top: 48.0, bottom: 15),
-              child: Text('App Version - 1.0.3 (10)',
+              child: Text('App Version - ${snapshot.data?.version}',
                   style: AppTextStyle.bodySmall
                       .copyWith(color: AppColor.secondaryText)),
-            )
-          ],
-        ),
-      ),
+            );
+          }
+        )
+      ],
     );
   }
 
@@ -482,16 +528,19 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
   ) {
     return Stack(
       children: [
-        Column(
-          children: [
-            Container(
-              color: AppColor.primary,
-              height: 280,
-              width: double.infinity,
-            ),
-            const SizedBox(height: 64),
-            getFooterSection(context)
-          ],
+        Container(
+          color: AppColor.secondaryBackground,
+          child: Column(
+            children: [
+              Container(
+                color: AppColor.primary,
+                height: 280,
+                width: double.infinity,
+              ),
+              const SizedBox(height: 64),
+              getFooterSection(context)
+            ],
+          ),
         ),
         Positioned(
           top: 5,
@@ -519,9 +568,9 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                         height: 16,
                       ),
                       getTextsWithBullets([
-                        'Easily manage your orders',
-                        'Customize your profile',
-                        'Track your portfolio and rewards',
+                        'Faster checkout and Exclusive offers',
+                        'Order history and tracking',
+                        'Set up Price and Product Alerts'
                       ]),
                       const SizedBox(
                         height: 16,
@@ -582,8 +631,8 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     ),
                   ),
                   Button(
-                    "Track Order",
-                    width: 104,
+                    "View Orders",
+                    width: 110,
                     color: Colors.white,
                     textStyle: AppTextStyle.titleSmall,
                     height: 32,
@@ -591,7 +640,7 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
                     valueKey: const Key("btnSignInCreate"),
                     onPressed: () {
                       if (!locator<AuthenticationService>().isAuthenticated) {
-                        Util.showLoginAlert();
+                        locator<NavigationService>().pushNamed(Routes.login, arguments: {"fromMain": false});
                         return;
                       }
                       locator<NavigationService>().pushNamed(Routes.myOrders);
@@ -631,51 +680,73 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
     );
   }
 
-  Widget showContactInfo(String key, String contactValue) {
+  Widget getTextsLayout(Icon? icon, String text1, [String? text2, Color? textColor]) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Text(
-            key,
-            style:
-                AppTextStyle.bodyMedium.copyWith(color: AppColor.secondaryText),
-          ),
-          InkWell(
-            onTap: () => launchAnUrl(contactValue.contains('@')
-                ? "mailto:$contactValue"
-                : "tel:$contactValue"),
-            child: Text(
-              contactValue,
-              style: AppTextStyle.bodyMedium.copyWith(color: Colors.blue),
+
+          if (icon != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: icon,
             ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(text1, style: AppTextStyle.bodyMedium.copyWith(color: textColor)),
+              if (text2 != null)
+                Text(
+                  text2,
+                  style: AppTextStyle.bodySmall
+                      .copyWith(color: textColor ?? AppColor.secondaryText),
+                ),
+            ],
           ),
         ],
       ),
     );
   }
+}
 
-  Widget getTextsLayout(Icon icon, String text1, [String? text2]) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
+
+class _SettingItemGuestUser extends ViewModelWidget<SettingsUserViewModel> {
+  @override
+  Widget build(BuildContext context, SettingsUserViewModel viewModel) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: AppStyle.elevatedCardShadow,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: icon,
+          const Text(
+            "Register as User",
+            style: AppTextStyle.titleMedium,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(text1, style: AppTextStyle.bodyMedium),
-              if (text2 != null)
-                Text(
-                  text2,
-                  style: AppTextStyle.bodySmall
-                      .copyWith(color: AppColor.secondaryText),
-                ),
-            ],
+          VerticalSpacing.d10px(),
+
+          const Text(
+            "Want to Check the Status of your Order?",
+            style: AppTextStyle.titleSmall,
           ),
+          VerticalSpacing.d5px(),
+
+          const Text(
+            "Start by creating a password associated with your email address. This will allow you to check order status and tracking information.",
+            style: AppTextStyle.bodyMedium,
+          ),
+          VerticalSpacing.d20px(),
+          Button.outline("Register As User",
+              width: double.infinity,
+              textStyle: AppTextStyle.bodyMedium.copyWith(color: AppColor.primary),
+              valueKey: const ValueKey("btnRegisterAsUser"), onPressed: () {
+                viewModel.onGuestRegisterClick();
+              })
         ],
       ),
     );

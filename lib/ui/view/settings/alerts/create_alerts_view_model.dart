@@ -4,6 +4,7 @@ import 'package:bullion/services/api_request/alerts_request.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
+import 'package:vgts_plugin/form/utils/number_currency_format.dart';
 
 import '../../../../core/models/alert/alert_response.dart';
 import '../../../../locator.dart';
@@ -15,10 +16,17 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
 
   GlobalKey<FormState> customSpotPriceGlobalKey = GlobalKey<FormState>();
 
-  AmountFormFieldController alertPriceFormFieldController = AmountFormFieldController(const Key("alertPrice"),
+  FormFieldController alertPriceFormFieldController = AmountFormFieldController(const Key("targetPrice"),
       required: true,
-      requiredText: "Alert Price can't be empty"
+      requiredText: "Alert Price can't be empty",
+      currencyFormat: NumberCurrencyFormat(
+          "USD",
+          "en_US",
+          "\$",
+          2
+      )
   );
+
 
   int _metalsSelectedIndex = 0;
   int _optionsSelectedIndex = 0;
@@ -42,7 +50,28 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
   int get optionsSelectedIndex => _optionsSelectedIndex;
 
   set optionsSelectedIndex(int value) {
+    if (_optionsSelectedIndex != value) {
+      String text = alertPriceFormFieldController.text;
+      if (operatorsResponse?.operators?[value].description?.contains("%") == true){
+        alertPriceFormFieldController = NumberFormFieldController(const ValueKey("txtAlert"));
+      } else {
+        alertPriceFormFieldController = AmountFormFieldController(const Key("targetPrice"),
+            required: true,
+            requiredText: "Alert Price can't be empty",
+            currencyFormat: NumberCurrencyFormat(
+                "USD",
+                "en_US",
+                "\$",
+                2
+            )
+        );
+      }
+
+      alertPriceFormFieldController.text = text;
+
+    }
     _optionsSelectedIndex = value;
+
     notifyListeners();
   }
 

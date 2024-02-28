@@ -16,6 +16,7 @@ class WarningCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       width: double.infinity,
+      margin: const EdgeInsets.only(top: 10),
       child: Container(
         decoration: BoxDecoration(
           color: AppColor.white,
@@ -36,33 +37,18 @@ class WarningCard extends StatelessWidget {
                 size: 16,
               ),
               HorizontalSpacing.d5px(),
-              ApmexHtmlWidget(
-                text,
-                textStyle: AppTextStyle.bodySmall.copyWith(
-                  color: Colors.orange,
+              Expanded(
+                child: ApmexHtmlWidget(
+                  text,
+                  textStyle: AppTextStyle.bodySmall.copyWith(
+                    color: Colors.orange,
+                  ),
                 ),
               )
             ],
           ),
         ),
       ),
-    );
-
-    return Container(
-      padding: EdgeInsets.all(10),
-      margin: EdgeInsets.only(top: 10),
-      color: AppColor.white,
-      child: Container(
-          decoration: BoxDecoration(
-              color: AppColor.secondaryBackground,
-              border: Border(
-                  left: BorderSide(color: color ?? AppColor.red, width: 2))),
-          padding: EdgeInsets.all(10),
-          child: ApmexHtmlWidget(
-            text,
-            textStyle: AppTextStyle.bodyMedium
-                .copyWith(color: textColor ?? AppColor.red),
-          )),
     );
   }
 }

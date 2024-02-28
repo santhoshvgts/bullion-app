@@ -39,53 +39,54 @@ class ModuleUIContainer extends VGTSBuilderWidget<ModuleUIContainerViewModel> {
   bool get disposeViewModel => true;
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      ModuleUIContainerViewModel vm, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, ModuleUIContainerViewModel vm, Widget? child) {
     if (vm.displaySetting == null) {
       return Column(children: children!);
     }
 
-    return Stack(
-      children: [
-        if (vm.setting!.displaySettings!.displayStyle == DisplayStyle.phamplet)
+    return Container(
+      color: vm.setting!.displaySettings!.displayStyle == DisplayStyle.phamplet ? AppColor.white : null,
+      child: Stack(
+        children: [
+          if (vm.setting!.displaySettings!.displayStyle == DisplayStyle.phamplet)
+            Container(
+              height: 250,
+              color: vm.displaySetting!.backgroundColor,
+            ),
           Container(
-            height: 250,
-            color: vm.displaySetting!.backgroundColor,
+            padding: vm.displaySetting!.itemDisplaySettings.fullBleed
+                ? EdgeInsets.zero
+                : EdgeInsets.only(bottom: 10, top: vm.setting!.hasHeaderSection ? 15 : 0),
+            margin: EdgeInsets.only(top: vm.displaySetting!.marginTop),
+            decoration: BoxDecoration(
+                color: vm.setting!.displaySettings!.displayStyle ==
+                        DisplayStyle.phamplet
+                    ? null
+                    : vm.displaySetting!.backgroundColor,
+                image: vm.displaySetting!.hasBackgroundImage
+                    ? DecorationImage(
+                        image: NetworkImage(vm.displaySetting!.backgroundImageUrl!),
+                        fit: BoxFit.cover
+                )
+                    : null),
+            width: double.infinity,
+            child: Column(
+              children: [
+                if (vm.setting!.hasHeaderSection && !hideHeadSection)
+                  _ModuleHeadSection(),
+                if ((!vm.setting!.hasHeaderSection &&
+                        vm.setting!.displaySettings!.itemDisplaySettings
+                                .displayType ==
+                            DisplayStyle.standard))
+                  VerticalSpacing.custom(
+                    value: vm.displaySetting!.itemDisplaySettings.cardPadding,
+                  ),
+                ...children as Iterable<Widget>
+              ],
+            ),
           ),
-        Container(
-          padding: vm.displaySetting!.itemDisplaySettings.fullBleed
-              ? EdgeInsets.zero
-              : EdgeInsets.only(
-                  bottom: 10, top: vm.setting!.hasHeaderSection ? 15 : 0),
-          margin: EdgeInsets.only(top: vm.displaySetting!.marginTop),
-          decoration: BoxDecoration(
-              color: vm.setting!.displaySettings!.displayStyle ==
-                      DisplayStyle.phamplet
-                  ? null
-                  : vm.displaySetting!.backgroundColor,
-              image: vm.displaySetting!.hasBackgroundImage
-                  ? DecorationImage(
-                      image:
-                          NetworkImage(vm.displaySetting!.backgroundImageUrl!),
-                      fit: BoxFit.cover)
-                  : null),
-          width: double.infinity,
-          child: Column(
-            children: [
-              if (vm.setting!.hasHeaderSection && !hideHeadSection)
-                _ModuleHeadSection(),
-              if ((!vm.setting!.hasHeaderSection &&
-                      vm.setting!.displaySettings!.itemDisplaySettings
-                              .displayType ==
-                          DisplayStyle.standard))
-                VerticalSpacing.custom(
-                  value: vm.displaySetting!.itemDisplaySettings.cardPadding,
-                ),
-              ...children as Iterable<Widget>
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -116,7 +117,7 @@ class _ModuleHeadSection extends ViewModelWidget<ModuleUIContainerViewModel> {
                 children: [
                   if (viewModel.setting!.title != null)
                     Text(viewModel.setting!.title!,
-                        textScaleFactor: 1,
+                        
                         textAlign: UIAlignment.textAlign(
                             viewModel.displaySetting!.titleAlignment),
                         style: ModuleTextStyle.title(
@@ -124,7 +125,7 @@ class _ModuleHeadSection extends ViewModelWidget<ModuleUIContainerViewModel> {
                             color: viewModel.displaySetting!.textColor)),
                   if (viewModel.setting!.subtitle?.isNotEmpty ?? false)
                     Text(viewModel.setting!.subtitle!,
-                        textScaleFactor: 1,
+                        
                         textAlign: UIAlignment.textAlign(
                             viewModel.displaySetting!.titleAlignment),
                         style: ModuleTextStyle.subtitle(
@@ -172,7 +173,7 @@ class _MetaData extends ViewModelWidget<ModuleUIContainerViewModel> {
         if (viewModel.setting!.metaData!.saleEndDate != null)
           Text(
             "Ends In : ${viewModel.endTime.toString()}",
-            textScaleFactor: 1,
+            
             textAlign:
                 UIAlignment.textAlign(viewModel.displaySetting!.titleAlignment),
             style: AppTextStyle.titleMedium.copyWith(
@@ -183,7 +184,7 @@ class _MetaData extends ViewModelWidget<ModuleUIContainerViewModel> {
         if (viewModel.setting!.metaData!.saleStartDate != null)
           Text(
             "Sales Starts on : ${viewModel.setting!.metaData!.saleStartDate.toString()}",
-            textScaleFactor: 1,
+            
             textAlign:
                 UIAlignment.textAlign(viewModel.displaySetting!.titleAlignment),
             style: AppTextStyle.titleMedium.copyWith(

@@ -4,12 +4,18 @@ import '../shared/api_model/request_settings.dart';
 import '../shared/request_method.dart';
 
 class OrderRequest {
-  static RequestSettings getAllOrders(int pageNum) {
-    Map<String, dynamic> params = {};
-    params['pageNumber'] = pageNum;
+  static RequestSettings getAllOrders(int pageNum, String status) {
+    // Map<String, dynamic> params = {};
+    // params['pageNumber'] = pageNum;
+    // params['status'] = status;
 
-    return RequestSettings(Endpoints.getAllOrders, RequestMethod.GET,
-        params: params, authenticated: true);
+    String queryString = "?";
+
+    queryString += "pageNumber=$pageNum";
+    queryString += "&status=$status";
+    queryString += "&type=list";
+
+    return RequestSettings(Endpoints.getAllOrders + queryString, RequestMethod.GET, params: null, authenticated: true);
   }
 
   static RequestSettings getOrderDetails(String orderID) {

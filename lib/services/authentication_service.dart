@@ -1,15 +1,23 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/auth/auth_response.dart';
 import 'package:bullion/core/models/auth/user.dart';
+import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/auth_request.dart';
+import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/api_model/error_response_exception.dart';
+import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/shared/preference_service.dart';
 import 'package:bullion/services/token_service.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'shared/analytics_service.dart';
 import 'shared/dialog_service.dart';
@@ -20,7 +28,7 @@ class AuthenticationService {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final DialogService _dialogService = locator<DialogService>();
 
-  // final PushNotificationService? _pushService = locator<PushNotificationService>();
+  final PushNotificationService _pushService = locator<PushNotificationService>();
 
   User? _user;
   StreamController<User?> userController = StreamController<User?>.broadcast();
@@ -38,17 +46,13 @@ class AuthenticationService {
 
   void _setUser(AuthResponse authResult) {
     if ((authResult.token != null) && (authResult.user != null)) {
-      _tokenService.setTokens(
-          authResult.token!.authToken, authResult.token!.refreshToken);
+      _tokenService.setTokens(authResult.token!.authToken, authResult.token!.refreshToken);
       userController.add(authResult.user);
       _user = authResult.user;
       _analyticsService.setUserId(_user!.userId);
 
-      // TODO - Push Implementation
-      // _pushService!.setUser(_user!.userId);
-
-      // TODO - Sentry Implementation
-      // configureSentryScope();
+      _pushService.setUser(_user!.userId);
+      configureSentryScope();
     }
   }
 
@@ -59,11 +63,8 @@ class AuthenticationService {
     _user = user;
     _analyticsService.setUserId(_user!.userId);
 
-    // TODO - Push Implementation
-    // _pushService!.setUser(_user!.userId);
-
-    // TODO - Sentry Implementation
-    // configureSentryScope();
+    _pushService.setUser(_user!.userId);
+    configureSentryScope();
   }
 
   Future<AuthResponse?> login(String email, String password) async {
@@ -73,14 +74,58 @@ class AuthenticationService {
       _setUser(authResult);
       _analyticsService.loglogin();
 
-      // TODO - Refresh Page Storage Service
-      // await locator<PageStorageService>().write(locator<NavigationService>().navigatorKey.currentContext!, const PageStorageKey("Spot Price"), null);
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
+
       return authResult;
     } on ErrorResponseException catch (ex) {
       _showAlert(ex, "Error");
     }
     return null;
   }
+
+
+  Future<AuthResponse?> signInWithGoogle() async {
+    if (await GoogleSignIn().isSignedIn()) {
+      await GoogleSignIn().signOut();
+    }
+
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn(
+        // clientId: "836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com",
+        // serverClientId: "836178511980-aqd8idj22a64itu788efud4k5bvhriti.apps.googleusercontent.com",
+      ).signIn();
+      final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+      if (googleAuth != null) {
+        var authResult = await _apiBaseService
+            .request<AuthResponse>(AuthRequest.googleAuth(googleUser!.email, googleAuth.accessToken!));
+        _setUser(authResult);
+
+        locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+        locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
+
+        return authResult;
+      }
+
+    }  on ErrorResponseException catch (ex) {
+      _showAlert(ex, "Error");
+    }  catch (ex, s) {
+      Logger.d(ex.toString(), s: s);
+    }
+
+    // final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    //
+    // if (googleAuth != null) {
+    //   final credential = FA.GoogleAuthProvider.credential(
+    //     accessToken: googleAuth.accessToken,
+    //     idToken: googleAuth.idToken,
+    //   );
+    //   return await FA.FirebaseAuth.instance.signInWithCredential(credential);
+    // }
+    return null;
+  }
+
 
   Future<void> logout(String anyMessage) async {
     try {
@@ -89,17 +134,17 @@ class AuthenticationService {
       _showAlert(ex, "Error");
     }
 
-    // TODO - Clear Cart Service
-    // await locator<CartService>().clear();
+    await locator<CartService>().clear();
     locator<PreferenceService>().clearData();
     locator<TokenService>().clearToken();
     _user = null;
     userController.add(null);
 
-    // TODO - Sentry Implementation
-    // Sentry.configureScope((p0) => p0.setUser(null));
+    Sentry.configureScope((p0) => p0.setUser(null));
 
-    locator<NavigationService>().popAllAndPushNamed(Routes.introPage);
+    //TODO - Revert to Intro Page, after entering the proper content in that page
+    // locator<NavigationService>().popAllAndPushNamed(Routes.introPage);
+    locator<NavigationService>().popAllAndPushNamed(Routes.splash);
   }
 
   Future<AuthResponse?> register(
@@ -121,6 +166,8 @@ class AuthenticationService {
       );
       _setUser(authResult);
       _analyticsService.logSignUp();
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
       return authResult;
     } on ErrorResponseException catch (ex) {
       _showAlert(ex, "Error");
@@ -133,6 +180,9 @@ class AuthenticationService {
       var authResult = await _apiBaseService
           .request<AuthResponse>(AuthRequest.registerAsGuest(email));
       _setUser(authResult);
+
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
+      locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
 
       return authResult;
     } on ErrorResponseException catch (ex) {
@@ -194,19 +244,18 @@ class AuthenticationService {
     _dialogService.showDialog(title: title, description: error.error?.getSingleMessage() ?? '-');
   }
 
-  // TODO - Sentry Implementation
-  // configureSentryScope() {
-  //   if (isAuthenticated) {
-  //     Sentry.configureScope(
-  //       (scope) => scope.setUser(SentryUser(
-  //           id: _user?.userId.toString(),
-  //           email: _user?.email,
-  //           username: _user?.email,
-  //           name: "${_user?.firstName ?? ''} ${_user?.lastName ?? ''}",
-  //           data: _user?.toJson())),
-  //     );
-  //   } else {
-  //     Sentry.configureScope((scope) => scope.setUser(null));
-  //   }
-  // }
+  configureSentryScope() {
+    if (isAuthenticated) {
+      Sentry.configureScope(
+        (scope) => scope.setUser(SentryUser(
+            id: _user?.userId.toString(),
+            email: _user?.email,
+            username: _user?.email,
+            name: "${_user?.firstName ?? ''} ${_user?.lastName ?? ''}",
+            data: _user?.toJson())),
+      );
+    } else {
+      Sentry.configureScope((scope) => scope.setUser(null));
+    }
+  }
 }

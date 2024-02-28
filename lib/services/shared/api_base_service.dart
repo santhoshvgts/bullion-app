@@ -9,6 +9,7 @@ import 'package:bullion/core/models/api/api_error_response.dart';
 import 'package:bullion/core/models/auth/token.dart';
 import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/models/base_model.dart';
+import 'package:bullion/core/models/module/dynamic.dart';
 import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
@@ -45,8 +46,6 @@ class ApiBaseService extends ApiBaseHelper {
       var response = await _sendAsync(settings.method, settings.endPoint, settings.params, authenticated: settings.authenticated);
       if (response != null) {
         if (response.statusCode == 200 || response.statusCode == 201) {
-          Logger.d("RESPONSE BODY");
-          Logger.d(response.body);
           return jsonDecode(utf8.decode(response.bodyBytes)).map((e) => BaseModel.createFromMap<T>(e)).cast<T>().toList();
         }
       }
@@ -67,7 +66,7 @@ class ApiBaseService extends ApiBaseHelper {
       var response = await _sendAsync(settings.method, settings.endPoint, settings.params, authenticated: settings.authenticated);
       if (response != null) {
         if (response.statusCode == 200 || response.statusCode == 201) {
-          return BaseModel.createFromMap<T>(jsonDecode(utf8.decode(response.bodyBytes)));
+          return BaseModel.createFromMap<T>(response.bodyBytes.isEmpty ? {} : jsonDecode(utf8.decode(response.bodyBytes)));
         }
       }
     } on TimeoutException catch (exception, stacktrace) {
@@ -111,6 +110,7 @@ class ApiBaseService extends ApiBaseHelper {
       if (body is HTTP.MultipartRequest) body.headers.addAll(requestMessage.headers);
 
       Logger.d(requestMessage.headers.toString());
+      Logger.d(body.toString());
 
       // Stream Response using HTTP
       // Send body if it is a Multipart Request, else send Request Message

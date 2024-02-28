@@ -26,11 +26,14 @@ class ChipItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
             border: Border.all(
               color: isSelected ? AppColor.primary : AppColor.border,
-            )),
+              width: isSelected ? 2 : 1
+            )
+        ),
         child: Text(
           text,
           style: AppTextStyle.bodyMedium.copyWith(
-            color: AppColor.text,
+            color: isSelected ? AppColor.primary : AppColor.secondaryText,
+            fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/services/page_storage_service.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -14,6 +15,8 @@ class SplashViewModel extends VGTSBaseViewModel {
   Future onInit() async {
     await locator<FirebaseRemoteHelper>().configure();
     await preferenceService.init();
+    await locator<PushNotificationService>().configure();
+
 
     try {
       try {
@@ -25,11 +28,11 @@ class SplashViewModel extends VGTSBaseViewModel {
 
       Map<String, Future<PageSettings?>> futures = {
         "Home": request<PageSettings>(PageRequest.fetch(path: "/pages/home")),
-        "Deals": request<PageSettings>(PageRequest.fetch(path: "/pages/deals")),
-        "Charts": request<PageSettings>(PageRequest.fetch(path: "/spot-prices"))
+        // "Deals": request<PageSettings>(PageRequest.fetch(path: "/pages/deals")),
+        // "Charts": request<PageSettings>(PageRequest.fetch(path: "/spot-prices"))
       };
 
-      Future.wait([...futures.values.toList()]).then((value) {
+      Future.wait([...futures.values.toList(),]).then((value) {
         for (int i = 0; i < value.length; i++) {
           locator<PageStorageService>().write(
               navigationService.navigatorKey.currentContext!,
@@ -42,7 +45,8 @@ class SplashViewModel extends VGTSBaseViewModel {
           return;
         }
         if (preferenceService.isFirstTimeAppOpen()) {
-          navigationService.popAllAndPushNamed(Routes.introPage);
+          //TODO - Revert to Intro Page, after entering the proper content in that page
+          navigationService.popAllAndPushNamed(Routes.dashboard);
         } else {
           navigationService.popAllAndPushNamed(Routes.dashboard);
         }

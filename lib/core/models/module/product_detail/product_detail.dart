@@ -236,4 +236,5 @@ class ProductDetails extends BaseModel {
 
     return data;
   }
+
 }

@@ -9,10 +9,7 @@ class FavoritesViewModel extends VGTSBaseViewModel {
 
   void init() async {
     setBusy(true);
-
-    _favoritesResponse =
-        await requestList<ProductDetails>(FavoritesRequest.getFavorites());
-
+    _favoritesResponse = await requestList<ProductDetails>(FavoritesRequest.getFavorites());
     debugPrint(_favoritesResponse.toString());
     setBusy(false);
   }
@@ -21,9 +18,8 @@ class FavoritesViewModel extends VGTSBaseViewModel {
 
   Future<void> removeFavorite(int? productId) async {
     setBusy(true);
-
-    await request<ProductDetails>(FavoritesRequest.removeFavorite(productId.toString()));
-
+    var response = await request<ProductDetails>(FavoritesRequest.removeFavorite(productId.toString()));
+    _favoritesResponse?.removeWhere((element) => element.overview?.productId == productId);
     setBusy(false);
   }
 }

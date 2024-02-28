@@ -28,8 +28,8 @@ class CheckoutStreamService {
     _refreshCheckout(checkout);
   }
 
-  saveAddressAndRefreshCheckout(UserAddress userAddress) async {
-    Checkout? checkout = await _apiBaseService.request<Checkout>(CheckoutRequest.saveDeliveryAddress(addressId: userAddress.id,));
+  saveAddressAndRefreshCheckout(int id) async {
+    Checkout? checkout = await _apiBaseService.request<Checkout>(CheckoutRequest.saveDeliveryAddress(addressId: id,));
     _refreshCheckout(checkout);
   }
 

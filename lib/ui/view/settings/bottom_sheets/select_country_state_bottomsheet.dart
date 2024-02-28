@@ -82,7 +82,7 @@ class SelectCountryStateBottomSheet
                               isCountry
                                   ? viewModel.countryList![index].text!
                                   : viewModel.stateList![index].text!,
-                              textScaleFactor: 1,
+                              
                               style: AppTextStyle.bodyMedium,
                               textAlign: TextAlign.start,
                             )),

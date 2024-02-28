@@ -1,52 +1,58 @@
 import 'package:bullion/core/models/alert/product_alert_response_model.dart';
-import 'package:bullion/core/models/module/product_item.dart' as product_item;
+import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/services/api_request/alerts_request.dart';
+import 'package:bullion/services/push_notification_service.dart';
+import 'package:bullion/services/shared/api_model/request_settings.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
+import 'package:vgts_plugin/form/utils/number_currency_format.dart';
 
 import '../../../../core/models/alert/alert_response.dart';
 import '../../../../locator.dart';
 import '../../../../services/shared/dialog_service.dart';
 
 class EditPriceAlertViewModel extends VGTSBaseViewModel {
-  bool _isCreatePriceAlert = true;
-  ProductAlert? productAlert;
-  int? productId;
+  ProductDetails? productDetails;
+  ProductOverview? productOverview;
 
   GlobalKey<FormState> priceAlertGlobalKey = GlobalKey<FormState>();
 
-  NumberFormFieldController targetPriceFormFieldController =
-      NumberFormFieldController(const Key("targetPrice"),
-          required: true, requiredText: "Target Price can't be empty");
+  AmountFormFieldController targetPriceFormFieldController = AmountFormFieldController(const Key("targetPrice"),
+    required: true,
+    requiredText: "Target Price can't be empty",
+    currencyFormat: NumberCurrencyFormat(
+      "USD",
+      "en_US",
+      "\$",
+      2
+    )
+  );
 
-  void init(ProductAlert? productAlert, product_item.ProductOverview? productDetails) async {
-    if (productDetails?.productId != null) {
-      _isCreatePriceAlert = true;
-      productId = productDetails?.productId;
-    } else {
-      _isCreatePriceAlert = false;
-      this.productAlert = productAlert;
-      targetPriceFormFieldController.text = productAlert?.yourPrice.toString();
+  void init(ProductOverview? data) async {
+    productOverview = data;
+
+    setBusyForObject(productDetails, true);
+    productDetails = await request<ProductDetails>(AlertsRequest.getPriceAlertById(data!.productId!));
+    setBusyForObject(productDetails, false);
+
+    if ((productDetails?.yourPrice ?? 0) != 0) {
+      targetPriceFormFieldController.text = productDetails?.yourPrice.toString();
     }
+    targetPriceFormFieldController.focusNode.requestFocus();
   }
 
-  Future<bool> editMarketAlert() async {
-    //setBusy(true);
-    locator<DialogService>().showLoader();
-    ProductAlert? productAlert = await request<ProductAlert>(
-        AlertsRequest.editPriceAlert(
-            _isCreatePriceAlert
-                ? productId
-                : this.productAlert?.productOverview?.productId,
-            targetPriceFormFieldController.text));
+  Future<bool> savePriceAlert() async {
+    setBusy(true);
+    ProductDetails? productAlert = await request<ProductDetails>(AlertsRequest.editPriceAlert(productOverview!.productId, targetPriceFormFieldController.text));
+    setBusy(false);
 
-    //setBusy(false);
-    notifyListeners();
-    locator<DialogService>().dialogComplete(AlertResponse(status: true));
-
+    bool hasNotificationPermission = await locator<PushNotificationService>().checkPermissionAndPromptSettings(
+        "Product Price Alert Created",
+        description: "Know instantly when your price alerts get triggered. Please enable push notifications to get notified instantly."
+    );
     return productAlert != null;
   }
 
-  bool get isCreatePriceAlert => _isCreatePriceAlert;
 }

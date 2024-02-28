@@ -1,6 +1,7 @@
 import 'package:bullion/core/models/alert/alert_add_response_model.dart';
 import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/core/res/spacing.dart';
+import 'package:bullion/services/push_notification_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/staggered_animation.dart';
@@ -24,157 +25,138 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
   const CustomSpotPricePage(this.viewModel, {super.key});
 
   @override
-  void onViewModelReady(AlertsViewModel viewModel) {
-    super.onViewModelReady(viewModel);
-  }
-
-  @override
   AlertsViewModel viewModelBuilder(BuildContext context) {
     return viewModel;
   }
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      AlertsViewModel viewModel, Widget? child) {
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, AlertsViewModel viewModel, Widget? child) {
     return viewModel.alertResponse?.alertResponseModels == null
         ? const Center(child: Text("No data available"))
         : Scaffold(body: viewModel.alertResponse!.alertResponseModels!.isNotEmpty
-            ? Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-                child: SizedBox(
-                  child: AnimationLimiter(
-                    child: ListView.separated(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: viewModel.alertResponse?.alertResponseModels?.length ?? 0,
-                        separatorBuilder: (context, index) {
-                          return VerticalSpacing.d20px();
-                        },
-                        itemBuilder: (context, index) {
-                          AlertResponseModel alertResponseModel = viewModel.alertResponse!.alertResponseModels![index];
+            ? SizedBox(
+              child: AnimationLimiter(
+                child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemCount: viewModel.alertResponse?.alertResponseModels?.length ?? 0,
+                    separatorBuilder: (context, index) {
+                      return VerticalSpacing.d20px();
+                    },
+                    itemBuilder: (context, index) {
+                      AlertResponseModel alertResponseModel = viewModel.alertResponse!.alertResponseModels![index];
 
-                          return StaggeredAnimation.staggeredList(
-                              index: index,
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: AppStyle.elevatedGridShadow,
-                                    borderRadius: BorderRadius.circular(12),
+                      return StaggeredAnimation.staggeredList(
+                          index: index,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: AppStyle.elevatedGridShadow,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+
+                                  Text(
+                                    "${viewModel.getMetalName(alertResponseModel.metal)}, ${(alertResponseModel.operatorName ?? '')}",
+                                    style: AppTextStyle.bodyMedium
                                   ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                                  VerticalSpacing.d5px(),
+
+                                  Text(alertResponseModel.formattedPrice ?? '', style: AppTextStyle.titleLarge,),
+
+                                  AppStyle.customDivider,
+
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
                                     children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          AlertResponse response = await locator<DialogService>().showConfirmationDialog(
+                                              title: "Delete",
+                                              description: "Do you want to delete this Alert ?",
+                                              buttonTitle: "Delete"
+                                          );
 
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              alertResponseModel.operatorName ?? '',
-                                              style: AppTextStyle.labelMedium.copyWith(color: AppColor.secondaryText),
+                                          if (response.status == true) {
+                                            viewModel.removeSpotPriceAlert(alertResponseModel.id);
+                                          }
+                                        },
+                                        child: Row(
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.only(right: 4.0),
+                                              child: Icon(
+                                                Icons.close,
+                                                size: 18,
+                                                color: AppColor.red,
+                                              ),
                                             ),
-                                          ),
-
-                                          Expanded(
-                                            child: Text(alertResponseModel.formattedPostedDate ?? '',
-                                              textAlign: TextAlign.right,
-                                              style: AppTextStyle.labelMedium.copyWith(color: AppColor.secondaryText),
-                                            ),
-                                          )
-                                        ],
+                                            Text(
+                                              "Delete",
+                                              style: AppTextStyle.titleSmall.copyWith(color: AppColor.red),
+                                            )
+                                          ],
+                                        ),
                                       ),
+                                      // const SizedBox(
+                                      //   width: 16,
+                                      // ),
+                                      // InkWell(
+                                      //   onTap: () {
+                                      //     locator<NavigationService>().pushNamed(
+                                      //         Routes.editSpotPrice,
+                                      //         arguments: {
+                                      //           "alertResponse": viewModel
+                                      //               .alertResponse!
+                                      //               .alertResponseModels?[index]
+                                      //         });
+                                      //   },
+                                      //   child: Row(
+                                      //     children: [
+                                      //       const Padding(
+                                      //         padding: EdgeInsets.only(
+                                      //             right: 4.0),
+                                      //         child: Icon(
+                                      //           Icons.edit,
+                                      //           size: 18,
+                                      //           color: AppColor.blue,
+                                      //         ),
+                                      //       ),
+                                      //       Text(
+                                      //         "Edit",
+                                      //         style: AppTextStyle.titleSmall.copyWith(color: AppColor.blue),
+                                      //       )
+                                      //     ],
+                                      //   ),
+                                      // ),
 
-                                      VerticalSpacing.d5px(),
-
-                                      Text(alertResponseModel.formattedPrice ?? '', style: AppTextStyle.titleLarge,),
-
-                                      VerticalSpacing.d5px(),
-
-                                      Text(viewModel.getMetalName(alertResponseModel.metal), style: AppTextStyle.bodyMedium,),
-
-                                      AppStyle.customDivider,
-
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          InkWell(
-                                            onTap: () async {
-                                              AlertResponse response = await locator<DialogService>().showConfirmationDialog(
-                                                  title: "Delete",
-                                                  description: "Do you want to delete this Alert ?",
-                                                  buttonTitle: "Delete"
-                                              );
-
-                                              if (response.status == true) {
-                                                viewModel.removeSpotPriceAlert(viewModel.productAlerts?[index].productOverview?.productId);
-                                              }
-                                            },
-                                            child: Row(
-                                              children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.only(right: 4.0),
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    size: 18,
-                                                    color: AppColor.red,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "Delete",
-                                                  style: AppTextStyle.titleSmall.copyWith(color: AppColor.red),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 16,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              locator<NavigationService>().pushNamed(
-                                                  Routes.editSpotPrice,
-                                                  arguments: {
-                                                    "alertResponse": viewModel
-                                                        .alertResponse!
-                                                        .alertResponseModels?[index]
-                                                  });
-                                            },
-                                            child: Row(
-                                              children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 4.0),
-                                                  child: Icon(
-                                                    Icons.edit,
-                                                    size: 18,
-                                                    color: AppColor.blue,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "Edit",
-                                                  style: AppTextStyle.titleSmall.copyWith(color: AppColor.blue),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
+                                      Expanded(
+                                        child: Text(alertResponseModel.formattedPostedDate ?? '',
+                                          textAlign: TextAlign.right,
+                                          style: AppTextStyle.labelMedium.copyWith(color: AppColor.secondaryText),
+                                        ),
+                                      )
                                     ],
-                                  )
-                                ),
-                              ));
-                        }),
-                  ),
-                ),
-              )
+                                  ),
+
+                                ],
+                              )
+                            ),
+                          ));
+                    }),
+              ),
+            )
             : Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height / 1.5,
@@ -189,7 +171,7 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                     ),
                     const SizedBox(height: 32.0),
                     const Text(
-                      "Spot Price alerts are empty",
+                      "Market Price Alert",
                       textAlign: TextAlign.center,
                       style: AppTextStyle.titleLarge,
                     ),
@@ -210,9 +192,26 @@ class CustomSpotPricePage extends VGTSBuilderWidget<AlertsViewModel> {
                 "Create New Alert",
                 valueKey: const Key("btnCreateAlert"),
                 borderRadius: BorderRadius.circular(24),
-                onPressed: () {
-                  locator<NavigationService>()
-                      .pushNamed(Routes.addEditAlert);
+                onPressed: () async {
+
+                  String title;
+                  String description;
+
+                  title = "Market Price Alert";
+                  description =
+                  "Tell us your Gold, Silver, Platinum or Palladium target price and we will alert you as soon as the market reaches your price. "
+                      "\n\n Allow push notification to get notified instantly of price movements.";
+
+                  bool hasNotificationPermission =
+                  await locator<PushNotificationService>().checkPermissionAndPromptSettings(title, description: description);
+                  if (!hasNotificationPermission) {
+                    return;
+                  }
+
+                  var result = await locator<NavigationService>().pushNamed(Routes.addEditAlert);
+                  if (result != null) {
+                    viewModel.refreshSpotPriceAlert();
+                  }
                 },
               )),
         ),

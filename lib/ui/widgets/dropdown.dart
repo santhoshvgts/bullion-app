@@ -7,13 +7,12 @@ import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
 import '../../core/res/colors.dart';
 
-TextStyle _errorTextStyle = AppTextStyle.bodySmall.copyWith(
-  color: AppColor.error,
-);
-TextStyle _bodyTextStyle = AppTextStyle.bodyMedium;
+TextStyle _errorTextStyle = AppTextStyle.bodySmall.copyWith(color: AppColor.error, fontFamily: AppTextStyle.fontFamily);
+TextStyle _bodyTextStyle = AppTextStyle.bodyMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily);
 TextStyle _hintTextStyle = AppTextStyle.bodyMedium.copyWith(
   color: const Color(0xff49454F).withOpacity(0.7),
   fontWeight: FontWeight.normal,
+  fontFamily: AppTextStyle.fontFamily
 );
 
 BorderRadius _borderRadius = BorderRadius.circular(6.0);
@@ -122,10 +121,8 @@ class _DropdownFieldState<T extends BaseModel> extends State<DropdownField<T>> {
           errorStyle: _errorTextStyle,
           hintStyle: _hintTextStyle,
           focusColor: AppColor.secondary,
-          suffixIconConstraints:
-              const BoxConstraints(minWidth: 15, maxHeight: 20),
-          prefixIconConstraints:
-              const BoxConstraints(minWidth: 15, maxHeight: 20),
+          suffixIconConstraints: const BoxConstraints(minWidth: 15, maxHeight: 20),
+          prefixIconConstraints: const BoxConstraints(minWidth: 15, maxHeight: 20),
         ),
         style: _bodyTextStyle,
         isExpanded: true,
