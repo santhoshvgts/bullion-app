@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:bullion/core/res/images.dart';
 import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
+import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -12,6 +14,8 @@ class DeepLinkingService {
 
   StreamSubscription? _linkSubscription;
   StreamSubscription<PendingDynamicLinkData>? _firebaseLinkSubscription;
+
+  bool isStreamInitialized = false;
 
   var deepLinkedUrl;
 
@@ -34,6 +38,9 @@ class DeepLinkingService {
   }
 
   Future handleStreamDeepLinks() async {
+    if (isStreamInitialized) {
+      return;
+    }
 
     // UNI LINK STREAM LISTENER
     _linkSubscription = uriLinkStream.listen((Uri? uri) {
@@ -50,6 +57,8 @@ class DeepLinkingService {
         _dynamicLinkNavigate(dynamicLinkData);
       });
     }
+
+    isStreamInitialized = true;
   }
 
   _processLink(Uri link) async {
@@ -90,20 +99,19 @@ class DeepLinkingService {
     }
   }
 
-  _parseAndNavigate(Uri uri) {
+  _parseAndNavigate(Uri uri) async {
     String uriPath = uri.path;
     if (uriPath == "/") {
       uri = uri.replace(path: Routes.home);
     }
 
-    if (!locator<AuthenticationService>().isAuthenticated && uriPath.startsWith("/account")) {
-      locator<NavigationService>().pushNamed(Routes.settings);
-      return;
-    }
-
-    if (!locator<AuthenticationService>().isAuthenticated && uriPath.startsWith("/checkout")) {
-      locator<NavigationService>().pushNamed(Routes.viewCart);
-      return;
+    if (Routes.authRoute.where((e)=> e.startsWith(uri.path)).isNotEmpty == true) {
+      if (!locator<AuthenticationService>().isAuthenticated) {
+        bool authenticated = await signInRequest(Images.iconPriceAlertBottom,
+            title: "Account",
+            content: "Sign in to do more with your account");
+        if (!authenticated) return;
+      }
     }
 
     locator<NavigationService>().pushNamed(uri.path + (uri.hasQuery ? "?${uri.query}" : ""),);

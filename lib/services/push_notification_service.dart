@@ -15,6 +15,8 @@ import '../ui/view/settings/notification_prompt_bottom_sheet.dart';
 class PushNotificationService {
   final AppConfigService _appConfigService = locator<AppConfigService>();
 
+  bool initialized = false;
+
   int _tab = 0;
 
   //Remove these when v1 is removed
@@ -30,8 +32,11 @@ class PushNotificationService {
   }
 
   Future<void> initNotificationListener() async {
-    debugPrint("Initialized Notification Listener");
+    if (initialized) {
+      return;
+    }
 
+    debugPrint("Initialized Notification Listener");
     OneSignal.Notifications.addClickListener((OSNotificationClickEvent result) async {
       try {
         String? url = result.notification.additionalData!['target_url'];
@@ -78,11 +83,17 @@ class PushNotificationService {
       }
     });
 
+    initialized = true;
   }
 
   Future<void> setUser(int? userId) async {
     return await OneSignal.login(userId.toString());
   }
+
+  Future<void> logout() async {
+    return await OneSignal.logout();
+  }
+
 
   Future<bool> promptOneSignal({bool fallbackToSettings = false}) async {
     return await OneSignal.Notifications.requestPermission(fallbackToSettings);
