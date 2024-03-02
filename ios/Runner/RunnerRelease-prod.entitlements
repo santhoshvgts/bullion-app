@@ -11,7 +11,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.bullion.dev.onesignal</string>
+		<string>group.com.bullion.onesignal</string>
 	</array>
 </dict>
 </plist>
