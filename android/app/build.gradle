@@ -63,6 +63,7 @@ android {
         }
         create("prod") {
             dimension = "flavor-type"
+            applicationIdSuffix = ".prod"
             manifestPlaceholders["appName"] = "Bullion"
             manifestPlaceholders["deepLinkHost"] = "bullion.com"
             manifestPlaceholders["deepFBLinkHost"] = "bullion.page.link"
