@@ -1,3 +1,4 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/helper/firebase_remote_helper.dart';
 import 'package:bullion/helper/logger.dart';
@@ -21,6 +22,7 @@ class SplashViewModel extends VGTSBaseViewModel {
     try {
       try {
         await locator<UpdateChecker>().versionCheck();
+        AppTrackingTransparency.requestTrackingAuthorization();
       } catch (e) {
         Logger.d(e.toString());
         print("TOTAL VALUE");
@@ -45,7 +47,7 @@ class SplashViewModel extends VGTSBaseViewModel {
           return;
         }
         if (preferenceService.isFirstTimeAppOpen()) {
-          //TODO - Revert to Intro Page, after entering the proper content in that page
+          // TODO - Revert to Intro Page, after entering the proper content in that page
           navigationService.popAllAndPushNamed(Routes.dashboard);
         } else {
           navigationService.popAllAndPushNamed(Routes.dashboard);
