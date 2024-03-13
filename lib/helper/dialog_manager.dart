@@ -66,7 +66,6 @@ class _DialogManagerState extends State<DialogManager> {
                 TextButton(
                   child: const Text(
                     "OK",
-                    
                     style: AppTextStyle.labelMedium,
                   ),
                   onPressed: () {

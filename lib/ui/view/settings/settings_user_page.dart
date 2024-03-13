@@ -507,14 +507,45 @@ class SettingsUserPage extends VGTSBuilderWidget<SettingsUserViewModel> {
           ),
         ),
 
+
         FutureBuilder(
           future: PackageInfo.fromPlatform(),
           builder: (context, snapshot) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 48.0, bottom: 15),
-              child: Text('App Version - ${snapshot.data?.version}',
-                  style: AppTextStyle.bodySmall
-                      .copyWith(color: AppColor.secondaryText)),
+            return Column(
+              children: [
+
+                if (locator<AppConfigService>().config?.showDeleteButtonByVersion == snapshot.data?.version
+                    && locator<AuthenticationService>().isAuthenticated)
+                  InkWell(
+                    onTap: () async {
+                      AlertResponse response = await locator<DialogService>().showConfirmationDialog(
+                          title: "Delete Account",
+                          description: "Do you want to delete your account?",
+                          buttonTitle: "Delete"
+                      );
+
+                      if (response.status == true) {
+                        locator<AuthenticationService>().logout("");
+                      }
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                        child: Text("Delete Account", style: AppTextStyle.bodyMedium.copyWith(
+                            color: AppColor.red
+                        ),),
+                      ),
+                    ),
+                  ),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 48.0, bottom: 15),
+                  child: Text('App Version - ${snapshot.data?.version}',
+                      style: AppTextStyle.bodySmall
+                          .copyWith(color: AppColor.secondaryText)),
+                ),
+              ],
             );
           }
         )
