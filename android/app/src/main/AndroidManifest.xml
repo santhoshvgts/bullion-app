@@ -47,14 +47,14 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
 
 
-        <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
+        <activity android:name="com.example.flutter_braintree.FlutterBraintreeCustom"
+            android:launchMode="singleInstance"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="${applicationId}.braintree" />
+                <data android:scheme="${applicationId}.return.from.braintree" />
             </intent-filter>
         </activity>
 
