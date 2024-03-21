@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:728159990668:android:1268750594c7ad92f39ca9",
+        "mobilesdk_app_id": "1:728159990668:android:0ba11574f1731dd9f39ca9",
         "android_client_info": {
-          "package_name": "com.bullion.dev"
+          "package_name": "com.bullion.app.dev"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "728159990668-l5n42kibga0k4d4im86s63llgsur51cb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bullion.app.dev",
+            "certificate_hash": "a21d422469e77ddfa26cfb1698443fa25219f75d"
+          }
+        },
+        {
+          "client_id": "728159990668-fm58vg9bf115djvq2met2na339877gei.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDrZBHYwe_aQwuGXwlPLh0Z6pfECTkH8pM"
@@ -20,7 +33,63 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728159990668-fm58vg9bf115djvq2met2na339877gei.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "728159990668-pcerst6i7340m6mkg8bk2h62ihqa94lu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bullion.app.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728159990668:android:1268750594c7ad92f39ca9",
+        "android_client_info": {
+          "package_name": "com.bullion.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728159990668-8uvai51qmlphstf3tja7iou138prs0ui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bullion.dev",
+            "certificate_hash": "a21d422469e77ddfa26cfb1698443fa25219f75d"
+          }
+        },
+        {
+          "client_id": "728159990668-fm58vg9bf115djvq2met2na339877gei.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrZBHYwe_aQwuGXwlPLh0Z6pfECTkH8pM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728159990668-fm58vg9bf115djvq2met2na339877gei.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "728159990668-pcerst6i7340m6mkg8bk2h62ihqa94lu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bullion.app.dev"
+              }
+            }
+          ]
         }
       }
     }

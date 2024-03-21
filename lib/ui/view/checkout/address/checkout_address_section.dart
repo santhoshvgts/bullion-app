@@ -62,7 +62,10 @@ class CheckoutAddressSection extends VGTSBuilderWidget<CheckoutAddressViewModel>
                       return _AddressItemCard(userAddress,
                         checkout?.selectedShippingAddress?.address?.id == userAddress.id,
                         onTap: () {
-                          viewModel.onSelectShippingAddress(userAddress);
+                          viewModel.onSelectShippingAddress(userAddress.id!);
+                        },
+                        onEdit: () {
+                            viewModel.onEditAddress(userAddress);
                         },
                       );
                     },
@@ -75,7 +78,7 @@ class CheckoutAddressSection extends VGTSBuilderWidget<CheckoutAddressViewModel>
                       textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.primary),
                       valueKey: const ValueKey("btnAddShippingAddress"),
                       onPressed: () {
-                        locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: { "fromCheckout": true });
+                        viewModel.addAddress();
                       }
                   ),
 
@@ -117,9 +120,10 @@ class _AddressItemCard extends StatelessWidget {
 
   UserAddress address;
   Function onTap;
+  Function onEdit;
   bool selected;
 
-  _AddressItemCard(this.address, this.selected, { required this.onTap, });
+  _AddressItemCard(this.address, this.selected, { required this.onTap, required this.onEdit, });
 
   @override
   Widget build(BuildContext context) {
@@ -159,9 +163,16 @@ class _AddressItemCard extends StatelessWidget {
                         ),
                       ),
 
-                      IconButton(onPressed: (){
-                        locator<NavigationService>().pushNamed(Routes.addEditAddress, arguments: { "fromCheckout": true, "userAddress": address });
-                      }, icon: const Icon(Icons.open_in_new, size: 16,))
+                      Button.mini("Edit",
+                          valueKey: const ValueKey("btnEdit"),
+                          textStyle: AppTextStyle.labelMedium.copyWith(color: AppColor.primary),
+                          borderColor: AppColor.white,
+                          width: 65,
+                          onPressed: () {
+                            onEdit();
+                          }
+                      )
+
                     ],
                   ),
                   Padding(

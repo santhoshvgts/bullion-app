@@ -60,7 +60,7 @@ class _VerifyOnlineBanking extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Verify via Online Banking (ACH)",style: AppTextStyle.titleMedium,textScaleFactor: 1,),
+          Text("Verify via Online Banking (ACH)",style: AppTextStyle.titleMedium,),
 
           VerticalSpacing.d15px(),
 
@@ -103,7 +103,7 @@ class _BankInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
 
-        Text("Enter Bank Information",style: AppTextStyle.titleMedium,textScaleFactor: 1,),
+        Text("Enter Bank Information",style: AppTextStyle.titleMedium,),
 
         VerticalSpacing.d15px(),
 
@@ -153,7 +153,7 @@ class _Points extends StatelessWidget {
 
           HorizontalSpacing.d10px(),
 
-          Expanded(child: Text(points,style: AppTextStyle.bodyMedium,textScaleFactor: 1,))
+          Expanded(child: Text(points,style: AppTextStyle.bodyMedium,))
 
         ],
       ),

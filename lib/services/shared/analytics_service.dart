@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/core/models/module/cart/shopping_cart.dart';
 import 'package:bullion/core/models/module/order.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/appconfig_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riskified/flutter_riskified.dart';
 import 'package:kochava_tracker/kochava_tracker.dart';
 import '../authentication_service.dart';
 
@@ -90,9 +93,9 @@ class AnalyticsService {
 
     // KochavaTracker.instance.sendEventWithDictionary("Purchase", eventMapObject);
 
-    // if (Platform.isIOS) {
-    //   Riskified.logSensitiveDeviceInfo();
-    // }
+    if (Platform.isIOS) {
+      Riskified.logSensitiveDeviceInfo();
+    }
   }
 
   Future<void> logShare({required String itemId, required String contentType, String method = "mobile"}) async {
@@ -102,8 +105,7 @@ class AnalyticsService {
 
   //Log Screen Name is deprecated user logscreen view
   Future<void> logScreenName(String screenName) async {
-    //TODO - RISKIFIED
-    // Riskified.logRequest("${locator<AppConfigService>().config!.baseApiUrl}${screenName}");
+    Riskified.logRequest("${locator<AppConfigService>().config?.baseApiUrl}$screenName");
     await analytics.setCurrentScreen(screenName: screenName);
   }
 
@@ -122,8 +124,7 @@ class AnalyticsService {
       }
     }
     logEvent('screen_view', {'screen_name': screenName, 'screen_class': className});
-    //TODO - RISKIFIED
-    // unawaited(Riskified.logRequest("${locator<AppConfigService>().config!.baseApiUrl}$screenName"));
+    unawaited(Riskified.logRequest("${locator<AppConfigService>().config?.baseApiUrl}$screenName"));
   }
 
   Future<void> logEvent(String name, Map<String, dynamic> parameters) async {
@@ -149,6 +150,7 @@ class AnalyticsService {
     analytics.logAppOpen();
   }
 
+  //TODO log Search need to be implemented
   Future<void> logSearch(String searchTerm) async {
     await analytics.logSearch(searchTerm: searchTerm);
     KochavaTracker.instance.sendEventWithString("Search", searchTerm);
@@ -176,7 +178,6 @@ class AnalyticsService {
     );
   }
 
-
   Future<void> logProductView(ProductDetails? productDetails) async {
     locator<AnalyticsService>().logEvent('view_item', {
       'currency': productDetails?.overview!.pricing!.currency ?? 'USD',
@@ -198,6 +199,34 @@ class AnalyticsService {
 
     KochavaTracker.instance.sendEventWithDictionary("View Product", eventMapObject);
   }
+
+  Future<void> removeFromCart(
+      {required String itemId,
+        required String itemName,
+        required String itemCategory,
+        required int quantity,
+        double? price,
+        double? value,
+        String? currency}) async {
+    locator<AnalyticsService>().logEvent('remove_from_cart', {
+      'currency': 'USD',
+      'item_id': itemId,
+      'item_name': itemName,
+      'value': price
+    });
+    debugPrint('Analytics: Remove Cart');
+  }
+
+  logAddToWishlist(ProductDetails productDetails) {
+    analytics.logAddToWishlist(
+        currency: "USD",
+        value: productDetails.overview!.pricing!.newPrice,
+        items: [
+          productDetails.overview!.analyticEventItemObject()
+        ]
+    );
+  }
+
 
   Map<String, Object> filterOutNulls(Map<String, Object?> parameters) {
     final Map<String, Object> filtered = <String, Object>{};

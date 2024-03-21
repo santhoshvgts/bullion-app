@@ -70,7 +70,7 @@ class MainTile extends StatelessWidget {
         Padding(padding: EdgeInsets.only(top: 12)),
         Text(
           data.title!,
-          textScaleFactor: 1,
+          
           style: AppTextStyle.bodyMedium,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
@@ -81,14 +81,14 @@ class MainTile extends StatelessWidget {
             Expanded(
               child: Text(
                 data.source!,
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.labelMedium,
                 maxLines: 1,
               ),
             ),
             Text(
               data.updatedAgo!,
-              textScaleFactor: 1,
+              
               style: AppTextStyle.labelMedium,
               maxLines: 1,
             )
@@ -134,7 +134,7 @@ class NewsTile extends StatelessWidget {
             children: <Widget>[
               Text(
                 data.title!,
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.bodyMedium,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
@@ -145,14 +145,14 @@ class NewsTile extends StatelessWidget {
                   Expanded(
                     child: Text(
                       data.source!,
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.labelMedium,
                       maxLines: 1,
                     ),
                   ),
                   Text(
                     data.updatedAgo!,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.labelMedium,
                     maxLines: 1,
                   )

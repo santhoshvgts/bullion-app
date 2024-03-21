@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
 class CartItem {
   int? productId;
@@ -20,15 +21,15 @@ class CartItem {
   bool loading = false;
   bool enabled = true;
 
-  TextEditingController get qtyController {
-    TextEditingController textEditingController =
-        TextEditingController(text: quantity.toString());
-    textEditingController.selection = TextSelection.fromPosition(
-        TextPosition(offset: quantity.toString().length));
-    return textEditingController;
-  }
+  late NumberFormFieldController qtyController;
 
-  FocusNode qtyFocus = new FocusNode();
+  // NumberFormFieldController get qtyController {
+  //
+  //   qtyController.text = quantity.toString();
+  //   qtyController.textEditingController.selection = TextSelection.fromPosition(
+  //       TextPosition(offset: quantity.toString().length));
+  //   return qtyController;
+  // }
 
   CartItem(
       {this.productId,
@@ -54,7 +55,7 @@ class CartItem {
     targetUrl = json['target_url'];
     unitPrice = json['unit_price'];
     formattedUnitPrice = json['formatted_unit_price'];
-    subTotal = json['sub_total'];
+    subTotal = double.tryParse(json['sub_total'].toString());
     formattedSubTotal = json['formatted_sub_total'];
     quantity = json['quantity'];
 
@@ -70,31 +71,36 @@ class CartItem {
     tax = double.parse(json['tax'].toString());
     formattedTax = json['formatted_tax'];
     showTax = json['show_tax'];
+
+
+    qtyController = NumberFormFieldController(ValueKey("txtQty$productId"), maxLength: 4);
+    qtyController.text = quantity.toString();
+    qtyController.textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: quantity.toString().length));
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['product_id'] = this.productId;
-    data['primary_image_url'] = this.primaryImageUrl;
-    data['product_name'] = this.productName;
-    data['target_url'] = this.targetUrl;
-    data['unit_price'] = this.unitPrice;
-    data['formatted_unit_price'] = this.formattedUnitPrice;
-    data['sub_total'] = this.subTotal;
-    data['formatted_sub_total'] = this.formattedSubTotal;
-    data['quantity'] = this.quantity;
+    data['product_id'] = productId;
+    data['primary_image_url'] = primaryImageUrl;
+    data['product_name'] = productName;
+    data['target_url'] = targetUrl;
+    data['unit_price'] = unitPrice;
+    data['formatted_unit_price'] = formattedUnitPrice;
+    data['sub_total'] = subTotal;
+    data['formatted_sub_total'] = formattedSubTotal;
+    data['quantity'] = quantity;
 
-    if (this.warnings != null) {
-      data['warnings'] = this.warnings.toString();
+    if (warnings != null) {
+      data['warnings'] = warnings.toString();
     }
-    if (this.offers != null) {
-      data['offers'] = this.offers.toString();
+    if (offers != null) {
+      data['offers'] = offers.toString();
     }
 
-    data['is_taxable'] = this.isTaxable;
-    data['tax'] = this.tax;
-    data['formatted_tax'] = this.formattedTax;
-    data['show_tax'] = this.showTax;
+    data['is_taxable'] = isTaxable;
+    data['tax'] = tax;
+    data['formatted_tax'] = formattedTax;
+    data['show_tax'] = showTax;
     return data;
   }
 }

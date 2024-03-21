@@ -60,6 +60,6 @@ class StandardViewModel extends VGTSBaseViewModel {
   }
 
   onItemTap(String? url) {
-    navigationService!.pushNamed(url, rootNavigator: true);
+    navigationService.pushNamed(url);
   }
 }

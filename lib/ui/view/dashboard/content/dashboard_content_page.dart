@@ -1,3 +1,4 @@
+import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/styles.dart';
@@ -38,50 +39,54 @@ class DashboardContentPage extends StatelessWidget {
           return PageWillPop(
             child: Scaffold(
               backgroundColor: AppColor.secondaryBackground,
-              floatingActionButton:
-                  locator<AuthenticationService>().isAuthenticated
-                      ? null
-                      : Container(
-                          decoration: BoxDecoration(
-                            color: AppColor.black.withOpacity(0.8),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          width: double.infinity,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Sign in for the best experience.",
-                                  textScaleFactor: 1,
-                                  style: AppTextStyle.bodySmall.copyWith(
-                                    color: AppColor.white,
-                                  ),
-                                ),
-                              ),
-                              Button(
-                                "Sign In",
-                                width: 90,
-                                height: 30,
-                                textStyle: AppTextStyle.bodySmall.copyWith(
-                                  color: AppColor.white,
-                                ),
-                                valueKey: const ValueKey("btnSignIn"),
-                                onPressed: () {
-                                  locator<NavigationService>().pushNamed(
-                                    Routes.login,
-                                    arguments: {"fromMain": false},
-                                  );
-                                },
-                              ),
-                            ],
+              floatingActionButton: StreamBuilder(
+                initialData: locator<AuthenticationService>().getUser,
+                stream: locator<AuthenticationService>().userController.stream,
+                builder: (context, snapshot) {
+                  if (locator<AuthenticationService>().isAuthenticated) {
+                    return Container();
+                  }
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.black.withOpacity(0.8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 10,
+                    ),
+                    width: double.infinity,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Sign in for the best experience.",
+                            style: AppTextStyle.bodySmall.copyWith(
+                              color: AppColor.white,
+                            ),
                           ),
                         ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
+                        Button(
+                          "Sign In",
+                          width: 90,
+                          height: 30,
+                          textStyle: AppTextStyle.bodySmall.copyWith(
+                            color: AppColor.white,
+                          ),
+                          valueKey: const ValueKey("btnSignIn"),
+                          onPressed: () {
+                            locator<NavigationService>().pushNamed(
+                              Routes.login,
+                              arguments: {"fromMain": false},
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
               body: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) {
                   return <Widget>[
@@ -104,8 +109,9 @@ class DashboardContentPage extends StatelessWidget {
                               context,
                               constraints,
                             ) {
-                              _appBarExtendedHeight ??=
-                                  80 - constraints.biggest.height;
+                              _appBarExtendedHeight ??= 70 - constraints.biggest.height;
+                              double padRight = constraints.biggest.height - 15;
+                              double padRightValue = padRight - ((-5 - padRight) * (( constraints.biggest.height - 80) / _appBarExtendedHeight! ));
 
                               return FlexibleSpaceBar(
                                 centerTitle: true,
@@ -114,22 +120,18 @@ class DashboardContentPage extends StatelessWidget {
                                   bottom: 10.0,
                                 ),
                                 title: SearchCardSection(
-                                  rightPadding: 45 -
-                                      ((15 - 45) *
-                                          ((constraints.biggest.height - 80) /
-                                              _appBarExtendedHeight!)),
+                                  rightPadding: padRightValue,
                                 ),
                                 background: AppBar(
                                   backgroundColor: AppColor.white,
-                                  centerTitle: false,
+                                  centerTitle: true,
                                   elevation: 1,
                                   shadowColor: AppColor.secondaryBackground,
                                   title: Image.asset(
                                     Images.appLogo,
                                     height: 20,
                                   ),
-                                  systemOverlayStyle:
-                                      const SystemUiOverlayStyle(
+                                  systemOverlayStyle: const SystemUiOverlayStyle(
                                     statusBarIconBrightness: Brightness.dark,
                                     statusBarColor: AppColor.white,
                                   ),
@@ -139,7 +141,10 @@ class DashboardContentPage extends StatelessWidget {
                           ),
                         ),
                         actions: const [
-                          CartButton.light()
+                          SizedBox(
+                            width: 60,
+                            child: CartButton.light()
+                          )
                         ],
                       );
                     })
@@ -176,13 +181,13 @@ class _AppBar extends PreferredSize {
               elevation: 1,
               shadowColor: AppColor.secondaryBackground,
               title: SearchCardSection(
-                rightPadding: 0,
+                rightPadding: 7,
               ),
               systemOverlayStyle: const SystemUiOverlayStyle(
                 statusBarIconBrightness: Brightness.dark,
                 statusBarColor: AppColor.white,
               ),
-              actions: const [  CartButton.light() ],
+              actions: const [  SizedBox(width: 60, child: CartButton.light()) ],
             ));
 }
 
@@ -197,12 +202,12 @@ class _BodyContent extends ViewModelWidget<DashboardContentViewModel> {
     return ContentWrapper(path,
         enableController: false,
         initialValue: locator<PageStorageService>().read(context, pageKey),
+        backgroundColor: path == "/spot-prices" ? AppColor.primary : null,
         onPageFetched: (pageSetting) {
-      viewModel.pageSettings = pageSetting;
-      locator<PageStorageService>()
-          .write(context, pageKey, viewModel.pageSettings);
-      viewModel.notifyListeners();
-    });
+          viewModel.pageSettings = pageSetting;
+          locator<PageStorageService>().write(context, pageKey, viewModel.pageSettings);
+          viewModel.notifyListeners();
+        });
   }
 }
 

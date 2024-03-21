@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/auth/forgot_password.dart';
+import 'package:bullion/core/models/module/dynamic.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/auth_request.dart';

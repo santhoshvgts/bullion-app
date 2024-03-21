@@ -21,10 +21,10 @@ class LoadingData extends StatelessWidget {
       return Container(
         height: MediaQuery.of(context).size.height / 1.2,
         decoration: BoxDecoration(color: Colors.white.withOpacity(0.4)),
-        child: Center(
+        child: const Center(
           child: Stack(
             children: [
-              const Positioned.fill(
+              Positioned.fill(
                 child: Center(
                   child: SizedBox(
                     width: 50,
@@ -35,15 +35,15 @@ class LoadingData extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned.fill(
-                child: Center(
-                  child: Image.asset(
-                    Images.appBullLogo,
-                    width: 40,
-                    height: 40,
-                  ),
-                ),
-              )
+              // Positioned.fill(
+              //   child: Center(
+              //     child: Image.asset(
+              //       Images.appBullLogo,
+              //       width: 40,
+              //       height: 40,
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),

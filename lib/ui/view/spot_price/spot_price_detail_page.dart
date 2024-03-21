@@ -50,13 +50,12 @@ class _SpotPriceDetailPageState extends State<SpotPriceDetailPage>
             elevation: 0.5,
             title: Text(
               "Spot Price",
-              textScaleFactor: 1,
               style: AppTextStyle.titleMedium.copyWith(
                 color: AppColor.text,
                 fontFamily: AppTextStyle.fontFamily,
               ),
             ),
-            actions: const [CartButton.light()],
+            actions: const [ CartButton.light() ],
             bottom: PreferredSize(
               preferredSize: const Size(double.infinity, 40),
               child: SpotPriceTabBar(
@@ -96,7 +95,7 @@ class _SpotPriceDetailPageState extends State<SpotPriceDetailPage>
                         );
                       },
                     );
-                  })?.toList() ??
+                  }).toList() ??
                   []
             ],
           ),

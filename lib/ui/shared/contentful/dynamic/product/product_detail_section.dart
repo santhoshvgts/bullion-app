@@ -1,9 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bullion/core/models/module/product_detail/competitor_price.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/models/module/product_detail/specifications.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
-import 'package:bullion/ui/view/product/detail/product_specification_page.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
 import 'package:bullion/ui/widgets/network_image_loader.dart';
@@ -17,7 +18,7 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
 
   final ProductDetails? setting;
 
-  const ProductDetailSection(this.setting);
+  const ProductDetailSection(this.setting, {super.key});
 
   @override
   void onViewModelReady(ProductDetailViewModel vm) {
@@ -36,10 +37,11 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
       child: Column(
         children: [
 
-          _CompetitorPricing(
-            viewModel.productDetails!.overview!,
-            viewModel.productDetails?.competitorPrices ?? []
-          ),
+          if (viewModel.productOverview?.showPrice == true)
+            _CompetitorPricing(
+              viewModel.productDetails!.overview!,
+              viewModel.productDetails?.competitorPrices ?? []
+            ),
 
           Container(
             margin: const EdgeInsets.only(left: 15, right: 15, top: 15),
@@ -93,6 +95,54 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
   }
 }
 
+
+class SpecificationItem extends StatelessWidget {
+  Specifications data;
+
+  SpecificationItem(this.data, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          children: [
+            Text(
+              data.key!,
+
+              style: AppTextStyle.bodyMedium,
+            ),
+            if (data.keyHelpText!.isNotEmpty)
+              InkWell(
+                onTap: () {
+                  // TODO - Volume Discount
+                  // locator<DialogService>().showBottomSheet(title: data.key, child: VolumeInfoBottomSheet(data.keyHelpText));
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Icon(
+                    Icons.info_outline,
+                    size: 16,
+                  ),
+                ),
+              ),
+            Expanded(
+                child: Text(
+                  data.value!,
+
+                  style:
+                  AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.right,
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _CompetitorPricing extends StatelessWidget {
 
   ProductOverview overview;
@@ -115,15 +165,15 @@ class _CompetitorPricing extends StatelessWidget {
 
          const Padding(
            padding: EdgeInsets.only(left: 15, top: 15),
-           child: Text("Lowest Price Guarantee", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+           child: Text("Lowest Price Guarantee",  style: AppTextStyle.titleMedium,),
          ),
 
-         const Padding(
-           padding: EdgeInsets.only(left: 15, top: 10),
-           child: Text("Please see below how the pricing of 2023 1 oz American Silver Eagle Coin BU "
+          Padding(
+           padding: const EdgeInsets.only(left: 15, top: 10),
+           child: Text("Please see below how the pricing of ${overview.name} "
                "compares against some of other bullion dealers. Our rate comparison table is for your information only "
                "and is primarily used as a benchmark.",
-             textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+              style: AppTextStyle.bodyMedium,),
          ),
 
          SingleChildScrollView(
@@ -142,48 +192,6 @@ class _CompetitorPricing extends StatelessWidget {
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
 
-                   SizedBox(
-                     width: 180,
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.center,
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       children: [
-                         ClipRRect(
-                           borderRadius: const BorderRadius.only(
-                               topLeft: Radius.circular(0),
-                               topRight: Radius.circular(0)),
-                           child: Container(
-                             color: AppColor.white,
-                             padding: const EdgeInsets.all(5),
-                             width: 125,
-                             child: NetworkImageLoader(
-                               image: overview.primaryImageUrl,
-                               fit: BoxFit.fitWidth,
-                             ),
-                           ),
-                         ),
-                         Padding(
-                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.center,
-                             mainAxisAlignment: MainAxisAlignment.center,
-                             children: [
-                               Text(
-                                 overview.name!,
-                                 maxLines: 3,
-                                 overflow: TextOverflow.ellipsis,
-                                 textScaleFactor: 1,
-                                 style: AppTextStyle.bodySmall,
-                                 textAlign: TextAlign.center,
-                               ),
-
-                             ],
-                           ),
-                         ),
-                       ],
-                     ),
-                   ),
-
                    Container(
                      width: MediaQuery.of(context).size.width / 3,
                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -194,15 +202,15 @@ class _CompetitorPricing extends StatelessWidget {
                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                        children: [
 
-                         Text("Bullion.com", textScaleFactor: 1, style: AppTextStyle.bodyLarge.copyWith(color: AppColor.white),),
+                         Text("Bullion.com",  style: AppTextStyle.bodyLarge.copyWith(color: AppColor.white),),
 
                          VerticalSpacing.custom(value: 25),
 
                          Column(
                            crossAxisAlignment: CrossAxisAlignment.start,
                            children: [
-                             Text(overview.pricing?.badgeText ?? '', textScaleFactor: 1, style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),),
-                             Text(overview.pricing?.formattedNewPrice ?? '', textScaleFactor: 1, style: AppTextStyle.titleLarge.copyWith(color: AppColor.white)  ,),
+                             Text(overview.pricing?.badgeText ?? '',  style: AppTextStyle.labelSmall.copyWith(color: AppColor.white),),
+                             Text(overview.pricing?.formattedNewPrice ?? '',  style: AppTextStyle.titleLarge.copyWith(color: AppColor.white)  ,),
 
                              VerticalSpacing.d5px(),
 
@@ -222,7 +230,6 @@ class _CompetitorPricing extends StatelessWidget {
                      ),
                    ),
 
-
                    CompetitorPricingSection(competitorPrice),
                  ],
                ),
@@ -241,7 +248,7 @@ class CompetitorPricingSection extends StatelessWidget {
 
   List<CompetitorPrice> competitorPrice;
 
-  CompetitorPricingSection(this.competitorPrice);
+  CompetitorPricingSection(this.competitorPrice, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -252,7 +259,6 @@ class CompetitorPricingSection extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width / 3,
                   padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   margin: const EdgeInsets.only(right: 5),
                   child: Column(
@@ -260,7 +266,13 @@ class CompetitorPricingSection extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
 
-                      Text(e.competitorName ?? '', textScaleFactor: 1, style: AppTextStyle.bodyLarge,),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width / 3,
+                          minWidth: MediaQuery.of(context).size.width / 3,
+                        ),
+                        child: Text(e.competitorName ?? '',  style: AppTextStyle.bodyLarge,)
+                      ),
 
                       VerticalSpacing.custom(value: 25),
 
@@ -282,15 +294,15 @@ class CompetitorPricingSection extends StatelessWidget {
 
                           VerticalSpacing.d5px(),
 
-                          const Text("As low as", textScaleFactor: 1, style: AppTextStyle.labelSmall,),
+                          const Text("As low as",  style: AppTextStyle.labelSmall,),
 
-                          Text(e.formattedPrice.toString(), textScaleFactor: 1, style: AppTextStyle.titleLarge,),
+                          Text(e.formattedPrice.toString(),  style: AppTextStyle.titleLarge,),
 
                           VerticalSpacing.d5px(),
 
                           Container(
                               decoration: BoxDecoration(
-                                  color: (e.isLower == true || e.inStock == false ? AppColor.red : AppColor.greenText).withOpacity(0.2),
+                                  color: (e.isLower != true || e.inStock == false ? AppColor.red : AppColor.greenText).withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(5)
                               ),
                               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
@@ -299,11 +311,11 @@ class CompetitorPricingSection extends StatelessWidget {
                                 children: [
 
                                   if (e.inStock == true)
-                                    Icon(Icons.arrow_upward, size: 12, color: e.isLower == true ? AppColor.red : AppColor.greenText,),
+                                    Icon(e.isLower == true ? Icons.arrow_downward : Icons.arrow_upward, size: 12, color: e.isLower == true ? AppColor.greenText : AppColor.red,),
 
                                   Text(e.badgeText ?? '',
                                     style: AppTextStyle.labelSmall.copyWith(
-                                        color: e.isLower == true || e.inStock == false ? AppColor.red : AppColor.greenText
+                                        color: e.isLower != true || e.inStock == false ? AppColor.red : AppColor.greenText
                                     ),
                                   ),
                                 ],

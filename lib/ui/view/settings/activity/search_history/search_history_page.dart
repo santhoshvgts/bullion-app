@@ -24,7 +24,7 @@ class SearchHistoryPage extends VGTSBuilderWidget<SearchHistoryViewModel> {
     return PageWillPop(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Search History", textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
+          title: Text("Search History",  style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
         ),
         backgroundColor: AppColor.white,
         body: RefreshIndicator(
@@ -80,7 +80,7 @@ class SearchHistoryPage extends VGTSBuilderWidget<SearchHistoryViewModel> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      child: Text(detail?.name ?? '', textScaleFactor: 1, style: AppTextStyle.bodyMedium.copyWith(color: AppColor.text),),
+                      child: Text(detail?.name ?? '',  style: AppTextStyle.bodyMedium.copyWith(color: AppColor.text),),
                     ),
                   );
                 }),

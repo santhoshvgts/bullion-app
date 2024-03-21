@@ -30,7 +30,7 @@ class LoadingWidget extends StatelessWidget {
                 ),
                 new Padding(padding: EdgeInsets.only(top: 20)),
                 Text(
-                  message!,textScaleFactor: 1,
+                  message!,
                   style: TextStyle(fontSize: 20),
                 )
               ],

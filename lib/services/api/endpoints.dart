@@ -6,10 +6,10 @@ class Endpoints {
   // Address
   static const getAddress = "/address/get";
   static const deleteAddress = "/address/remove";
-  static const addAddress = "/address/save";
+  static const saveAddress = "/address/save";
 
   // Location
-  static const getCountries = "/address/add";
+  static const g = "/address/add";
   static const getStates = "/address/states";
 
   // Google APIs

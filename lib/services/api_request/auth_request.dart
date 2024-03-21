@@ -11,6 +11,15 @@ class AuthRequest {
     return RequestSettings("/auth/login", RequestMethod.POST, params: params, authenticated: false);
   }
 
+  static RequestSettings googleAuth(String emailId, String accessToken) {
+    String queryString = "?";
+    queryString += "email=$emailId";
+    queryString += "&accessToken=$accessToken";
+
+    return RequestSettings("/auth/external-login$queryString", RequestMethod.POST, params: null, authenticated: false);
+  }
+
+
   static RequestSettings register(String firstName, String lastName, String email, String password, String confirmPassword) {
     Map<String, dynamic> params = {};
     params['first_name'] = firstName;
@@ -45,7 +54,7 @@ class AuthRequest {
   }
 
   static RequestSettings guestToAccount(String password, bool emailOptIn) {
-    return RequestSettings("/auth/guest-to-account?password=$password&emailOptIn=$emailOptIn", RequestMethod.GET, params: null, authenticated: true);
+    return RequestSettings("/auth/guest-to-account?password=$password&emailOptIn=$emailOptIn", RequestMethod.POST, params: null, authenticated: true);
   }
 
   static RequestSettings getUserInfo() {

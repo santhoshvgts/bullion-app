@@ -32,12 +32,11 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
         backgroundColor: AppColor.secondaryBackground,
         appBar: AppBar(
-          centerTitle: true,
           elevation: 0,
           scrolledUnderElevation: 0,
           titleSpacing: 0,
           title: SearchCardSection(
-            rightPadding: 0,
+            rightPadding: 5,
             leftPadding: 0,
             placeholder: title,
           ),

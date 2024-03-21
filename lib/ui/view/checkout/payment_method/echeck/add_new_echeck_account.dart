@@ -227,7 +227,7 @@ class _PermissionSection extends ViewModelWidget<AddNewECheckViewModel>
           HorizontalSpacing.d10px(),
 
           Expanded(
-              child: Text("I hereby authorize APMEX to debit my account. This Permission is for present .",textScaleFactor: 1,style: AppTextStyle.bodyMedium,))
+              child: Text("I hereby authorize APMEX to debit my account. This Permission is for present .",style: AppTextStyle.bodyMedium,))
 
 
         ],

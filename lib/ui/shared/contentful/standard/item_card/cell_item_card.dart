@@ -34,7 +34,7 @@ class CellItemCard extends ViewModelWidget<StandardViewModel> {
                 Expanded(
                   child: Text(
                     item.title!,
-                    textScaleFactor: 1,
+                    
                     style: StandardTextStyle.subtitle("medium"),
                   ),
                 ),

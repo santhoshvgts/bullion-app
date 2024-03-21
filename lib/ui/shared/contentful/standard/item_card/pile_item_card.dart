@@ -24,7 +24,7 @@ class PileItemCard extends ViewModelWidget<StandardViewModel> {
                 color: viewModel.itemDisplaySettings.textColor, width: 0.8)),
         child: Text(
           item.title!,
-          textScaleFactor: 1,
+          
           style: AppTextStyle.labelMedium
               .copyWith(color: viewModel.itemDisplaySettings.textColor),
         ),

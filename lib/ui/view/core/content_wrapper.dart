@@ -33,6 +33,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
   final bool? enableController;
   final Function(bool onload)? onLoading;
   final String? metalName;
+  final Color? backgroundColor;
 
   final LoadingStyle loadingStyle;
 
@@ -44,6 +45,7 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
     this.onPageFetched,
     this.enableController = true,
     this.onLoading,
+    this.backgroundColor,
     this.loadingStyle = LoadingStyle.DEFAULT,
     this.metalName,
   });
@@ -77,14 +79,13 @@ class ContentWrapper extends VGTSBuilderWidget<ContentViewModel> {
               return;
             },
             child: Container(
-              color: AppColor.secondaryBackground,
+              color: backgroundColor ?? AppColor.secondaryBackground,
               child: Stack(
                 children: [
                   SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: SingleChildScrollView(
-                      controller:
-                          enableController! ? viewModel.scrollController : null,
+                      controller: enableController! ? viewModel.scrollController : null,
                       child: Column(children: [
                         AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
@@ -209,7 +210,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                   HorizontalSpacing.d5px(),
                   const Text(
                     "Filter",
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleSmall,
                   ),
                   if (viewModel.productModel.selectedFacetsCount! > 0)
@@ -222,7 +223,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                       padding: const EdgeInsets.all(5),
                       child: Text(
                         viewModel.productModel.selectedFacetsCount!.toString(),
-                        textScaleFactor: 1,
+                        
                         style: AppTextStyle.labelSmall.copyWith(
                           color: AppColor.white,
                           fontSize: 10,
@@ -258,7 +259,7 @@ class SortFilterWidget extends ViewModelWidget<ContentViewModel> {
                   HorizontalSpacing.d5px(),
                   Text(
                     sortOption.isEmpty ? "Sort By" : sortOption,
-                    textScaleFactor: 1,
+                    
                     style: AppTextStyle.titleSmall,
                   )
                 ],

@@ -37,7 +37,7 @@ class ProductViewModel extends BaseViewModel {
     double screenWidth = MediaQuery.of(context).size.width.floorToDouble();
 
     double totalSpacing = spacing * (itemDisplaySettings.gridCols - 1);
-    double wrapSpacing =  12;
+    double wrapSpacing =  20;
 
     double _itemWidth = (screenWidth -
             (itemDisplaySettings.fullBleed

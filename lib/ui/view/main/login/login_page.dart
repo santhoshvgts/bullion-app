@@ -3,6 +3,7 @@ import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/main/login/login_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -11,6 +12,7 @@ import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
   final bool fromMain;
@@ -43,7 +45,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                   width: double.infinity,
                   alignment: Alignment.center,
                   child: Text("Explore as Guest",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.titleSmall
                           .copyWith(color: AppColor.primary)),
                 ),
@@ -54,7 +56,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
               width: double.infinity,
               alignment: Alignment.center,
               child: Text("@2023 Bullion.com All rights reserved",
-                  textScaleFactor: 1,
+                  
                   style: AppTextStyle.bodyMedium.copyWith(
                       fontSize: 12,
                       color: AppColor.primaryText,
@@ -88,7 +90,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                     const Padding(padding: EdgeInsets.only(top: 12)),
                     const Text(
                       "Welcome back",
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.headlineSmall,
                     ),
                     VerticalSpacing.custom(value: 70),
@@ -100,7 +102,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                           EditTextField(
                             "Email Address",
                             viewModel.emailController,
-                            placeholder: "john@bullion.com",
+                            placeholder: "",
                             key: const Key("txtEmailAddress"),
                             onChanged: (value) {},
                           ),
@@ -108,7 +110,7 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                           EditTextField.password(
                             "Password",
                             viewModel.passwordController,
-                            placeholder: "********",
+                            placeholder: "",
                             margin: const EdgeInsets.only(top: 25),
                             onSubmitted: (value) {
                               FocusScope.of(context).unfocus();
@@ -127,7 +129,6 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                               top: 10,
                             ),
                             child: Text("Forgot your Password?",
-                                textScaleFactor: 1,
                                 style: AppTextStyle.titleSmall
                                     .copyWith(color: AppColor.primary)),
                           ),
@@ -141,16 +142,30 @@ class LoginPage extends VGTSBuilderWidget<LoginViewModel> {
                       onPressed: () => viewModel.login(),
                     ),
                     VerticalSpacing.d15px(),
-                    Button.outline(
-                      "Continue with Google",
-                      valueKey: const Key('btnGoogle'),
-                      iconWidget: Image.asset(
-                        Images.googleIcon,
-                        height: 20,
-                      ),
-                      textStyle: AppTextStyle.titleSmall
-                          .copyWith(color: AppColor.text),
-                      onPressed: () {},
+                    FutureBuilder(
+                      future: PackageInfo.fromPlatform(),
+                      builder: (context, snapshot) {
+
+                        if (locator<AppConfigService>().config?.showDeleteButtonByVersion == snapshot.data?.version) {
+                          return Container();
+                        }
+
+                        return Button.outline(
+                          "Continue with Google",
+                          valueKey: const Key('btnGoogle'),
+                          iconWidget: Image.asset(
+                            Images.googleIcon,
+                            height: 20,
+                          ),
+                          progressColor: AppColor.primary,
+                          loading: viewModel.busy("GOOGLE"),
+                          textStyle: AppTextStyle.titleSmall
+                              .copyWith(color: AppColor.text),
+                          onPressed: () {
+                            viewModel.googleSignIn();
+                          },
+                        );
+                      }
                     ),
                     const Padding(padding: EdgeInsets.only(top: 15)),
                     Align(

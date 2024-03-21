@@ -8,6 +8,8 @@ class ForgotPasswordResult extends BaseModel {
 
   ForgotPasswordResult({this.message, this.success});
 
+  ForgotPasswordResult fromJson(Map<String, dynamic> json) => ForgotPasswordResult.fromJson(json);
+
   ForgotPasswordResult.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     success = json['success'];

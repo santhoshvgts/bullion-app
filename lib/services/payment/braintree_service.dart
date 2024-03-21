@@ -1,3 +1,4 @@
+import 'package:bullion/helper/logger.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/payment/payment_gateway_service.dart';
 import 'package:bullion/ui/view/checkout/credit_card/credit_card_bottomsheet_view_model.dart';
@@ -53,8 +54,8 @@ class BraintreeService {
           "nonce": result.nonce
         };
       }
-    } catch (ex) {
-      return {};
+    } catch (ex, s) {
+      Logger.d(ex.toString(), s: s);
     }
 
     return {};

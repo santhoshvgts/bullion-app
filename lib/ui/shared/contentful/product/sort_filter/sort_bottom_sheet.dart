@@ -56,7 +56,7 @@ class SortBottomSheet extends VGTSBuilderWidget<SortViewModel> {
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       fontSize: 14),
-                                              textScaleFactor: 1,
+                                              
                                             ),
                                             Icon(
                                               Icons.check,
@@ -115,7 +115,7 @@ class Header extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text("Sort By",
-                      textScaleFactor: 1, style: AppTextStyle.titleLarge),
+                       style: AppTextStyle.titleLarge),
                 ),
               ),
               IconButton(

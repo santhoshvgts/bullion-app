@@ -25,19 +25,15 @@ class UserPaymentMethodPage extends VGTSBuilderWidget<UserPaymentViewModel> {
   Widget viewBuilder(BuildContext context, AppLocalizations locale, UserPaymentViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(paymentMethod.name ?? '', textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
+        title: Text(paymentMethod.name ?? '', style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
       ),
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height - ((25 / 100) * MediaQuery.of(context).size.height),
-        child: Stack(
-          children: [
+      body: Column(
+        children: [
 
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height - ((11 / 100) * MediaQuery.of(context).size.height),
+          Flexible(child: Stack(
+            children: [
+
+              Positioned.fill(
                 child: ListView(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   children: [
@@ -45,42 +41,48 @@ class UserPaymentMethodPage extends VGTSBuilderWidget<UserPaymentViewModel> {
                     if (paymentMethod.requiresZda!)
                       _buildZDAVerificationInfo(),
 
-                    ...viewModel.userPaymentMethodList!.map((item) => Column(
-                      children: [
-                        _UserPaymentMethodCardItem(item, onPressed: viewModel.onUserPaymentMethodSelect),
-                        AppStyle.customDivider
-                      ],
-                    )).toList()
+                    ListView.separated(
+                        primary: false,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        itemBuilder: (context, index) {
+                          return _UserPaymentMethodCardItem(viewModel.userPaymentMethodList![index], onPressed: viewModel.onUserPaymentMethodSelect);
+                        },
+                        separatorBuilder: (context, index) {
+                          return VerticalSpacing.d15px();
+                        },
+                        itemCount: viewModel.userPaymentMethodList?.length ?? 0
+                    )
 
                   ],
                 ),
               ),
-            ),
 
-            if (viewModel.loading)
-              Container(
-                color: AppColor.white.withOpacity(0.7),
-                height: MediaQuery.of(context).size.height,
-                child: const Center(
-                  child: SizedBox(
-                    height: 80,
-                    width: 80,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(AppColor.primary),
+              if (viewModel.loading)
+                Container(
+                  color: AppColor.white.withOpacity(0.7),
+                  height: MediaQuery.of(context).size.height,
+                  child: const Center(
+                    child: SizedBox(
+                      height: 80,
+                      width: 80,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(AppColor.primary),
+                      ),
                     ),
                   ),
-                ),
-              )
+                )
 
-          ],
-        ),
-      ),
-      bottomNavigationBar: Wrap(
-        children: [
+            ],
+          )),
 
           SafeArea(
-            child: Padding(
+            child: Container(
               padding: const EdgeInsets.all(15.0),
+              decoration: BoxDecoration(
+                boxShadow: AppStyle.topShadow,
+                color: Colors.white
+              ),
               child: Button.outline(paymentMethod.paymentMethodId != 19 ? "+ Add New Card" : "+ Add New Account",
                   valueKey: const Key("btnAddNew"),
                   width: double.infinity,
@@ -111,16 +113,16 @@ class UserPaymentMethodPage extends VGTSBuilderWidget<UserPaymentViewModel> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          Text("Secure your Payment", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+          const Text("Secure your Payment", style: AppTextStyle.titleMedium,),
 
           VerticalSpacing.d5px(),
 
-          Text("Why do you need my credit card?", textScaleFactor: 1, style: AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w700),),
+          Text("Why do you need my credit card?", style: AppTextStyle.bodyMedium.copyWith(fontWeight: FontWeight.w700),),
 
           VerticalSpacing.d5px(),
 
-          Text("We need your credit card information in order to hold / guarantee your order. Your credit card will not be charged if you choose to pay by check, wire, or money order.\n\n" +
-              "For all orders using the credit card payment option, the name, address, and phone # must match the name on your APMEX account.", textScaleFactor: 1, style: AppTextStyle.bodyMedium,),
+          const Text("We need your credit card information in order to hold / guarantee your order. Your credit card will not be charged if you choose to pay by check, wire, or money order.\n\n" +
+              "For all orders using the credit card payment option, the name, address, and phone # must match the name on your BULLION.com account.", style: AppTextStyle.bodyMedium,),
 
           VerticalSpacing.d5px(),
 
@@ -144,66 +146,85 @@ class _UserPaymentMethodCardItem extends ViewModelWidget<UserPaymentViewModel> {
     return InkWell(
       onTap: () => onPressed!(item),
       child: Container(
-          color: AppColor.white,
-          padding: const EdgeInsets.only(left: 20, right: 0, top: 10, bottom: 10),
+          decoration: BoxDecoration(
+            color: AppColor.white,
+            boxShadow: AppStyle.elevatedCardShadow,
+            borderRadius: BorderRadius.circular(12)
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(item.name!,textScaleFactor: 1,style: AppTextStyle.titleMedium,),
 
               VerticalSpacing.d10px(),
 
-              Row(
-                children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  children: [
 
-                  item.icon == null ? Container() : Icon(FAIcon(item.icon), color: AppColor.primary, size: 25,),
+                    item.icon == null ? Container() : Icon(FAIcon(item.icon), color: AppColor.primary, size: 25,),
 
-                  HorizontalSpacing.d15px(),
+                    HorizontalSpacing.d10px(),
 
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Text(item.name!, style: AppTextStyle.bodyMedium,),
+
+                          VerticalSpacing.d5px(),
+
+                          Row(
+                            children: [
+
+                              if (item.accountNumber != null)
+                                Expanded(child: Text(item.accountNumber!, style: AppTextStyle.titleMedium,),),
+
+                              if (item.subText != null)
+                                Expanded(child: Text(item.subText!, textAlign: TextAlign.end, style: AppTextStyle.titleMedium,)),
+
+                            ],
+                          ),
+
+                        ],
+                      ),
+                    )
+
+                  ],
+                ),
+              ),
+
+              VerticalSpacing.d5px(),
+
+              AppStyle.customDivider,
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                child: InkWell(
+                  onTap: () async {
+                    await viewModel.onDeleteUserPaymentMethod(item);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: Row(
                       children: [
-
-                        if (item.accountNumber != null)
-                          Text(item.accountNumber!,textScaleFactor: 1,style: AppTextStyle.bodyMedium,),
-
-                        if (item.subText != null)
-                          Text(item.subText!,textScaleFactor: 1,style: AppTextStyle.bodyMedium,),
-
-                        if (item.isBullionCard == true)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Image.asset(Images.bullionCard, ),
-                          )
-
+                        const Padding(padding: EdgeInsets.only(right: 4.0),
+                          child: Icon(
+                            Icons.close,
+                            size: 18,
+                            color: AppColor.red,
+                          ),
+                        ),
+                        Text("Delete", style: AppTextStyle.titleSmall.copyWith(color: AppColor.red),
+                        )
                       ],
                     ),
                   ),
-
-                  InkWell(
-                    onTap: () async {
-                      await viewModel.onDeleteUserPaymentMethod(item);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: Row(
-                        children: [
-                          const Padding(padding: EdgeInsets.only(right: 4.0),
-                            child: Icon(
-                              Icons.close,
-                              size: 18,
-                              color: AppColor.red,
-                            ),
-                          ),
-                          Text("Delete", style: AppTextStyle.titleSmall.copyWith(color: AppColor.red),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
+
+              VerticalSpacing.d10px(),
 
             ],
           ),

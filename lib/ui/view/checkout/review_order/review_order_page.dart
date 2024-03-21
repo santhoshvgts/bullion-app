@@ -44,7 +44,7 @@ class ReviewOrderPage extends VGTSBuilderWidget<ReviewOrderViewModel> {
     return Scaffold(
       appBar: AppBar (
         automaticallyImplyLeading: fromPriceExpiry! ? false : true,
-        title: Text(fromPriceExpiry! ? "Price Expired" : "Review Order", textScaleFactor: 1, style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
+        title: Text(fromPriceExpiry! ? "Price Expired" : "Review Order",  style: AppTextStyle.titleMedium.copyWith(color: AppColor.text, fontFamily: AppTextStyle.fontFamily),),
         actions: [
 
           if (fromPriceExpiry!)
@@ -64,7 +64,6 @@ class ReviewOrderPage extends VGTSBuilderWidget<ReviewOrderViewModel> {
                 color: AppColor.white,
                 padding: const EdgeInsets.all(15),
                 child: Text(viewModel.shoppingCart!.expiredCartMessage!,
-                  textScaleFactor: 1,
                   style: AppTextStyle.bodyMedium,
                 ),
               ),
@@ -94,7 +93,7 @@ class ReviewOrderPage extends VGTSBuilderWidget<ReviewOrderViewModel> {
                   padding: const EdgeInsets.all(15),
                   margin: const EdgeInsets.only(top: 10),
                   color: AppColor.white,
-                  child: Text(warning, textScaleFactor: 1, style: AppTextStyle.bodyMedium.copyWith(color: AppColor.red),),
+                  child: Text(warning,  style: AppTextStyle.bodyMedium.copyWith(color: AppColor.red),),
                 );
               }).toList(),
 
@@ -126,7 +125,7 @@ class ReviewOrderPage extends VGTSBuilderWidget<ReviewOrderViewModel> {
           ],
         ),
       ),
-      bottomNavigationBar: fromPriceExpiry! && viewModel.isBusy ? SafeArea(
+      bottomNavigationBar: fromPriceExpiry! && !viewModel.isBusy ? SafeArea(
         child: Container(
           color: AppColor.white,
           padding: const EdgeInsets.all(15),
@@ -158,7 +157,7 @@ class _ItemListSection extends ViewModelWidget<ReviewOrderViewModel> {
 
           const Padding(
             padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
-            child: Text("Non-Taxable Products", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+            child: Text("Non-Taxable Products",  style: AppTextStyle.titleMedium,),
           ),
 
           ListView.separated(
@@ -180,9 +179,9 @@ class _ItemListSection extends ViewModelWidget<ReviewOrderViewModel> {
             child: Row(
               children: [
 
-                const Expanded(child: Text("Non-Taxable Subtotal", textScaleFactor: 1, style: AppTextStyle.titleSmall,)),
+                const Expanded(child: Text("Non-Taxable Subtotal",  style: AppTextStyle.titleSmall,)),
 
-                Text(viewModel.shoppingCart!.formattedNonTaxableSubTotal!, textScaleFactor: 1, style: AppTextStyle.titleSmall,),
+                Text(viewModel.shoppingCart!.formattedNonTaxableSubTotal!,  style: AppTextStyle.titleSmall,),
 
               ],
             ),
@@ -192,7 +191,7 @@ class _ItemListSection extends ViewModelWidget<ReviewOrderViewModel> {
 
           const Padding(
             padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-            child: Text("Taxable Products", textScaleFactor: 1, style: AppTextStyle.titleMedium,),
+            child: Text("Taxable Products",  style: AppTextStyle.titleMedium,),
           ),
 
           ListView.separated(
@@ -213,9 +212,9 @@ class _ItemListSection extends ViewModelWidget<ReviewOrderViewModel> {
             child: Row(
               children: [
 
-                const Expanded(child: Text("Taxable Subtotal", textScaleFactor: 1, style: AppTextStyle.titleSmall,)),
+                const Expanded(child: Text("Taxable Subtotal",  style: AppTextStyle.titleSmall,)),
 
-                Text(viewModel.shoppingCart!.formattedTaxableSubTotal!, textScaleFactor: 1, style: AppTextStyle.titleSmall,),
+                Text(viewModel.shoppingCart!.formattedTaxableSubTotal!,  style: AppTextStyle.titleSmall,),
 
               ],
             ),
@@ -228,9 +227,9 @@ class _ItemListSection extends ViewModelWidget<ReviewOrderViewModel> {
             child: Row(
               children: [
 
-                const Expanded(child: Text("Tax", textScaleFactor: 1, style: AppTextStyle.titleSmall,)),
+                const Expanded(child: Text("Tax",  style: AppTextStyle.titleSmall,)),
 
-                Text(viewModel.shoppingCart!.formattedTaxableItemsTax!, textScaleFactor: 1, style: AppTextStyle.titleSmall,),
+                Text(viewModel.shoppingCart!.formattedTaxableItemsTax!,  style: AppTextStyle.titleSmall,),
 
               ],
             ),
@@ -312,7 +311,7 @@ class _ItemCard extends StatelessWidget {
                       item.productName!,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      textScaleFactor: 1,
+                      
                       style: AppTextStyle.bodyMedium,
                     ),
                     VerticalSpacing.d5px(),
@@ -322,14 +321,14 @@ class _ItemCard extends StatelessWidget {
 
                         Text("${item.formattedUnitPrice!} x ${item.quantity}",
                           style: AppTextStyle.titleSmall,
-                          textScaleFactor: 1,
+                          
                         ),
 
 
                         Expanded(
                           child:  Text(item.formattedSubTotal!,
                             style: AppTextStyle.titleSmall,
-                            textScaleFactor: 1,
+                            
                             textAlign: TextAlign.end,
                           ),
                         )
@@ -359,7 +358,7 @@ class _ItemCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             offer,
-                            textScaleFactor: 1,
+                            
                             style: AppTextStyle.bodySmall.copyWith(
                               color: AppColor.green,
                             ),
@@ -390,7 +389,7 @@ class _ItemCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             warning,
-                            textScaleFactor: 1,
+                            
                             style: AppTextStyle.bodySmall.copyWith(
                               color: AppColor.redOrange,
                             ),
@@ -432,7 +431,7 @@ class _PotentialSavings extends ViewModelWidget<ReviewOrderViewModel> {
             children: [
               Text(
                 "Potential Savings",
-                textScaleFactor: 1,
+                
                 style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),
                 // style: AppTextStyle.titleSmall,
               ),
@@ -441,7 +440,7 @@ class _PotentialSavings extends ViewModelWidget<ReviewOrderViewModel> {
                 viewModel.shoppingCart!.potentialSavings!,
                 // style: AppTextStyle.bodySmall.copyWith(color: AppColor.primary),
                 style: AppTextStyle.titleSmall,
-                textScaleFactor: 1,
+                
               ),
             ],
           ),
@@ -466,7 +465,7 @@ class _OrderSummary extends ViewModelWidget<ReviewOrderViewModel> {
           ),
           child: Text(
             "Order Summary",
-            textScaleFactor: 1,
+            
             style: AppTextStyle.titleMedium,
           ),
         ),
@@ -504,7 +503,7 @@ class _OrderSummary extends ViewModelWidget<ReviewOrderViewModel> {
                       children: [
                         Text(
                           item.key!,
-                          textScaleFactor: 1,
+                          
                           style: AppTextStyle.bodyMedium,
                         ),
                         HorizontalSpacing.d5px(),
@@ -542,7 +541,7 @@ class _OrderSummary extends ViewModelWidget<ReviewOrderViewModel> {
                 child: Row(
                   children: [
                     Text("Total",
-                        textScaleFactor: 1,
+                        
                         style: AppTextStyle.titleLarge.copyWith(fontSize: 17)),
                     Expanded(child: Container()),
                     Text(viewModel.shoppingCart!.formattedOrderTotal!,

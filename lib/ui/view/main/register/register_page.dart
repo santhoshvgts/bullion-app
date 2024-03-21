@@ -3,6 +3,7 @@ import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/appconfig_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/view/main/register/register_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -11,6 +12,7 @@ import 'package:bullion/ui/widgets/edit_text_field.dart';
 import 'package:bullion/ui/widgets/tap_outside_unfocus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
   final bool fromMain;
@@ -51,7 +53,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField(
                         "First Name",
                         viewModel.nameController,
-                        placeholder: "john",
+                        placeholder: "",
                         onSubmitted: (value) {},
                         onChanged: (value) {},
                       ),
@@ -59,7 +61,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField(
                         "Last Name",
                         viewModel.lnameController,
-                        placeholder: 'Paul',
+                        placeholder: '',
                         onSubmitted: (value) {},
                         onChanged: (value) {},
                       ),
@@ -67,7 +69,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField(
                         "Email Address",
                         viewModel.emailController,
-                        placeholder: "john@bullion.com",
+                        placeholder: "",
                         onSubmitted: (value) {},
                         onChanged: (value) {},
                       ),
@@ -75,7 +77,7 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       EditTextField.password(
                         "Password",
                         viewModel.passwordController,
-                        placeholder: "********",
+                        placeholder: "",
                         onSubmitted: (value) {
                           FocusScope.of(context).requestFocus(viewModel.confirmPasswordController.focusNode);
                         },
@@ -83,10 +85,10 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                       ),
                       VerticalSpacing.custom(value: 28),
 
-                      EditTextField(
+                      EditTextField.password(
                         "Confirm Password",
                         viewModel.confirmPasswordController,
-                        placeholder: "********",
+                        placeholder: "",
                         onSubmitted: (value) {
                           FocusScope.of(context).unfocus();
                         },
@@ -102,23 +104,41 @@ class RegisterPage extends VGTSBuilderWidget<RegisterViewModel> {
                 onPressed: () => viewModel.register(context),
               ),
               VerticalSpacing.d15px(),
-              Center(
-                  child: Text(
-                '--------   Or sign in with   --------',
-                style: AppTextStyle.bodyMedium
-                    .copyWith(color: AppColor.secondaryText, fontSize: 12),
-              )),
-              VerticalSpacing.d15px(),
-              Button.outline(
-                "Continue with Google",
-                valueKey: const Key('btnGoogle'),
-                iconWidget: Image.asset(
-                  Images.googleIcon,
-                  height: 20,
-                ),
-                textStyle:
-                    AppTextStyle.titleSmall.copyWith(color: AppColor.text),
-                onPressed: () => viewModel.continueWithoutLogin(),
+
+              FutureBuilder(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+
+                    if (locator<AppConfigService>().config?.showDeleteButtonByVersion == snapshot.data?.version) {
+                      return Container();
+                    }
+
+                    return Column(
+                      children: [
+                        Center(
+                            child: Text(
+                              '--------   Or sign in with   --------',
+                              style: AppTextStyle.bodyMedium
+                                  .copyWith(color: AppColor.secondaryText, fontSize: 12),
+                            )),
+                        VerticalSpacing.d15px(),
+                        Button.outline(
+                          "Continue with Google",
+                          valueKey: const Key('btnGoogle'),
+                          width: double.infinity,
+                          progressColor: AppColor.primary,
+                          iconWidget: Image.asset(
+                            Images.googleIcon,
+                            height: 20,
+                          ),
+                          textStyle: AppTextStyle.titleSmall.copyWith(color: AppColor.text),
+                          onPressed: () {
+                          viewModel.googleSignIn();
+                        },
+                                          ),
+                      ],
+                    );
+                }
               ),
             ],
           ),

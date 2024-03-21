@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:342393830785:android:dcdf799564ae164f35fc80",
+        "mobilesdk_app_id": "1:342393830785:android:8d693c1d4d7f918b35fc80",
         "android_client_info": {
-          "package_name": "com.bullion"
+          "package_name": "com.bullion.app.prod"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "342393830785-l5hir5gupip4ntjo25ssbfvb6p63fes9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA6gyCm0rx05U6KMuHdBYfqKZB248CZxsA"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342393830785-l5hir5gupip4ntjo25ssbfvb6p63fes9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "342393830785-mppg81ts27ija77lua5mup28sqsj6l68.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bullion"
+              }
+            }
+          ]
         }
       }
     }

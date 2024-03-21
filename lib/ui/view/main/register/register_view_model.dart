@@ -7,6 +7,7 @@ import 'package:bullion/services/shared/api_model/request_settings.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
@@ -32,8 +33,14 @@ class RegisterViewModel extends VGTSBaseViewModel {
   EmailFormFieldController emailController = EmailFormFieldController(
     const ValueKey("txtEmail"),
   );
-  PasswordFormFieldController passwordController = PasswordFormFieldController(
+  FormFieldController passwordController = FormFieldController(
     const ValueKey("txtPassword"),
+    validator: (String? value) {
+      if ((value?.length ?? 0) < 7) {
+        return "Password should have minimum 7 characters";
+      }
+      return null;
+    }
   );
   late FormFieldController confirmPasswordController;
 
@@ -41,6 +48,7 @@ class RegisterViewModel extends VGTSBaseViewModel {
   Future onInit() {
     confirmPasswordController = FormFieldController(
         const ValueKey("txtConfirmPassword"),
+        textCapitalization: TextCapitalization.none,
         validator: (String? value) {
           return confirmPasswordValidator(value);
         }
@@ -68,21 +76,7 @@ class RegisterViewModel extends VGTSBaseViewModel {
       passwordController.text,
       confirmPasswordController.text,
     );
-
-    if (result != null) {
-      if (fromMain) {
-        navigationService.popAllAndPushNamed(Routes.dashboard);
-      } else if (redirectRoute != null) {
-        navigationService.pushReplacementNamed(redirectRoute!);
-      } else {
-        navigationService.pop(returnValue: true);
-        locator<EventBusService>()
-            .eventBus
-            .fire(RefreshDataEvent(RefreshType.homeRefresh));
-      }
-      preferenceService.setFirstTimeAppOpen(false);
-    }
-    notifyListeners();
+    handleAuthResponse(result);
      setBusy(false);
   }
 
@@ -99,7 +93,14 @@ class RegisterViewModel extends VGTSBaseViewModel {
         .eventBus
         .fire(RefreshDataEvent(RefreshType.homeRefresh));
     await navigationService.pushReplacementNamed(Routes.login,
-        arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+        arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute
+    });
+  }
+  googleSignIn() async {
+    setBusyForObject("GOOGLE", true);
+    AuthResponse? result = await _authenticationService.signInWithGoogle();
+    handleAuthResponse(result);
+    setBusyForObject("GOOGLE", false);
   }
 
   @override
@@ -109,5 +110,18 @@ class RegisterViewModel extends VGTSBaseViewModel {
   ) {
     locator<DialogService>().showDialog(description: exception.error?.message);
     super.handleErrorResponse(settings, exception);
+  }
+
+  handleAuthResponse(AuthResponse? result) {
+    if (result != null) {
+      if (fromMain) {
+        navigationService.popAllAndPushNamed(Routes.dashboard);
+      } else if (redirectRoute != null) {
+        navigationService.pushReplacementNamed(redirectRoute!);
+      } else {
+        navigationService.pop(returnValue: true);
+      }
+      preferenceService.setFirstTimeAppOpen(false);
+    }
   }
 }

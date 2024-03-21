@@ -28,7 +28,7 @@ class ActionButtonItem extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(settings!.labelText!,
-                  textScaleFactor: 1,
+                  
                   style: settings!.textStyle.copyWith(
                     color: settings!.textColor == null
                         ? textColor
@@ -79,7 +79,7 @@ class ActionButtonItem extends StatelessWidget {
         child: _buildDynamicPositionWrapper(children: [
           Text(
             settings!.labelText!,
-            textScaleFactor: 1,
+            
             style: settings!.textStyle,
             maxLines: 1,
             overflow: TextOverflow.fade,

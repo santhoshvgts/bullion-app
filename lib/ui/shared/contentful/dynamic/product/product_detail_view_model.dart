@@ -1,12 +1,17 @@
+import 'package:bullion/core/models/module/dynamic.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_detail/product_price.dart';
 import 'package:bullion/core/models/module/product_detail/volume_prcing.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/checkout/cart_service.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
+import 'package:bullion/services/toast_service.dart';
+import 'package:bullion/ui/shared/toast/actionable_toast.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../../../helper/utils.dart';
@@ -87,33 +92,41 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
     locator<EventBusService>().eventBus.fire(ProductApplyVariationEvent(_productDetails!, targetUrl));
   }
 
-  void priceAlert(ProductOverview? overview, BuildContext context) {
-    if (authenticationService!.isAuthenticated) {
-      locator<NavigationService>()
-          .pushNamed(Routes.editPriceAlert, arguments: {
-        "productDetails": overview
-      });
-    } else {
-      Util.showSnackBar(context,
-          "Please login to create a Price Alert");
+  void priceAlert(ProductOverview? overview) async {
+    var result = await locator<NavigationService>().pushNamed(Routes.editPriceAlert, arguments: { "productDetails": overview });
+
+    if (result != null) {
+      productDetails!.isInUserPriceAlert = true;
+      notifyListeners();
+      locator<ToastService>().showWidget(child: ActionableToast(
+        title: "Product Price Alert",
+        content: "Added Successfully",
+        onActionTap: () {
+          locator<NavigationService>().pushNamed(Routes.alerts, arguments: 1);
+        },
+        icon: CupertinoIcons.check_mark_circled_solid,
+        actionText: "View",
+      ));
     }
   }
 
-
-
   Future<void> addAsFavorite(int? productId) async {
-    setBusy(true);
-    if (!authenticationService.isAuthenticated) {
-       return;
-    }
-    var response;
+    setBusyForObject(productDetails!.isInUserWishList, true);
 
-    if (productDetails!.isInUserWishList!) {
-
+    if (productDetails!.isInUserWishList! == true) {
+      var response =  await request<DynamicModel>(FavoritesRequest.removeFavorite(productId.toString()));
+      if (response != null) {
+        productDetails!.isInUserWishList = false;
+        notifyListeners();
+      }
     } else {
-      response =  await request<ProductDetails>(FavoritesRequest.addFavorite(productId.toString()));
-      productDetails!.isInUserWishList = response;
+      var response =  await request<DynamicModel>(FavoritesRequest.addFavorite(productId.toString()));
+      if (response != null) {
+        productDetails!.isInUserWishList = true;
+        notifyListeners();
+        locator<AnalyticsService>().logAddToWishlist(productDetails!);
+      }
     }
-    setBusy(false);
+    setBusyForObject(productDetails!.isInUserWishList, false);
   }
 }

@@ -12,7 +12,6 @@ class OrderTotalSummary {
   String? keyCode;
   bool? canRemove;
 
-
   Color get textColor => getColorFromString(valueTextColor, fallbackColor: AppColor.title);
 
   OrderTotalSummary(

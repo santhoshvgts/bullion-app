@@ -6,6 +6,7 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/authentication_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 
@@ -29,6 +30,7 @@ class LoginViewModel extends VGTSBaseViewModel {
   TextFormFieldController passwordController = TextFormFieldController(
       const ValueKey("txtPassword"),
       required: true,
+      textCapital: TextCapitalization.none,
       requiredText: 'Required Password !');
 
   init(bool fromMain, String? redirectRoute) {
@@ -40,9 +42,18 @@ class LoginViewModel extends VGTSBaseViewModel {
     navigationService.pushNamed(Routes.forgotPassword, arguments: fromMain);
   }
 
-  register() {
-    navigationService.pushNamed(Routes.register,
-        arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+  register() async {
+    var result = await navigationService.pushNamed(Routes.register, arguments: {'fromMain': fromMain, 'redirectRoute': redirectRoute});
+    if (result == true) {
+      navigationService.pop(returnValue: true);
+    }
+  }
+
+  googleSignIn() async {
+    setBusyForObject("GOOGLE", true);
+    AuthResponse? result = await _authenticationService.signInWithGoogle();
+    handleAuthResponse(result);
+    setBusyForObject("GOOGLE", false);
   }
 
   login() async {
@@ -54,20 +65,7 @@ class LoginViewModel extends VGTSBaseViewModel {
       emailController.text,
       passwordController.text,
     );
-    if (result != null) {
-      if (fromMain) {
-        navigationService.popAllAndPushNamed(Routes.dashboard);
-      } else if (redirectRoute != null) {
-        navigationService.pushReplacementNamed(redirectRoute!);
-      } else {
-        navigationService.pop(returnValue: true);
-        locator<EventBusService>()
-            .eventBus
-            .fire(RefreshDataEvent(RefreshType.accountRefresh));
-      }
-      preferenceService.setFirstTimeAppOpen(false);
-    }
-    notifyListeners();
+    handleAuthResponse(result);
     setBusy(false);
   }
 
@@ -78,4 +76,19 @@ class LoginViewModel extends VGTSBaseViewModel {
         .eventBus
         .fire(RefreshDataEvent(RefreshType.homeRefresh));
   }
+
+  handleAuthResponse(AuthResponse? result) {
+    if (result != null) {
+      if (fromMain) {
+        navigationService.popAllAndPushNamed(Routes.dashboard);
+      } else if (redirectRoute != null) {
+        navigationService.pushReplacementNamed(redirectRoute!);
+      } else {
+        navigationService.pop(returnValue: true);
+        locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
+      }
+      preferenceService.setFirstTimeAppOpen(false);
+    }
+  }
+
 }

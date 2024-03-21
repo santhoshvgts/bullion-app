@@ -60,7 +60,7 @@ class Checkout extends BaseModel {
     isEstimate = json['is_estimate'];
     redirect = json['redirect'];
     redirectUrl = json['redirect_to'];
-    orderTotal = json['order_total'];
+    orderTotal = double.tryParse(json['order_total'].toString());
     formattedOrderTotal = json['formatted_order_total'] ?? '';
     if (json['order_total_summary'] != null) {
       orderTotalSummary = <OrderTotalSummary>[];

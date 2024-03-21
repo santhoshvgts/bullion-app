@@ -16,11 +16,13 @@ class CartButton extends VGTSBuilderWidget<CartButtonViewModel> {
       : icon = const Icon(
           CupertinoIcons.cart,
           color: Colors.white,
+          size: 18,
         );
 
   const CartButton.light({super.key})
       : icon = const Icon(
           CupertinoIcons.cart,
+          size: 18,
         );
 
   @override
@@ -33,33 +35,44 @@ class CartButton extends VGTSBuilderWidget<CartButtonViewModel> {
       CartButtonViewModel();
 
   @override
-  Widget viewBuilder(BuildContext context, AppLocalizations locale,
-      CartButtonViewModel viewModel, Widget? child) {
-    return IconButton(
-      onPressed: () {
-      //  locator<NavigationService>().pushNamed(Routes.checkout);
-        locator<NavigationService>().pushNamed(Routes.viewCart);
-      },
-      padding: EdgeInsets.zero,
-      icon: Stack(
-        children: [
-          Padding(padding: const EdgeInsets.all(12), child: icon),
-          if (viewModel.totalCartItem != 0)
-            Positioned(
-              right: 5,
-              child: Container(
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: AppColor.primary),
-                padding: const EdgeInsets.all(5),
-                child: Text(
-                  viewModel.totalCartItem.toString(),
-                  textScaleFactor: 1,
-                  style: AppTextStyle.bodyMedium
-                      .copyWith(fontSize: 12, color: AppColor.white),
-                ),
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, CartButtonViewModel viewModel, Widget? child) {
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      child: SizedBox(
+        width: 40,
+        height: 40,
+        child: IconButton(
+          onPressed: () {
+            locator<NavigationService>().pushNamed(Routes.viewCart);
+          },
+          padding: EdgeInsets.zero,
+          icon: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(0),
+                child: CircleAvatar(
+                  backgroundColor: AppColor.secondaryBackground,
+                  child: icon,
+                )
               ),
-            )
-        ],
+              if (viewModel.totalCartItem != 0)
+                Positioned(
+                  right: 0,
+                  top: -5,
+                  child: Container(
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColor.primary),
+                    padding: const EdgeInsets.all(5),
+                    child: Text(
+                      viewModel.totalCartItem.toString(),
+
+                      style: AppTextStyle.bodyMedium
+                          .copyWith(fontSize: 12, color: AppColor.white),
+                    ),
+                  ),
+                )
+            ],
+          ),
+        ),
       ),
     );
   }

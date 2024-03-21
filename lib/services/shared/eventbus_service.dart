@@ -22,6 +22,11 @@ class DisableLockTimeoutEvent implements Event {
 class RefreshDataEvent implements Event {
   String name;
   RefreshDataEvent(this.name);
+
+}
+
+class CartRefreshEvent implements Event {
+
 }
 
 class ProductApplyVariationEvent implements Event {

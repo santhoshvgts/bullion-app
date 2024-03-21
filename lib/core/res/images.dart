@@ -11,6 +11,7 @@ class Images {
   static const String priceAlerts = "assets/images/price-alerts.png";
   static const String priceComparison = "assets/images/price_comparision.png";
   static const String vaultDeals = "assets/images/vault-deals.png";
+  static const String emptyOrder = "assets/images/vault-deals.png";
 
   static const String discountOffers = "assets/images/discount.png";
   static const String warning = "assets/images/warning.png";
@@ -25,13 +26,19 @@ class Images {
   // BOTTOM MENU ICONS
   static const String home = "assets/images/home_inactive.png";
   static const String home_active = "assets/images/home_active.png";
-  static const String account = "assets/images/v2/account.png";
-  static const String account_active = "assets/images/v2/account_active.png";
+  static const String account = "assets/images/user_inactive.png";
+  static const String account_active = "assets/images/user_active.png";
   static const String price = "assets/images/v2/price.png";
   static const String price_active = "assets/images/v2/price_active.png";
 
   static const String deals_active = "assets/images/deals_active.png";
   static const String deals = "assets/images/deals_inactive.png";
+
+  static const String cart_active = "assets/images/cart_active.png";
+  static const String cart_inactive = "assets/images/cart_inactive.png";
+
+  static const String chart_active = "assets/images/chart_active.png";
+  static const String chart_inactive = "assets/images/chart_inactive.png";
 
   static const String shop = "assets/images/v2/shop.png";
   static const String menu_bar = "assets/images/v2/menu_bar.png";
@@ -45,9 +52,6 @@ class Images {
 
   static const String arrow = "assets/images/v2/arrow.png";
   static const String notification = "assets/images/notification.png";
-
-  static const String chart = "assets/images/chart.png";
-  static const String chart_active = "assets/images/chart_active.png";
 
   static const String gift = "assets/images/gift_holiday.png";
   static const String gift_active = "assets/images/gift_holiday.png";
@@ -76,7 +80,7 @@ class Images {
 
   static const String iconEmptyAddress = "assets/images/icon_empty_address.png";
   static const String iconEmptyReview = "assets/images/icon_empty_review.png";
-  static const String iconEmptyOrders = "assets/images/icon_empty_orders.png";
+  static const String iconEmptyOrders = "assets/images/icon_empty_orders.webp";
   static const String iconEmptyPortfolio =
       "assets/images/icon_empty_portfolio.png";
   static const String iconEmptyNotification =

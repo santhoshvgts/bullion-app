@@ -32,6 +32,7 @@ class RecentlyBoughtViewModel extends VGTSBaseViewModel {
     setBusy(true);
     productList = await requestList<ProductOverview>(ActivityRequest.getRecentlyBought());
     pageNo = 1;
+    hasNextPage = true;
     setBusy(false);
   }
 

@@ -114,7 +114,7 @@ class _ItemCard extends ViewModelWidget<StandardViewModel> {
                       child: Container(
                         padding: const EdgeInsets.only(top: 10, bottom: 2),
                         child: Text(item.content!,
-                            textScaleFactor: 1,
+                            
                             style: StandardTextStyle.content(
                                     viewModel.itemDisplaySettings.contentStyle)
                                 .copyWith(
@@ -271,7 +271,7 @@ class _CollPaSableButton extends ViewModelWidget<StandardViewModel> {
               "Show ${viewModel.moreCategoriesLength} more Categories",
               style: AppTextStyle.labelMedium.copyWith(
                   color: const Color(0xff008fbe), fontWeight: FontWeight.w600),
-              textScaleFactor: 1,
+              
             ),
             const Padding(
               padding: EdgeInsets.all(3.0),
@@ -295,7 +295,7 @@ class _ShowLess extends ViewModelWidget<StandardViewModel> {
               "Show Less",
               style: AppTextStyle.labelMedium.copyWith(
                   color: const Color(0xff008fbe), fontWeight: FontWeight.w600),
-              textScaleFactor: 1,
+              
             ),
             const Padding(
               padding: EdgeInsets.only(top: 5.0),

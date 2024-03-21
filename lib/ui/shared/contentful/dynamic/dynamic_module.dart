@@ -3,11 +3,13 @@ import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_section.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_overview_section.dart';
+import 'package:bullion/ui/shared/contentful/dynamic/search/search_history_section.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/search/trending_section.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/chart_view/spot_price_chart_view.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/spot_price/grid/spot_price_grid.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class DynamicModule extends StatelessWidget {
   final ModuleSettings? _setting;
@@ -70,9 +72,9 @@ class DynamicItem extends StatelessWidget {
       // case DynamicType.knowledgeCenter:
       //   return KnowledgeCenterList(setting!.dynamicItemData);
       //
-      // case DynamicType.searchHistory:
-      //   return SearchHistorySection(setting);
-      //
+      case DynamicType.searchHistory:
+        return SearchHistorySection(setting);
+
       case DynamicType.searchTrending:
         return TrendingSection(setting);
 

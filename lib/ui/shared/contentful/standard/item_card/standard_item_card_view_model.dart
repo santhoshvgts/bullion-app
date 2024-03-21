@@ -67,6 +67,6 @@ class StandardItemCardViewModel extends BaseViewModel {
 
   onTap() {
     print(item!.targetUrl);
-    locator<NavigationService>().pushNamed(item!.targetUrl, rootNavigator: true);
+    locator<NavigationService>().pushNamed(item!.targetUrl);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/ui/shared/contentful/banner/banner_view_model.dart';
 import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -109,26 +110,55 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
         );
 
       case BannerType.single:
-        return SizedBox(
-          height: MediaQuery.of(context).size.width / 2.75,
-          child: Swiper(
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: _BannerItemWidget(viewModel.items![index]),
-              );
-            },
-            index: viewModel.items!.length > 1 ? 1 : 0,
-            itemCount: viewModel.items!.length,
-            viewportFraction: 0.9,
-            scale: 0.95,
-            layout: SwiperLayout.DEFAULT,
-            loop: true,
-            pagination: const SwiperPagination(
-              alignment: Alignment.bottomCenter,
-              builder: DotSwiperPaginationBuilder(color: AppColor.secondaryBackground, activeColor: AppColor.primary, size: 7.0, activeSize: 7.0),
-            ),
-          ),
+        return FutureBuilder<ui.Image>(
+            future: completer.future,
+            builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
+              if (snapshot.hasData) {
+                return Container(
+                  color: AppColor.white,
+                  height: ((snapshot.data!.height / snapshot.data!.width) * MediaQuery.of(context).size.width) + 20,
+                  child: Column(
+                    children: [
+                      Flexible(
+                        child: Swiper(
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 15, bottom: 30),
+                              child: _BannerSingleItemWidget(viewModel.items![index]),
+                            );
+                          },
+                          index: viewModel.items!.length > 1 ? 1 : 0,
+                          itemCount: viewModel.items!.length,
+                          viewportFraction: 0.9,
+                          scale: 0.95,
+                          layout: SwiperLayout.DEFAULT,
+                          loop: true,
+                          pagination: const SwiperPagination(
+                            alignment: Alignment.bottomCenter,
+                            builder: DotSwiperPaginationBuilder(
+                                color: Colors.black26,
+                                activeColor: AppColor.primary,
+                                size: 7.0,
+                                activeSize: 9
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                return SizedBox(
+                    height: 145,
+                    child: ShimmerEffect(
+                      shape: BoxShape.circle,
+                      color: AppColor.secondaryBackground,
+                      margin: const EdgeInsets.all(10.0),
+                    )
+                );
+              }
+
+            }
         );
 
       default:
@@ -151,6 +181,34 @@ class _BannerItemWidget extends VGTSBuilderWidget<BannerViewModel> {
         child: NetworkImageLoader(
           image: _items.imageUrl,
           fit: BoxFit.fitWidth,
+        ));
+  }
+}
+
+class _BannerSingleItemWidget extends VGTSBuilderWidget<BannerViewModel> {
+  final BannerItem _items;
+  _BannerSingleItemWidget(this._items);
+
+  @override
+  BannerViewModel viewModelBuilder(BuildContext context) => BannerViewModel();
+
+  @override
+  Widget viewBuilder(BuildContext context, AppLocalizations locale, BannerViewModel viewModel, Widget? child) {
+    return InkWell(
+        onTap: () => viewModel.onTap(_items.targetUrl),
+        borderRadius: BorderRadius.circular(7),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7),
+            boxShadow: AppStyle.mildCardShadow
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(7),
+            child: NetworkImageLoader(
+              image: _items.imageUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
         ));
   }
 }

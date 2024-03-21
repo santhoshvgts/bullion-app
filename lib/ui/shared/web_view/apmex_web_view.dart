@@ -129,7 +129,7 @@ class _ApmexWebViewPageState extends State<ApmexWebViewPage> {
         appBar: AppBar(
           title: Text(
             widget.title ?? '',
-            textScaleFactor: 1,
+            
             style: AppTextStyle.titleLarge,
           ),
         ),

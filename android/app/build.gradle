@@ -15,7 +15,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '2'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.bullion"
+    namespace "com.bullion.app"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.bullion"
+        applicationId "com.bullion.app"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -58,14 +58,15 @@ android {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
             manifestPlaceholders["appName"] = "Bullion Dev"
-//            manifestPlaceholders["deepLinkHost"] = "apmexdev.page.link"
-//            manifestPlaceholders["kochavaSmartLink"] = "apmexdev.smart.link"
+            manifestPlaceholders["deepLinkHost"] = "testsite.bullion.com"
+            manifestPlaceholders["deepFBLinkHost"] = "bulliondev.page.link"
         }
         create("prod") {
             dimension = "flavor-type"
+            applicationIdSuffix = ".prod"
             manifestPlaceholders["appName"] = "Bullion"
-//            manifestPlaceholders["deepLinkHost"] = "apmexdev.page.link"
-//            manifestPlaceholders["kochavaSmartLink"] = "apmexdev.smart.link"
+            manifestPlaceholders["deepLinkHost"] = "bullion.com"
+            manifestPlaceholders["deepFBLinkHost"] = "bullion.page.link"
         }
     }
 
@@ -73,7 +74,7 @@ android {
         release {
             //Hack for releasing through App Center https://github.com/flutter/flutter/issues/18232
             signingConfig null
-
+            crunchPngs false
             applicationVariants.all { variant ->
                 variant.outputs.all { output ->
                     if (variant.buildType.name == "release") {

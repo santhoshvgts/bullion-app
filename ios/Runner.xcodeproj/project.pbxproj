@@ -11,7 +11,10 @@
 		230EBA3EFEDF6CFB67C87BB6 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85D103933C2643C41CA8385 /* Pods_Runner.framework */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		4A7E574A2B7487F60014C2EA /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7E57492B7487F60014C2EA /* NotificationService.swift */; };
+		4A7E574E2B7487F60014C2EA /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4A7E57472B7487F60014C2EA /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4AD883292AB9713900A797A9 /* config in Resources */ = {isa = PBXBuildFile; fileRef = 4AD883282AB9713900A797A9 /* config */; };
+		7423CFC868FB40D7BCCF681F /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4163FF1C05E15E1B8662E9DE /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -26,6 +29,13 @@
 			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
 		};
+		4A7E574C2B7487F60014C2EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A7E57462B7487F60014C2EA;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +45,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				4A7E574E2B7487F60014C2EA /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,10 +69,25 @@
 		1884A1492B18B26400B495A0 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		1884A14B2B18B26400B495A0 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		1DE6240C931BDAAD240A5EAC /* Pods-Runner.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"; sourceTree = "<group>"; };
+		259F14702B936AF1008ED49F /* RunnerRelease-prod.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerRelease-prod.entitlements"; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		3E25C41F13534CB6B1663DD5 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig"; sourceTree = "<group>"; };
+		4163FF1C05E15E1B8662E9DE /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A7558292B74DFF5006293E6 /* RunnerProfile-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerProfile-dev.entitlements"; sourceTree = "<group>"; };
+		4A7E570D2B73E2370014C2EA /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		4A7E573F2B73E6780014C2EA /* RunnerDebug-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerDebug-dev.entitlements"; sourceTree = "<group>"; };
+		4A7E57402B73E6B60014C2EA /* RunnerRelease-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RunnerRelease-dev.entitlements"; sourceTree = "<group>"; };
+		4A7E57472B7487F60014C2EA /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A7E57492B7487F60014C2EA /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		4A7E574B2B7487F60014C2EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4A7E57562B74882D0014C2EA /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
+		4A7E57572B7488460014C2EA /* OneSignalNotificationServiceExtensionDebug-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OneSignalNotificationServiceExtensionDebug-dev.entitlements"; sourceTree = "<group>"; };
+		4A7E57582B74884C0014C2EA /* OneSignalNotificationServiceExtensionRelease-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OneSignalNotificationServiceExtensionRelease-dev.entitlements"; sourceTree = "<group>"; };
+		4A7E57592B7488540014C2EA /* OneSignalNotificationServiceExtensionProfile-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OneSignalNotificationServiceExtensionProfile-dev.entitlements"; sourceTree = "<group>"; };
 		4AD883282AB9713900A797A9 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
+		4EED2FD5EA4F024226134075 /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig"; sourceTree = "<group>"; };
 		55B1034B1AFDC21E4A199F0F /* Pods-Runner.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-prod.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,9 +100,13 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9BAA66C7FB1A1BD000A348F0 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig"; sourceTree = "<group>"; };
 		BBCA56679D95EAA4CB32BE31 /* Pods-Runner.profile-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-dev.xcconfig"; sourceTree = "<group>"; };
+		BD94036AB30AE960A5FF9333 /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig"; sourceTree = "<group>"; };
 		D85D103933C2643C41CA8385 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC6A633746A2E2E4C514A998 /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig"; sourceTree = "<group>"; };
 		EC76F6AF3768AB28A5A01085 /* Pods-Runner.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-prod.xcconfig"; sourceTree = "<group>"; };
+		F352F1345E88C24D54B54BF3 /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +114,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A7E57442B7487F60014C2EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7423CFC868FB40D7BCCF681F /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +145,12 @@
 				8C14A6A2B0BD54B671345932 /* Pods-Runner.release-dev.xcconfig */,
 				EC76F6AF3768AB28A5A01085 /* Pods-Runner.profile-prod.xcconfig */,
 				BBCA56679D95EAA4CB32BE31 /* Pods-Runner.profile-dev.xcconfig */,
+				DC6A633746A2E2E4C514A998 /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */,
+				BD94036AB30AE960A5FF9333 /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */,
+				F352F1345E88C24D54B54BF3 /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */,
+				4EED2FD5EA4F024226134075 /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */,
+				3E25C41F13534CB6B1663DD5 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */,
+				9BAA66C7FB1A1BD000A348F0 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -119,12 +163,26 @@
 			path = RunnerTests;
 			sourceTree = "<group>";
 		};
+		4A7E57482B7487F60014C2EA /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				4A7E57592B7488540014C2EA /* OneSignalNotificationServiceExtensionProfile-dev.entitlements */,
+				4A7E57582B74884C0014C2EA /* OneSignalNotificationServiceExtensionRelease-dev.entitlements */,
+				4A7E57572B7488460014C2EA /* OneSignalNotificationServiceExtensionDebug-dev.entitlements */,
+				4A7E57562B74882D0014C2EA /* OneSignalNotificationServiceExtension.entitlements */,
+				4A7E57492B7487F60014C2EA /* NotificationService.swift */,
+				4A7E574B2B7487F60014C2EA /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
+			sourceTree = "<group>";
+		};
 		594A0125722A69FEDEC55DB3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				D85D103933C2643C41CA8385 /* Pods_Runner.framework */,
 				1884A1492B18B26400B495A0 /* WidgetKit.framework */,
 				1884A14B2B18B26400B495A0 /* SwiftUI.framework */,
+				4163FF1C05E15E1B8662E9DE /* Pods_OneSignalNotificationServiceExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -145,6 +203,7 @@
 			children = (
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
+				4A7E57482B7487F60014C2EA /* OneSignalNotificationServiceExtension */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				036C43BD3EED3D97FDF00FD5 /* Pods */,
@@ -157,6 +216,7 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Bullion.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
+				4A7E57472B7487F60014C2EA /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,6 +224,11 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				259F14702B936AF1008ED49F /* RunnerRelease-prod.entitlements */,
+				4A7558292B74DFF5006293E6 /* RunnerProfile-dev.entitlements */,
+				4A7E57402B73E6B60014C2EA /* RunnerRelease-dev.entitlements */,
+				4A7E573F2B73E6780014C2EA /* RunnerDebug-dev.entitlements */,
+				4A7E570D2B73E2370014C2EA /* Runner.entitlements */,
 				4AD883282AB9713900A797A9 /* config */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -198,6 +263,24 @@
 			productReference = 331C8081294A63A400263BE5 /* RunnerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		4A7E57462B7487F60014C2EA /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A7E574F2B7487F70014C2EA /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				94F160D69878403F753694BC /* [CP] Check Pods Manifest.lock */,
+				4A7E57432B7487F60014C2EA /* Sources */,
+				4A7E57442B7487F60014C2EA /* Frameworks */,
+				4A7E57452B7487F60014C2EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = 4A7E57472B7487F60014C2EA /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		97C146ED1CF9000F007C117D /* Runner */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
@@ -217,6 +300,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4A7E574D2B7487F60014C2EA /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -237,6 +321,9 @@
 					331C8080294A63A400263BE5 = {
 						CreatedOnToolsVersion = 14.0;
 						TestTargetID = 97C146ED1CF9000F007C117D;
+					};
+					4A7E57462B7487F60014C2EA = {
+						CreatedOnToolsVersion = 15.0.1;
 					};
 					97C146ED1CF9000F007C117D = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -259,12 +346,20 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
+				4A7E57462B7487F60014C2EA /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		331C807F294A63A400263BE5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A7E57452B7487F60014C2EA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -376,6 +471,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		94F160D69878403F753694BC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -389,7 +506,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -399,6 +516,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A7E57432B7487F60014C2EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A7E574A2B7487F60014C2EA /* NotificationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,6 +543,11 @@
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
 			targetProxy = 331C8085294A63A400263BE5 /* PBXContainerItemProxy */;
+		};
+		4A7E574D2B7487F60014C2EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A7E57462B7487F60014C2EA /* OneSignalNotificationServiceExtension */;
+			targetProxy = 4A7E574C2B7487F60014C2EA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -482,7 +612,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -495,11 +625,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
 				ENABLE_BITCODE = NO;
+				GRESERVED_CLIENT_ID = "com.googleusercontent.apps.342393830785-mppg81ts27ija77lua5mup28sqsj6l68";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -512,10 +647,16 @@
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bullion;
 				PRODUCT_NAME = Bullion;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bullion;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Profile-prod";
@@ -567,6 +708,498 @@
 			};
 			name = "Profile-prod";
 		};
+		4A7E57502B7487F70014C2EA /* Debug-prod */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC6A633746A2E2E4C514A998 /* Pods-OneSignalNotificationServiceExtension.debug-prod.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = KJ3FPFVR47;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug-prod";
+		};
+		4A7E57512B7487F70014C2EA /* Debug-dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD94036AB30AE960A5FF9333 /* Pods-OneSignalNotificationServiceExtension.debug-dev.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtensionDebug-dev.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.app.dev.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bullion DEV ADHOC ONESIGNAL";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug-dev";
+		};
+		4A7E57522B7487F70014C2EA /* Release-prod */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F352F1345E88C24D54B54BF3 /* Pods-OneSignalNotificationServiceExtension.release-prod.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bullion OneSignal";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release-prod";
+		};
+		4A7E57532B7487F70014C2EA /* Release-dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4EED2FD5EA4F024226134075 /* Pods-OneSignalNotificationServiceExtension.release-dev.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtensionRelease-dev.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.app.dev.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bullion DEV ADHOC ONESIGNAL";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release-dev";
+		};
+		4A7E57542B7487F70014C2EA /* Profile-prod */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E25C41F13534CB6B1663DD5 /* Pods-OneSignalNotificationServiceExtension.profile-prod.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KJ3FPFVR47;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Profile-prod";
+		};
+		4A7E57552B7487F70014C2EA /* Profile-dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9BAA66C7FB1A1BD000A348F0 /* Pods-OneSignalNotificationServiceExtension.profile-dev.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtensionProfile-dev.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.app.dev.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bullion DEV ADHOC ONESIGNAL";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Profile-dev";
+		};
 		4A81150D2AB2E93F00538CB0 /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -614,7 +1247,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -626,14 +1259,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerDebug-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4CK3DK2PQM;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
 				ENABLE_BITCODE = NO;
+				GRESERVED_CLIENT_ID = "com.googleusercontent.apps.728159990668-pcerst6i7340m6mkg8bk2h62ihqa94lu";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -646,13 +1282,18 @@
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.app.dev;
 				PRODUCT_NAME = "Bullion Dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bullion DEV ADHOC";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Debug-dev";
@@ -715,7 +1356,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -730,14 +1371,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerRelease-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4CK3DK2PQM;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
 				ENABLE_BITCODE = NO;
+				GRESERVED_CLIENT_ID = "com.googleusercontent.apps.728159990668-pcerst6i7340m6mkg8bk2h62ihqa94lu";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -750,12 +1394,17 @@
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.app.dev;
 				PRODUCT_NAME = "Bullion Dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bullion DEV ADHOC";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Release-dev";
@@ -816,7 +1465,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -829,14 +1478,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerProfile-dev.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4CK3DK2PQM;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
 				ENABLE_BITCODE = NO;
+				GRESERVED_CLIENT_ID = "com.googleusercontent.apps.728159990668-pcerst6i7340m6mkg8bk2h62ihqa94lu";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -849,12 +1501,17 @@
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bullion.app.dev;
 				PRODUCT_NAME = "Bullion Dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Bullion DEV ADHOC";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Profile-dev";
@@ -921,7 +1578,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -970,7 +1627,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
@@ -985,10 +1642,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CURRENT_PROJECT_VERSION = 2;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
 				ENABLE_BITCODE = NO;
+				GRESERVED_CLIENT_ID = "com.googleusercontent.apps.342393830785-mppg81ts27ija77lua5mup28sqsj6l68";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1001,11 +1663,17 @@
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bullion;
 				PRODUCT_NAME = Bullion;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bullion;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Debug-prod";
@@ -1014,10 +1682,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CODE_SIGN_ENTITLEMENTS = "Runner/RunnerRelease-prod.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CURRENT_PROJECT_VERSION = 2;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = KJ3FPFVR47;
 				ENABLE_BITCODE = NO;
+				GRESERVED_CLIENT_ID = "com.googleusercontent.apps.342393830785-mppg81ts27ija77lua5mup28sqsj6l68";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1030,10 +1703,16 @@
 					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bullion;
 				PRODUCT_NAME = Bullion;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bullion;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Release-prod";
@@ -1050,6 +1729,19 @@
 				4A8115122AB2E94500538CB0 /* Release-dev */,
 				331C808A294A63A400263BE5 /* Profile-prod */,
 				4A8115152AB2E94B00538CB0 /* Profile-dev */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release-prod";
+		};
+		4A7E574F2B7487F70014C2EA /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A7E57502B7487F70014C2EA /* Debug-prod */,
+				4A7E57512B7487F70014C2EA /* Debug-dev */,
+				4A7E57522B7487F70014C2EA /* Release-prod */,
+				4A7E57532B7487F70014C2EA /* Release-dev */,
+				4A7E57542B7487F70014C2EA /* Profile-prod */,
+				4A7E57552B7487F70014C2EA /* Profile-dev */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release-prod";

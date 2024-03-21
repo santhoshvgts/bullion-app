@@ -33,7 +33,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
           scrolledUnderElevation: 0,
           titleSpacing: 0,
           title: SearchCardSection(
-            rightPadding: 0,
+            rightPadding: 7,
             leftPadding: 0,
             placeholder: title,
           ),
@@ -82,7 +82,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
         //                         title ?? '',
         //                         style: AppTextStyle.bodyMedium,
         //                         textAlign: TextAlign.start,
-        //                         textScaleFactor: 1,
+        //                         
         //                       ),
         //                     ),
         //                   )

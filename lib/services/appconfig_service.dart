@@ -27,13 +27,10 @@ class AppConfig {
   String? environment;
   AppStoreLinks? appStoreLinks;
   AppLinks? appLinks;
-  Plaid? plaid;
   WebViewUrl? webViewUrl;
-  BraintreeObject? braintree;
   String? oneSignalID;
   String? googleAPIKey;
   Kochava? kochavaInfo;
-  FreshChatModel? freshChat;
   PromoFAB? promoFAB;
   String? showDeleteButtonByVersion;
 
@@ -50,7 +47,6 @@ class AppConfig {
     this.appLinks,
     this.oneSignalID,
     this.kochavaInfo,
-    this.freshChat,
     this.showDeleteButtonByVersion,
   });
 
@@ -68,7 +64,6 @@ class AppConfig {
     appStoreLinks = json['AppStoreLinks'] != null
         ? AppStoreLinks.fromJson(json['AppStoreLinks'])
         : null;
-    plaid = json['Plaid'] != null ? Plaid.fromJson(json['Plaid']) : null;
     webViewUrl = json['WebViewUrl'] != null
         ? WebViewUrl.fromJson(json['WebViewUrl'])
         : null;
@@ -78,18 +73,10 @@ class AppConfig {
     appLinks = json['AppLinks'] != null
         ? AppLinks.fromJson(json['AppLinks'])
         : null;
-
-    braintree = json['Braintree'] != null
-        ? BraintreeObject.fromJson(json['Braintree'])
-        : null;
     oneSignalID = json['OneSignalID'];
 
     if (json['KochavaKey'] != null) {
       kochavaInfo = Kochava.fromJson(json['KochavaKey']);
-    }
-
-    if (json['FreshChatKey'] != null) {
-      freshChat = FreshChatModel.fromJson(json['FreshChatKey']);
     }
   }
 
@@ -111,10 +98,6 @@ class AppConfig {
     if (appLinks != null) {
       data['AppLinks'] = appLinks!.toJson();
     }
-    if (plaid != null) {
-      data['Plaid'] = plaid!.toJson();
-    }
-
     if (promoFAB != null) {
       data['PromoFAB'] = promoFAB!.toJson();
     }
@@ -122,17 +105,10 @@ class AppConfig {
     if (webViewUrl != null) {
       data['WebViewUrl'] = webViewUrl!.toJson();
     }
-    if (braintree != null) {
-      data['Braintree'] = braintree!.toJson();
-    }
     data['OneSignalID'] = oneSignalID;
 
     if (kochavaInfo != null) {
       data['KochavaKey'] = kochavaInfo!.toJson();
-    }
-
-    if (freshChat != null) {
-      data['FreshChatKey'] = freshChat!.toJson();
     }
     return data;
   }
@@ -246,8 +222,6 @@ class AppLinks {
   String? faxNo;
   String? hoursOfOperation;
   String? fAQUrl;
-  SellToUs? sellToUs;
-  AutoInvest? autoInvest;
   String? checkoutTermCancelPolicy;
   String? apmexClubStatus;
 
@@ -264,8 +238,8 @@ class AppLinks {
       this.localNumber,
       this.faxNo,
       this.hoursOfOperation,
-      this.fAQUrl,
-      this.sellToUs});
+      this.fAQUrl
+      });
 
   AppLinks.fromJson(Map<String, dynamic> json) {
     webUrl = json['WebUrl'];
@@ -292,8 +266,6 @@ class AppLinks {
     forgotPasswordUrl = json['ForgotPasswordUrl'];
     hoursOfOperation = json['HoursOfOperation'];
     fAQUrl = json['FAQUrl'];
-    sellToUs = json['SellToUs'] != null ? SellToUs.fromJson(json['SellToUs']) : null;
-    autoInvest = json['AutoInvest'] != null ? AutoInvest.fromJson(json['AutoInvest']) : null;
     checkoutTermCancelPolicy = json['CheckoutTermCancelPolicy'];
     apmexClubStatus = json['ApmexClubStatus'];
   }
@@ -320,74 +292,10 @@ class AppLinks {
     data['TollFree'] = tollFree;
     data['LocalNumber'] = localNumber;
     data['FaxNo'] = faxNo;
-    if (sellToUs != null) {
-      data['SellToUs'] = sellToUs!.toJson();
-    }
-    if (autoInvest != null) {
-      data['AutoInvest'] = autoInvest!.toJson();
-    }
     data['HoursOfOperation'] = hoursOfOperation;
     data['FAQUrl'] = fAQUrl;
     data['FAQUrl'] = fAQUrl;
     data['ApmexClubStatus'] = apmexClubStatus;
-    return data;
-  }
-}
-
-class Plaid {
-  String? baseUrl;
-  bool? production;
-  String? environment;
-  String? merchantId;
-  String? publicKey;
-  String? privateKey;
-  String? webHook;
-
-  Plaid.fromJson(dynamic json) {
-    baseUrl = json["BaseUrl"];
-    production = json["Production"];
-    environment = json["Environment"];
-    merchantId = json["MerchantId"];
-    publicKey = json["PublicKey"];
-    privateKey = json["PrivateKey"];
-    webHook = json["WebHook"];
-  }
-
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["BaseUrl"] = baseUrl;
-    map["Production"] = production;
-    map["Environment"] = environment;
-    map["MerchantId"] = merchantId;
-    map["PublicKey"] = publicKey;
-    map["PrivateKey"] = privateKey;
-    map["WebHook"] = webHook;
-    return map;
-  }
-}
-
-class BraintreeObject {
-  bool? production;
-  String? merchantId;
-  String? publicKey;
-  String? privateKey;
-
-  BraintreeObject(
-      {this.production, this.merchantId, this.publicKey, this.privateKey});
-
-  BraintreeObject.fromJson(Map<String, dynamic> json) {
-    production = json['Production'];
-    merchantId = json['MerchantId'];
-    publicKey = json['PublicKey'];
-    privateKey = json['PrivateKey'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['Production'] = production;
-    data['MerchantId'] = merchantId;
-    data['PublicKey'] = publicKey;
-    data['PrivateKey'] = privateKey;
     return data;
   }
 }
@@ -428,61 +336,3 @@ class Kochava {
   }
 }
 
-class FreshChatModel {
-  FreshChatModel({
-    this.appId,
-    this.appKey,
-    this.domain,
-  });
-
-  final String? appId;
-  final String? appKey;
-  final String? domain;
-
-  factory FreshChatModel.fromJson(Map<String, dynamic> json) => FreshChatModel(
-        appId: json["AppID"],
-        appKey: json["AppKey"],
-        domain: json["Domain"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "AppID": appId,
-        "AppKey": appKey,
-        "Domain": domain,
-      };
-}
-
-class SellToUs {
-  String? sellToUsUrl;
-  String? sellToUsUrlImage;
-
-  SellToUs({this.sellToUsUrl, this.sellToUsUrlImage});
-
-  SellToUs.fromJson(Map<String, dynamic> json) {
-    sellToUsUrl = json['SellToUsUrl'];
-    sellToUsUrlImage = json['SellToUsUrlImage'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['SellToUsUrl'] = sellToUsUrl;
-    data['SellToUsUrlImage'] = sellToUsUrlImage;
-    return data;
-  }
-}
-
-class AutoInvest {
-  String? autoInvestUrl;
-
-  AutoInvest({this.autoInvestUrl});
-
-  AutoInvest.fromJson(Map<String, dynamic> json) {
-    autoInvestUrl = json['AutoInvestUrl'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['AutoInvestUrl'] = autoInvestUrl;
-    return data;
-  }
-}

@@ -1,4 +1,5 @@
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/checkout/cart_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -105,8 +106,7 @@ class PreferenceService {
 
   setCartId(String? value) async {
     if (value == "-1") {
-      // TODO CART SERVICE
-      // locator<CartService>().clear();
+      locator<CartService>().clear();
       pref.remove(cartId);
     } else {
       pref.setString(cartId, value!);
