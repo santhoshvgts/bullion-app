@@ -203,7 +203,11 @@ class CartViewModel extends VGTSBaseViewModel {
       if (!authenticated) return;
     }
 
-    locator<NavigationService>().pushNamed(Routes.checkout);
+    locator<NavigationService>().pushNamed(Routes.checkout)!.then((value) {
+      setBusy(true);
+      refresh();
+      setBusy(false);
+    });
   }
 
   refresh() async {

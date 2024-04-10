@@ -8,6 +8,7 @@ import 'package:bullion/router.dart';
 import 'package:bullion/services/api_request/page_request.dart';
 import 'package:bullion/services/page_storage_service.dart';
 import 'package:bullion/services/push_notification_service.dart';
+import 'package:bullion/services/shared/kochava_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,6 +16,7 @@ class SplashViewModel extends VGTSBaseViewModel {
   @override
   Future onInit() async {
     await locator<FirebaseRemoteHelper>().configure();
+    await locator<KochavaService>().init();
     await preferenceService.init();
     await locator<PushNotificationService>().configure();
 
