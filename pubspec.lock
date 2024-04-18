@@ -1696,11 +1696,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "1.0.0+11"
-      resolved-ref: e16a54112201378cfbc09f1ebf3023c7f355e1d3
+      ref: "1.0.0+12"
+      resolved-ref: "3dd97d32d02d3627906738e5fe901fad373c165b"
       url: "https://github.com/santhoshvgts/vgts_plugin.git"
     source: git
-    version: "0.0.2"
+    version: "0.0.2+1"
   video_player:
     dependency: transitive
     description:

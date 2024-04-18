@@ -196,9 +196,10 @@ class AddEditSpotPricePage extends VGTSBuilderWidget<CreateAlertsViewModel> {
                     if (result) {
                       locator<NavigationService>().pop(returnValue: result);
                     }
-                  } else {
-                    Util.showSnackBar("Fill all the required fields");
                   }
+                  // else {
+                  //   Util.showSnackBar("Fill all the required fields");
+                  // }
                 },
                 disabled: viewModel.operatorsResponse == null,
               )),
