@@ -2,6 +2,8 @@ import 'package:bullion/core/models/module/search_module.dart';
 import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/view/core/content_wrapper.dart';
 import 'package:bullion/ui/view/core/search/search_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -77,6 +79,7 @@ class SearchPage extends VGTSBuilderWidget<SearchViewModel> {
                                   onSubmitted: (val) {
                                     FocusScope.of(context).requestFocus(FocusNode());
                                     if (val != "") {
+                                      locator<AnalyticsService>().logSearch(val);
                                       viewModel.navigate("/search?q=${val}");
                                     }
                                   },

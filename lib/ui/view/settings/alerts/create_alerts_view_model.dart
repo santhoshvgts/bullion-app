@@ -19,6 +19,8 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
   FormFieldController alertPriceFormFieldController = AmountFormFieldController(const Key("targetPrice"),
       required: true,
       requiredText: "Alert Price can't be empty",
+      maxLength: 12,
+      maxAmount: 1000000,
       currencyFormat: NumberCurrencyFormat(
           "USD",
           "en_US",
@@ -53,11 +55,14 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
     if (_optionsSelectedIndex != value) {
       String text = alertPriceFormFieldController.text;
       if (operatorsResponse?.operators?[value].description?.contains("%") == true){
-        alertPriceFormFieldController = NumberFormFieldController(const ValueKey("txtAlert"));
+        alertPriceFormFieldController = NumberFormFieldController(const ValueKey("txtAlert"), maxLength: 6, required: true, requiredText: "Alert Price can't be empty");
+        alertPriceFormFieldController.text = "";
       } else {
         alertPriceFormFieldController = AmountFormFieldController(const Key("targetPrice"),
             required: true,
             requiredText: "Alert Price can't be empty",
+            maxLength: 12,
+            maxAmount: 1000000,
             currencyFormat: NumberCurrencyFormat(
                 "USD",
                 "en_US",
@@ -65,9 +70,10 @@ class CreateAlertsViewModel extends VGTSBaseViewModel {
                 2
             )
         );
+        alertPriceFormFieldController.text = text;
       }
 
-      alertPriceFormFieldController.text = text;
+
 
     }
     _optionsSelectedIndex = value;

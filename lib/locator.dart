@@ -16,6 +16,7 @@ import 'package:bullion/services/shared/api_base_service.dart';
 import 'package:bullion/services/shared/device_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/services/shared/eventbus_service.dart';
+import 'package:bullion/services/shared/kochava_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/services/shared/preference_service.dart';
 import 'package:bullion/services/toast_service.dart';
@@ -34,6 +35,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => PreferenceService());
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => AnalyticsService());
+  locator.registerLazySingleton(() => KochavaService());
   locator.registerLazySingleton(() => EventBusService());
 
   locator.registerLazySingleton(() => ThemeService());

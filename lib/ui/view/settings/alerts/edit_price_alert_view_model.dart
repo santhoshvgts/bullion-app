@@ -22,6 +22,8 @@ class EditPriceAlertViewModel extends VGTSBaseViewModel {
   AmountFormFieldController targetPriceFormFieldController = AmountFormFieldController(const Key("targetPrice"),
     required: true,
     requiredText: "Target Price can't be empty",
+    maxLength: 12,
+    maxAmount: 1000000,
     currencyFormat: NumberCurrencyFormat(
       "USD",
       "en_US",
