@@ -109,7 +109,7 @@ dependencies:
   flutter_riskified:
     git:
       url: https://github.com/santhoshvgts/flutter_riskified.git
-      ref: 379e3d970ff13cee0e4836d4aedcce8390c08b9d
+      ref: 0.0.4
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.3.10
 
