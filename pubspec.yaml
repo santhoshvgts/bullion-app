@@ -56,7 +56,7 @@ dependencies:
   app_tracking_transparency: ^2.0.4
 
   plaid_flutter: ^3.1.4
-#  credit_card_scanner: ^1.0.5
+  credit_card_scanner: ^1.0.5
 
   #local
   shared_preferences: ^2.2.1
