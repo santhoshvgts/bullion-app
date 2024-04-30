@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:bullion/helper/utils.dart';
+import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:credit_card_scanner/credit_card_scanner.dart';
 // import 'package:credit_card_scanner/credit_card_scanner.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 import '../../../../../helper/card_utils.dart';
 
@@ -137,6 +141,30 @@ class CreditCardViewModel extends VGTSBaseViewModel {
     }
 
     notifyListeners();
+  }
+
+  void checkNFC() async {
+    var availability = await FlutterNfcKit.nfcAvailability;
+    if (availability != NFCAvailability.available) {
+      locator<ToastService>().showText(text: "NFC not available!");
+    } else {
+      locator<ToastService>().showText(text: "NFC Scanning!");
+      var tag = await FlutterNfcKit.poll(
+          timeout: const Duration(seconds: 10),
+          iosMultipleTagMessage: "Multiple tags found!",
+          iosAlertMessage: "Scan your tag");
+      print(jsonEncode(tag));
+
+      if (tag.type == NFCTagType.iso7816) {
+        var result = await FlutterNfcKit.transceive("00B0950000",
+            timeout: const Duration(
+                seconds:
+                5)); // timeout is still Android-only, persist until next change
+        print(result);
+      }
+      await FlutterNfcKit.setIosAlertMessage("hi there!");
+      await FlutterNfcKit.finish();
+    }
   }
 
   String getCardNumber(String number) {

@@ -193,6 +193,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  credit_card_scanner:
+    dependency: "direct main"
+    description:
+      name: credit_card_scanner
+      sha256: "9bbfcac698f01bb32cbb2abfc6a9efa7fdea006e5a982cb4b8dc69fa0e8c1d19"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   cross_file:
     dependency: transitive
     description:
@@ -481,6 +489,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.11"
+  fixnum:
+    dependency: transitive
+    description:
+      name: fixnum
+      sha256: "25517a4deb0c03aa0f32fd12db525856438902d9c16536311e76cdc57b31d7d1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -636,6 +652,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.10"
+  flutter_nfc_kit:
+    dependency: "direct main"
+    description:
+      name: flutter_nfc_kit
+      sha256: "586a8309a7be4d9be307c46d5e9db1460a9f59a37a097c77d53e2f6bfc11be2d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1087,6 +1111,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0+4"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   markdown:
     dependency: "direct main"
     description:
@@ -1135,6 +1167,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.7.0"
+  ndef:
+    dependency: transitive
+    description:
+      name: ndef
+      sha256: "634d2b5c6f2c186e953218bac9905f3f5e1824b15e30bd1ed6e03a91cdbc7293"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3"
   nested:
     dependency: transitive
     description:
@@ -1704,10 +1744,10 @@ packages:
     dependency: "direct main"
     description:
       name: uuid
-      sha256: e03928880bdbcbf496fb415573f5ab7b1ea99b9b04f669c01104d085893c3134
+      sha256: "814e9e88f21a176ae1359149021870e87f7cddaf633ab678a5d2b0bff7fd1ba8"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0"
+    version: "4.4.0"
   vector_graphics:
     dependency: transitive
     description:

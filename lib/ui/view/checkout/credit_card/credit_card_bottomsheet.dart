@@ -58,6 +58,13 @@ class _CreditCardPageBottomSheetState extends State<CreditCardPageBottomSheet> {
                                 viewModel.scanCard();
                               },
                             ),
+
+                            IconButton(
+                              icon: const Icon(Icons.nfc_rounded,color: AppColor.secondaryText),
+                              onPressed: () {
+                                viewModel.checkNFC();
+                              },
+                            ),
                           ],
                         ),
 

@@ -81,7 +81,7 @@ dependencies:
   cached_network_image: ^3.3.0
   avoid_keyboard: ^0.3.0
   share_plus: ^7.2.1
-
+  flutter_nfc_kit: ^3.4.2
 
   #html_utils
   flutter_widget_from_html: ^0.10.5+3
