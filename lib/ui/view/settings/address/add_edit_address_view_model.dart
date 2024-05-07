@@ -88,6 +88,7 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
     setBusy(true);
 
     if (address != null) {
+      _shippingAddress = await request<ShippingAddress>(AddressRequest.getAddressById(address.id!));
       // UserAddress address = _shippingAddress!.address!;
       firstNameFormFieldController.text = address.firstName ?? "";
       lastNameFormFieldController.text = address.lastName ?? "";
@@ -95,12 +96,11 @@ class AddEditAddressViewModel extends VGTSBaseViewModel {
       streetTextEditingController.text = address.add1 ?? "";
       cityFormFieldController.text = address.city ?? "";
       countryFormFieldController.text = address.country ?? "";
-      stateFormFieldController.text = address.state ?? "";
+      SelectedItemList data = shippingAddress!.availableStates!.firstWhere((element) => element.value == shippingAddress!.address!.state!);
+      stateFormFieldController.text = data.text ?? '';
       pinFormFieldController.text = address.zip ?? "";
       phoneFormFieldController.text = address.primaryPhone?.trimRight() ?? "";
       _isDefaultAddress = address.isDefault;
-
-      _shippingAddress = await request<ShippingAddress>(AddressRequest.getAddressById(address.id!));
     } else {
       _shippingAddress = await request<ShippingAddress>(AddressRequest.addAddress());
       initAddAddress();

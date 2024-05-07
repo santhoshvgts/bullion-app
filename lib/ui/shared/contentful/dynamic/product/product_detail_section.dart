@@ -4,6 +4,8 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_detail/specifications.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/apmex_html_widget.dart';
@@ -50,6 +52,12 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
               borderRadius: BorderRadius.circular(10)
             ),
             child: ExpansionTile(
+              onExpansionChanged: (state){
+                if(state)
+                {
+                  locator<AnalyticsService>().logProductDetailViewInteraction(viewModel.productDetails!.overview!);
+                }
+              },
               title: const Text("Product Overview", style: AppTextStyle.titleMedium,),
               tilePadding: const EdgeInsets.symmetric(horizontal: 12),
               childrenPadding: const EdgeInsets.symmetric(horizontal: 15),
@@ -70,6 +78,12 @@ class ProductDetailSection extends  VGTSBuilderWidget<ProductDetailViewModel> {
             ),
 
             child: ExpansionTile(
+              onExpansionChanged: (state){
+                if(state)
+                {
+                  locator<AnalyticsService>().logProductSpecViewInteraction(viewModel.productDetails!.overview!);
+                }
+              },
               title: const Text("Product Specification", style: AppTextStyle.titleMedium,),
               tilePadding: const EdgeInsets.symmetric(horizontal: 12),
               children: [

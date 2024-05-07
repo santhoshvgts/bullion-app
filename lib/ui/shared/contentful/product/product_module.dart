@@ -11,6 +11,7 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/sign_in_request.dart';
 import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/shared/contentful/dynamic/product/product_detail_section.dart';
@@ -25,6 +26,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../../helper/utils.dart';
 import '../../../../locator.dart';
@@ -108,29 +110,49 @@ class _ProductPriceComparisonDisplay extends ViewModelWidget<ProductViewModel> {
 }
 
 class _ProductVerticalDisplay extends ViewModelWidget<ProductViewModel> {
+
+  bool eventLogged = false;
+
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
-    return ProductWrapItemList(
-      wrap: viewModel.itemDisplaySettings.wrapItems,
-      spacing: viewModel.spacing,
-      runSpacing: viewModel.runSpacing,
-      gridCols: viewModel.itemDisplaySettings.gridCols,
-      children: viewModel.items!
-          .asMap()
-          .map((index, item) {
-            return MapEntry(index, VerticalItem(item,
-              itemWidth: viewModel.itemWidth(context),
-              wrapItems: viewModel.itemDisplaySettings.wrapItems,
-              gridCols: viewModel.itemDisplaySettings.gridCols,
-              textColor: viewModel.itemDisplaySettings.textColor,
-              displayDirection: viewModel.itemDisplaySettings.displayDirection,
-              onItemTap: (ProductOverview overview) {
-                viewModel.onItemTap(overview);
-              },
-            ));
-          })
-          .values
-          .toList(),
+    return VisibilityDetector(
+      key: UniqueKey(),
+      onVisibilityChanged: (visibilityInfo) {
+
+        double visiblePercentage = visibilityInfo.visibleFraction * 100;
+
+        if (visiblePercentage > 25 && eventLogged == false) {
+          locator<AnalyticsService>().logViewItemList(
+              viewModel.settings?.id,
+              viewModel.settings?.title,
+              viewModel.items
+          );
+          eventLogged = true;
+        }
+
+      },
+      child: ProductWrapItemList(
+        wrap: viewModel.itemDisplaySettings.wrapItems,
+        spacing: viewModel.spacing,
+        runSpacing: viewModel.runSpacing,
+        gridCols: viewModel.itemDisplaySettings.gridCols,
+        children: viewModel.items!
+            .asMap()
+            .map((index, item) {
+              return MapEntry(index, VerticalItem(item,
+                itemWidth: viewModel.itemWidth(context),
+                wrapItems: viewModel.itemDisplaySettings.wrapItems,
+                gridCols: viewModel.itemDisplaySettings.gridCols,
+                textColor: viewModel.itemDisplaySettings.textColor,
+                displayDirection: viewModel.itemDisplaySettings.displayDirection,
+                onItemTap: (ProductOverview overview) {
+                  viewModel.onItemTap(overview, index: index);
+                },
+              ));
+            })
+            .values
+            .toList(),
+      ),
     );
   }
 }
@@ -153,7 +175,7 @@ class _ProductHorizontalDisplay extends ViewModelWidget<ProductViewModel> {
         children: viewModel.items!
             .asMap()
             .map((index, item) {
-              return MapEntry(index, _HorizontalItem(item));
+              return MapEntry(index, _HorizontalItem(item, index));
             })
             .values
             .toList(),
@@ -164,14 +186,15 @@ class _ProductHorizontalDisplay extends ViewModelWidget<ProductViewModel> {
 
 class _HorizontalItem extends ViewModelWidget<ProductViewModel> {
   final ProductOverview _item;
+  int index;
 
-  _HorizontalItem(this._item);
+  _HorizontalItem(this._item, this.index);
 
   @override
   Widget build(BuildContext context, ProductViewModel viewModel) {
     return InkWell(
       key: Key("actionProduct${_item.productId}"),
-      onTap: () => viewModel.onItemTap(_item),
+      onTap: () => viewModel.onItemTap(_item, index: index),
       child: Stack(
         children: [
           Container(
@@ -406,7 +429,7 @@ class _PriceComparisonItemCard extends ViewModelWidget<ProductViewModel> {
     double _itemWidth = viewModel.itemWidth(context);
     return InkWell(
       key: Key("actionProduct${_item.productId}"),
-      onTap: () => viewModel.onItemTap(_item),
+      onTap: () => viewModel.onItemTap(_item, index: index),
       child: Container(
         width: _itemWidth,
         decoration: BoxDecoration(

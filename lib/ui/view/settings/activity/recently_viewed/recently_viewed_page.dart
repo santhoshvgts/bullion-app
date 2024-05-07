@@ -6,6 +6,7 @@ import 'package:bullion/core/models/module/item_display_settings.dart';
 import 'package:bullion/core/models/module/module_settings.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/contentful/product/product_item_card.dart';
 import 'package:bullion/ui/shared/contentful/product/product_module.dart';
@@ -89,6 +90,10 @@ class RecentlyViewedPage extends VGTSBuilderWidget<RecentlyViewedViewModel> {
                             gridCols: 2,
                             textColor: AppColor.text,
                             onItemTap: (ProductOverview overview) {
+                              locator<AnalyticsService>().logSelectItem(item,
+                                  listName: "Recently Viewed",
+                                  index: index
+                              );
                               locator<NavigationService>().pushNamed(overview.targetUrl, arguments: ProductDetails(overview: overview));
                             },
                           ));

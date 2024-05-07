@@ -7,6 +7,7 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:bullion/ui/shared/filter/filter_drawer_view_model.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
@@ -118,6 +119,7 @@ class FilterDrawer extends VGTSBuilderWidget<FilterDrawerViewModel> {
                                       onSelect: (item) async {
                                         locator<DialogService>().showLoader();
                                         await onSelect!(item.targetUrl);
+                                        locator<AnalyticsService>().logFilter(item.displayName);
                                         locator<DialogService>().dialogComplete(AlertResponse(status: true));
                                       },
                                     ),

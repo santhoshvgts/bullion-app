@@ -63,6 +63,19 @@ T? getEnumFromString<T>(Iterable<T> values, String value) {
       .firstWhereOrNull((type) => type.toString().split(".").last == value);
 }
 
+String getClubStatus(String? fullClubStatus)
+{
+  if(fullClubStatus!=null)
+  {
+    final splitString = fullClubStatus.split(' since ');
+    return splitString[0];
+  }
+  else
+  {
+    return "NA";
+  }
+}
+
 T? cast<T>(x) => x is T ? x : null;
 
 bool isNull(Object? object) => object == null;

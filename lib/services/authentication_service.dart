@@ -72,7 +72,7 @@ class AuthenticationService {
       var authResult = await _apiBaseService
           .request<AuthResponse>(AuthRequest.login(email, password));
       _setUser(authResult);
-      _analyticsService.loglogin();
+      _analyticsService.logLogin();
 
       locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
       locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
@@ -202,7 +202,7 @@ class AuthenticationService {
       var authResult = await _apiBaseService.request<AuthResponse>(
           AuthRequest.resetPassword(key, email, newPassword, oldPassword));
       _setUser(authResult);
-      _analyticsService.loglogin();
+      _analyticsService.logLogin();
 
       return authResult;
     } on ErrorResponseException catch (ex) {

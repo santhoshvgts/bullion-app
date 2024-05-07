@@ -1,7 +1,10 @@
+import 'package:bullion/core/constants/module_type.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/core/res/colors.dart';
+import 'package:bullion/helper/logger.dart';
 import 'package:bullion/helper/url_launcher.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:bullion/ui/shared/cart/cart_button.dart';
 import 'package:bullion/ui/shared/search_card_section.dart';
@@ -120,6 +123,16 @@ class _SearchResultPageState extends State<SearchResultPage> {
             setState(() {
               title = pageSetting == null ? "" : pageSetting.searchTerm;
             });
+
+            try {
+              if (pageSetting?.moduleSetting?.where((element) => element?.moduleType == ModuleType.productList).isNotEmpty == true) {
+                locator<AnalyticsService>().logSearchSuccess(title ?? "-");
+              } else {
+                locator<AnalyticsService>().logSearchFailed(title ?? "-");
+              }
+            } catch (ex, s) {
+              Logger.e(ex.toString(), s: s);
+            }
           },
         ));
   }
