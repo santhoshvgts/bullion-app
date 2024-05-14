@@ -1,4 +1,5 @@
 import 'package:bullion/core/models/alert/alert_response.dart';
+import 'package:bullion/core/models/auth/user.dart';
 import 'package:bullion/core/res/images.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/appconfig_service.dart';
@@ -86,8 +87,13 @@ class PushNotificationService {
     initialized = true;
   }
 
-  Future<void> setUser(int? userId) async {
-    return await OneSignal.login(userId.toString());
+  Future<void> setUser(User? user) async {
+    if(user!=null)
+    {
+      OneSignal.User.addEmail(user.email!);
+      OneSignal.User.addTagWithKey("email", user.email);
+    }
+    return await OneSignal.login(user!.userId.toString());
   }
 
   Future<void> logout() async {

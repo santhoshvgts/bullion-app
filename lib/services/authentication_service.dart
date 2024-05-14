@@ -51,7 +51,7 @@ class AuthenticationService {
       _user = authResult.user;
       _analyticsService.setUserId(_user!.userId);
 
-      _pushService.setUser(_user!.userId);
+      _pushService.setUser(_user!);
       configureSentryScope();
     }
   }
@@ -63,7 +63,7 @@ class AuthenticationService {
     _user = user;
     _analyticsService.setUserId(_user!.userId);
 
-    _pushService.setUser(_user!.userId);
+    _pushService.setUser(_user!);
     configureSentryScope();
   }
 
