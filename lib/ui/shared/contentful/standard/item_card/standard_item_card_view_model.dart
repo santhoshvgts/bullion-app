@@ -1,3 +1,4 @@
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:bullion/core/models/module/item_display_settings.dart';
@@ -9,6 +10,7 @@ import '../../../../../locator.dart';
 class StandardItemCardViewModel extends BaseViewModel {
   final ItemDisplaySettings? itemDisplaySettings;
   final StandardItem? item;
+  final String? id;
 
   GlobalKey contentSectionKey = new GlobalKey();
   GlobalKey imageSectionKey = new GlobalKey();
@@ -51,7 +53,7 @@ class StandardItemCardViewModel extends BaseViewModel {
     return 0;
   }
 
-  StandardItemCardViewModel({this.itemDisplaySettings, this.item}) {
+  StandardItemCardViewModel({this.itemDisplaySettings, this.item, this.id}) {
     // WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
   }
 
@@ -67,6 +69,7 @@ class StandardItemCardViewModel extends BaseViewModel {
 
   onTap() {
     print(item!.targetUrl);
+    locator<AnalyticsService>().logModuleClick(id, item!.title ?? id);
     locator<NavigationService>().pushNamed(item!.targetUrl);
   }
 }

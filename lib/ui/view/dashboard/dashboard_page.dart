@@ -148,7 +148,7 @@ class DashboardPage extends VGTSBuilderWidget<DashboardViewModel> {
         ],
         onItemSelected: (index) {
           debugPrint("Selected bottom : ${persistentBottomItems[index].title}");
-          locator<AnalyticsService>().logFooterNavigation(act:persistentBottomItems[index].title,label:persistentBottomItems[index].title);
+          locator<AnalyticsService>().logAppNavigation(label:persistentBottomItems[index].title);
           if (index == 3) {
             locator<EventBusService>().eventBus.fire(CartRefreshEvent());
           }

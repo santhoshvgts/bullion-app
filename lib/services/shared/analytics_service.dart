@@ -168,8 +168,8 @@ class AnalyticsService {
     await logEvent('sort_by', {'sort_item': name});
   }
 
-  Future<void>logFooterNavigation({String? act, String? label}) async {
-    await logEvent('footer_navigation_menu', {"eventActParam": act, "eventLblParam": label});
+  Future<void>logAppNavigation({String? label}) async {
+    await logEvent('app_navigation', {"button_text": label});
   }
 
   Future<void> logEvent(String name, Map<String, dynamic> parameters) async {
@@ -198,8 +198,7 @@ class AnalyticsService {
   //TODO log Search need to be implemented
   Future<void> logSearch(String searchTerm) async {
     // await analytics.logSearch(searchTerm: searchTerm);
-    logEvent("internal_search",
-        {"eventActParam": "open search", "eventLblParam": searchTerm});
+    logEvent("search", {"search_term": searchTerm});
 
     KochavaTracker.instance.sendEventWithString("Search", searchTerm);
     debugPrint('Analytics: log search $searchTerm');
@@ -263,6 +262,14 @@ class AnalyticsService {
     };
 
     KochavaTracker.instance.sendEventWithDictionary("View Product", eventMapObject);
+  }
+
+  Future<void> logModuleClick(String? moduleName, String? clickText) async
+  {
+    if(moduleName!=null && clickText != null)
+    {
+      await logEvent('module_click', {"module_name": moduleName, "click_text": clickText});
+    }
   }
 
   Future<void> logSelectItem(ProductOverview _product,

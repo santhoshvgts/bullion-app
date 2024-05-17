@@ -149,6 +149,7 @@ class _ItemCard extends ViewModelWidget<StandardViewModel> {
                       child: StandardItemCard(
                         item,
                         itemDisplaySettings: viewModel.itemDisplaySettings,
+                        id: viewModel.settings.id,
                       ),
                     ));
               })
