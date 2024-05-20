@@ -68,10 +68,9 @@ class AnalyticsService {
     gaObject['shipping'] = order.shippingAmount;
     gaObject['value'] = order.orderTotal;
     gaObject['coupon'] = order.coupon;
-    gaObject['affiliation'] = "APMEX_MOBILE";
+    gaObject['affiliation'] = "BULLION_MOBILE";
     gaObject['predictedMargin'] = order.predictiveMargin;
     gaObject['u_id'] = locator<AuthenticationService>().getUser?.userId.toString();
-    gaObject['club_status'] = getClubStatus(locator<AuthenticationService>().getUser?.clubStatus);
     gaObject['register_status'] = locator<AuthenticationService>().isGuestUser ? 0 : 1;
     gaObject['authentication_status'] = 1;
     gaObject['express_checkout'] = 1;
@@ -100,10 +99,9 @@ class AnalyticsService {
     params['shipping'] = order.shippingAmount ;
     params['value'] = order.orderTotal;
     params['coupon'] = order.coupon;
-    params['affiliation'] = "APMEX_MOBILE";
+    params['affiliation'] = "BULLION_MOBILE";
     params['predictedMargin'] = order.predictiveMargin;
     params['u_id'] = locator<AuthenticationService>().getUser?.userId.toString();
-    params['club_status'] = getClubStatus(locator<AuthenticationService>().getUser?.clubStatus);
     params['register_status'] =  locator<AuthenticationService>().isGuestUser ? 0 : 1;
     params['authentication_status'] = 1;
     params['express_checkout'] = 1;
