@@ -128,7 +128,6 @@ class CreditCardViewModel extends VGTSBaseViewModel {
         scanOptions: const CardScanOptions(
           scanExpiryDate: true,
           enableDebugLogs: true,
-          cardScannerTimeOut: 60,
         ));
 
     if(cardScanResponse != null){
