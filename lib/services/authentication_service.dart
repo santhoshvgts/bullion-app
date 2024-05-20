@@ -51,7 +51,7 @@ class AuthenticationService {
       _user = authResult.user;
       _analyticsService.setUserId(_user!.userId);
 
-      _pushService.setUser(_user!.userId);
+      _pushService.setUser(_user!);
       configureSentryScope();
     }
   }
@@ -63,7 +63,7 @@ class AuthenticationService {
     _user = user;
     _analyticsService.setUserId(_user!.userId);
 
-    _pushService.setUser(_user!.userId);
+    _pushService.setUser(_user!);
     configureSentryScope();
   }
 
@@ -72,7 +72,7 @@ class AuthenticationService {
       var authResult = await _apiBaseService
           .request<AuthResponse>(AuthRequest.login(email, password));
       _setUser(authResult);
-      _analyticsService.loglogin();
+      _analyticsService.logLogin();
 
       locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.homeRefresh));
       locator<EventBusService>().eventBus.fire(RefreshDataEvent(RefreshType.accountRefresh));
@@ -202,7 +202,7 @@ class AuthenticationService {
       var authResult = await _apiBaseService.request<AuthResponse>(
           AuthRequest.resetPassword(key, email, newPassword, oldPassword));
       _setUser(authResult);
-      _analyticsService.loglogin();
+      _analyticsService.logLogin();
 
       return authResult;
     } on ErrorResponseException catch (ex) {

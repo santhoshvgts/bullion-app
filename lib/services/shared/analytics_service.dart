@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:bullion/core/models/chart/spot_price.dart';
 import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/core/models/module/cart/shopping_cart.dart';
 import 'package:bullion/core/models/module/order.dart';
 import 'package:bullion/core/models/module/product_detail/product_detail.dart';
+import 'package:bullion/core/models/module/product_item.dart';
+import 'package:bullion/helper/utils.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/appconfig_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -11,6 +14,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riskified/flutter_riskified.dart';
 import 'package:kochava_tracker/kochava_tracker.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../authentication_service.dart';
 
 class AnalyticsService {
@@ -22,13 +26,19 @@ class AnalyticsService {
     FirebaseCrashlytics.instance.setUserIdentifier(userId.toString());
   }
 
-  Future<void> loglogin() async {
+  Future<void> logLogin() async {
     analytics.logLogin();
-    KochavaTracker.instance.sendEventWithString("Sign In", locator<AuthenticationService>().getUser?.userId.toString() ?? '');
+    analytics.logEvent(name: "accounts", parameters: {"eventActParam": "login", "eventLblParam": "success"});
+    KochavaTracker.instance.sendEventWithString("Sign In",
+        locator<AuthenticationService>().getUser?.userId.toString() ?? '');
   }
 
   Future<void> logSignUp() async {
     analytics.logSignUp(signUpMethod: "Mobile App");
+    analytics.logEvent(name: "accounts", parameters: {
+      "eventActParam": "registration",
+      "eventLblParam": "success"
+    });
     var koEvent = KochavaTracker.instance.buildEventWithEventType(KochavaTrackerEventType.RegistrationComplete);
     koEvent.setUserId(locator<AuthenticationService>().getUser!.userId.toString());
     koEvent.send();
@@ -48,19 +58,31 @@ class AnalyticsService {
 
     KochavaTracker.instance.sendEventWithDictionary("First Purchase", eventMapObject);
 
-    var gaObject = {
-      'currency': 'USD',
-      'amount': "\$${order.orderTotal}",
-      'product': order.orderLineItems?.map((e) => e.productName).toList().toString(),
-      'transaction_id': order.orderId,
-      "content_id":  order.orderLineItems?.map((e) => e.productId).toList().toString()
-    };
+    Map<String, dynamic> gaObject = {};
+    gaObject['currency'] = 'USD';
+    gaObject['amount'] = "\$${order.orderTotal}";
+    gaObject['product'] = order.orderLineItems?.map((e) => e.productName).toList().toString();
+    gaObject['transaction_id'] = order.orderId;
+    gaObject['content_id'] = order.orderLineItems?.map((e) => e.productId).toList().toString();
+    gaObject['tax'] = order.tax;
+    gaObject['shipping'] = order.shippingAmount;
+    gaObject['value'] = order.orderTotal;
+    gaObject['coupon'] = order.coupon;
+    gaObject['affiliation'] = "BULLION_MOBILE";
+    gaObject['predictedMargin'] = order.predictiveMargin;
+    gaObject['u_id'] = locator<AuthenticationService>().getUser?.userId.toString();
+    gaObject['register_status'] = locator<AuthenticationService>().isGuestUser ? 0 : 1;
+    gaObject['authentication_status'] = 1;
+    gaObject['express_checkout'] = 1;
+    gaObject['purchaser'] = order.customerType == "returning" ? 1 : 0;
+    gaObject['life_cycle_segment'] = order.lifeCycleSegment;
+    gaObject['customer_score'] = order.customerScore;
     return locator<AnalyticsService>().logEvent('first_purchase', gaObject);
   }
 
   Future<void> logPurchase(Order order) async {
 
-    Map<String, dynamic> params = new Map();
+    Map<String, dynamic> params = {};
     params['currency'] = 'USD';
     params['transaction_id'] = order.orderId;
     params['tax'] = order.tax;
@@ -77,6 +99,15 @@ class AnalyticsService {
     params['shipping'] = order.shippingAmount ;
     params['value'] = order.orderTotal;
     params['coupon'] = order.coupon;
+    params['affiliation'] = "BULLION_MOBILE";
+    params['predictedMargin'] = order.predictiveMargin;
+    params['u_id'] = locator<AuthenticationService>().getUser?.userId.toString();
+    params['register_status'] =  locator<AuthenticationService>().isGuestUser ? 0 : 1;
+    params['authentication_status'] = 1;
+    params['express_checkout'] = 1;
+    params['purchaser'] = order.customerType == "returning" ? 1 : 0;
+    params['life_cycle_segment'] = order.lifeCycleSegment;
+    params['customer_score'] = order.customerScore;
 
     logEvent("purchase", params);
 
@@ -103,7 +134,7 @@ class AnalyticsService {
     debugPrint('Analytics: Share - ${contentType.toString()}');
   }
 
-  //Log Screen Name is deprecated user logscreen view
+  //Log Screen Name is deprecated use logScreenView
   Future<void> logScreenName(String screenName) async {
     Riskified.logRequest("${locator<AppConfigService>().config?.baseApiUrl}$screenName");
     await analytics.setCurrentScreen(screenName: screenName);
@@ -125,6 +156,18 @@ class AnalyticsService {
     }
     logEvent('screen_view', {'screen_name': screenName, 'screen_class': className});
     unawaited(Riskified.logRequest("${locator<AppConfigService>().config?.baseApiUrl}$screenName"));
+  }
+
+  Future<void> logFilter(String? displayName) async{
+    await logEvent('filter_by', {'filter_item': displayName});
+  }
+
+  Future<void> logSortBy(String? name) async{
+    await logEvent('sort_by', {'sort_item': name});
+  }
+
+  Future<void>logAppNavigation({String? label}) async {
+    await logEvent('app_navigation', {"button_text": label});
   }
 
   Future<void> logEvent(String name, Map<String, dynamic> parameters) async {
@@ -152,9 +195,22 @@ class AnalyticsService {
 
   //TODO log Search need to be implemented
   Future<void> logSearch(String searchTerm) async {
-    await analytics.logSearch(searchTerm: searchTerm);
+    // await analytics.logSearch(searchTerm: searchTerm);
+    logEvent("search", {"search_term": searchTerm});
+
     KochavaTracker.instance.sendEventWithString("Search", searchTerm);
     debugPrint('Analytics: log search $searchTerm');
+  }
+
+  Future<void> logSearchSuccess(String searchTerm) async {
+    analytics.logViewSearchResults(searchTerm: searchTerm);
+    debugPrint('Analytics: log search success ${searchTerm}');
+  }
+
+  Future<void> logSearchFailed(String searchTerm) async {
+    logEvent("internal_search",
+        {"eventActParam": "failed search", "eventLblParam": searchTerm});
+    debugPrint('Analytics: log search failed ${searchTerm}');
   }
 
   Future<void> logBeginCheckout(ShoppingCart? shoppingCart) async {
@@ -167,8 +223,9 @@ class AnalyticsService {
     };
 
     KochavaTracker.instance.sendEventWithDictionary("Checkout Start", eventMapObject);
-    await analytics.logBeginCheckout(value: shoppingCart?.orderTotal , currency: shoppingCart?.currency ?? 'USD',
-        items: shoppingCart?.items?.map((e) => AnalyticsEventItem(
+    await analytics.logBeginCheckout(value: shoppingCart.orderTotal , currency: shoppingCart.currency ?? 'USD',
+        coupon: '',
+        items: shoppingCart.items?.map((e) => AnalyticsEventItem(
             itemId: e.productId.toString(),
             itemName: e.productName,
             quantity: e.quantity,
@@ -179,17 +236,22 @@ class AnalyticsService {
   }
 
   Future<void> logProductView(ProductDetails? productDetails) async {
-    locator<AnalyticsService>().logEvent('view_item', {
-      'currency': productDetails?.overview!.pricing!.currency ?? 'USD',
-      'items': [
-        {
-          "item_id": productDetails?.productId,
-          "item_name": productDetails?.overview!.name
-        }
-      ].toString(),
-      "item": productDetails?.productId,
-      'value': productDetails?.overview?.pricing?.newPrice?.toString()
-    });
+    // locator<AnalyticsService>().logEvent('view_item', {
+    //   'currency': productDetails?.overview!.pricing!.currency ?? 'USD',
+    //   'items': [
+    //     {
+    //       "item_id": productDetails?.productId,
+    //       "item_name": productDetails?.overview!.name
+    //     }
+    //   ].toString(),
+    //   "item": productDetails?.productId,
+    //   'value': productDetails?.overview?.pricing?.newPrice?.toString()
+    // });
+
+    analytics.logViewItem(
+        items: [productDetails!.overview!.analyticEventItemObject()],
+        currency: productDetails.overview!.pricing!.currency ?? 'USD',
+        value: productDetails.overview?.pricing?.newPrice);
 
     var eventMapObject = {
       "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
@@ -198,6 +260,39 @@ class AnalyticsService {
     };
 
     KochavaTracker.instance.sendEventWithDictionary("View Product", eventMapObject);
+  }
+
+  Future<void> logModuleClick(String? moduleName, String? clickText) async
+  {
+    if(moduleName!=null && clickText != null)
+    {
+      await logEvent('module_click', {"module_name": moduleName, "click_text": clickText});
+    }
+  }
+
+  Future<void> logSelectItem(ProductOverview _product,
+      {String? dyDecisionId,
+        String? listId,
+        String? listName,
+        int? index}) async {
+    // KOCHAVA EVENT ------
+    var eventMapObject = {
+      "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
+      "name": _product.name,
+      "content_id": _product.productId,
+    };
+
+    KochavaTracker.instance
+        .sendEventWithDictionary("Select Product", eventMapObject);
+    // END KOCHAVA EVENT ------
+
+    analytics.logSelectItem(
+        itemListId: listId,
+        itemListName: listName,
+        items: [_product.analyticEventItemObject(index: index)]);
+    debugPrint(
+        "Analytics: Log Select Item: $listId $listName ${_product.name}");
+
   }
 
   Future<void> removeFromCart(
@@ -229,6 +324,22 @@ class AnalyticsService {
     debugPrint('Analytics: Remove Cart');
   }
 
+  logViewItemList(
+      String? listId, String? listName, List<ProductOverview>? items) {
+    analytics.logViewItemList(
+        itemListId: listId,
+        itemListName: listName,
+        items: items
+            ?.asMap()
+            .map((index, e) =>
+              MapEntry(index, e.analyticEventItemObject(index: index)))
+            .values
+            .toList());
+    debugPrint("LogViewItemList $listName $listId: Success");
+    return;
+  }
+
+
   logAddToWishlist(ProductDetails productDetails) {
 
     analytics.logAddToWishlist(
@@ -258,5 +369,109 @@ class AnalyticsService {
       }
     });
     return filtered;
+  }
+
+  logViewCartItem(
+      {String? currency, double? orderTotal, List<CartItem>? cartItem}) {
+    analytics.logViewCart(currency: currency, value: orderTotal, items: [
+      ...cartItem
+          ?.map((e) => AnalyticsEventItem(
+        itemId: e.productId.toString(),
+        itemName: e.productName,
+        price: e.unitPrice,
+        quantity: e.quantity,
+      ))
+          .toList() ??
+          []
+    ]);
+  }
+
+  logAddPaymentInfo({String? currency, double? orderTotal, String? coupon, String? paymentType, List<CartItem>? cartItem}) {
+    analytics.logAddPaymentInfo(
+        currency: currency,
+        value: orderTotal,
+        coupon: coupon,
+        paymentType: paymentType,
+        items: [
+          ...cartItem?.map((e) => AnalyticsEventItem(
+            itemId: e.productId.toString(),
+            itemName: e.productName,
+            price: e.unitPrice,
+            quantity: e.quantity,
+          )).toList() ?? []
+        ]
+    );
+
+    debugPrint("Analytics Service: Log Add Payment");
+  }
+
+
+  logShippingAddressInfo({String? currency, double? orderTotal, String? coupon, String? shippingTier, List<CartItem>? cartItem}) {
+    analytics.logAddShippingInfo(
+        currency: currency,
+        value: orderTotal,
+        coupon: coupon,
+        shippingTier: shippingTier,
+        items: [
+          ...cartItem?.map((e) => AnalyticsEventItem(
+            itemId: e.productId.toString(),
+            itemName: e.productName,
+            price: e.unitPrice,
+            quantity: e.quantity,
+          )).toList() ?? []
+        ]
+    );
+
+    debugPrint("Analytics Service: Log Shipping Address");
+  }
+
+  logProductDetailViewInteraction(ProductOverview? productOverview) {
+    locator<AnalyticsService>().logEvent(
+      "product_details",
+      {
+        "item_name": productOverview?.name,
+        "item_id": productOverview?.productId
+      },
+    );
+  }
+
+  logProductSpecViewInteraction(ProductOverview? productOverview) {
+    locator<AnalyticsService>().logEvent(
+      "product_specs",
+      {
+        "item_name": productOverview?.name,
+        "item_id": productOverview?.productId
+      },
+    );
+  }
+
+  logProductReviewViewInteraction(ProductOverview? productOverview) {
+    locator<AnalyticsService>().logEvent(
+      "product_review",
+      {
+        "item_name": productOverview?.name,
+        "item_id": productOverview?.productId
+      },
+    );
+  }
+
+  logPriceAlertInteraction(ProductOverview? productOverview) {
+    locator<AnalyticsService>().logEvent(
+      "price_alert",
+      {
+        "item_name": productOverview?.name,
+        "item_id": productOverview?.productId
+      },
+    );
+  }
+
+  logShareItemInteraction(ProductOverview? productOverview) {
+    locator<AnalyticsService>().logEvent(
+      "share_item",
+      {
+        "item_name": productOverview?.name,
+        "item_id": productOverview?.productId
+      },
+    );
   }
 }

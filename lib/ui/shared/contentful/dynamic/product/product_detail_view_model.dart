@@ -93,6 +93,7 @@ class ProductDetailViewModel extends VGTSBaseViewModel {
   }
 
   void priceAlert(ProductOverview? overview) async {
+    locator<AnalyticsService>().logPriceAlertInteraction(productOverview);
     var result = await locator<NavigationService>().pushNamed(Routes.editPriceAlert, arguments: { "productDetails": overview });
 
     if (result != null) {

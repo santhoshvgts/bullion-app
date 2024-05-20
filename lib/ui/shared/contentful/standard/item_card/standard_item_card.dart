@@ -17,8 +17,9 @@ import 'package:stacked/stacked.dart';
 class StandardItemCard extends StackedView<StandardItemCardViewModel> {
   final ItemDisplaySettings? itemDisplaySettings;
   final StandardItem item;
+  final String? id;
 
-  StandardItemCard(this.item, {this.itemDisplaySettings});
+  StandardItemCard(this.item, {this.itemDisplaySettings, this.id});
 
   @override
   Widget builder(BuildContext context, StandardItemCardViewModel viewModel,
@@ -135,7 +136,7 @@ class StandardItemCard extends StackedView<StandardItemCardViewModel> {
   @override
   StandardItemCardViewModel viewModelBuilder(BuildContext context) =>
       StandardItemCardViewModel(
-          item: item, itemDisplaySettings: itemDisplaySettings);
+          item: item, itemDisplaySettings: itemDisplaySettings, id: id);
 }
 
 class _ContentView extends ViewModelWidget<StandardItemCardViewModel> {

@@ -8,6 +8,7 @@ import 'package:bullion/core/models/module/product_detail/product_detail.dart';
 import 'package:bullion/core/models/module/product_item.dart';
 import 'package:bullion/core/models/module/product_listing/product_list_module.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -52,8 +53,13 @@ class ProductViewModel extends BaseViewModel {
     return _itemWidth;
   }
 
-  onItemTap(ProductOverview item) {
+  onItemTap(ProductOverview item, { int? index }) {
     notifyListeners();
+    locator<AnalyticsService>().logSelectItem(item,
+        listId: settings?.id,
+        listName: settings?.title,
+        index: index
+    );
     navigationService!
         .pushNamed(item.targetUrl, arguments: ProductDetails(overview: item));
   }

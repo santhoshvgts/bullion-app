@@ -150,7 +150,10 @@ class _Item extends ViewModelWidget<SearchViewModel> {
               Expanded(
                 flex: 10,
                 child: InkWell(
-                  onTap: () => viewModel.navigate(_item.targetUrl!),
+                  onTap: () {
+                    viewModel.navigate(_item.targetUrl!);
+                    locator<AnalyticsService>().logSearch(_item.name!);
+                  },
                   child: RichText(
                     text: TextSpan(
                       children: viewModel.highlightOccurrences(

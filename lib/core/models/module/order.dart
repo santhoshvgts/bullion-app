@@ -50,6 +50,8 @@ class Order extends BaseModel {
   String? colorCode;
   int? step;
   bool? actionRequired;
+  String? lifeCycleSegment;
+  int? customerScore;
 
   Order(
       {this.orderId,
@@ -83,7 +85,9 @@ class Order extends BaseModel {
       this.title,
       this.colorCode,
       this.step,
-      this.actionRequired});
+      this.actionRequired,
+        this.lifeCycleSegment,
+        this.customerScore});
 
   Order fromJson(json) => Order.fromJson(json);
 
@@ -168,6 +172,8 @@ class Order extends BaseModel {
     colorCode = json['color_code'];
     step = json['step'];
     actionRequired = json['action_required'];
+    lifeCycleSegment = json['life_cycle_segment'];
+    customerScore = json['customer_score'];
   }
 
   Map<String, dynamic> toJson() {
@@ -235,6 +241,8 @@ class Order extends BaseModel {
     data['color_code'] = colorCode;
     data['step'] = step;
     data['action_required'] = actionRequired;
+    data['life_cycle_segment'] = this.lifeCycleSegment;
+    data['customer_score'] = this.customerScore;
     return data;
   }
 

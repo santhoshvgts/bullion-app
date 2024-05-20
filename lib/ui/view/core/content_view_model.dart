@@ -234,6 +234,7 @@ class ContentViewModel extends VGTSBaseViewModel {
 
   onSortPressed() async {
     ProductModel productModel = ProductModel.fromJson(productListingModule?.productModel);
+    locator<AnalyticsService>().logScreenView("/list-sort", className: "list-sort");
     await locator<DialogService>().showDrawer(
         child: SortDrawer(
             productModel: productModel,
@@ -255,7 +256,7 @@ class ContentViewModel extends VGTSBaseViewModel {
 
                   findAndReplaceModuleSetting(response.productListingModule);
                   locator<DialogService>().dialogComplete(AlertResponse(status: true));
-                  locator<AnalyticsService>().logScreenView("/list-sort", className: "list-sort");
+
                 }
               }
             }));
@@ -264,6 +265,8 @@ class ContentViewModel extends VGTSBaseViewModel {
   onFilterPressed() async {
     FilterDrawerController controller = FilterDrawerController();
     ProductModel productModel = ProductModel.fromJson(productListingModule?.productModel);
+
+    locator<AnalyticsService>().logScreenView("/list-filter", className: "list-filter");
 
     await locator<DialogService>().showDrawer(
         child: FilterDrawer(

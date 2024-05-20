@@ -177,7 +177,11 @@ class ProductOverviewSection extends VGTSBuilderWidget<ProductDetailViewModel> {
                           subject: "Bullion.com",
                         );
 
-                        locator<AnalyticsService>().logShare(itemId: viewModel.productDetails!.overview!.productId!.toString(), contentType: shareContent);
+                        locator<AnalyticsService>().logShare(itemId: viewModel.productDetails!.overview!.productId!.toString(), contentType: "${viewModel.productDetails!.overview!.name!}\n${locator<AppConfigService>()
+                                .config!
+                                .appLinks!
+                                .webUrl!}${viewModel.productDetails!.overview!.targetUrl!}");
+                        locator<AnalyticsService>().logShareItemInteraction(viewModel.productDetails!.overview!);
                       },
                       child: Container(
                         padding: const EdgeInsets.all(10),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bullion/core/models/module/cart/cart_item.dart';
 import 'package:bullion/core/models/module/page_settings.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/api_request/cart_request.dart';
@@ -17,6 +18,8 @@ class CartService {
   Stream<PageSettings?>? get stream => _streamController.stream;
 
   PageSettings? _cart;
+
+  List<CartItem> get cartItems => _cart?.shoppingCart?.items ?? [];
 
   Future<PageSettings?> addItemToCart(int? productId, int qtyValue) async {
     PageSettings? response = await _apiBaseService.request(

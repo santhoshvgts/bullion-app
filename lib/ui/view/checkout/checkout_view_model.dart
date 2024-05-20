@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bullion/core/models/module/dynamic.dart';
+import 'package:bullion/helper/logger.dart';
 import 'package:bullion/services/api_request/checkout_request.dart';
 import 'package:bullion/services/payment/bitpay_service.dart';
 import 'package:bullion/services/payment/braintree_service.dart';
@@ -173,6 +174,18 @@ class CheckoutViewModel extends VGTSBaseViewModel {
     checkout = await request<Checkout>(CheckoutRequest.saveShippingOption(
         shippingId: shippingOption.id, shipCharge: shippingOption.shipCharge));
     setBusy(false);
+
+    try {
+      locator<AnalyticsService>().logShippingAddressInfo(
+          cartItem: locator<CartService>().cartItems,
+          currency: "USD",
+          coupon: "",
+          orderTotal: checkout?.orderTotal,
+          shippingTier: checkout?.selectedShippingOption?.shippingOptions?.singleWhere((element) => element.id == checkout?.selectedShippingOption?.selectedShippingOption).name
+      );
+    } catch (ex, s) {
+      Logger.e(ex.toString(), s: s);
+    }
   }
 
   // Payment & Place Order

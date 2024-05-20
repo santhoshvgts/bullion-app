@@ -142,12 +142,15 @@ class _AddressItemCard extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Radio(
-                value: selected,
-                activeColor: AppColor.primary,
-                onChanged: (value) {
-                },
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, groupValue: true,
+              child: IgnorePointer(
+                ignoring: true,
+                child: Radio(
+                  value: selected,
+                  activeColor: AppColor.primary,
+                  onChanged: (value) {
+                  },
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, groupValue: true,
+                ),
               ),
             ),
 

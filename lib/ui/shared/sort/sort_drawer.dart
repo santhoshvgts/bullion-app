@@ -6,6 +6,7 @@ import 'package:bullion/core/res/colors.dart';
 import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -59,7 +60,10 @@ class SortDrawer extends StatelessWidget {
                 },
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () => onSelect(productModel.sortOptions![index].value ?? ''),
+                    onTap: () {
+                      onSelect(productModel.sortOptions![index].value ?? '');
+                      locator<AnalyticsService>().logSortBy(productModel.sortOptions![index].text);
+                      },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 15,

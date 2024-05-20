@@ -5,6 +5,7 @@ import 'package:bullion/core/res/spacing.dart';
 import 'package:bullion/core/res/styles.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/router.dart';
+import 'package:bullion/services/shared/analytics_service.dart';
 import 'package:bullion/services/shared/navigator_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,7 @@ class _ItemCard extends StatelessWidget {
       child: InkWell(
           onTap: () {
             FocusManager.instance.primaryFocus!.unfocus();
+            locator<AnalyticsService>().logSearch(_item.name!);
             locator<NavigationService>().pushAndPopUntil(_item.targetUrl!,
                 removeRouteName: Routes.dashboard);
           },

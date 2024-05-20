@@ -160,7 +160,7 @@ class AppRouter {
 
       case Routes.dashboard:
         return MaterialPageRoute(
-          builder: (_) => const DashboardPage(),
+          builder: (_) => DashboardPage(),
           settings: RouteSettings(
             name: settings.name,
           ),

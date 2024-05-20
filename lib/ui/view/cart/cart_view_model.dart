@@ -213,18 +213,23 @@ class CartViewModel extends VGTSBaseViewModel {
   refresh() async {
     _cart = await _cartService.getCart(refresh: true);
 
-    locator<AnalyticsService>().logEvent('view_cart', {
-      'currency': 'USD',
-      'value': shoppingCart?.orderTotal,
-      'items': shoppingCart?.items
-          ?.map((e) => {
-                'item_id': e.productId,
-                'price': e.unitPrice,
-                'quantity': e.quantity
-              })
-          .toList()
-          .toString()
-    });
+    locator<AnalyticsService>().logViewCartItem(
+        currency: "USD",
+        orderTotal: shoppingCart?.orderTotal,
+        cartItem: shoppingCart?.items);
+
+    // locator<AnalyticsService>().logEvent('view_cart', {
+    //   'currency': 'USD',
+    //   'value': shoppingCart?.orderTotal,
+    //   'items': shoppingCart?.items
+    //       ?.map((e) => {
+    //             'item_id': e.productId,
+    //             'price': e.unitPrice,
+    //             'quantity': e.quantity
+    //           })
+    //       .toList()
+    //       .toString()
+    // });
 
     if (_cart?.displayMessage != null) displayMessage(_cart?.displayMessage);
 
