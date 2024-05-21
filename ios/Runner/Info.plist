@@ -48,6 +48,8 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Bullion needs access to the microphone to be able to attach voice notes.</string>
+	<key>NSCameraUsageDescription</key>
+    <string>Bullion may need camera access for uploading support images.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Bullion needs access to your photo library for you to be able to attach images.</string>
 	<key>NSUserTrackingUsageDescription</key>

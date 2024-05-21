@@ -248,18 +248,21 @@ class AnalyticsService {
     //   'value': productDetails?.overview?.pricing?.newPrice?.toString()
     // });
 
-    analytics.logViewItem(
-        items: [productDetails!.overview!.analyticEventItemObject()],
-        currency: productDetails.overview!.pricing!.currency ?? 'USD',
-        value: productDetails.overview?.pricing?.newPrice);
+    if(productDetails!=null) {
+      analytics.logViewItem(
+          items: [productDetails.overview!.analyticEventItemObject()],
+          currency: productDetails.overview!.pricing!.currency ?? 'USD',
+          value: productDetails.overview?.pricing?.newPrice);
 
-    var eventMapObject = {
-      "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
-      "name":  productDetails?.overview?.name,
-      "content_id": productDetails?.productId,
-    };
+      var eventMapObject = {
+        "user_id": locator<AuthenticationService>().getUser?.userId.toString(),
+        "name": productDetails.overview?.name,
+        "content_id": productDetails.productId,
+      };
 
-    KochavaTracker.instance.sendEventWithDictionary("View Product", eventMapObject);
+      KochavaTracker.instance.sendEventWithDictionary(
+          "View Product", eventMapObject);
+    }
   }
 
   Future<void> logModuleClick(String? moduleName, String? clickText) async
