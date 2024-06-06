@@ -1119,6 +1119,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  lottie:
+    dependency: "direct main"
+    description:
+      name: lottie
+      sha256: "6a24ade5d3d918c306bb1c21a6b9a04aab0489d51a2582522eea820b4093b62b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   markdown:
     dependency: "direct main"
     description:
@@ -1183,6 +1191,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  nfc_card_reader:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "0.0.1-beta"
+      resolved-ref: fc30bb4fbfeeb41b8d6dc4172a0933aa9c1a16ed
+      url: "https://github.com/vigneshravi7117/nfc_card_reader.git"
+    source: git
+    version: "0.0.1"
   octo_image:
     dependency: transitive
     description:

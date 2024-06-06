@@ -113,6 +113,12 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.3.10
 
+  nfc_card_reader:
+    git:
+      url: https://github.com/vigneshravi7117/nfc_card_reader.git
+      ref: 0.0.1-beta
+  lottie: ^3.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -132,6 +138,7 @@ flutter:
     - assets/images/
     - assets/models/
     - assets/gif/
+    - assets/animations/
 
   fonts:
     - family: Poppins

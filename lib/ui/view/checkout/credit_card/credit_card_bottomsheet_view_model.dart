@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:bullion/helper/utils.dart';
 import 'package:bullion/services/toast_service.dart';
+import 'package:bullion/ui/view/checkout/credit_card/nfc_scanner_bottomsheet.dart';
 import 'package:bullion/ui/view/vgts_base_view_model.dart';
 import 'package:credit_card_scanner/credit_card_scanner.dart';
 // import 'package:credit_card_scanner/credit_card_scanner.dart';
@@ -12,6 +13,9 @@ import 'package:bullion/core/models/alert/alert_response.dart';
 import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
+import 'package:intl/intl.dart';
+import 'package:nfc_card_reader/model/card_data.dart';
+import 'package:nfc_card_reader/nfc_card_reader.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
 import '../../../../../helper/card_utils.dart';
 
@@ -22,6 +26,11 @@ class CreditCardViewModel extends VGTSBaseViewModel {
   CardType? _paymentCard = CardType.Others;
 
   CardType? get paymentCard => _paymentCard;
+
+  final nfcCardReaderPlugin = NfcCardReader();
+  CardData? cardData;
+  late StreamSubscription cardDataSubscription;
+  bool nfcScanning = false;
 
   set paymentCard(CardType? value) {
     _paymentCard = value;
@@ -148,23 +157,31 @@ class CreditCardViewModel extends VGTSBaseViewModel {
     if (availability != NFCAvailability.available) {
       locator<ToastService>().showText(text: "NFC not available!");
     } else {
-      locator<ToastService>().showText(text: "NFC Scanning!");
-      var tag = await FlutterNfcKit.poll(
-          timeout: const Duration(seconds: 10),
-          iosMultipleTagMessage: "Multiple tags found!",
-          iosAlertMessage: "Scan your tag");
-      print(jsonEncode(tag));
+      nfcScanning = true;
+      locator<DialogService>().showBottomSheet(key: const ValueKey("scanningNFCBottomSheet"),showCloseIcon:false,isDismissible:false,child: NFCScannerBottomSheet(onPressed:(){ stopScanning();}));
+      notifyListeners();
 
-      if (tag.type == NFCTagType.iso7816) {
-        var result = await FlutterNfcKit.transceive("00B0950000",
-            timeout: const Duration(
-                seconds:
-                5)); // timeout is still Android-only, persist until next change
-        print(result);
+      cardDataSubscription = nfcCardReaderPlugin.cardDataStream.listen((cardData) async {
+        cardNumController.text = cardData?.cardNumber;
+        var formattedExpiryDate = DateFormat('MM/yyyy').format(DateTime.parse(cardData?.cardExpiry ?? "0000-00-00"));
+        expDateController.text = formattedExpiryDate;
+        stopScanning();
+      });
+
+      try {
+        await nfcCardReaderPlugin.scanCard();
+      } catch (e) {
+        debugPrint(e.toString());
       }
-      await FlutterNfcKit.setIosAlertMessage("hi there!");
-      await FlutterNfcKit.finish();
     }
+  }
+
+  Future<void> stopScanning() async{
+    await nfcCardReaderPlugin.stopScanning();
+    cardDataSubscription.cancel();
+    nfcScanning = false;
+    locator<DialogService>().dialogComplete(AlertResponse(), key: const ValueKey("scanningNFCBottomSheet"));
+    notifyListeners();
   }
 
   String getCardNumber(String number) {
