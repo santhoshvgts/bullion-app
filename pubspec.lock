@@ -1195,8 +1195,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0.0.1-beta"
-      resolved-ref: fc30bb4fbfeeb41b8d6dc4172a0933aa9c1a16ed
+      ref: "0.0.2-beta"
+      resolved-ref: bbd25de36553b4b926174421fa1ffd3021137190
       url: "https://github.com/vigneshravi7117/nfc_card_reader.git"
     source: git
     version: "0.0.1"

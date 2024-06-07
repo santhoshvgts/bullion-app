@@ -14,6 +14,7 @@ import 'package:bullion/locator.dart';
 import 'package:bullion/services/shared/dialog_service.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:intl/intl.dart';
+import 'package:nfc_card_reader/exception/scan_exception.dart';
 import 'package:nfc_card_reader/model/card_data.dart';
 import 'package:nfc_card_reader/nfc_card_reader.dart';
 import 'package:vgts_plugin/form/utils/form_field_controller.dart';
@@ -27,9 +28,9 @@ class CreditCardViewModel extends VGTSBaseViewModel {
 
   CardType? get paymentCard => _paymentCard;
 
-  final nfcCardReaderPlugin = NfcCardReader();
+  NfcCardReader? nfcCardReaderPlugin;
   CardData? cardData;
-  late StreamSubscription cardDataSubscription;
+  StreamSubscription? cardDataSubscription;
   bool nfcScanning = false;
 
   set paymentCard(CardType? value) {
@@ -141,7 +142,6 @@ class CreditCardViewModel extends VGTSBaseViewModel {
         scanOptions: const CardScanOptions(
           scanExpiryDate: true,
           enableDebugLogs: true,
-          cardScannerTimeOut: 60,
         ));
 
     if(cardScanResponse != null){
@@ -155,13 +155,14 @@ class CreditCardViewModel extends VGTSBaseViewModel {
   void checkNFC() async {
     var availability = await FlutterNfcKit.nfcAvailability;
     if (availability != NFCAvailability.available) {
-      locator<ToastService>().showText(text: "NFC not available!");
+      locator<DialogService>().showDialog(title: "Info", description: "NFC not available!");
     } else {
       nfcScanning = true;
       locator<DialogService>().showBottomSheet(key: const ValueKey("scanningNFCBottomSheet"),showCloseIcon:false,isDismissible:false,child: NFCScannerBottomSheet(onPressed:(){ stopScanning();}));
       notifyListeners();
+      nfcCardReaderPlugin ??= NfcCardReader();
 
-      cardDataSubscription = nfcCardReaderPlugin.cardDataStream.listen((cardData) async {
+      cardDataSubscription = nfcCardReaderPlugin!.cardDataStream.listen((cardData) async {
         cardNumController.text = cardData?.cardNumber;
         var formattedExpiryDate = DateFormat('MM/yyyy').format(DateTime.parse(cardData?.cardExpiry ?? "0000-00-00"));
         expDateController.text = formattedExpiryDate;
@@ -169,16 +170,24 @@ class CreditCardViewModel extends VGTSBaseViewModel {
       });
 
       try {
-        await nfcCardReaderPlugin.scanCard();
-      } catch (e) {
+        await nfcCardReaderPlugin!.scanCard();
+      }
+      on ScanException catch (exception){
+        locator<ToastService>().showText(text: exception.errorMsg);
+        stopScanning();
+      }
+      catch (e) {
         debugPrint(e.toString());
       }
     }
   }
 
   Future<void> stopScanning() async{
-    await nfcCardReaderPlugin.stopScanning();
-    cardDataSubscription.cancel();
+    if(nfcCardReaderPlugin!=null)
+    {
+      await nfcCardReaderPlugin!.stopScanning();
+    }
+    cardDataSubscription?.cancel();
     nfcScanning = false;
     locator<DialogService>().dialogComplete(AlertResponse(), key: const ValueKey("scanningNFCBottomSheet"));
     notifyListeners();
