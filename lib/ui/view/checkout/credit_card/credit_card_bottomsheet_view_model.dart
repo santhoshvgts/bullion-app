@@ -190,6 +190,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
     cardDataSubscription?.cancel();
     nfcScanning = false;
     locator<DialogService>().dialogComplete(AlertResponse(), key: const ValueKey("scanningNFCBottomSheet"));
+    cardNumController.focusNode.unfocus();
     notifyListeners();
   }
 
