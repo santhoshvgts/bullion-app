@@ -158,7 +158,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
       locator<DialogService>().showDialog(title: "Info", description: "NFC not available!");
     } else {
       nfcScanning = true;
-      locator<DialogService>().showBottomSheet(key: const ValueKey("scanningNFCBottomSheet"),showCloseIcon:false,isDismissible:false,child: NFCScannerBottomSheet(onPressed:(){ stopScanning();}));
+      locator<DialogService>().showBottomSheet(key: const ValueKey("scanningNFCBottomSheet"),showCloseIcon:false,isDismissible:false,enableDrag: false,child: NFCScannerBottomSheet(onPressed:(){ stopScanning();}));
       notifyListeners();
       nfcCardReaderPlugin ??= NfcCardReader();
 
@@ -173,7 +173,7 @@ class CreditCardViewModel extends VGTSBaseViewModel {
         await nfcCardReaderPlugin!.scanCard();
       }
       on ScanException catch (exception){
-        locator<ToastService>().showText(text: exception.errorMsg);
+        locator<ToastService>().showText(text: "Move your device slowly over the credit card and try scanning again.");
         stopScanning();
       }
       catch (e) {

@@ -15,25 +15,28 @@ class NFCScannerBottomSheet extends StatefulWidget {
 class _NFCScannerBottomSheetState extends State<NFCScannerBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: const Text("Scan Card",style: AppTextStyle.titleLarge),
-        ),
-        Text("Hold your Card to the back \n of your phone.",textAlign: TextAlign.center,style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.w400,fontSize: 12)),
-        Lottie.asset("assets/animations/nfc.json"),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Button(
-              'Cancel',
-              valueKey: const Key("btnCancelScan"),
-              width: double.infinity,
-              color: AppColor.primary,
-              borderColor: AppColor.primary,
-              onPressed: widget.onPressed),
-        ),
-      ],
-    ));
+    return PopScope(
+      canPop: false,
+      child: Center(child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text("Scan Card",style: AppTextStyle.titleLarge),
+          ),
+          Text("Hold your Card to the back \n of your phone.",textAlign: TextAlign.center,style: AppTextStyle.titleSmall.copyWith(fontWeight: FontWeight.w400,fontSize: 12)),
+          Lottie.asset("assets/animations/nfc.json"),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Button(
+                'Cancel',
+                valueKey: const Key("btnCancelScan"),
+                width: double.infinity,
+                color: AppColor.primary,
+                borderColor: AppColor.primary,
+                onPressed: widget.onPressed),
+          ),
+        ],
+      )),
+    );
   }
 }
