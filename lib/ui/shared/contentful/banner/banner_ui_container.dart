@@ -6,6 +6,7 @@ import 'package:bullion/ui/shared/contentful/module/module_ui_container.dart';
 import 'package:bullion/ui/view/vgts_builder_widget.dart';
 import 'package:bullion/ui/widgets/shimmer_effect.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -38,9 +39,16 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
 
   Completer<ui.Image> completer = Completer<ui.Image>();
 
-  ImageListener? listener(ImageInfo imageInfo, bool synCall) {
-    completer.complete(imageInfo.image);
-    return null;
+  ImageStreamListener? listener;
+
+  void _loadImage(String imageUrl) {
+      Image image = Image.network(imageUrl);
+      listener = ImageStreamListener((ImageInfo imageInfo, bool synCall) {
+        if (!completer.isCompleted) {
+          completer.complete(imageInfo.image);
+        }
+      });
+      image.image.resolve(const ImageConfiguration()).addListener(listener!);
   }
 
   @override
@@ -48,8 +56,7 @@ class _BannerModuleSection extends VGTSBuilderWidget<BannerViewModel> {
     viewModel.init(this.moduleSetting!);
 
     if (viewModel.items?.isNotEmpty == true) {
-      Image image = Image.network(viewModel.items!.first.imageUrl!);
-      image.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener(listener));
+      _loadImage(viewModel.items!.first.imageUrl!);
     }
   }
 
