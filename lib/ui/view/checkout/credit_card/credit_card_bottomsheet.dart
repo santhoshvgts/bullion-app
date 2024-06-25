@@ -28,7 +28,6 @@ class _CreditCardPageBottomSheetState extends State<CreditCardPageBottomSheet> {
         builder: (context, viewModel, child) {
           return GestureDetector(
             onTap: (){
-              print("Tapped Outside");
             },
             child: SafeArea(
               child:  Form(
@@ -63,12 +62,12 @@ class _CreditCardPageBottomSheetState extends State<CreditCardPageBottomSheet> {
                                 },
                               ),
 
-                              IconButton(
+                              viewModel.isAndroid ? IconButton(
                                 icon: const Icon(Icons.nfc_rounded,color: AppColor.secondaryText),
                                 onPressed: viewModel.nfcScanning ? null : () {
                                   viewModel.checkNFC();
                                 },
-                              ),
+                              ) : Container(),
                             ],
                           ),
 

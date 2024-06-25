@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bullion/services/toast_service.dart';
 import 'package:bullion/ui/view/checkout/credit_card/nfc_scanner_bottomsheet.dart';
@@ -32,6 +33,8 @@ class CreditCardViewModel extends VGTSBaseViewModel {
   CardData? cardData;
   StreamSubscription? cardDataSubscription;
   bool nfcScanning = false;
+
+  bool isAndroid = Platform.isAndroid;
 
   set paymentCard(CardType? value) {
     _paymentCard = value;
@@ -138,18 +141,20 @@ class CreditCardViewModel extends VGTSBaseViewModel {
   late FormFieldController cvvController;
 
   scanCard() async {
-    cardScanResponse = await CardScanner.scanCard(
-        scanOptions: const CardScanOptions(
-          scanExpiryDate: true,
-          enableDebugLogs: true,
-        ));
+    if(Platform.isAndroid) {
+      cardScanResponse = await CardScanner.scanCard(
+          scanOptions: const CardScanOptions(
+            scanExpiryDate: true,
+            enableDebugLogs: true,
+          ));
 
-    if(cardScanResponse != null){
-      cardNumController.text = getCardNumber(cardScanResponse!.cardNumber);
-      expDateController.text = cardScanResponse!.expiryDate;
+      if (cardScanResponse != null) {
+        cardNumController.text = getCardNumber(cardScanResponse!.cardNumber);
+        expDateController.text = cardScanResponse!.expiryDate;
+      }
+
+      notifyListeners();
     }
-
-    notifyListeners();
   }
 
   void checkNFC() async {
